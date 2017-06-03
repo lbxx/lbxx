@@ -1,7 +1,7 @@
 package cn.lingco.shop.web;
-
-import cn.lingco.common.service.SMSService;
+import cn.lingco.common.emun.Code;
 import cn.lingco.common.util.Result;
+import cn.lingco.common.util.SMSUtil;
 import cn.lingco.common.vo.Captcha;
 import cn.lingco.common.web.BaseController;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -24,8 +24,6 @@ import java.util.Set;
 @RequestMapping(value = "login")
 public class LoginController extends BaseController {
     @Autowired
-    private SMSService smsService;
-    @Autowired
     private RedisTemplate<String, String> redisTemplate;
     /**
      * app端请求验证码
@@ -36,7 +34,7 @@ public class LoginController extends BaseController {
     public Result captcha( @RequestBody String mobile,HttpSession httpSession){
         Result result=new Result();
         String randomNumeric = RandomStringUtils.randomNumeric(6);//随机生成六位数字
-        HashMap re = smsService.sendSMS(mobile,randomNumeric);
+        HashMap re = SMSUtil.sendSMS(mobile,randomNumeric);
         if("000000".equals(re.get("statusCode"))){
             result.setResult(true);
             Captcha captcha=     new Captcha();
@@ -52,6 +50,7 @@ public class LoginController extends BaseController {
             }
         }else{
             //异常返回输出错误码和错误信息
+            result.setCode((Code) re.get("statusCode"));
             result.setMsg("错误码=" + re.get("statusCode") +" 错误信息= "+re.get("statusMsg"));
 
         }
