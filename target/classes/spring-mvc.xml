@@ -20,9 +20,10 @@
                 <value>text/html;charset=UTF-8</value>  
             </list>  
         </property>  
-    </bean>  
-  
-    <!-- 启动Spring MVC的注解功能，完成请求和注解POJO的映射 -->  
+    </bean>
+    <!-- 静态资源处理， css， js， imgs -->
+    <mvc:resources mapping="/resources/**" location="/resources/"/>
+
     <bean  
         class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">  
         <property name="messageConverters">  
