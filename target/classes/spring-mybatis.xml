@@ -55,7 +55,19 @@
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">  
         <property name="dataSource" ref="dataSource" />  
         <!-- 自动扫描entity目录, 省掉Configuration.xml里的手工配置 -->  
-        <property name="mapperLocations" value="classpath:cn/lingco/persistence/*.xml" />  
+        <property name="mapperLocations" value="classpath:cn/lingco/persistence/*.xml" />
+        <!--配置分页拦截器-->
+        <property name="plugins">
+            <array>
+                <bean class="com.github.pagehelper.PageInterceptor">
+                    <property name="properties">
+                        <value>
+
+                        </value>
+                    </property>
+                </bean>
+            </array>
+        </property>
     </bean>  
   
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">  
@@ -66,7 +78,8 @@
     <!-- 配置事务管理器 -->  
     <bean id="transactionManager"  
         class="org.springframework.jdbc.datasource.DataSourceTransactionManager">  
-        <property name="dataSource" ref="dataSource" />  
+        <property name="dataSource" ref="dataSource" />
+
     </bean>
   
     <!-- 注解方式配置事物 -->  
