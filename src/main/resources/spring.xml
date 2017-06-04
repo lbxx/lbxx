@@ -42,8 +42,6 @@
         <property name="filterChainDefinitions">
             <value>
                 /login/**=anon
-                /mydemo/login=anon
-                /mydemo/getVerifyCodeImage=anon
                 /main**=authc
                 /user/info**=authc
                 /admin/listUser**=authc,perms[admin:manage]
