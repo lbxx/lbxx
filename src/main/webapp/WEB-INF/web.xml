@@ -46,17 +46,7 @@
         <servlet-name>springMVC</servlet-name>  
         <url-pattern>/</url-pattern>  
     </servlet-mapping>
-    <listener>
-      	<description>session监听器</description>
-      	<listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
-  	</listener>
-  	<listener>
-    	<description>spring监听器</description>
-    	<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-  	</listener>
-  	<listener>
-    	<listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
-  	</listener>
+
     <!-- 配置session超时时间，单位分钟 -->  
     <session-config>  
         <session-timeout>30</session-timeout>  
