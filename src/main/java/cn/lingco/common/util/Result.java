@@ -1,7 +1,6 @@
 package cn.lingco.common.util;
 
 import cn.lingco.common.emun.Code;
-import com.sun.tools.javac.main.Main;
 
 /**
  * Created by tangxinmao on 2017/5/30.
