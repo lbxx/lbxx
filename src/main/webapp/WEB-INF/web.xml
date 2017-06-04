@@ -56,7 +56,7 @@
         <session-timeout>30</session-timeout>  
     </session-config>  
     <welcome-file-list>  
-        <welcome-file>index.jsp</welcome-file>  
+        <welcome-file>login.jsp</welcome-file>
     </welcome-file-list>
 
 
@@ -88,12 +88,12 @@
         <init-param>
             <description>图片宽 200</description>
             <param-name>kaptcha.image.width</param-name>
-            <param-value>150</param-value>
+            <param-value>105</param-value>
         </init-param>
         <init-param>
             <description>图片高 50</description>
             <param-name>kaptcha.image.height</param-name>
-            <param-value>30</param-value>
+            <param-value>33</param-value>
         </init-param>
         <init-param>
             <description>图片实现类</description>
@@ -146,8 +146,8 @@
             <description>干扰实现类</description>
             <param-name>kaptcha.noise.impl</param-name>
             <param-value>
-                <!-- com.google.code.kaptcha.impl.NoNoise -->
-                com.google.code.kaptcha.impl.DefaultNoise
+               com.google.code.kaptcha.impl.NoNoise
+             <!--   com.google.code.kaptcha.impl.DefaultNoise-->
             </param-value>
         </init-param>
         <init-param>
@@ -178,7 +178,7 @@
         <init-param>
             <description>背景颜色渐变，开始颜色</description>
             <param-name>kaptcha.background.clear.from</param-name>
-            <param-value>blue</param-value>
+            <param-value>black</param-value>
         </init-param>
         <init-param>
             <description>背景颜色渐变，结束颜色</description>
