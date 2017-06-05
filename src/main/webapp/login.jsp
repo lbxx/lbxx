@@ -571,7 +571,7 @@
     }
 
 </script>
-
+<script src="${pageContext.request.contextPath}/resources/js/jquery.form.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/jquery.validate.min.js"></script>
 <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/localization/messages_zh.js"></script>
 

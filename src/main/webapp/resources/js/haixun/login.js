@@ -9,8 +9,14 @@ $(function () {
         submitHandler: function (form) {
             $(form).ajaxSubmit({
                 success: function (data) {
-                    alert();
-                    console.log(data);
+               if(data.result){
+                   window.location.assign(contextPath+'/user/showInfo/')
+               }else{
+                   if(data.code=='CAPTCHA_ERROR'){
+                       console.log($(form));
+                      // data.msg.appendTo( $(form).)
+                   }
+               }
                 },error:function (data) {
                 console.log(data)
 

@@ -2,19 +2,17 @@ package cn.lingco.shop.web;
 
 import cn.lingco.common.constant.SessionConstant;
 import cn.lingco.common.emun.Code;
-import cn.lingco.common.util.Result;
+import cn.lingco.common.vo.Result;
 import cn.lingco.common.util.SMSUtil;
-import cn.lingco.common.vo.Captcha;
+import cn.lingco.common.redisVo.Captcha;
 import cn.lingco.common.web.BaseController;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.sql.SQLXML;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Set;
@@ -69,9 +67,13 @@ public class LoginController extends BaseController {
      */
     @RequestMapping(value = "login", method = RequestMethod.POST)
     @ResponseBody
-    public Result login(String username, String password, String kaptcha) {
+    public Result login(String username, String password, String kaptcha,HttpSession httpSession) {
         Result result = new Result();
-        result.setResult(true);
+        if (!kaptcha.equals(httpSession.getAttribute(SessionConstant.KAPTCHA_SESSION_KEY))) {
+            result.setCode(Code.CAPTCHA_ERROR);
+            result.setMsg("验证码错误");
+            return result;
+        }
         return result;
     }
 

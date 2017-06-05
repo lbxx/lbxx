@@ -1,4 +1,4 @@
-package cn.lingco.common.vo;
+package cn.lingco.common.redisVo;
 
 import java.io.Serializable;
 import java.util.Date;
