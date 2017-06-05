@@ -1,11 +1,5 @@
 #  Maven #
-target/
+/target/**
 # IDEA #
-.idea/
+.idea/**
 *.iml
-# Eclipse #
-.settings/
-.metadata/
-.classpath
-.project
-Servers/
