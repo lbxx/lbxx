@@ -1,4 +1,4 @@
-package cn.lingco.common.util;
+package cn.lingco.common.vo;
 
 import cn.lingco.common.emun.Code;
 
