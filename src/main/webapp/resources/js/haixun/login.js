@@ -13,12 +13,12 @@ $(function () {
                    window.location.assign(contextPath+'/user/showInfo/')
                }else{
                    if(data.code=='CAPTCHA_ERROR'){
-                       console.log($(form));
-                      // data.msg.appendTo( $(form).)
+                       console.log($(form).find('imput[name="kaptcha"]').parent());
+                 alert(data.msg);
                    }
                }
                 },error:function (data) {
-                console.log(data)
+
 
             }
             });
