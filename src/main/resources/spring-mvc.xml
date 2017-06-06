@@ -10,7 +10,7 @@
         http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd">  
   
     <!-- 自动扫描controller包下的所有类，如果@Controller注入为bean -->  
-    <context:component-scan base-package="cn.lingco" />
+    <context:component-scan base-package="com.cdhaixun" />
     <mvc:annotation-driven />
     <!-- 避免IE执行AJAX时,返回JSON出现下载文件 -->  
     <bean id="mappingJacksonHttpMessageConverter"  
@@ -24,9 +24,9 @@
                     </bean>
                 </property>
                 <!-- 为null字段时不显示 -->
-                <property name="serializationInclusion">
+                <!--<property name="serializationInclusion">
                     <value type="com.fasterxml.jackson.annotation.JsonInclude.Include">NON_NULL</value>
-                </property>
+                </property>-->
             </bean>
         </property>
   <!--      <property name="supportedMediaTypes">

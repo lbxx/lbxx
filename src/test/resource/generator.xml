@@ -5,7 +5,7 @@
 
 <generatorConfiguration>
     <!-- classPathEntry:数据库的JDBC驱动的jar包地址 -->
-    <classPathEntry location="F:\\mavenpos\\apache-maven-3.3.9\\libs\\mysql\\mysql-connector-java\\5.1.38\\mysql-connector-java-5.1.38.jar" />
+    <classPathEntry location="E:\\java\\apache-maven-3.3.9\\libs\\mysql\\mysql-connector-java\\5.1.34\\mysql-connector-java-5.1.34.jar" />
 
      <!-- MyBatis3  MyBatis3Simple   Ibatis2Java2    Ibatis2Java5 -->
     <context id="tracegoods" targetRuntime="MyBatis3">
@@ -16,16 +16,16 @@
         </commentGenerator>
         
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-            connectionURL="jdbc:mysql://112.74.125.242:3306/ssm_shop?characterEncoding=utf-8&amp;autoReconnect=true" 
+            connectionURL="jdbc:mysql://106.14.145.179:3306/haixun?characterEncoding=utf-8&amp;autoReconnect=true"
             userId="root"
-            password="402fa73318">
+            password="Dev!1234?">
         </jdbcConnection>
         <!-- 默认false，把JDBC DECIMAL 和 NUMERIC 类型解析为 Integer true，把JDBC DECIMAL和 NUMERIC 类型解析为java.math.BigDecimal -->
         <javaTypeResolver>
             <property name="forceBigDecimals" value="false" />
         </javaTypeResolver>
          <!-- targetProject:自动生成代码的位置 -->
-        <javaModelGenerator targetPackage="cn.lingco.domain"
+        <javaModelGenerator targetPackage="com.cdhaixun.domain"
             targetProject="C:\Users\Administrator\Desktop\code">
             <!-- enableSubPackages:是否让schema作为包的后缀 -->
             <property name="enableSubPackages" value="true" />
@@ -33,13 +33,13 @@
             <property name="trimStrings" value="true" />
         </javaModelGenerator>
 
-        <sqlMapGenerator targetPackage="cn.lingco.persistence"
+        <sqlMapGenerator targetPackage="com.cdhaixun.persistence"
             targetProject="C:\Users\Administrator\Desktop\code">
             <property name="enableSubPackages" value="false" />
         </sqlMapGenerator>
 
         <javaClientGenerator type="XMLMAPPER"
-            targetPackage="cn.lingco.persistence"
+            targetPackage="com.cdhaixun.persistence"
             targetProject="C:\Users\Administrator\Desktop\code">
             <property name="enableSubPackages" value="true" />
         </javaClientGenerator>
