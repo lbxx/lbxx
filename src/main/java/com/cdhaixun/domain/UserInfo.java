@@ -1,5 +1,8 @@
 package com.cdhaixun.domain;
-
+/**
+ * @Author tanggm
+ * @Date 2017/6/6 23:41
+ */
 public class UserInfo {
     private Integer id;
 

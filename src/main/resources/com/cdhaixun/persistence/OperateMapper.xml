@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cdhaixun.persistence.OperateMapper" >
+  <resultMap id="BaseResultMap" type="com.cdhaixun.domain.Operate" >
+    <id column="menu" property="menu" jdbcType="INTEGER" />
+    <id column="op" property="op" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="sort" property="sort" jdbcType="INTEGER" />
+    <result column="isshow" property="isshow" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    menu, op, name, sort, isshow
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.cdhaixun.domain.OperateKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from operate
+    where menu = #{menu,jdbcType=INTEGER}
+      and op = #{op,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.cdhaixun.domain.OperateKey" >
+    delete from operate
+    where menu = #{menu,jdbcType=INTEGER}
+      and op = #{op,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cdhaixun.domain.Operate" >
+    insert into operate (menu, op, name, 
+      sort, isshow)
+    values (#{menu,jdbcType=INTEGER}, #{op,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{sort,jdbcType=INTEGER}, #{isshow,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.cdhaixun.domain.Operate" >
+    update operate
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="isshow != null" >
+        isshow = #{isshow,jdbcType=INTEGER},
+      </if>
+    </set>
+    where menu = #{menu,jdbcType=INTEGER}
+      and op = #{op,jdbcType=VARCHAR}
+  </update>
+</mapper>
