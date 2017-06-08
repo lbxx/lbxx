@@ -7,9 +7,10 @@
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="sort" property="sort" jdbcType="INTEGER" />
     <result column="isshow" property="isshow" jdbcType="INTEGER" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    menu, op, name, sort, isshow
+    menu, op, name, sort, isshow. url
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.cdhaixun.domain.Operate" >
     select 
@@ -25,9 +26,9 @@
   </delete>
   <insert id="insert" parameterType="com.cdhaixun.domain.Operate" >
     insert into operate (menu, op, name, 
-      sort, isshow)
+      sort, isshow, url)
     values (#{menu,jdbcType=INTEGER}, #{op,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{sort,jdbcType=INTEGER}, #{isshow,jdbcType=INTEGER})
+      #{sort,jdbcType=INTEGER}, #{isshow,jdbcType=INTEGER}, #{url,jdbcType=VARCHAR})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.cdhaixun.domain.Operate" >
     update operate
@@ -40,6 +41,9 @@
       </if>
       <if test="isshow != null" >
         isshow = #{isshow,jdbcType=INTEGER},
+      </if>
+      <if test="url != null" >
+        url = #{url,jdbcType=VARCHAR},
       </if>
     </set>
     where menu = #{menu,jdbcType=INTEGER}
