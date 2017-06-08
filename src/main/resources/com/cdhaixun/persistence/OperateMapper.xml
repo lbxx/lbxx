@@ -11,14 +11,14 @@
   <sql id="Base_Column_List" >
     menu, op, name, sort, isshow
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.cdhaixun.domain.OperateKey" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.cdhaixun.domain.Operate" >
     select 
     <include refid="Base_Column_List" />
     from operate
     where menu = #{menu,jdbcType=INTEGER}
       and op = #{op,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="com.cdhaixun.domain.OperateKey" >
+  <delete id="deleteByPrimaryKey" parameterType="com.cdhaixun.domain.Operate" >
     delete from operate
     where menu = #{menu,jdbcType=INTEGER}
       and op = #{op,jdbcType=VARCHAR}
