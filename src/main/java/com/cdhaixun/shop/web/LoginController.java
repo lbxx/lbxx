@@ -6,7 +6,11 @@ import com.cdhaixun.common.vo.Result;
 import com.cdhaixun.common.util.SMSUtil;
 import com.cdhaixun.common.redisVo.Captcha;
 import com.cdhaixun.common.web.BaseController;
+import com.cdhaixun.persistence.ManagerMapper;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.*;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
@@ -25,6 +29,8 @@ import java.util.Set;
 public class LoginController extends BaseController {
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
+    @Autowired
+    private ManagerMapper managerMapper;
 
     /**
      * app端请求验证码
@@ -67,12 +73,34 @@ public class LoginController extends BaseController {
      */
     @RequestMapping(value = "login", method = RequestMethod.POST)
     @ResponseBody
-    public Result login(String username, String password, String kaptcha,HttpSession httpSession) {
+    public Result login(String account, String password, String kaptcha,HttpSession httpSession) {
         Result result = new Result();
         if (!kaptcha.equals(httpSession.getAttribute(SessionConstant.KAPTCHA_SESSION_KEY))) {
             result.setCode(Code.CAPTCHA_ERROR);
             result.setMsg("验证码错误");
             return result;
+        }
+        UsernamePasswordToken token = new UsernamePasswordToken(account, password);
+        //获取当前的Subject
+        Subject currentUser = SecurityUtils.getSubject();
+        try {
+            currentUser.login(token);
+            return  result;
+        } catch (UnknownAccountException uae) {
+            result.setCode(Code.UNKNOWN_ACCOUNT);
+            result.setMsg("账号未注册");
+        } catch (IncorrectCredentialsException ice) {
+            result.setCode(Code.PASSWORD_ERROR);
+            result.setMsg( "密码不正确");
+        } catch (LockedAccountException lae) {
+            result.setCode(Code.ACCOUNT_LOCKED);
+            result.setMsg( "账户已锁定");
+        } catch (ExcessiveAttemptsException eae) {
+            result.setCode(Code.EXCESSIVE_ATTEMPTS);
+            result.setMsg("登录次数过多");
+        } catch (AuthenticationException ae) {
+            result.setCode(Code.ACCOUNT_OR_PASSWORD_ERROR);
+            result.setMsg( "用户名或密码不正确");
         }
         return result;
     }

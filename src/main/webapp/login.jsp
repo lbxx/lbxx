@@ -107,7 +107,7 @@
 
 														<span class="block input-icon input-icon-right">
 
-															<input type="text" name="username" required minlength="3" maxlength="30" class="form-control" placeholder="请输入用户名" />
+															<input type="text" name="account" required minlength="3" maxlength="30" class="form-control" placeholder="请输入用户名" />
 
 															<i class="icon-user"></i>
 
