@@ -5,10 +5,9 @@ package com.cdhaixun.common.emun;
  */
 public enum Code {
     CAPTCHA_ERROR//验证码错误
+    ,
+    MP_ERROR //用户名或密码错误
     ;
-    public static void main(String[] args) {
-
-    }
 }
 
 
