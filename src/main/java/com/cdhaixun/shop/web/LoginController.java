@@ -7,6 +7,7 @@ import com.cdhaixun.common.util.SMSUtil;
 import com.cdhaixun.common.redisVo.Captcha;
 import com.cdhaixun.common.web.BaseController;
 import com.cdhaixun.persistence.ManagerMapper;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
@@ -80,11 +81,12 @@ public class LoginController extends BaseController {
             result.setMsg("验证码错误");
             return result;
         }
-        UsernamePasswordToken token = new UsernamePasswordToken(account, password);
+        UsernamePasswordToken token = new UsernamePasswordToken(account,  DigestUtils.sha512Hex(password));
         //获取当前的Subject
         Subject currentUser = SecurityUtils.getSubject();
         try {
             currentUser.login(token);
+            result.setResult(true);
             return  result;
         } catch (UnknownAccountException uae) {
             result.setCode(Code.UNKNOWN_ACCOUNT);

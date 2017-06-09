@@ -134,7 +134,7 @@
 
 															<input type="text" name="kaptcha" required maxlength="4" minlength="4" style="width:60%;display: inline;" class="form-control" placeholder="请输入验证码" />
 														<%--	<i class="icon-user"></i>--%>
-                                                             <img src="${pageContext.request.contextPath}/randomCode.jpg"  onclick="this.src='${pageContext.request.contextPath}/randomCode.jpg';"/>
+                                                             <img src="${pageContext.request.contextPath}/randomCode.jpg" id="randomCode" onclick="this.src='${pageContext.request.contextPath}/randomCode.jpg';"/>
 													</span>
 
 
