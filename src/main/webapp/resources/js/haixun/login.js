@@ -12,10 +12,8 @@ $(function () {
                if(data.result){
                    window.location.assign(contextPath+'/user/showInfo/')
                }else{
-                   if(data.code=='CAPTCHA_ERROR'){
-                       console.log($(form).find('imput[name="kaptcha"]').parent());
-                 alert(data.msg);
-                   }
+                   $('#randomCode').prop('src',contextPath+'/randomCode.jpg');
+                   alert(data.msg);
                }
                 },error:function (data) {
 

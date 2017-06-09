@@ -1,5 +1,7 @@
 package com.cdhaixun.common.shiro;
 
+import com.cdhaixun.domain.Manager;
+import com.cdhaixun.persistence.ManagerMapper;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.shiro.SecurityUtils;
@@ -10,11 +12,15 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MyRealm extends AuthorizingRealm {
+    @Autowired
+    private ManagerMapper managerMapper;
+
     /**
      * 为当前登录的Subject授予角色和权限
      * 经测试:本例中该方法的调用时机为需授权资源被访问时
@@ -75,28 +81,14 @@ public class MyRealm extends AuthorizingRealm {
      * 经测试:本例中该方法的调用时机为LoginController.login()方法中执行Subject.login()时
      */
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authcToken) throws AuthenticationException {
-        //获取基于用户名和密码的令牌
-        //实际上这个authcToken是从LoginController里面currentUser.login(token)传过来的
-        //两个token的引用都是一样的
+
         UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
-        System.out.println("验证当前Subject时获取到token为" + ReflectionToStringBuilder.toString(token, ToStringStyle.MULTI_LINE_STYLE));
-//      User user = userService.getByUsername(token.getUsername());
-//      if(null != user){
-//          AuthenticationInfo authcInfo = new SimpleAuthenticationInfo(user.getUsername(), user.getPassword(), user.getNickname());
-//          this.setSession("currentUser", user);
-//          return authcInfo;
-//      }else{
-//          return null;
-//      }
-        //此处无需比对,比对的逻辑Shiro会做,我们只需返回一个和令牌相关的正确的验证信息
-        //说白了就是第一个参数填登录用户名,第二个参数填合法的登录密码(可以是从数据库中取到的,本例中为了演示就硬编码了)
-        //这样一来,在随后的登录页面上就只有这里指定的用户和密码才能通过验证
-        if ("admin".equals(token.getUsername())) {
-            AuthenticationInfo authcInfo = new SimpleAuthenticationInfo("admin", "123", this.getName());
-            this.setSession("currentUser", "mike");
+        Manager manager = managerMapper.findByAccount(token.getUsername());
+        if (manager != null) {
+            AuthenticationInfo authcInfo = new SimpleAuthenticationInfo(manager.getAccount(), manager.getPassword(), this.getName());
+            this.setSession("manager", manager);
             return authcInfo;
         }
-        //没有返回登录用户名对应的SimpleAuthenticationInfo对象时,就会在LoginController中抛出UnknownAccountException异常
         return null;
     }
 
@@ -109,7 +101,6 @@ public class MyRealm extends AuthorizingRealm {
         Subject currentUser = SecurityUtils.getSubject();
         if (null != currentUser) {
             Session session = currentUser.getSession();
-            System.out.println("Session默认超时时间为[" + session.getTimeout() + "]毫秒");
             if (null != session) {
                 session.setAttribute(key, value);
             }
