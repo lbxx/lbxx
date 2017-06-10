@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cdhaixun.persistence.SupplierMapper" >
+  <resultMap id="BaseResultMap" type="com.cdhaixun.domain.Supplier" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="contactmobile" property="contactmobile" jdbcType="VARCHAR" />
+    <result column="contactperson" property="contactperson" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, name, contactmobile, contactperson
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from supplier
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from supplier
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cdhaixun.domain.Supplier" >
+    insert into supplier (id, name, contactmobile, 
+      contactperson)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{contactmobile,jdbcType=VARCHAR}, 
+      #{contactperson,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.cdhaixun.domain.Supplier" >
+    update supplier
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="contactmobile != null" >
+        contactmobile = #{contactmobile,jdbcType=VARCHAR},
+      </if>
+      <if test="contactperson != null" >
+        contactperson = #{contactperson,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

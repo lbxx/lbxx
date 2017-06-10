@@ -1,26 +1,37 @@
 package com.cdhaixun.shop.web;
 
-import com.cdhaixun.common.constant.SessionConstant;
-import com.cdhaixun.common.emun.Code;
-import com.cdhaixun.common.vo.Result;
-import com.cdhaixun.common.util.SMSUtil;
-import com.cdhaixun.common.redisVo.Captcha;
-import com.cdhaixun.common.web.BaseController;
-import com.cdhaixun.persistence.ManagerMapper;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.*;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.ExcessiveAttemptsException;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.LockedAccountException;
+import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpSession;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Set;
+import com.cdhaixun.common.constant.SessionConstant;
+import com.cdhaixun.common.emun.Code;
+import com.cdhaixun.common.redisVo.Captcha;
+import com.cdhaixun.common.util.SMSUtil;
+import com.cdhaixun.common.vo.Result;
+import com.cdhaixun.common.web.BaseController;
+import com.cdhaixun.domain.Manager;
 
 /**
  * Created by tangxinmao on 2017/5/30.
@@ -30,8 +41,6 @@ import java.util.Set;
 public class LoginController extends BaseController {
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
-    @Autowired
-    private ManagerMapper managerMapper;
 
     /**
      * app端请求验证码
@@ -74,20 +83,20 @@ public class LoginController extends BaseController {
      */
     @RequestMapping(value = "login", method = RequestMethod.POST)
     @ResponseBody
-    public Result login(String account, String password, String kaptcha,HttpSession httpSession) {
+    public Result login(String account, String password, String kaptcha,HttpSession httpSession, HttpServletRequest request) {
         Result result = new Result();
         if (!kaptcha.equals(httpSession.getAttribute(SessionConstant.KAPTCHA_SESSION_KEY))) {
             result.setCode(Code.CAPTCHA_ERROR);
             result.setMsg("验证码错误");
-            return result;
+            return  result;
         }
         UsernamePasswordToken token = new UsernamePasswordToken(account,  DigestUtils.sha512Hex(password));
         //获取当前的Subject
         Subject currentUser = SecurityUtils.getSubject();
         try {
             currentUser.login(token);
-            result.setResult(true);
-            return  result;
+            result.setResult(true); 
+            return result;
         } catch (UnknownAccountException uae) {
             result.setCode(Code.UNKNOWN_ACCOUNT);
             result.setMsg("账号未注册");
@@ -121,7 +130,6 @@ public class LoginController extends BaseController {
             return false;
         }
 
-
-    }
+    }   
 
 }

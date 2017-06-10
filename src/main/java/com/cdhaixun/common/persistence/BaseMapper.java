@@ -1,12 +1,10 @@
 package com.cdhaixun.common.persistence;
 
-import com.cdhaixun.domain.UserInfo;
-
 /**
-* 作者 lingco
-* 日期 2016年10月29日 下午4:02:25
-* 公共的mapper
-*/
+ * 公共mapper,提供基本的方法
+ * @author tanggm
+ * @param <T> 实体模型
+ */
 public interface BaseMapper<T> {
 	/**
 	 * 通过id删除数据
@@ -19,17 +17,17 @@ public interface BaseMapper<T> {
 	 * @param record
 	 * @return
 	 */
-    int insert(UserInfo record);
+    int insert(T record);
     /**
      * 通过id获取数据
      * @param id
      * @return
      */
-    UserInfo selectByPrimaryKey(Integer id);
+    T selectByPrimaryKey(Integer id);
     /**
      * 更新数据
      * @param record
      * @return
      */
-    int updateByPrimaryKey(UserInfo record);
+    int updateByPrimaryKey(T record);
 }

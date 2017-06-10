@@ -1,6 +1,8 @@
 package com.cdhaixun.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 菜单
@@ -23,11 +25,17 @@ public class Menu  implements Serializable {
     /**
      * 菜单pid
      */
-    private Integer pid;
+    private Integer parentid;
     /**
      * 排序，越小越在前
      */
     private Integer sort;
+    /**
+     * url菜单链接
+     */
+    private String url;
+    
+    private List<Menu> menuList = new ArrayList<>();
 
     public Integer getId() {
         return id;
@@ -53,19 +61,36 @@ public class Menu  implements Serializable {
         this.state = state;
     }
 
-    public Integer getPid() {
-        return pid;
-    }
+    public Integer getParentid() {
+		return parentid;
+	}
 
-    public void setPid(Integer pid) {
-        this.pid = pid;
-    }
+	public void setParentid(Integer parentid) {
+		this.parentid = parentid;
+	}
 
-    public Integer getSort() {
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public Integer getSort() {
         return sort;
     }
 
     public void setSort(Integer sort) {
         this.sort = sort;
     }
+
+	public List<Menu> getMenuList() {
+		return menuList;
+	}
+
+	public void setMenuList(List<Menu> menuList) {
+		this.menuList = menuList;
+	}
+    
 }

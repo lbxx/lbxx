@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cdhaixun.persistence.SupplyMapper" >
+  <resultMap id="BaseResultMap" type="com.cdhaixun.domain.Supply" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="suppierid" property="suppierid" jdbcType="INTEGER" />
+    <result column="sku" property="sku" jdbcType="VARCHAR" />
+    <result column="cost" property="cost" jdbcType="DECIMAL" />
+    <result column="stock" property="stock" jdbcType="INTEGER" />
+    <result column="increment" property="increment" jdbcType="INTEGER" />
+    <result column="supplytime" property="supplytime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, suppierid, sku, cost, stock, increment, supplytime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from supply
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from supply
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cdhaixun.domain.Supply" >
+    insert into supply (id, suppierid, sku, 
+      cost, stock, increment, 
+      supplytime)
+    values (#{id,jdbcType=INTEGER}, #{suppierid,jdbcType=INTEGER}, #{sku,jdbcType=VARCHAR}, 
+      #{cost,jdbcType=DECIMAL}, #{stock,jdbcType=INTEGER}, #{increment,jdbcType=INTEGER}, 
+      #{supplytime,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.cdhaixun.domain.Supply" >
+    update supply
+    <set >
+      <if test="suppierid != null" >
+        suppierid = #{suppierid,jdbcType=INTEGER},
+      </if>
+      <if test="sku != null" >
+        sku = #{sku,jdbcType=VARCHAR},
+      </if>
+      <if test="cost != null" >
+        cost = #{cost,jdbcType=DECIMAL},
+      </if>
+      <if test="stock != null" >
+        stock = #{stock,jdbcType=INTEGER},
+      </if>
+      <if test="increment != null" >
+        increment = #{increment,jdbcType=INTEGER},
+      </if>
+      <if test="supplytime != null" >
+        supplytime = #{supplytime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

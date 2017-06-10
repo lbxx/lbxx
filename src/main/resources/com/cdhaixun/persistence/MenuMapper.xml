@@ -4,12 +4,13 @@
   <resultMap id="BaseResultMap" type="com.cdhaixun.domain.Menu" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
     <result column="state" property="state" jdbcType="BIT" />
-    <result column="pid" property="pid" jdbcType="INTEGER" />
+    <result column="parentid" property="parentid" jdbcType="INTEGER" />
     <result column="sort" property="sort" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, name, state, pid, sort
+    id, name, state, parentid, sort, url
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -17,15 +18,40 @@
     from menu
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="findAll" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from menu    
+  </select>
+  <select id="getMenus" resultMap="BaseResultMap" >   
+    SELECT DISTINCT
+		mu.id id,
+		mu.`name` name,
+		mu.parentid parentid,
+		mu.sort sort,
+		mu.url url
+	FROM
+		menu mu
+	LEFT JOIN operate o ON mu.id = o.menuid
+	LEFT JOIN role_operate ro ON o.menuid = ro.operateid
+	LEFT JOIN role r ON ro.role = r.`code`
+	LEFT JOIN manager m ON m.role = r.`code`
+	WHERE
+		m.state = 1
+	AND m.role = #{role}
+	AND mu.parentid = #{parentid}
+	ORDER BY
+		mu.sort ASC
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from menu
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.cdhaixun.domain.Menu" >
     insert into menu (id, name, state, 
-      pid, sort)
+      parentid, sort, url)
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{state,jdbcType=BIT}, 
-      #{pid,jdbcType=INTEGER}, #{sort,jdbcType=INTEGER})
+      #{parentid,jdbcType=INTEGER}, #{sort,jdbcType=INTEGER}, #{url,jdbcType=VARCHAR})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.cdhaixun.domain.Menu" >
     update menu
@@ -36,11 +62,14 @@
       <if test="state != null" >
         state = #{state,jdbcType=BIT},
       </if>
-      <if test="pid != null" >
-        pid = #{pid,jdbcType=INTEGER},
+      <if test="parentid != null" >
+        parentid = #{parentid,jdbcType=INTEGER},
       </if>
       <if test="sort != null" >
         sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="url != null" >
+        url = #{url,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}

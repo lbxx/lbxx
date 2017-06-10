@@ -2,33 +2,31 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.cdhaixun.persistence.OperateMapper" >
   <resultMap id="BaseResultMap" type="com.cdhaixun.domain.Operate" >
-    <id column="menu" property="menu" jdbcType="INTEGER" />
-    <id column="op" property="op" jdbcType="VARCHAR" />
+    <id column="menuid" property="menuid" jdbcType="INTEGER" />
+    <id column="permission" property="permission" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="sort" property="sort" jdbcType="INTEGER" />
-    <result column="isshow" property="isshow" jdbcType="INTEGER" />
-    <result column="url" property="url" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    menu, op, name, sort, isshow. url
+    menuid, permission, name, sort
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.cdhaixun.domain.Operate" >
     select 
     <include refid="Base_Column_List" />
     from operate
-    where menu = #{menu,jdbcType=INTEGER}
+    where menuid = #{menuid,jdbcType=INTEGER}
       and op = #{op,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="com.cdhaixun.domain.Operate" >
     delete from operate
-    where menu = #{menu,jdbcType=INTEGER}
+    where menuid = #{menuid,jdbcType=INTEGER}
       and op = #{op,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.cdhaixun.domain.Operate" >
-    insert into operate (menu, op, name, 
-      sort, isshow, url)
-    values (#{menu,jdbcType=INTEGER}, #{op,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{sort,jdbcType=INTEGER}, #{isshow,jdbcType=INTEGER}, #{url,jdbcType=VARCHAR})
+    insert into operate (menuid, permission, name, 
+      sort)
+    values (#{menuid,jdbcType=INTEGER}, #{permission,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{sort,jdbcType=INTEGER})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.cdhaixun.domain.Operate" >
     update operate
@@ -39,14 +37,8 @@
       <if test="sort != null" >
         sort = #{sort,jdbcType=INTEGER},
       </if>
-      <if test="isshow != null" >
-        isshow = #{isshow,jdbcType=INTEGER},
-      </if>
-      <if test="url != null" >
-        url = #{url,jdbcType=VARCHAR},
-      </if>
     </set>
-    where menu = #{menu,jdbcType=INTEGER}
-      and op = #{op,jdbcType=VARCHAR}
+    where menuid = #{menuid,jdbcType=INTEGER}
+      and permission = #{permission,jdbcType=VARCHAR}
   </update>
 </mapper>

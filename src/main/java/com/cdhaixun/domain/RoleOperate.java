@@ -15,7 +15,7 @@ public class RoleOperate implements Serializable{
     /**
      * 权限
      */
-    private Integer menu;
+    private Integer operateid;
 
     public String getRole() {
         return role;
@@ -25,11 +25,13 @@ public class RoleOperate implements Serializable{
         this.role = role == null ? null : role.trim();
     }
 
-    public Integer getMenu() {
-        return menu;
-    }
+	public Integer getOperateid() {
+		return operateid;
+	}
 
-    public void setMenu(Integer menu) {
-        this.menu = menu;
-    }
+	public void setOperateid(Integer operateid) {
+		this.operateid = operateid;
+	}
+
+    
 }

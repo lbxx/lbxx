@@ -1,11 +1,6 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: tangxinmao
-  Date: 2017/6/4
-  Time: 15:38
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<c:set var="ctx" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,18 +8,18 @@
     <title>海迅科技</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- basic styles -->
-    <link href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="${ctx}/resources/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/font-awesome/3.2.1/css/font-awesome.min.css">
     <!--[if IE 7]>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/font-awesome-ie7.min.css" />
+    <link rel="stylesheet" href="${ctx}/resources/css/font-awesome-ie7.min.css" />
     <![endif]-->
     <!-- page specific plugin styles -->
     <!-- fonts -->
     <!-- ace styles -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/ace.min.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/ace-rtl.min.css" />
+    <link rel="stylesheet" href="${ctx}/resources/css/ace.min.css" />
+    <link rel="stylesheet" href="${ctx}/resources/css/ace-rtl.min.css" />
     <!--[if lte IE 8]>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/ace-ie.min.css" />
+    <link rel="stylesheet" href="${ctx}/resources/css/ace-ie.min.css" />
     <![endif]-->
     <!-- inline styles related to this page -->
 
@@ -32,9 +27,9 @@
 
     <!--[if lt IE 9]>
 
-    <script src="${pageContext.request.contextPath}/resources/js/html5shiv.js"></script>
+    <script src="${ctx}/resources/js/html5shiv.js"></script>
 
-    <script src="${pageContext.request.contextPath}/resources/js/respond.min.js"></script>
+    <script src="${ctx}/resources/js/respond.min.js"></script>
 
     <![endif]-->
 
@@ -43,7 +38,7 @@
 
 
 <body class="login-layout">
-<input name="contextPath" hidden value="${pageContext.request.contextPath}">
+<input name="contextPath" hidden value="${ctx}">
 
 <div class="main-container">
 
@@ -99,7 +94,7 @@
 
 
 
-                                    <form id="loginForm" method="post" action="${pageContext.request.contextPath}/login/login">
+                                    <form id="loginForm" method="post" action="${ctx}/login/login">
 
                                         <fieldset>
 
@@ -107,7 +102,7 @@
 
 														<span class="block input-icon input-icon-right">
 
-															<input type="text" name="account" required minlength="3" maxlength="30" class="form-control" placeholder="请输入用户名" />
+															<input type="text" name="account" id="account" required minlength="3" maxlength="30" class="form-control" placeholder="请输入用户名" />
 
 															<i class="icon-user"></i>
 
@@ -121,7 +116,7 @@
 
 														<span class="block input-icon input-icon-right">
 
-															<input type="password" name="password" required minlength="3" maxlength="30" class="form-control" placeholder="请输入密码" />
+															<input type="password" name="password" id="password" required minlength="3" maxlength="30" class="form-control" placeholder="请输入密码" />
 
 															<i class="icon-lock"></i>
 
@@ -132,9 +127,9 @@
 
 													<span>
 
-															<input type="text" name="kaptcha" required maxlength="4" minlength="4" style="width:60%;display: inline;" class="form-control" placeholder="请输入验证码" />
+															<input type="text" name="kaptcha" id="kaptcha" required maxlength="4" minlength="4" style="width:60%;display: inline;" class="form-control" placeholder="请输入验证码" />
 														<%--	<i class="icon-user"></i>--%>
-                                                             <img src="${pageContext.request.contextPath}/randomCode.jpg" id="randomCode" onclick="this.src='${pageContext.request.contextPath}/randomCode.jpg';"/>
+                                                             <img src="${ctx}/randomCode.jpg" id="randomCode" onclick="this.src='${ctx}/randomCode.jpg';"/>
 													</span>
 
 
@@ -526,7 +521,7 @@
 
 <script type="text/javascript">
 
-    window.jQuery || document.write("<script src='${pageContext.request.contextPath}/resources/js/jquery-2.0.3.min.js'>"+"<"+"/script>");
+    window.jQuery || document.write("<script src='${ctx}/resources/js/jquery-2.0.3.min.js'>"+"<"+"/script>");
 
 </script>
 
@@ -540,7 +535,7 @@
 
 <script type="text/javascript">
 
-    window.jQuery || document.write("<script src='${pageContext.request.contextPath}/resources/js/jquery-1.10.2.min.js'>"+"<"+"/script>");
+    window.jQuery || document.write("<script src='${ctx}/resources/js/jquery-1.10.2.min.js'>"+"<"+"/script>");
 
 </script>
 
@@ -550,7 +545,7 @@
 
 <script type="text/javascript">
 
-    if("ontouchend" in document) document.write("<script src='${pageContext.request.contextPath}/resources/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
+    if("ontouchend" in document) document.write("<script src='${ctx}/resources/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
 
 </script>
 
@@ -571,11 +566,49 @@
     }
 
 </script>
-<script src="${pageContext.request.contextPath}/resources/js/jquery.form.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/jquery.validate.min.js"></script>
+<script src="${ctx}/resources/js/jquery.form.min.js"></script>
+<script src="${ctx}/resources/js/jquery.validate.min.js"></script>
 <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/localization/messages_zh.js"></script>
 
-<script src="${pageContext.request.contextPath}/resources/js/haixun/login.js"></script>
+<script src="${ctx}/resources/js/haixun/login.js"></script>
+<script type="text/javascript">
+	/* $(function(){
+		$("#login").on("click",function(){
+			//$("#loginForm").validate();
+			var account = $("#account").val();
+			var password = $("#password").val();
+			var kaptcha = $("#kaptcha").val();
+			if(account == null || account == ""){
+				alert("请输入用户名");
+				return false;
+			}
+			if(password == null || password == ""){
+				alert("请输入密码");
+				return false;
+			}
+			if(kaptcha == null || kaptcha == ""){
+				alert("请输入验证码");
+				return false;
+			}
+			$.ajax({
+				url:"${ctx}/login/login",
+				type:"POST",
+				dataType:"json",
+				data:{"account":account,"password":password,"kaptcha":kaptcha},
+				success:function(v){
+					if(v.result){
+						window.location.href="${ctx}/index/index";
+					}else{
+						alert(v.msg)
+					}
+				},
+				error:function(e){
+					console.log(e)
+				}
+			})
+		})
+	}) */
+</script>
 </body>
 
 </html>

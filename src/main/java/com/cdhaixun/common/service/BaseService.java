@@ -1,9 +1,9 @@
 package com.cdhaixun.common.service;
 /**
-* 作者 lingco
-* 日期 2016年10月29日 下午4:08:03
-* 公共的service，提供增删查改
-*/
+ * 公共的service，提供增删查改
+ * @author tanggm
+ * @param <T> 实体对象
+ */
 public interface BaseService<T> {
 	/**
 	 * 通过id查询数据

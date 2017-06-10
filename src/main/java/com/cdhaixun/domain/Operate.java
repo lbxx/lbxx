@@ -23,11 +23,11 @@ public class Operate implements Serializable {
     /**
      * 菜单
      */
-    private Integer menu;
+    private Integer menuid;
     /**
      * 操作
      */
-    private String op;
+    private String permission;
 
     public String getName() {
         return name;
@@ -52,19 +52,21 @@ public class Operate implements Serializable {
     public void setIsshow(Integer isshow) {
         this.isshow = isshow;
     }
-    public Integer getMenu() {
-        return menu;
-    }
 
-    public void setMenu(Integer menu) {
-        this.menu = menu;
-    }
+	public Integer getMenuid() {
+		return menuid;
+	}
 
-    public String getOp() {
-        return op;
-    }
+	public void setMenuid(Integer menuid) {
+		this.menuid = menuid;
+	}
 
-    public void setOp(String op) {
-        this.op = op == null ? null : op.trim();
-    }
+	public String getPermission() {
+		return permission;
+	}
+
+	public void setPermission(String permission) {
+		this.permission = permission;
+	}
+    
 }
