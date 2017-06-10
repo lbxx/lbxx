@@ -10,7 +10,7 @@ $(function () {
             $(form).ajaxSubmit({
                 success: function (data) {
                if(data.result){
-                   window.location.assign(contextPath+'/user/showInfo/')
+                   window.location.assign(contextPath+'/index/index/')
                }else{
                    $('#randomCode').prop('src',contextPath+'/randomCode.jpg');
                    alert(data.msg);

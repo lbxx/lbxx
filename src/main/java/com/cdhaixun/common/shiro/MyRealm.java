@@ -1,5 +1,6 @@
 package com.cdhaixun.common.shiro;
 
+import com.cdhaixun.common.constant.SessionConstant;
 import com.cdhaixun.domain.Manager;
 import com.cdhaixun.persistence.ManagerMapper;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -86,7 +87,7 @@ public class MyRealm extends AuthorizingRealm {
         Manager manager = managerMapper.findByAccount(token.getUsername());
         if (manager != null) {
             AuthenticationInfo authcInfo = new SimpleAuthenticationInfo(manager.getAccount(), manager.getPassword(), this.getName());
-            this.setSession("manager", manager);
+            this.setSession(SessionConstant.MANAGER, manager);
             return authcInfo;
         }
         return null;
