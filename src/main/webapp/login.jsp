@@ -21,6 +21,9 @@
     <!--[if lte IE 8]>
     <link rel="stylesheet" href="${ctx}/resources/css/ace-ie.min.css" />
     <![endif]-->
+    <!--sco-->
+    <link rel="stylesheet" href="${ctx}/resources/css/sco/scojs.css" />
+    <link rel="stylesheet" href="${ctx}/resources/css/sco/sco.message.css" />
     <!-- inline styles related to this page -->
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -566,10 +569,12 @@
     }
 
 </script>
+<!-- form -->
 <script src="${ctx}/resources/js/jquery.form.min.js"></script>
 <script src="${ctx}/resources/js/jquery.validate.min.js"></script>
 <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/localization/messages_zh.js"></script>
-
+<!-- sco -->
+<script src="${ctx}/resources/js/sco/sco.message.js"></script>
 <script src="${ctx}/resources/js/haixun/login.js"></script>
 <script type="text/javascript">
 	/* $(function(){

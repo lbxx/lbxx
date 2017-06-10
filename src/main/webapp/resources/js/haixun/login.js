@@ -10,10 +10,11 @@ $(function () {
             $(form).ajaxSubmit({
                 success: function (data) {
                if(data.result){
+                   $.scojs_message(data.msg, $.scojs_message.TYPE_OK);
                    window.location.assign(contextPath+'/index/index/')
                }else{
                    $('#randomCode').prop('src',contextPath+'/randomCode.jpg');
-                   alert(data.msg);
+                   $.scojs_message(data.msg, $.scojs_message.TYPE_ERROR);
                }
                 },error:function (data) {
 

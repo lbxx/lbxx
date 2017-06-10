@@ -95,7 +95,8 @@ public class LoginController extends BaseController {
         Subject currentUser = SecurityUtils.getSubject();
         try {
             currentUser.login(token);
-            result.setResult(true); 
+            result.setResult(true);
+            result.setMsg("登陆成功！");
             return result;
         } catch (UnknownAccountException uae) {
             result.setCode(Code.UNKNOWN_ACCOUNT);
