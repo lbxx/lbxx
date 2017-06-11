@@ -12,51 +12,59 @@ public class PageData {
 	/**
 	 * 总条数
 	 */
-	private long totals;
+	private long records;
 	/**
-	 * 状态  success  error
+	 * 总页数
 	 */
-	private String status;
+	private int total;
+	/**
+	 * 当前页
+	 */
+	private int page;
 	/**
 	 * 列表数据集合
 	 */
-	private List data = new ArrayList();
+	private List rows = new ArrayList();
 
 	public PageData() {
 	}
 
-	public PageData(long totals, List data) {
-		this.totals = totals;
-		this.data = data;
+	public PageData(long records, int total, int page, List rows) {
+		this.records = records;
+		this.total = total;
+		this.page = page;
+		this.rows = rows;
 	}
 
-	public PageData(long totals, String status, List data) {
-		this.totals = totals;
-		this.status = status;
-		this.data = data;
+	public long getRecords() {
+		return records;
 	}
 
-	public long getTotals() {
-		return totals;
+	public void setRecords(long records) {
+		this.records = records;
 	}
 
-	public void setTotals(long totals) {
-		this.totals = totals;
+	public int getTotal() {
+		return total;
 	}
 
-	public String getStatus() {
-		return status;
+	public void setTotal(int total) {
+		this.total = total;
 	}
 
-	public void setStatus(String status) {
-		this.status = status;
+	public int getPage() {
+		return page;
 	}
 
-	public List getData() {
-		return data;
+	public void setPage(int page) {
+		this.page = page;
 	}
 
-	public void setData(List data) {
-		this.data = data;
+	public List getRows() {
+		return rows;
+	}
+
+	public void setRows(List rows) {
+		this.rows = rows;
 	}
 }
