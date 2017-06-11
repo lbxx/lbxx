@@ -7,6 +7,7 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.cdhaixun.common.appVo.Mobile;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -18,6 +19,7 @@ import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,17 +44,18 @@ public class LoginController extends BaseController {
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
 
+
     /**
      * app端请求验证码
      *
      * @return
      */
-    @RequestMapping(value = "captcha", method = RequestMethod.POST)
+    @RequestMapping(value = "captcha", method = RequestMethod.POST )
     @ResponseBody
-    public Result captcha(@RequestBody String mobile, HttpSession httpSession) {
-        Result result = new Result();
+    public com.cdhaixun.common.appVo.Result captcha(@RequestBody Mobile mobile, HttpSession httpSession) {
+        com.cdhaixun.common.appVo.Result result = new com.cdhaixun.common.appVo.Result();
         String randomNumeric = RandomStringUtils.randomNumeric(6);//随机生成六位数字
-        HashMap re = SMSUtil.sendSMS(mobile, randomNumeric);
+        HashMap re = SMSUtil.sendSMS(mobile.getMobile(), randomNumeric);
         if ("000000".equals(re.get("statusCode"))) {
             result.setResult(true);
             Captcha captcha = new Captcha();
@@ -68,7 +71,7 @@ public class LoginController extends BaseController {
             }
         } else {
             //异常返回输出错误码和错误信息
-            result.setCode((Code) re.get("statusCode"));
+           // result.setCode((Code) re.get("statusCode"));
             result.setMsg("错误码=" + re.get("statusCode") + " 错误信息= " + re.get("statusMsg"));
 
         }

@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"  
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:p="http://www.springframework.org/schema/p"
-       xmlns:context="http://www.springframework.org/schema/context"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans  
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:mvc="http://www.springframework.org/schema/c"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
             http://www.springframework.org/schema/beans/spring-beans-4.1.xsd  
             http://www.springframework.org/schema/context  
-            http://www.springframework.org/schema/context/spring-context-4.1.xsd">  
-  
-    <!--引入配置属性文件 -->  
+            http://www.springframework.org/schema/context/spring-context-4.1.xsd">
+
+    <!--引入配置属性文件 -->
     <!-- <context:property-placeholder location="classpath:jdbc.properties" />   -->
-  
-    <!--自动扫描含有@Service将其注入为bean -->  
-    <context:component-scan base-package="com.cdhaixun" />
+
+    <!--自动扫描含有@Service将其注入为bean -->
+    <context:component-scan base-package="com.cdhaixun"/>
     <!--配置shiro-->
     <!-- 继承自AuthorizingRealm的自定义Realm,即指定Shiro验证用户登录的类为自定义的ShiroDbRealm.java -->
     <bean id="myRealm" class="com.cdhaixun.common.shiro.MyRealm"/>
@@ -28,9 +28,9 @@
         <!-- Shiro的核心安全接口,这个属性是必须的 -->
         <property name="securityManager" ref="securityManager"/>
         <!-- 要求登录时的链接(可根据项目的URL进行替换),非必须的属性,默认会自动寻找Web工程根目录下的"/login.jsp"页面 -->
-     <!-- <property name="loginUrl" value="/"/>-->
+        <!-- <property name="loginUrl" value="/"/>-->
         <!-- 登录成功后要跳转的连接(本例中此属性用不到,因为登录成功后的处理逻辑在LoginController里硬编码为main.jsp了) -->
-    <!--<property name="successUrl" value="/system/main"/>-->
+        <!--<property name="successUrl" value="/system/main"/>-->
         <!-- 用户访问未对其授权的资源时,所显示的连接 -->
         <!-- 若想更明显的测试此属性可以修改它的值,如unauthor.jsp,然后用[玄玉]登录后访问/admin/listUser.jsp就看见浏览器会显示unauthor.jsp -->
         <property name="unauthorizedUrl" value="/unauthorizedUrl"/>
@@ -59,5 +59,16 @@
     <bean id="redisTemplate"
           class="org.springframework.data.redis.core.RedisTemplate"
           p:connectionFactory-ref="jedisConnFactory"/>
+    <bean class="org.codehaus.jackson.map.ObjectMapper"></bean>
+    <bean id="configProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+        <property name="locations">
+            <list>
+                <value>classpath:*.properties</value>
+            </list>
+        </property>
+    </bean>
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer">
+        <property name="properties" ref="configProperties"/>
+    </bean>
 
 </beans>
