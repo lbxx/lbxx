@@ -1,611 +1,973 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+		 pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
-<html>
+
+<html lang="en">
+
 <head>
-<meta charset="utf-8" />
-<title>首页</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<!-- basic styles -->
-<link href="${ctx}/resources/css/bootstrap.min.css" rel="stylesheet" />
-<link rel="stylesheet" type="text/css"
-	href="http://cdn.bootcss.com/font-awesome/3.2.1/css/font-awesome.min.css">
-<!--[if IE 7]>
-		  <link rel="stylesheet" href="${ctx}/resources/css/font-awesome-ie7.min.css" />
-		<![endif]-->
-<!-- page specific plugin styles -->
-<!-- ace styles -->
-<link rel="stylesheet" href="${ctx}/resources/css/ace.min.css" />
-<link rel="stylesheet" href="${ctx}/resources/css/ace-rtl.min.css" />
-<link rel="stylesheet" href="${ctx}/resources/css/ace-skins.min.css" />
-<!--[if lte IE 8]>
-		  <link rel="stylesheet" href="${ctx}/resources/css/ace-ie.min.css" />
-		<![endif]-->
-<!-- inline styles related to this page -->
-<!-- ace settings handler -->
-<script src="${ctx}/resources/js/ace-extra.min.js"></script>
-<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-<!--[if lt IE 9]>
 
-		<script src="${ctx}/resources/js/html5shiv.js"></script>
+	<meta charset="utf-8" />
 
-		<script src="${ctx}/resources/js/respond.min.js"></script>
+	<title>分页</title>
 
-		<![endif]-->
+
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+
+
+	<!-- basic styles -->
+
+
+
+	<link href="${ctx}/resources/css/bootstrap.min.css" rel="stylesheet" />
+
+	<link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/font-awesome/3.2.1/css/font-awesome.min.css">
+
+
+
+	<!--[if IE 7]>
+
+	<link rel="stylesheet" href="${ctx}/resources/css/font-awesome-ie7.min.css" />
+
+	<![endif]-->
+
+
+
+	<!-- page specific plugin styles -->
+
+
+
+	<!-- fonts -->
+
+
+
+
+
+
+
+	<!-- ace styles -->
+
+
+
+	<link rel="stylesheet" href="${ctx}/resources/css/ace.min.css" />
+
+	<link rel="stylesheet" href="${ctx}/resources/css/ace-rtl.min.css" />
+
+	<link rel="stylesheet" href="${ctx}/resources/css/ace-skins.min.css" />
+
+
+
+	<!--[if lte IE 8]>
+
+	<link rel="stylesheet" href="${ctx}/resources/css/ace-ie.min.css" />
+
+	<![endif]-->
+
+
+
+	<!-- inline styles related to this page -->
+
+
+
+	<!-- ace settings handler -->
+
+
+
+	<script src="${ctx}/resources/js/ace-extra.min.js"></script>
+
+
+
+	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+
+
+
+	<!--[if lt IE 9]>
+
+	<script src="${ctx}/resources/js/html5shiv.js"></script>
+
+	<script src="${ctx}/resources/js/respond.min.js"></script>
+
+	<![endif]-->
 
 </head>
+
+
+
 <body>
-	<!-- 引入顶部 -->
-	<jsp:include page="../header.jsp"/>
-	
-	<div class="main-container" id="main-container">
 
-		<script type="text/javascript">
-			try {
-				ace.settings.check('main-container', 'fixed')
-			} catch (e) {
-			}
-		</script>
+<jsp:include page="../header.jsp" />
 
 
+<div class="main-container" id="main-container">
 
-		<div class="main-container-inner">
-
-			<a class="menu-toggler" id="menu-toggler" href="#"> <span
-				class="menu-text"></span>
-			</a>
-
-		<!-- 引入左边菜单 -->
-		<jsp:include page="../lefter.jsp"/>
-
-		<!-- 内容开始 -->
-		<div class="main-content">
-			<div class="page-content">
-					<!-- 导航开始区域 -->
-					<div class="page-header">
-
-						<h1>
-
-							控制台 <small> <i class="icon-double-angle-right"></i> 查看
-
-							</small>
-
-						</h1>
-
-					</div>
-					<!-- 导航结束区域 -->
-			</div>
-			<!-- 内容开始区域 -->
-			<div class="row">
-				<!--表格区域 S-->
-			    <div class="config_table" id="info">
-			       <script>
-				    var pager;
-					$(document).ready(function(e) {	
-					    var cm = new Column({
-									  columns:[
-									          {name:"序号",rowno:true,width:"50px"},
-											  {name:"会议状态",value:"zt",width:"",valFormat:function(hyzt){
-												
-												  if(hyzt == 1){
-													  return "<font class='lab_sp no' color='red'>进行中</font>";
-												  }
-												  else if(hyzt == 2){
-													  return "<font class='lab_sp yes' color='green'>已完成</font>";
-												  }
-												
-											  },width:""}, 
-									  		  {name:"会议编号",value:"hybh",sort:true,align:"center",width:""},
-									  		  {name:"会议名称",value:"hymc",width:""},
-								  		      {name:"会议来源",value:"hyly",width:""},
-								  		      {name:"会议时间",value:"hysj",sort:true,width:""},
-								  		      {name:"发起人",value:"hyfqr",sort:true,align:"center",width:""},
-								  		      {name:"会议发起来源",value:"fqly",sort:true,align:"center",width:""},
-								  		      {name:"操作",value:"id",width:"",success:function(data){ 
-								  		    	if(data.zt == 1){
-								  		    		return "<a class='one change_btn add_bth' value='"+data.id+"'  onclick='entering(this)'>录入</a>"+
-							 				          "<a class='one change_btn re_bth' value='"+data.id+"'  onclick='look(this)'>查看</a>"+
-							 				         "<a class='one change_btn del_bth' value='"+data.id+"' onclick='del(this)''>删除</a>"
-								  		    	}else{
-								  		    		return "<a class='one change_btn re_bth' value='"+data.id+"'  onclick='look(this)'>查看</a>"+
-							 				         "<a class='one change_btn del_bth' value='"+data.id+"' onclick='del(this)''>删除</a>"
-								  		    	}
-					 				           	
-								  		      },sort:true}
-									  		       
-									           ]
-									  
-							  });
-							  
-							  // 该插件规定查询按钮ID 为 pager_search,如 $("#pager_search").load();
-							 pager = new Pager({
-								  cm:cm, // 列名
-								  url:"publicManager/hylist.action",
-								  renderTo:"info", // 用于显示数据的容器
-								  prikey:"BH",//checkbox 或 radio显示的value
-								  radiobox:true,
-								  //checkbox:true, // 列表展示多选,还有单选
-								  radiobox:true, // 列表展示多选,还有单选
-								  data:{start:0,end:10},
-								  formid:"schedulingform",  //与上面div id对应 条件查询
-								  searchid:"pager_search",
-								
-							  });
-							 pager.paginate();//展示表头
-							 pager.load(); //加载数据
-							 
-				}); 
-			</script>
-			
-			    </div>
-			    <!--表格区域 E-->
-			</div>
-			<!-- 内容结束区域 -->
-		</div>
-		<!-- 内容结束 -->
-				
-		
-		</div>
-		<!-- /.main-container-inner -->
-
-	</div>
-	<!-- /.main-container -->
-	<!-- basic scripts -->
-	<!--[if !IE]> -->
-	<script src="http://www.jq22.com/jquery/jquery-2.1.1.js"></script>
-	<!-- <![endif]-->
-	<!--[if IE]>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<![endif]-->
-	<!--[if !IE]> -->
 	<script type="text/javascript">
-		window.jQuery
-				|| document
-						.write("<script src='${ctx}/resources/js/jquery-2.0.3.min.js'>"
-								+ "<"+"script>");
+
+        try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+
 	</script>
-	<!-- <![endif]-->
-	<!--[if IE]>
+
+
+
+	<div class="main-container-inner">
+
+		<a class="menu-toggler" id="menu-toggler" href="#">
+
+			<span class="menu-text"></span>
+
+		</a>
+
+
+<jsp:include page="../lefter.jsp" />
+
+
+
+		<div class="main-content">
+
+			<div class="breadcrumbs" id="breadcrumbs">
+
+				<script type="text/javascript">
+
+                    try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+
+				</script>
+
+
+
+				<ul class="breadcrumb">
+
+					<li>
+
+						<i class="icon-home home-icon"></i>
+
+						<a href="#">Home</a>
+
+					</li>
+
+
+
+					<li>
+
+						<a href="#">Tables</a>
+
+					</li>
+
+					<li class="active">Simple &amp; Dynamic</li>
+
+				</ul><!-- .breadcrumb -->
+			</div>
+
+
+
+			<div class="page-content">
+				<div class="row">
+
+					<div class="col-xs-12">
+
+						<div class="hr hr-18 dotted hr-double"></div>
+
+						<div class="hr hr-18 dotted hr-double"></div>
+
+						<div class="row">
+
+							<div class="col-xs-12">
+								<div class="table-responsive">
+
+									<table id="sample-table-2" class="table table-striped table-bordered table-hover">
+
+										<thead>
+
+										<tr>
+
+											<th class="center">
+
+												<label>
+
+													<input type="checkbox" class="ace" />
+
+													<span class="lbl"></span>
+
+												</label>
+
+											</th>
+
+											<th>Domain</th>
+
+											<th>Price</th>
+
+											<th class="hidden-480">Clicks</th>
+
+
+
+											<th>
+
+												<i class="icon-time bigger-110 hidden-480"></i>
+
+												Update
+
+											</th>
+
+											<th class="hidden-480">Status</th>
+
+
+
+											<th></th>
+
+										</tr>
+
+										</thead>
+
+
+
+										<tbody>
+
+										<tr>
+
+											<td class="center">
+
+												<label>
+
+													<input type="checkbox" class="ace" />
+
+													<span class="lbl"></span>
+
+												</label>
+
+											</td>
+
+
+
+											<td>
+
+												<a href="#">best.com</a>
+
+											</td>
+
+											<td>$75</td>
+
+											<td class="hidden-480">6,500</td>
+
+											<td>Apr 03</td>
+
+
+
+											<td class="hidden-480">
+
+												<span class="label label-sm label-inverse arrowed-in">Flagged</span>
+
+											</td>
+
+
+
+											<td>
+
+												<div class="visible-md visible-lg hidden-sm hidden-xs action-buttons">
+
+													<a class="blue" href="#">
+
+														<i class="icon-zoom-in bigger-130"></i>
+
+													</a>
+
+
+
+													<a class="green" href="#">
+
+														<i class="icon-pencil bigger-130"></i>
+
+													</a>
+
+
+
+													<a class="red" href="#">
+
+														<i class="icon-trash bigger-130"></i>
+
+													</a>
+
+												</div>
+
+
+
+												<div class="visible-xs visible-sm hidden-md hidden-lg">
+
+													<div class="inline position-relative">
+
+														<button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown">
+
+															<i class="icon-caret-down icon-only bigger-120"></i>
+
+														</button>
+
+
+
+														<ul class="dropdown-menu dropdown-only-icon dropdown-yellow pull-right dropdown-caret dropdown-close">
+
+															<li>
+
+																<a href="#" class="tooltip-info" data-rel="tooltip" title="View">
+
+																				<span class="blue">
+
+																					<i class="icon-zoom-in bigger-120"></i>
+
+																				</span>
+
+																</a>
+
+															</li>
+
+
+
+															<li>
+
+																<a href="#" class="tooltip-success" data-rel="tooltip" title="Edit">
+
+																				<span class="green">
+
+																					<i class="icon-edit bigger-120"></i>
+
+																				</span>
+
+																</a>
+
+															</li>
+
+
+
+															<li>
+
+																<a href="#" class="tooltip-error" data-rel="tooltip" title="Delete">
+
+																				<span class="red">
+
+																					<i class="icon-trash bigger-120"></i>
+
+																				</span>
+
+																</a>
+
+															</li>
+
+														</ul>
+
+													</div>
+
+												</div>
+
+											</td>
+
+										</tr>
+
+
+
+										<tr>
+
+											<td class="center">
+
+												<label>
+
+													<input type="checkbox" class="ace" />
+
+													<span class="lbl"></span>
+
+												</label>
+
+											</td>
+
+
+
+											<td>
+
+												<a href="#">pro.com</a>
+
+											</td>
+
+											<td>$55</td>
+
+											<td class="hidden-480">4,250</td>
+
+											<td>Jan 21</td>
+
+
+
+											<td class="hidden-480">
+
+												<span class="label label-sm label-success">Registered</span>
+
+											</td>
+
+
+
+											<td>
+
+												<div class="visible-md visible-lg hidden-sm hidden-xs action-buttons">
+
+													<a class="blue" href="#">
+
+														<i class="icon-zoom-in bigger-130"></i>
+
+													</a>
+
+
+
+													<a class="green" href="#">
+
+														<i class="icon-pencil bigger-130"></i>
+
+													</a>
+
+
+
+													<a class="red" href="#">
+
+														<i class="icon-trash bigger-130"></i>
+
+													</a>
+
+												</div>
+
+
+
+												<div class="visible-xs visible-sm hidden-md hidden-lg">
+
+													<div class="inline position-relative">
+
+														<button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown">
+
+															<i class="icon-caret-down icon-only bigger-120"></i>
+
+														</button>
+
+
+
+														<ul class="dropdown-menu dropdown-only-icon dropdown-yellow pull-right dropdown-caret dropdown-close">
+
+															<li>
+
+																<a href="#" class="tooltip-info" data-rel="tooltip" title="View">
+
+																				<span class="blue">
+
+																					<i class="icon-zoom-in bigger-120"></i>
+
+																				</span>
+
+																</a>
+
+															</li>
+
+
+
+															<li>
+
+																<a href="#" class="tooltip-success" data-rel="tooltip" title="Edit">
+
+																				<span class="green">
+
+																					<i class="icon-edit bigger-120"></i>
+
+																				</span>
+
+																</a>
+
+															</li>
+
+
+
+															<li>
+
+																<a href="#" class="tooltip-error" data-rel="tooltip" title="Delete">
+
+																				<span class="red">
+
+																					<i class="icon-trash bigger-120"></i>
+
+																				</span>
+
+																</a>
+
+															</li>
+
+														</ul>
+
+													</div>
+
+												</div>
+
+											</td>
+
+										</tr>
+
+
+
+										<tr>
+
+											<td class="center">
+
+												<label>
+
+													<input type="checkbox" class="ace" />
+
+													<span class="lbl"></span>
+
+												</label>
+
+											</td>
+
+
+
+											<td>
+
+												<a href="#">right.com</a>
+
+											</td>
+
+											<td>$50</td>
+
+											<td class="hidden-480">4,400</td>
+
+											<td>Apr 01</td>
+
+
+
+											<td class="hidden-480">
+
+												<span class="label label-sm label-warning">Expiring</span>
+
+											</td>
+
+
+
+											<td>
+
+												<div class="visible-md visible-lg hidden-sm hidden-xs action-buttons">
+
+													<a class="blue" href="#">
+
+														<i class="icon-zoom-in bigger-130"></i>
+
+													</a>
+
+
+
+													<a class="green" href="#">
+
+														<i class="icon-pencil bigger-130"></i>
+
+													</a>
+
+
+
+													<a class="red" href="#">
+
+														<i class="icon-trash bigger-130"></i>
+
+													</a>
+
+												</div>
+
+
+
+												<div class="visible-xs visible-sm hidden-md hidden-lg">
+
+													<div class="inline position-relative">
+
+														<button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown">
+
+															<i class="icon-caret-down icon-only bigger-120"></i>
+
+														</button>
+
+
+
+														<ul class="dropdown-menu dropdown-only-icon dropdown-yellow pull-right dropdown-caret dropdown-close">
+
+															<li>
+
+																<a href="#" class="tooltip-info" data-rel="tooltip" title="View">
+
+																				<span class="blue">
+
+																					<i class="icon-zoom-in bigger-120"></i>
+
+																				</span>
+
+																</a>
+
+															</li>
+
+
+
+															<li>
+
+																<a href="#" class="tooltip-success" data-rel="tooltip" title="Edit">
+
+																				<span class="green">
+
+																					<i class="icon-edit bigger-120"></i>
+
+																				</span>
+
+																</a>
+
+															</li>
+
+
+
+															<li>
+
+																<a href="#" class="tooltip-error" data-rel="tooltip" title="Delete">
+
+																				<span class="red">
+
+																					<i class="icon-trash bigger-120"></i>
+
+																				</span>
+
+																</a>
+
+															</li>
+
+														</ul>
+
+													</div>
+
+												</div>
+
+											</td>
+
+										</tr>
+
+
+
+										<tr>
+
+											<td class="center">
+
+												<label>
+
+													<input type="checkbox" class="ace" />
+
+													<span class="lbl"></span>
+
+												</label>
+
+											</td>
+
+
+
+											<td>
+
+												<a href="#">once.com</a>
+
+											</td>
+
+											<td>$20</td>
+
+											<td class="hidden-480">1,400</td>
+
+											<td>Apr 04</td>
+
+
+
+											<td class="hidden-480">
+
+												<span class="label label-sm label-info arrowed arrowed-righ">Sold</span>
+
+											</td>
+
+
+
+											<td>
+
+												<div class="visible-md visible-lg hidden-sm hidden-xs action-buttons">
+
+													<a class="blue" href="#">
+
+														<i class="icon-zoom-in bigger-130"></i>
+
+													</a>
+
+
+
+													<a class="green" href="#">
+
+														<i class="icon-pencil bigger-130"></i>
+
+													</a>
+
+
+
+													<a class="red" href="#">
+
+														<i class="icon-trash bigger-130"></i>
+
+													</a>
+
+												</div>
+
+
+
+												<div class="visible-xs visible-sm hidden-md hidden-lg">
+
+													<div class="inline position-relative">
+
+														<button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown">
+
+															<i class="icon-caret-down icon-only bigger-120"></i>
+
+														</button>
+
+
+
+														<ul class="dropdown-menu dropdown-only-icon dropdown-yellow pull-right dropdown-caret dropdown-close">
+
+															<li>
+
+																<a href="#" class="tooltip-info" data-rel="tooltip" title="View">
+
+																				<span class="blue">
+
+																					<i class="icon-zoom-in bigger-120"></i>
+
+																				</span>
+
+																</a>
+
+															</li>
+
+
+
+															<li>
+
+																<a href="#" class="tooltip-success" data-rel="tooltip" title="Edit">
+
+																				<span class="green">
+
+																					<i class="icon-edit bigger-120"></i>
+
+																				</span>
+
+																</a>
+
+															</li>
+
+
+
+															<li>
+
+																<a href="#" class="tooltip-error" data-rel="tooltip" title="Delete">
+
+																				<span class="red">
+
+																					<i class="icon-trash bigger-120"></i>
+
+																				</span>
+
+																</a>
+
+															</li>
+
+														</ul>
+
+													</div>
+
+												</div>
+
+											</td>
+
+										</tr>
+
+										</tbody>
+
+									</table>
+
+								</div>
+
+							</div>
+
+						</div>
+					</div><!-- /.col -->
+
+				</div><!-- /.row -->
+
+			</div><!-- /.page-content -->
+
+		</div><!-- /.main-content -->
+
+	</div><!-- /.main-container-inner -->
+
+
+</div><!-- /.main-container -->
+
+
+
+<!-- basic scripts -->
+
+
+
+<!--[if !IE]> -->
+
+
+
+<script src="http://www.jq22.com/jquery/jquery-2.1.1.js"></script>
+
+
+
+<!-- <![endif]-->
+
+
+
+<!--[if IE]>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+<![endif]-->
+
+
+
+<!--[if !IE]> -->
+
+
+
 <script type="text/javascript">
 
- window.jQuery || document.write("<script src='${ctx}/resources/js/jquery-1.10.2.min.js'>"+"<"+"script>");
+    window.jQuery || document.write("<script src='${ctx}/resources/js/jquery-2.0.3.min.js'>"+"<"+"/script>");
+
+</script>
+
+
+
+<!-- <![endif]-->
+
+
+
+<!--[if IE]>
+
+<script type="text/javascript">
+
+	window.jQuery || document.write("<script src='${ctx}/resources/js/jquery-1.10.2.min.js'>"+"<"+"/script>");
 
 </script>
 
 <![endif]-->
-	<script type="text/javascript">
-		if ("ontouchend" in document)
-			document
-					.write("<script src='${ctx}/resources/js/jquery.mobile.custom.min.js'>"
-							+ "<"+"script>");
-	</script>
 
-	<script src="http://www.jq22.com/jquery/bootstrap-3.3.4.js"></script>
 
-	<script src="${ctx}/resources/js/typeahead-bs2.min.js"></script>
-	<!-- page specific plugin scripts -->
-	<!--[if lte IE 8]>
-		  <script src="${ctx}/resources/js/excanvas.min.js"></script>
-		<![endif]-->
-	<script src="${ctx}/resources/js/jquery-ui-1.10.3.custom.min.js"></script>
 
-	<script src="${ctx}/resources/js/jquery.ui.touch-punch.min.js"></script>
+<script type="text/javascript">
 
-	<script src="${ctx}/resources/js/jquery.slimscroll.min.js"></script>
+    if("ontouchend" in document) document.write("<script src='${ctx}/resources/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
 
-	<script src="${ctx}/resources/js/jquery.easy-pie-chart.min.js"></script>
+</script>
 
-	<script src="${ctx}/resources/js/jquery.sparkline.min.js"></script>
+<script src="http://www.jq22.com/jquery/bootstrap-3.3.4.js"></script>
 
-	<script src="${ctx}/resources/js/flot/jquery.flot.min.js"></script>
+<script src="${ctx}/resources/js/typeahead-bs2.min.js"></script>
 
-	<script src="${ctx}/resources/js/flot/jquery.flot.pie.min.js"></script>
 
-	<script src="${ctx}/resources/js/flot/jquery.flot.resize.min.js"></script>
-	<!-- ace scripts -->
-	<script src="${ctx}/resources/js/ace-elements.min.js"></script>
 
-	<script src="${ctx}/resources/js/ace.min.js"></script>
-	<!-- inline scripts related to this page -->
-	<script type="text/javascript">
-		jQuery(function($) {
+<!-- page specific plugin scripts -->
 
-			$('.easy-pie-chart.percentage')
-					.each(
-							function() {
 
-								var $box = $(this).closest('.infobox');
 
-								var barColor = $(this).data('color')
-										|| (!$box.hasClass('infobox-dark') ? $box
-												.css('color')
-												: 'rgba(255,255,255,0.95)');
+<script src="${ctx}/resources/js/jquery.dataTables.min.js"></script>
 
-								var trackColor = barColor == 'rgba(255,255,255,0.95)' ? 'rgba(255,255,255,0.25)'
-										: '#E2E2E2';
+<script src="${ctx}/resources/js/jquery.dataTables.bootstrap.js"></script>
 
-								var size = parseInt($(this).data('size')) || 50;
 
-								$(this)
-										.easyPieChart(
-												{
 
-													barColor : barColor,
+<!-- ace scripts -->
 
-													trackColor : trackColor,
 
-													scaleColor : false,
 
-													lineCap : 'butt',
+<script src="${ctx}/resources/js/ace-elements.min.js"></script>
 
-													lineWidth : parseInt(size / 10),
+<script src="${ctx}/resources/js/ace.min.js"></script>
 
-													animate : /msie\s*(8|7|6)/
-															.test(navigator.userAgent
-																	.toLowerCase()) ? false
-															: 1000,
 
-													size : size
 
-												});
+<!-- inline scripts related to this page -->
 
-							})
 
-			$('.sparkline').each(
-					function() {
 
-						var $box = $(this).closest('.infobox');
+<script type="text/javascript">
 
-						var barColor = !$box.hasClass('infobox-dark') ? $box
-								.css('color') : '#FFF';
+    jQuery(function($) {
 
-						$(this).sparkline('html', {
-							tagValuesAttribute : 'data-values',
-							type : 'bar',
-							barColor : barColor,
-							chartRangeMin : $(this).data('min') || 0
-						});
+        var oTable1 = $('#sample-table-2').dataTable( {
 
-					});
+            "aoColumns": [
 
-			var placeholder = $('#piechart-placeholder').css({
-				'width' : '90%',
-				'min-height' : '150px'
-			});
+                { "bSortable": false },
 
-			var data = [
+                null, null,null, null, null,
 
-			{
-				label : "social networks",
-				data : 38.7,
-				color : "#68BC31"
-			},
+                { "bSortable": false }
 
-			{
-				label : "search engines",
-				data : 24.5,
-				color : "#2091CF"
-			},
+            ] } );
 
-			{
-				label : "ad campaigns",
-				data : 8.2,
-				color : "#AF4E96"
-			},
 
-			{
-				label : "direct traffic",
-				data : 18.6,
-				color : "#DA5430"
-			},
 
-			{
-				label : "other",
-				data : 10,
-				color : "#FEE074"
-			}
 
-			]
 
-			function drawPieChart(placeholder, data, position) {
+        $('table th input:checkbox').on('click' , function(){
 
-				$.plot(placeholder, data, {
+            var that = this;
 
-					series : {
+            $(this).closest('table').find('tr > td:first-child input:checkbox')
 
-						pie : {
+                .each(function(){
 
-							show : true,
+                    this.checked = that.checked;
 
-							tilt : 0.8,
+                    $(this).closest('tr').toggleClass('selected');
 
-							highlight : {
+                });
 
-								opacity : 0.25
 
-							},
 
-							stroke : {
+        });
 
-								color : '#fff',
 
-								width : 2
 
-							},
 
-							startAngle : 2
 
-						}
+        $('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
 
-					},
+        function tooltip_placement(context, source) {
 
-					legend : {
+            var $source = $(source);
 
-						show : true,
+            var $parent = $source.closest('table')
 
-						position : position || "ne",
+            var off1 = $parent.offset();
 
-						labelBoxBorderColor : null,
+            var w1 = $parent.width();
 
-						margin : [ -30, 15 ]
 
-					}
 
-					,
+            var off2 = $source.offset();
 
-					grid : {
+            var w2 = $source.width();
 
-						hoverable : true,
 
-						clickable : true
 
-					}
+            if( parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2) ) return 'right';
 
-				})
+            return 'left';
 
-			}
+        }
 
-			drawPieChart(placeholder, data);
+    })
 
-			/**
+</script>
 
-			we saved the drawing function and the data to redraw with different position later when switching to RTL mode dynamically
 
-			so that's not needed actually.
 
-			 */
-
-			placeholder.data('chart', data);
-
-			placeholder.data('draw', drawPieChart);
-
-			var $tooltip = $(
-					"<div class='tooltip top in'><div class='tooltip-inner'></div></div>")
-					.hide().appendTo('body');
-
-			var previousPoint = null;
-
-			placeholder.on('plothover', function(event, pos, item) {
-
-				if (item) {
-
-					if (previousPoint != item.seriesIndex) {
-
-						previousPoint = item.seriesIndex;
-
-						var tip = item.series['label'] + " : "
-								+ item.series['percent'] + '%';
-
-						$tooltip.show().children(0).text(tip);
-
-					}
-
-					$tooltip.css({
-						top : pos.pageY + 10,
-						left : pos.pageX + 10
-					});
-
-				} else {
-
-					$tooltip.hide();
-
-					previousPoint = null;
-
-				}
-
-			});
-
-			var d1 = [];
-
-			for (var i = 0; i < Math.PI * 2; i += 0.5) {
-
-				d1.push([ i, Math.sin(i) ]);
-
-			}
-
-			var d2 = [];
-
-			for (var i = 0; i < Math.PI * 2; i += 0.5) {
-
-				d2.push([ i, Math.cos(i) ]);
-
-			}
-
-			var d3 = [];
-
-			for (var i = 0; i < Math.PI * 2; i += 0.2) {
-
-				d3.push([ i, Math.tan(i) ]);
-
-			}
-
-			var sales_charts = $('#sales-charts').css({
-				'width' : '100%',
-				'height' : '220px'
-			});
-
-			$.plot("#sales-charts", [
-
-			{
-				label : "Domains",
-				data : d1
-			},
-
-			{
-				label : "Hosting",
-				data : d2
-			},
-
-			{
-				label : "Services",
-				data : d3
-			}
-
-			], {
-
-				hoverable : true,
-
-				shadowSize : 0,
-
-				series : {
-
-					lines : {
-						show : true
-					},
-
-					points : {
-						show : true
-					}
-
-				},
-
-				xaxis : {
-
-					tickLength : 0
-
-				},
-
-				yaxis : {
-
-					ticks : 10,
-
-					min : -2,
-
-					max : 2,
-
-					tickDecimals : 3
-
-				},
-
-				grid : {
-
-					backgroundColor : {
-						colors : [ "#fff", "#fff" ]
-					},
-
-					borderWidth : 1,
-
-					borderColor : '#555'
-
-				}
-
-			});
-
-			$('#recent-box [data-rel="tooltip"]').tooltip({
-				placement : tooltip_placement
-			});
-
-			function tooltip_placement(context, source) {
-
-				var $source = $(source);
-
-				var $parent = $source.closest('.tab-content')
-
-				var off1 = $parent.offset();
-
-				var w1 = $parent.width();
-
-				var off2 = $source.offset();
-
-				var w2 = $source.width();
-
-				if (parseInt(off2.left) < parseInt(off1.left)
-						+ parseInt(w1 / 2))
-					return 'right';
-
-				return 'left';
-
-			}
-
-			$('.dialogs,.comments').slimScroll({
-
-				height : '300px'
-
-			});
-
-			//Android's default browser somehow is confused when tapping on label which will lead to dragging the task
-
-			//so disable dragging when clicking on label
-
-			var agent = navigator.userAgent.toLowerCase();
-
-			if ("ontouchstart" in document && /applewebkit/.test(agent)
-					&& /android/.test(agent))
-
-				$('#tasks').on('touchstart', function(e) {
-
-					var li = $(e.target).closest('#tasks li');
-
-					if (li.length == 0)
-						return;
-
-					var label = li.find('label.inline').get(0);
-
-					if (label == e.target || $.contains(label, e.target))
-						e.stopImmediatePropagation();
-
-				});
-
-			$('#tasks').sortable({
-
-				opacity : 0.8,
-
-				revert : true,
-
-				forceHelperSize : true,
-
-				placeholder : 'draggable-placeholder',
-
-				forcePlaceholderSize : true,
-
-				tolerance : 'pointer',
-
-				stop : function(event, ui) {//just for Chrome!!!! so that dropdowns on items don't appear below other items after being moved
-
-					$(ui.item).css('z-index', 'auto');
-
-				}
-
-			}
-
-			);
-
-			$('#tasks').disableSelection();
-
-			$('#tasks input:checkbox').removeAttr('checked').on('click',
-					function() {
-
-						if (this.checked)
-							$(this).closest('li').addClass('selected');
-
-						else
-							$(this).closest('li').removeClass('selected');
-
-					});
-
-		})
-	</script>
 </body>
+
 </html>
+
