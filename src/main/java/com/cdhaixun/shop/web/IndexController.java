@@ -33,10 +33,6 @@ public class IndexController {
 
     @RequestMapping(value = "/index")
     public String index(HttpServletRequest request, HttpSession httpSession) {
-        Manager manager = (Manager) httpSession.getAttribute(SessionConstant.MANAGER);
-        String role = "supper";
-        List<Menu> menuList = menuService.getMenus(role);
-        request.getSession().setAttribute("menuList", menuList);
         return "index";
     }
 
