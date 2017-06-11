@@ -2,7 +2,9 @@ package com.cdhaixun.common.shiro;
 
 import com.cdhaixun.common.constant.SessionConstant;
 import com.cdhaixun.domain.Manager;
+import com.cdhaixun.domain.Menu;
 import com.cdhaixun.persistence.ManagerMapper;
+import com.cdhaixun.shop.service.IMenuService;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.shiro.SecurityUtils;
@@ -21,6 +23,8 @@ import java.util.List;
 public class MyRealm extends AuthorizingRealm {
     @Autowired
     private ManagerMapper managerMapper;
+    @Autowired
+    private IMenuService menuService;
 
     /**
      * 为当前登录的Subject授予角色和权限
@@ -88,6 +92,9 @@ public class MyRealm extends AuthorizingRealm {
         if (manager != null) {
             AuthenticationInfo authcInfo = new SimpleAuthenticationInfo(manager.getAccount(), manager.getPassword(), this.getName());
             this.setSession(SessionConstant.MANAGER, manager);
+            String role = "supper";
+            List<Menu> menuList = menuService.getMenus(role);
+            this.setSession(SessionConstant.MENU_LIST, menuList);
             return authcInfo;
         }
         return null;
