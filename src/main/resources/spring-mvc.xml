@@ -11,7 +11,18 @@
   
     <!-- 自动扫描controller包下的所有类，如果@Controller注入为bean -->  
     <context:component-scan base-package="com.cdhaixun" />
-    <mvc:annotation-driven />
+    <mvc:annotation-driven >
+    <mvc:message-converters  register-defaults="true">
+        <bean id="httpMessageConverter" class="com.cdhaixun.common.httpMessageConverter.HttpMessageConverter">
+          <property name="supportedMediaTypes">
+                <list>
+                    <value>application/json;charset=UTF-8</value>
+                </list>
+            </property>
+        </bean>
+    </mvc:message-converters>
+    </mvc:annotation-driven>
+
     <!-- 避免IE执行AJAX时,返回JSON出现下载文件 -->  
     <bean id="mappingJacksonHttpMessageConverter"  
         class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
@@ -35,6 +46,7 @@
             </list>  
         </property>  -->
     </bean>
+
     <!-- 静态资源处理， css， js， imgs -->
     <mvc:resources mapping="/resources/**" location="/resources/"/>
     <mvc:resources mapping="/temp/**" location="/temp/"/>

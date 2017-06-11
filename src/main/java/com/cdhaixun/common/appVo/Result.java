@@ -7,10 +7,19 @@ import java.io.Serializable;
 /**
  * Created by tangxinmao on 2017/5/30.
  */
-public class Result  implements Serializable{
-    private String msg;
-    private boolean result;
-    private Code code;
+public class Result<T>  implements Serializable{
+    private String msg;//消息体
+    private boolean result;//结果
+    private Code code;//错误码
+    private T data;//返回消息
+
+    public T getData() {
+        return data;
+    }
+
+    public void setData(T data) {
+        this.data = data;
+    }
 
     public String getMsg() {
         return msg;

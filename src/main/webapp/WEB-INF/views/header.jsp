@@ -328,7 +328,7 @@
 
 
 
-							<li><a href="#"> <i class="icon-off"></i> 退出
+							<li><a href="${ctx}/index/logout"> <i class="icon-off"></i> 退出
 
 							</a></li>
 
