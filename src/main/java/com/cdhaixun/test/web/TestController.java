@@ -49,21 +49,12 @@ public class TestController extends BaseController {
 		return PATH + "list";
 	}
 
-	@RequestMapping(value = "/testpage")
-	public String pagerTest() {
-		return PATH + "pagerTest";
-	}
-
-	@RequestMapping(value = "/testPager")
-	@ResponseBody
-	public Object testPager(Pager pager) {
-		PageData pd = new PageData();
-		List<Menu> menus = testService.getMenuList(pager);
-
-		//return new PageData(pager.gettSize(), "succes", menus);
-		return pd;
-	}
-
+	/**
+	 * 分页查询 列表展示  测试
+	 * @param pager
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping(value = "/testgrid")
 	@ResponseBody
 	public Object testgrid(Pager pager, HttpServletRequest request) {

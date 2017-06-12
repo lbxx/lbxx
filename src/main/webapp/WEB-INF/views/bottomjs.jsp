@@ -1,0 +1,29 @@
+<!-- basic scripts -->
+<!--[if !IE]> -->
+<script src="http://www.jq22.com/jquery/jquery-2.1.1.js"></script>
+<!-- <![endif]-->
+<!--[if IE]>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<![endif]-->
+<!--[if !IE]> -->
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='${ctx}/resources/js/jquery-2.0.3.min.js'>"+"<"+"/script>");
+</script>
+<!-- <![endif]-->
+<!--[if IE]>
+<script type="text/javascript">
+window.jQuery || document.write("<script src='${ctx}/resources/js/jquery-1.10.2.min.js'>"+"<"+"/script>");
+</script>
+<![endif]-->
+<script type="text/javascript">
+    if("ontouchend" in document) document.write("<script src='${ctx}/resources/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
+</script>
+<script src="http://www.jq22.com/jquery/bootstrap-3.3.4.js"></script>
+<script src="${ctx}/resources/js/typeahead-bs2.min.js"></script>
+<!-- page specific plugin scripts -->
+<script src="${ctx}/resources/js/date-time/bootstrap-datepicker.min.js"></script>
+<script src="${ctx}/resources/js/jqGrid/jquery.jqGrid.min.js"></script>
+<script src="${ctx}/resources/js/jqGrid/i18n/grid.locale-en.js"></script>
+<!-- ace scripts -->
+<script src="${ctx}/resources/js/ace-elements.min.js"></script>
+<script src="${ctx}/resources/js/ace.min.js"></script>
