@@ -7,6 +7,12 @@
 <head>
     <!-- 引入公共js css -->
     <jsp:include page="../jscss.jsp" />
+    <style>
+        /* 下面这个css代码是对列表表格样式的调整，以前列表有滚动条，加上这个css可以根据内容高度自动适应*/
+        .ui-jqgrid-bdiv{
+            height:100%!important;
+        }
+    </style>
 </head>
 <body>
 
