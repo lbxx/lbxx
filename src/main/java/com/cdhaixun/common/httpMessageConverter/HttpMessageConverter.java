@@ -32,16 +32,16 @@ import java.util.List;
 public class HttpMessageConverter extends AbstractHttpMessageConverter<Object> {
     @Value("#{configProperties['aes']}")
     private String aes;
-@Autowired
-private ObjectMapper objectMapper;
-    private     Cipher cipher =Cipher.getInstance("AES/ECB/PKCS5Padding");
+    @Autowired
+    private ObjectMapper objectMapper;
+    private Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
 
     public HttpMessageConverter() throws NoSuchPaddingException, NoSuchAlgorithmException {
     }
 
     @Override
     protected boolean supports(Class<?> aClass) {
-        return  aClass.getPackage().getName().startsWith("com.cdhaixun.common.appVo");
+        return aClass.getPackage().getName().startsWith("com.cdhaixun.common.appVo");
     }
 
     @Override
@@ -58,7 +58,7 @@ private ObjectMapper objectMapper;
             cipher.init(Cipher.DECRYPT_MODE, key);
             String temp = StreamUtils.copyToString(httpInputMessage.getBody(), Charset.forName("UTF-8"));
             byte[] result = cipher.doFinal(Base64.decodeBase64(temp));
-            String s=new String(result);
+            String s = new String(result);
             Object object = objectMapper.readValue(result, aClass);
             return object;
 
@@ -70,14 +70,14 @@ private ObjectMapper objectMapper;
             e.printStackTrace();
         }
 
-     return null;
+        return null;
     }
 
     @Override
     protected void writeInternal(Object o, HttpOutputMessage httpOutputMessage) throws IOException, HttpMessageNotWritableException {
         objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
         objectMapper.setSerializationInclusion(JsonSerialize.Inclusion.NON_NULL);
-        String s= objectMapper.writeValueAsString(o);
+        String s = objectMapper.writeValueAsString(o);
         try {
 
             Key key = new SecretKeySpec(Base64.decodeBase64(aes), "AES");
