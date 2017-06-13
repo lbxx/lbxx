@@ -12,6 +12,7 @@ import org.apache.shiro.crypto.hash.Hash;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -53,7 +54,6 @@ public class TestController extends BaseController {
 	public String list() {
 		return PATH + "list";
 	}
-
 	/**
 	 * 分页查询 列表展示  测试
 	 * @param request
@@ -62,7 +62,6 @@ public class TestController extends BaseController {
 	@RequestMapping(value = "/testgrid")
 	@ResponseBody
 	public Object testgrid( HttpServletRequest request) {
-
 		Page dbpage = PageHelper.startPage(Integer.valueOf(request.getParameter("pageNum")), Integer.valueOf(request.getParameter("pageSize")),true);
         List<Menu> menus = testService.getMenuList();
 		return dbpage.toPageInfo();
