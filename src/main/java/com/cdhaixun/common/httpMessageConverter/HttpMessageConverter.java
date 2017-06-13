@@ -49,7 +49,7 @@ private ObjectMapper objectMapper;
             Key key = new SecretKeySpec(Base64.decodeBase64(aes), "AES");
             cipher.init(Cipher.DECRYPT_MODE, key);
             String temp = StreamUtils.copyToString(httpInputMessage.getBody(), Charset.forName("UTF-8"));
-            byte[] result = cipher.doFinal(Base64.decodeBase64(temp));
+            byte[] result = cipher.doFinal(temp.getBytes());
             Object object = objectMapper.readValue(result, aClass);
             return object;
         } catch (NoSuchAlgorithmException e) {
