@@ -58,7 +58,7 @@ public class HttpMessageConverter extends AbstractHttpMessageConverter<Object> {
             cipher.init(Cipher.DECRYPT_MODE, key);
             String temp = StreamUtils.copyToString(httpInputMessage.getBody(), Charset.forName("UTF-8"));
             byte[] result = cipher.doFinal(Base64.decodeBase64(temp));
-            System.out.printf(new String(result));
+            System.out.printf(new String(result,"utf-8"));
             Object object = objectMapper.readValue(result, aClass);
             return object;
 
