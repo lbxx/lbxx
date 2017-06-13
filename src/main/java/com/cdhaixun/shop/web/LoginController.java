@@ -78,7 +78,13 @@ public class LoginController extends BaseController {
 
         return result;
     }
-
+    @RequestMapping(value = "appLogin", method = RequestMethod.POST )
+    @ResponseBody
+    public com.cdhaixun.common.appVo.Result appLogin(@RequestBody Mobile mobile, HttpSession httpSession) {
+        com.cdhaixun.common.appVo.Result result = new com.cdhaixun.common.appVo.Result();
+        Captcha captcha = (Captcha) redisTemplate.boundHashOps("captcha").get(mobile.getMobile());
+        return result;
+    }
     /**
      * 登陆
      *
