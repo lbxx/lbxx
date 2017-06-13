@@ -79,12 +79,13 @@
             url: "${ctx}/test/testgrid",
             datatype: "json",
             height: 250,
+            prmNames:{page:"pageNum",rows:"pageSize", sort: "sidx",order: "sord", search:"_search", nd:"nd", npage:null},
             // jsonReader 这个参数必须和java后台参数一致
             jsonReader : {
-                root : "rows",
-                page : "page",
+                root : "list",
+                page : "pageNum",
                 total : "total",
-                records : "records",
+                records : "pageSize",
                 repeatitems : false
             },
             // 用于显示列表页table的列头

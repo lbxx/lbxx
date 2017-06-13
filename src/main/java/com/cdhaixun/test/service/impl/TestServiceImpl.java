@@ -23,10 +23,8 @@ public class TestServiceImpl implements ITestService{
 	private MenuMapper menuMapper;
 
 	@Override
-	public List<Menu> getMenuList(Pager pager) {
-		Page dbpage = PageHelper.startPage(pager.getcPage(), pager.getpSize());
+	public List<Menu>  getMenuList() {
 		List<Menu> menus = menuMapper.findAll();
-		pager.settSize(dbpage.getTotal());
 		return menus;
 	}
 }

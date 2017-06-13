@@ -2,6 +2,7 @@ package com.cdhaixun.persistence;
 
 import java.util.List;
 
+import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
