@@ -34,6 +34,10 @@ public class HttpMessageConverter extends AbstractHttpMessageConverter<Object> {
     private String aes;
 @Autowired
 private ObjectMapper objectMapper;
+    private     Cipher cipher =Cipher.getInstance("AES/ECB/PKCS5Padding");
+
+    public HttpMessageConverter() throws NoSuchPaddingException, NoSuchAlgorithmException {
+    }
 
     @Override
     protected boolean supports(Class<?> aClass) {
@@ -49,7 +53,7 @@ private ObjectMapper objectMapper;
     protected Object readInternal(Class<?> aClass, HttpInputMessage httpInputMessage) throws IOException, HttpMessageNotReadableException {
 
         try {
-            Cipher cipher =Cipher.getInstance("AES/ECB/PKCS5Padding");
+
             Key key = new SecretKeySpec(Base64.decodeBase64(aes), "AES");
             cipher.init(Cipher.DECRYPT_MODE, key);
             String temp = StreamUtils.copyToString(httpInputMessage.getBody(), Charset.forName("UTF-8"));
@@ -57,10 +61,7 @@ private ObjectMapper objectMapper;
             String s=new String(result);
             Object object = objectMapper.readValue(result, aClass);
             return object;
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
+
         } catch (BadPaddingException e) {
             e.printStackTrace();
         } catch (IllegalBlockSizeException e) {
@@ -78,15 +79,12 @@ private ObjectMapper objectMapper;
         objectMapper.setSerializationInclusion(JsonSerialize.Inclusion.NON_NULL);
         String s= objectMapper.writeValueAsString(o);
         try {
-            Cipher cipher =Cipher.getInstance("AES/ECB/PKCS5Padding");
+
             Key key = new SecretKeySpec(Base64.decodeBase64(aes), "AES");
             cipher.init(Cipher.ENCRYPT_MODE, key);
             byte[] result = cipher.doFinal(s.getBytes());
             httpOutputMessage.getBody().write(Base64.encodeBase64(result));
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
+
         } catch (InvalidKeyException e) {
             e.printStackTrace();
         } catch (BadPaddingException e) {
