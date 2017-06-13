@@ -1,5 +1,8 @@
 package com.cdhaixun.common.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 后台接收前台传入的pager分页对象
  * @Author tanggm
@@ -9,49 +12,58 @@ public class Pager {
     /**
      * 每页显示条数
      */
-    private int pSize;
+    private int pageSize;
     /**
      * 当前页
      */
-    private int cPage;
+    private int pageNum;
     /**
      * 总页数
      */
-    private int tPage;
+    private int pages;
     /**
      * 总记录数
      */
-    private long tSize;
+    private long total;
+    private List result = new ArrayList();
 
-    public int getpSize() {
-        return pSize;
+    public int getPageSize() {
+        return pageSize;
     }
 
-    public void setpSize(int pSize) {
-        this.pSize = pSize;
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
     }
 
-    public int getcPage() {
-        return cPage;
+    public int getPageNum() {
+        return pageNum;
     }
 
-    public void setcPage(int cPage) {
-        this.cPage = cPage;
+    public void setPageNum(int pageNum) {
+        this.pageNum = pageNum;
     }
 
-    public int gettPage() {
-        return tPage;
+    public int getPages() {
+        return pages;
     }
 
-    public void settPage(int tPage) {
-        this.tPage = tPage;
+    public void setPages(int pages) {
+        this.pages = pages;
     }
 
-    public long gettSize() {
-        return tSize;
+    public long getTotal() {
+        return total;
     }
 
-    public void settSize(long tSize) {
-        this.tSize = tSize;
+    public void setTotal(long total) {
+        this.total = total;
+    }
+
+    public List getResult() {
+        return result;
+    }
+
+    public void setResult(List result) {
+        this.result = result;
     }
 }

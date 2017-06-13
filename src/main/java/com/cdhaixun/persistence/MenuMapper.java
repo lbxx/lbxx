@@ -1,11 +1,12 @@
 package com.cdhaixun.persistence;
 
-import java.util.List;
-
+import com.cdhaixun.domain.Menu;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-import com.cdhaixun.domain.Menu;
+import java.util.List;
+import java.util.Map;
+
 @Repository
 public interface MenuMapper {
 
@@ -14,5 +15,5 @@ public interface MenuMapper {
 	 * 查询所有菜单，测试分页
 	 * @return
 	 */
-	List<Menu> findAll();
+	List<Menu> findAll(Map<String, Object> parMap);
 }

@@ -5,6 +5,9 @@ import com.cdhaixun.common.util.Pager;
 import com.cdhaixun.common.web.BaseController;
 import com.cdhaixun.domain.Menu;
 import com.cdhaixun.test.service.ITestService;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.apache.shiro.crypto.hash.Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -51,24 +54,14 @@ public class TestController extends BaseController {
 
 	/**
 	 * 分页查询 列表展示  测试
-	 * @param pager
-	 * @param request
+	 * @param
+	 * @param
 	 * @return
 	 */
 	@RequestMapping(value = "/testgrid")
 	@ResponseBody
-	public Object testgrid(Pager pager, HttpServletRequest request) {
-			int page = Integer.valueOf(request.getParameter("page"));
-			int rows = Integer.valueOf(request.getParameter("rows"));
-			pager.setpSize(rows);
-			pager.setcPage(page);
-			List<Menu> menus = testService.getMenuList(pager);
-			PageData pd = new PageData();
-			pd.setRows(menus);
-			pd.setTotal((int)((pager.gettSize()+pager.getpSize()-1) / pager.getpSize()));
-			pd.setPage(pager.getcPage());
-			pd.setRecords(pager.gettSize());
-
-			return pd;
+	public Object testgrid(Pager pager, String name) {
+			Pager menus = testService.getMenuList(pager, name);
+			return menus;
 	}
 }

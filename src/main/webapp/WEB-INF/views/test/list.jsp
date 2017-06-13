@@ -53,6 +53,8 @@
             <!-- 右边内容开始 -->
             <div class="page-content">
                 <div class="row">
+                    <input type="text" id="searchName" placeholder="请输入菜单名查询"/>
+                    <button id="sbtn">测试搜索</button>
                     <div class="col-xs-12">
                         <!-- 显示内容列表的table -->
                         <table id="grid-table"></table>
@@ -69,6 +71,16 @@
 <!-- 分页自定义js -->
 <script type="text/javascript">
     jQuery(function($) {
+        // 自定义搜索方法，暂时先用，后期研究jqGrid搜索
+        $("#sbtn").click(function(){
+            var name = $("#searchName").val();
+            $("#grid-table").jqGrid('setGridParam',{  // grid-table 这个是表格的id, setGridParam这个值是固定值
+                url:"${ctx}/test/testgrid", // 请求url
+                postData:{"name":name},    // 搜索过滤条件
+                page:1                    // 点击搜索，默认是加载搜索后第一页数据
+            }).trigger("reloadGrid");     // 渲染表格数据，这个  reloadGrid  是固定值
+        });
+
         // 数据列表table
         var grid_selector = "#grid-table";
         // 显示分页参数的table
@@ -81,10 +93,10 @@
             height: 250,
             // jsonReader 这个参数必须和java后台参数一致
             jsonReader : {
-                root : "rows",
-                page : "page",
-                total : "total",
-                records : "records",
+                root : "result",
+                page : "pageNum",
+                total : "pages",
+                records : "total",
                 repeatitems : false
             },
             // 用于显示列表页table的列头
@@ -105,6 +117,7 @@
             viewrecords : true,
             rowNum:10,
             rowList:[10,20,30],
+            prmNames:{page:"pageNum",rows:"pageSize"},
             pager : pager_selector,
             altRows: true,
             //toppager: true,

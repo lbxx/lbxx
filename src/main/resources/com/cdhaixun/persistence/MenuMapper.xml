@@ -18,10 +18,11 @@
     from menu
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="findAll" resultMap="BaseResultMap" >
+  <select id="findAll" resultMap="BaseResultMap" parameterType="map">
     select 
     <include refid="Base_Column_List" />
-    from menu    
+    from menu
+      where name like '%${name}%'
   </select>
   <select id="getMenus" resultMap="BaseResultMap" >   
     SELECT DISTINCT
