@@ -2,7 +2,9 @@ package com.cdhaixun.common.httpMessageConverter;
 
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.log4j.helpers.DateTimeDateFormat;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpInputMessage;
@@ -24,6 +26,7 @@ import java.nio.charset.Charset;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class HttpMessageConverter extends AbstractHttpMessageConverter<Object> {
@@ -31,6 +34,7 @@ public class HttpMessageConverter extends AbstractHttpMessageConverter<Object> {
     private String aes;
 @Autowired
 private ObjectMapper objectMapper;
+
     @Override
     protected boolean supports(Class<?> aClass) {
         return  aClass.getPackage().getName().startsWith("com.cdhaixun.common.appVo");
@@ -50,6 +54,7 @@ private ObjectMapper objectMapper;
             cipher.init(Cipher.DECRYPT_MODE, key);
             String temp = StreamUtils.copyToString(httpInputMessage.getBody(), Charset.forName("UTF-8"));
             byte[] result = cipher.doFinal(Base64.decodeBase64(temp));
+            String s=new String(result);
             Object object = objectMapper.readValue(result, aClass);
             return object;
         } catch (NoSuchAlgorithmException e) {
@@ -69,6 +74,27 @@ private ObjectMapper objectMapper;
 
     @Override
     protected void writeInternal(Object o, HttpOutputMessage httpOutputMessage) throws IOException, HttpMessageNotWritableException {
-        httpOutputMessage.getBody().write(objectMapper.writeValueAsBytes(o));
+        objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+        objectMapper.setSerializationInclusion(JsonSerialize.Inclusion.NON_NULL);
+        String s= objectMapper.writeValueAsString(o);
+        try {
+            Cipher cipher =Cipher.getInstance("AES/ECB/PKCS5Padding");
+            Key key = new SecretKeySpec(Base64.decodeBase64(aes), "AES");
+            cipher.init(Cipher.ENCRYPT_MODE, key);
+            byte[] result = cipher.doFinal(s.getBytes());
+            httpOutputMessage.getBody().write(Base64.encodeBase64(result));
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (NoSuchPaddingException e) {
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        } catch (BadPaddingException e) {
+            e.printStackTrace();
+        } catch (IllegalBlockSizeException e) {
+            e.printStackTrace();
+        }
+
+
     }
 }
