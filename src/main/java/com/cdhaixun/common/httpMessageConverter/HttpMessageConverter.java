@@ -58,7 +58,7 @@ public class HttpMessageConverter extends AbstractHttpMessageConverter<Object> {
             cipher.init(Cipher.DECRYPT_MODE, key);
             String temp = StreamUtils.copyToString(httpInputMessage.getBody(), Charset.forName("UTF-8"));
             byte[] result = cipher.doFinal(Base64.decodeBase64(temp));
-            System.out.printf(new String(result,"utf-8"));
+            System.out.printf(new String(result,"UTF-8"));
             Object object = objectMapper.readValue(result, aClass);
             return object;
 
@@ -82,9 +82,8 @@ public class HttpMessageConverter extends AbstractHttpMessageConverter<Object> {
 
             Key key = new SecretKeySpec(Base64.decodeBase64(aes), "AES");
             cipher.init(Cipher.ENCRYPT_MODE, key);
-            byte[] result = cipher.doFinal(s.getBytes());
-            httpOutputMessage.getBody().write(Base64.encodeBase64(result));
-            System.out.printf(Base64.encodeBase64String(result));
+            byte[] result = cipher.doFinal(s.getBytes("UTF-8"));
+            httpOutputMessage.getBody().write(Base64.encodeBase64(result,true,true));
 
         } catch (InvalidKeyException e) {
             e.printStackTrace();
