@@ -83,6 +83,12 @@ public class LoginController extends BaseController {
     public com.cdhaixun.common.appVo.Result appLogin(@RequestBody Mobile mobile, HttpSession httpSession) {
         com.cdhaixun.common.appVo.Result result = new com.cdhaixun.common.appVo.Result();
         Captcha captcha = (Captcha) redisTemplate.boundHashOps("captcha").get(mobile.getMobile());
+        if(captcha!=null&&captcha.getCaptcha().equals(mobile.getCaptcha())&&(new Date().getTime()-captcha.getCreateTime().getTime())<3*60*1000){
+            result.setResult(true);
+        }else{
+            redisTemplate.boundHashOps("captcha").rename(mobile.getMobile());
+            result.setCode(Code.CAPTCHA_ERROR);
+        }
         return result;
     }
     /**
