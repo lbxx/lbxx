@@ -1,4 +1,4 @@
-package com.cdhaixun.common.util;
+package com.cdhaixun.util;
 
 import java.util.ArrayList;
 import java.util.List;

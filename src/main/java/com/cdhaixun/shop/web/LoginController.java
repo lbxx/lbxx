@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.cdhaixun.common.appVo.Mobile;
+import com.cdhaixun.util.SMSUtil;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -19,7 +20,6 @@ import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,10 +30,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.cdhaixun.common.constant.SessionConstant;
 import com.cdhaixun.common.emun.Code;
 import com.cdhaixun.common.redisVo.Captcha;
-import com.cdhaixun.common.util.SMSUtil;
 import com.cdhaixun.common.vo.Result;
 import com.cdhaixun.common.web.BaseController;
-import com.cdhaixun.domain.Manager;
 
 /**
  * Created by tangxinmao on 2017/5/30.

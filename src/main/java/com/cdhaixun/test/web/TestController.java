@@ -1,23 +1,12 @@
 package com.cdhaixun.test.web;
 
-import com.cdhaixun.common.util.PageData;
-import com.cdhaixun.common.util.Pager;
 import com.cdhaixun.common.web.BaseController;
-import com.cdhaixun.domain.Menu;
 import com.cdhaixun.test.service.ITestService;
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import org.apache.shiro.crypto.hash.Hash;
+import com.cdhaixun.util.Pager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 用于测试的控制器，后期会删除

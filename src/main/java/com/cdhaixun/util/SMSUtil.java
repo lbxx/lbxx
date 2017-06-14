@@ -1,4 +1,4 @@
-package com.cdhaixun.common.util;
+package com.cdhaixun.util;
 
 import com.cloopen.rest.sdk.CCPRestSmsSDK;
 

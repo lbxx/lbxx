@@ -1,9 +1,9 @@
 package com.cdhaixun.test.service.impl;
 
-import com.cdhaixun.common.util.Pager;
 import com.cdhaixun.domain.Menu;
 import com.cdhaixun.persistence.MenuMapper;
 import com.cdhaixun.test.service.ITestService;
+import com.cdhaixun.util.Pager;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
