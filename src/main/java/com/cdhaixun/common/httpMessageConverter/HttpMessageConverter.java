@@ -83,7 +83,7 @@ public class HttpMessageConverter extends AbstractHttpMessageConverter<Object> {
             Key key = new SecretKeySpec(Base64.decodeBase64(aes), "AES");
             cipher.init(Cipher.ENCRYPT_MODE, key);
             byte[] result = cipher.doFinal(s.getBytes("UTF-8"));
-            httpOutputMessage.getBody().write(Base64.encodeBase64(result,true,true));
+            httpOutputMessage.getBody().write(Base64.encodeBase64(result,true));
 
         } catch (InvalidKeyException e) {
             e.printStackTrace();
