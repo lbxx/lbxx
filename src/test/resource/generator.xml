@@ -50,6 +50,6 @@
 <!--         <table tableName="%">
             <generatedKey column="id" sqlStatement="MySql"  identity="true" />
         </table> -->
-        <table tableName="role_operate" domainObjectName="RoleOperate" enableSelectByExample="false" enableDeleteByExample="false" enableCountByExample="false" enableUpdateByExample="false"/>
+        <table tableName="user_type" domainObjectName="UserType" enableSelectByExample="false" enableDeleteByExample="false" enableCountByExample="false" enableUpdateByExample="false"/>
     </context>
 </generatorConfiguration>
