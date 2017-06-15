@@ -81,30 +81,25 @@
 							</c:if>
 
 					</a>
+					<ul class="submenu">
 						<c:forEach items="${onemenu.menuList}" var="twomenu">
-							<ul class="submenu">								
 								<li><a href="${ctx}${twomenu.url}" class="dropdown-toggle"> <i
-										class="icon-double-angle-right"></i> ${twomenu.name} 
+										class="icon-double-angle-right"></i> ${twomenu.name}
 										<c:if test="${not empty twomenu.menuList}">
 											<b class="arrow icon-angle-down"></b>
 										</c:if>
-	
+
 								</a>
-							<c:forEach items="${twomenu.menuList}" var="threemenu">
-									<ul class="submenu">
-	
-										<li><a href="${ctx}${threemenu.url}"> <i class="icon-leaf"></i> ${threemenu.name}
-	
-										</a></li>	
-									</ul>
-							
-							</c:forEach>
+								<ul class="submenu">
+									<c:forEach items="${twomenu.menuList}" var="threemenu">
+												<li><a href="${ctx}${threemenu.url}"> <i class="icon-leaf"></i> ${threemenu.name}
+												</a></li>
+									</c:forEach>
+								</ul>
 							</li>
-	
-							</ul>
 						</c:forEach>
-						
-						</li>
+					  </ul>
+					 </li>
 					</c:forEach>
 				</ul>
 				<!-- /.nav-list -->
