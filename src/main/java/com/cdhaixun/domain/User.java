@@ -1,16 +1,17 @@
 package com.cdhaixun.domain;
 
-import java.io.Serializable;
 import java.util.Date;
 
-public class User  implements Serializable{
+public class User {
     private Integer id;
+
+    private Integer typeid;
 
     private String password;
 
     private String mobile;
 
-    private Boolean gender;
+    private Integer sex;
 
     private String email;
 
@@ -24,9 +25,29 @@ public class User  implements Serializable{
 
     private String remark;
 
-    private Integer storeid;
+    private Integer registtype;
 
-    private Integer rankid;
+    private Long blance;
+
+    private Integer points;
+
+    private Date birthday;
+
+    private String province;
+
+    private String city;
+
+    private String area;
+
+    private String address;
+
+    private String idcard;
+
+    private String img;
+
+    private String qrcode;
+
+    private Integer state;
 
     public Integer getId() {
         return id;
@@ -34,6 +55,14 @@ public class User  implements Serializable{
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getTypeid() {
+        return typeid;
+    }
+
+    public void setTypeid(Integer typeid) {
+        this.typeid = typeid;
     }
 
     public String getPassword() {
@@ -52,12 +81,12 @@ public class User  implements Serializable{
         this.mobile = mobile == null ? null : mobile.trim();
     }
 
-    public Boolean getGender() {
-        return gender;
+    public Integer getSex() {
+        return sex;
     }
 
-    public void setGender(Boolean gender) {
-        this.gender = gender;
+    public void setSex(Integer sex) {
+        this.sex = sex;
     }
 
     public String getEmail() {
@@ -108,19 +137,99 @@ public class User  implements Serializable{
         this.remark = remark == null ? null : remark.trim();
     }
 
-    public Integer getStoreid() {
-        return storeid;
+    public Integer getRegisttype() {
+        return registtype;
     }
 
-    public void setStoreid(Integer storeid) {
-        this.storeid = storeid;
+    public void setRegisttype(Integer registtype) {
+        this.registtype = registtype;
     }
 
-    public Integer getRankid() {
-        return rankid;
+    public Long getBlance() {
+        return blance;
     }
 
-    public void setRankid(Integer rankid) {
-        this.rankid = rankid;
+    public void setBlance(Long blance) {
+        this.blance = blance;
+    }
+
+    public Integer getPoints() {
+        return points;
+    }
+
+    public void setPoints(Integer points) {
+        this.points = points;
+    }
+
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province == null ? null : province.trim();
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city == null ? null : city.trim();
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area == null ? null : area.trim();
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address == null ? null : address.trim();
+    }
+
+    public String getIdcard() {
+        return idcard;
+    }
+
+    public void setIdcard(String idcard) {
+        this.idcard = idcard == null ? null : idcard.trim();
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img == null ? null : img.trim();
+    }
+
+    public String getQrcode() {
+        return qrcode;
+    }
+
+    public void setQrcode(String qrcode) {
+        this.qrcode = qrcode == null ? null : qrcode.trim();
+    }
+
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
     }
 }
