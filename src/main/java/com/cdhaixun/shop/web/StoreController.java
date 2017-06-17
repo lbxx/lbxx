@@ -44,6 +44,12 @@ public class StoreController extends BaseController {
     public String index(){
         return PATH+"storelist";
     }
+    
+    @RequestMapping(value="/add")
+    public String add(){
+        return PATH+"storeadd";
+    }
+    
     @RequestMapping(value="/option")
     @ResponseBody
     public List option(){
