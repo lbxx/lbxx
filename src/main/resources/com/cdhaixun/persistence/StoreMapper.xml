@@ -4,9 +4,25 @@
   <resultMap id="BaseResultMap" type="com.cdhaixun.domain.Store" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="telephone" property="telephone" jdbcType="VARCHAR" />
+    <result column="cellphone" property="cellphone" jdbcType="VARCHAR" />
+    <result column="isprintbusiness" property="isprintbusiness" jdbcType="BIT" />
+    <result column="isprintmerchandise" property="isprintmerchandise" jdbcType="BIT" />
+    <result column="openinghours" property="openinghours" jdbcType="TIME" />
+    <result column="closinghours" property="closinghours" jdbcType="TIME" />
+    <result column="pic" property="pic" jdbcType="VARCHAR" />
+    <result column="location" property="location" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="chainstoreid" property="chainstoreid" jdbcType="INTEGER" />
+    <result column="longitude" property="longitude" jdbcType="DECIMAL" />
+    <result column="latitude" property="latitude" jdbcType="DECIMAL" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, name
+      id, name, telephone, 
+      cellphone, isprintbusiness, isprintmerchandise, 
+      openinghours, closinghours, pic, 
+      location, description, chainstoreid, 
+      longitude, latitude
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -19,16 +35,174 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.cdhaixun.domain.Store" >
-    insert into store (id, name)
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR})
+    insert into store (id, name, telephone, 
+      cellphone, isprintbusiness, isprintmerchandise, 
+      openinghours, closinghours, pic, 
+      location, description, chainstoreid, 
+      longitude, latitude)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}, 
+      #{cellphone,jdbcType=VARCHAR}, #{isprintbusiness,jdbcType=BIT}, #{isprintmerchandise,jdbcType=BIT}, 
+      #{openinghours,jdbcType=TIME}, #{closinghours,jdbcType=TIME}, #{pic,jdbcType=VARCHAR}, 
+      #{location,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{chainstoreid,jdbcType=INTEGER}, 
+      #{longitude,jdbcType=DECIMAL}, #{latitude,jdbcType=DECIMAL})
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.cdhaixun.domain.Store" >
+  <insert id="insertSelective" parameterType="com.cdhaixun.domain.Store" >
+    insert into store
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="telephone != null" >
+        telephone,
+      </if>
+      <if test="cellphone != null" >
+        cellphone,
+      </if>
+      <if test="isprintbusiness != null" >
+        isprintbusiness,
+      </if>
+      <if test="isprintmerchandise != null" >
+        isprintmerchandise,
+      </if>
+      <if test="openinghours != null" >
+        openinghours,
+      </if>
+      <if test="closinghours != null" >
+        closinghours,
+      </if>
+      <if test="pic != null" >
+        pic,
+      </if>
+      <if test="location != null" >
+        location,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="chainstoreid != null" >
+        chainstoreid,
+      </if>
+      <if test="longitude != null" >
+        longitude,
+      </if>
+      <if test="latitude != null" >
+        latitude,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null" >
+        #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="cellphone != null" >
+        #{cellphone,jdbcType=VARCHAR},
+      </if>
+      <if test="isprintbusiness != null" >
+        #{isprintbusiness,jdbcType=BIT},
+      </if>
+      <if test="isprintmerchandise != null" >
+        #{isprintmerchandise,jdbcType=BIT},
+      </if>
+      <if test="openinghours != null" >
+        #{openinghours,jdbcType=TIME},
+      </if>
+      <if test="closinghours != null" >
+        #{closinghours,jdbcType=TIME},
+      </if>
+      <if test="pic != null" >
+        #{pic,jdbcType=VARCHAR},
+      </if>
+      <if test="location != null" >
+        #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="chainstoreid != null" >
+        #{chainstoreid,jdbcType=INTEGER},
+      </if>
+      <if test="longitude != null" >
+        #{longitude,jdbcType=DECIMAL},
+      </if>
+      <if test="latitude != null" >
+        #{latitude,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cdhaixun.domain.Store" >
     update store
     <set >
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
+      <if test="telephone != null" >
+        telephone = #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="cellphone != null" >
+        cellphone = #{cellphone,jdbcType=VARCHAR},
+      </if>
+      <if test="isprintbusiness != null" >
+        isprintbusiness = #{isprintbusiness,jdbcType=BIT},
+      </if>
+      <if test="isprintmerchandise != null" >
+        isprintmerchandise = #{isprintmerchandise,jdbcType=BIT},
+      </if>
+      <if test="openinghours != null" >
+        openinghours = #{openinghours,jdbcType=TIME},
+      </if>
+      <if test="closinghours != null" >
+        closinghours = #{closinghours,jdbcType=TIME},
+      </if>
+      <if test="pic != null" >
+        pic = #{pic,jdbcType=VARCHAR},
+      </if>
+      <if test="location != null" >
+        location = #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="chainstoreid != null" >
+        chainstoreid = #{chainstoreid,jdbcType=INTEGER},
+      </if>
+      <if test="longitude != null" >
+        longitude = #{longitude,jdbcType=DECIMAL},
+      </if>
+      <if test="latitude != null" >
+        latitude = #{latitude,jdbcType=DECIMAL},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <update id="updateByPrimaryKey" parameterType="com.cdhaixun.domain.Store" >
+    update store
+    set name = #{name,jdbcType=VARCHAR},
+      telephone = #{telephone,jdbcType=VARCHAR},
+      cellphone = #{cellphone,jdbcType=VARCHAR},
+      isprintbusiness = #{isprintbusiness,jdbcType=BIT},
+      isprintmerchandise = #{isprintmerchandise,jdbcType=BIT},
+      openinghours = #{openinghours,jdbcType=TIME},
+      closinghours = #{closinghours,jdbcType=TIME},
+      pic = #{pic,jdbcType=VARCHAR},
+      location = #{location,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      chainstoreid = #{chainstoreid,jdbcType=INTEGER},
+      longitude = #{longitude,jdbcType=DECIMAL},
+      latitude = #{latitude,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="listAllStores" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from store
+  </select>
 </mapper>
