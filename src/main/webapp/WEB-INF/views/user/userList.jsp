@@ -53,8 +53,10 @@
             <!-- 右边内容开始 -->
             <div class="page-content">
                 <div class="row">
-                    <input type="text" id="searchName" placeholder="请输入菜单名查询"/>
-                    <button id="sbtn">测试搜索</button>
+                    <div class="col-xs-12">
+                        <input type="text" id="searchName" placeholder="请输入菜单名查询"/>
+                        <button id="sbtn">测试搜索</button>
+                    </div>
                     <div class="col-xs-12">
                         <!-- 显示内容列表的table -->
                         <table id="grid-table"></table>
@@ -88,7 +90,7 @@
 
         // 配置jqGrid列表table参数
         jQuery(grid_selector).jqGrid({
-            url: "${ctx}/test/testgrid",
+            url: "${ctx}/user/userList",
             datatype: "json",
             //height: 250,
             // jsonReader 这个参数必须和java后台参数一致

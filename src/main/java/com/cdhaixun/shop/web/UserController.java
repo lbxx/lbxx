@@ -1,5 +1,6 @@
 package com.cdhaixun.shop.web;
 
+import com.cdhaixun.domain.Store;
 import com.cdhaixun.shop.service.IUserService;
 import com.cdhaixun.util.MapUtils;
 import com.cdhaixun.util.Pager;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,6 +31,8 @@ public class UserController {
      */
     @RequestMapping(value = "list", method = RequestMethod.GET)
     public String list(){
+        // 查询店铺列表
+       // List<Store> storeList =
         return PATH + "userList";
     }
     @ResponseBody
