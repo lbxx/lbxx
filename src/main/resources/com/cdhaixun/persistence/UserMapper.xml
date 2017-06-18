@@ -46,21 +46,32 @@
         s.`name` storeName,
         ut.typeName typeName,
         u.registertime registertime
-    FROM
+        FROM
         `user` u
-    LEFT JOIN store s ON u.storeId = s.id
-    LEFT JOIN user_type ut ON ut.id = u.typeId
-    WHERE
+        LEFT JOIN store s ON u.storeId = s.id
+        LEFT JOIN user_type ut ON ut.chainstoreid = s.id
+        WHERE
         u.state = 1
-        <if test="storeId != null">
-          AND u.storeId = #{storeId}
-        </if>
-    <if test="registertime != null">
+    <if test="storeId != null and '' != storeId">
+      AND u.storeId = #{storeId}
+    </if>
+    <if test="registertime != null and '' != registertime">
         AND DATE_FORMAT(registertime,'%Y-%m-%d') = DATE_FORMAT(registertime,#{registertime})
     </if>
-    <if test="mobile != null and '' != mobile">
-    AND u.mobile LIKE '%${mobile}%'
+    <if test="type != null and '' != type">
+      <if test="type == 'idcard'">
+        AND u.idcard LIKE '%${typeval}%'
+      </if>
+      <if test="type == 'name'">
+        AND u.name LIKE '%${typeval}%'
+      </if>
+      <if test="type == 'mobile'">
+        AND u.mobile LIKE '%${typeval}%'
+      </if>
     </if>
+  </select>
+  <select id="selectStoreList" resultType="com.cdhaixun.domain.Store" >
+    select * from store
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from user

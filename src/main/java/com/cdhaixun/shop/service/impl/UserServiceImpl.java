@@ -1,5 +1,6 @@
 package com.cdhaixun.shop.service.impl;
 
+import com.cdhaixun.domain.Store;
 import com.cdhaixun.domain.User;
 import com.cdhaixun.persistence.UserMapper;
 import com.cdhaixun.shop.service.IUserService;
@@ -18,6 +19,11 @@ import java.util.Map;
  */
 @Service
 public class UserServiceImpl implements IUserService{
+    @Override
+    public List<Store> selectStoreList() {
+        return userMapper.selectStoreList();
+    }
+
     @Autowired
     private UserMapper userMapper;
 
