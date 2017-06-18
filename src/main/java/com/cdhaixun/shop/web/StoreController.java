@@ -121,4 +121,19 @@ public class StoreController extends BaseController {
             String id = request.getParameter("id");
             return storeService.selectByPrimaryKey(Integer.parseInt(id));
     }
+    
+    @RequestMapping(value="/add",method = RequestMethod.POST)
+    @ResponseBody
+    public Result addStore(Store store){
+        Result result = new Result();
+        try {
+            storeService.updateByPrimaryKeySelective(store);
+        } catch (Exception e) {
+            result.setResult(false);
+            result.setMsg("添加店铺失败!");
+        }
+        result.setResult(true);
+        result.setMsg("添加店铺成功!");
+        return result;
+    }
 }

@@ -97,7 +97,7 @@
 									<input type="text" id="form-field-1" placeholder="请填写负责人手机号码"
 										class="" style="width: 83%;">
 								</div>
-								
+
 							</div>
 							<!--右上  -->
 							<div id="addStore_up_right"
@@ -113,32 +113,23 @@
 									</div>
 									<!-- <input type="file" id="file"
 										style="margin: 15px 30px; width: 100%;" /> -->
-                                    <div class="form-group" style="border:1px solid red;padding-left:100px;margin-bottom:-30px;">
-                                        <div class="col-xs-12">
-                                            <label class="ace-file-input"><input style="border:1px solid red;" type="file"
-                                                id="id-input-file-2"><span
-                                                class="ace-file-container" data-title="Choose"><span
-                                                    class="ace-file-name" data-title="No File ..."><i
-                                                        class=" ace-icon fa fa-upload"></i></span></span><a class="remove"
-                                                href="#"><i class=" ace-icon fa fa-times"></i></a></label>
-                                        </div>
-                                    </div>
-									
+									<input type="file" onchange="previewImage(this)" />
 
 								</div>
-								<div style="width: 60%; float: right; height: 100%; max-height:">
-									<img alt="店铺店面图"
-										src="${ctx}/resources/images/gallery/image-1.jpg" width="100%"
-										height="180px;">
+								<div id="preview"
+									style="width: 60%; float: right; height: 100%;border:1px solid black;">
+									<img alt="店铺店面图" id="imghead"
+										src="${ctx}/resources/images/default.jpg" width="100%"
+										height="180px;" >
 								</div>
 							</div>
 							<!--左下  -->
 							<div id="addStore_bottom_left"
-								style="border: 1px solid #797979; width: 50%; float: left;">
+								style="border: 1px solid #797979; width: 50%; float: left;clear:left;">
 								<label class="" for="form-field-1-1"
 									style="line-height: 2em; padding-right: 27px;"> 店铺地址 </label> <input
-									type="text" id="cityName" name="location" placeholder="请填写店铺的详细地址" class=""
-									style="width: 70%;">
+									type="text" id="cityName" name="location"
+									placeholder="请填写店铺的详细地址" class="" style="width: 70%;">
 								<!-- <button class="btn btn-sm btn-primary" style="border-radius: 5px;" onclick="setCity()">定位</button> -->
 								<input type="button" id="gps" value="定位" />
 								<div id="container" style="width: 100%; height: 250px;"></div>
@@ -157,11 +148,10 @@
 									<label class="control-label bolder"
 										style="vertical-align: middle; padding-right: 20px;">是否支持游泳</label>
 
-									<label style="padding-right: 27px;"> <input
-										name="swim" type="radio" class="ace"> <span
-										class="lbl">是</span>
-									</label> <label> <input name="swim" type="radio"
-										class="ace"> <span class="lbl">否</span>
+									<label style="padding-right: 27px;"> <input name="swim"
+										type="radio" class="ace"> <span class="lbl">是</span>
+									</label> <label> <input name="swim" type="radio" class="ace">
+										<span class="lbl">否</span>
 									</label>
 								</div>
 								<div class="control-group"
@@ -183,8 +173,8 @@
 									<label style="padding-right: 27px;"> <input
 										name="bathe" type="radio" class="ace"> <span
 										class="lbl">是</span>
-									</label> <label> <input name="bathe" type="radio"
-										class="ace"> <span class="lbl">否</span>
+									</label> <label> <input name="bathe" type="radio" class="ace">
+										<span class="lbl">否</span>
 									</label>
 								</div>
 								<div class="control-group"
@@ -238,8 +228,8 @@
 									<label class="control-label bolder"
 										style="vertical-align: middle; padding-right: 20px;">下班时间</label>
 									<div class="input-group bootstrap-timepicker">
-										<input id="timepickerOff" type="text" name="closingHours"/> <span
-											class="input-group-addon"> <i
+										<input id="timepickerOff" type="text" name="closingHours" />
+										<span class="input-group-addon"> <i
 											class="fa fa-clock-o bigger-110"></i>
 										</span>
 									</div>
@@ -701,22 +691,83 @@
 			}).next().on(ace.click_event, function() {
 				$(this).prev().focus();
 			});
-		    
+
 			$('#id-input-file-1 , #id-input-file-2').ace_file_input({
-                no_file:'No File ...',
-                btn_choose:'Chosen',
-                btn_change:'Change',
-                droppable:false,
-                onchange:null,
-                thumbnail:false, 
-                //| true | large
-                whitelist:'gif|png|jpg|jpeg'
-                //blacklist:'exe|php'
-                //onchange:''
-                //
-            });
+				no_file : 'No File ...',
+				btn_choose : 'Chosen',
+				btn_change : 'Change',
+				droppable : false,
+				onchange : null,
+				thumbnail : false,
+				//| true | large
+				whitelist : 'gif|png|jpg|jpeg'
+			//blacklist:'exe|php'
+			//onchange:''
+			//
+			});
 
 		});
+
+		
+		//页面图上上传预览//
+		//图片上传预览    IE是用了滤镜。
+        function previewImage(file)
+        {
+          var MAXWIDTH  = 220; 
+          var MAXHEIGHT = 180;
+          var div = document.getElementById('preview');
+          if (file.files && file.files[0])
+          {
+              div.innerHTML ='<img id=imghead>';
+              var img = document.getElementById('imghead');
+              img.onload = function(){
+                var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+                img.width  =  rect.width;
+                img.height =  rect.height;
+//                 img.style.marginLeft = rect.left+'px';
+                img.style.marginTop = rect.top+'px';
+              }
+              var reader = new FileReader();
+              reader.onload = function(evt){img.src = evt.target.result;}
+              reader.readAsDataURL(file.files[0]);
+          }
+          else //兼容IE
+          {
+            var sFilter='filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale,src="';
+            file.select();
+            var src = document.selection.createRange().text;
+            div.innerHTML = '<img id=imghead>';
+            var img = document.getElementById('imghead');
+            img.filters.item('DXImageTransform.Microsoft.AlphaImageLoader').src = src;
+            var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+            status =('rect:'+rect.top+','+rect.left+','+rect.width+','+rect.height);
+            div.innerHTML = "<div id=divhead style='width:"+rect.width+"px;height:"+rect.height+"px;margin-top:"+rect.top+"px;"+sFilter+src+"\"'></div>";
+          }
+        }
+        function clacImgZoomParam( maxWidth, maxHeight, width, height ){
+            var param = {top:0, left:0, width:width, height:height};
+            if( width>maxWidth || height>maxHeight )
+            {
+                rateWidth = width / maxWidth;
+                rateHeight = height / maxHeight;
+                 
+                if( rateWidth > rateHeight )
+                {
+                    param.width =  maxWidth;
+                    param.height = Math.round(height / rateWidth);
+                }else
+                {
+                    param.width = Math.round(width / rateHeight);
+                    param.height = maxHeight;
+                }
+            }
+             
+            param.left = Math.round((maxWidth - param.width) / 2);
+            param.top = Math.round((maxHeight - param.height) / 2);
+            return param;
+        }
+      //页面图上上传预览//
 	</script>
+
 </body>
 </html>
