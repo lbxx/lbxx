@@ -47,12 +47,12 @@
 					<div class="breadcrumbs ace-save-state">
 						<li
 							style="list-style: none; padding-left: 20px; font-size: 16px; float: left;"><span
-							class="dropdown-toggle"> <i class=""> </i>基础信息
+							class="dropdown-toggle"> <i class=""> </i>店铺管理
 						</span></li>
 						<ul class="breadcrumb" style="float: right; line-height: 40px;">
 							您的当前位置:
-							<li><a href="#">基础信息</a></li>
-							<li class="active">我的账号</li>
+							<li><a href="#">店铺管理</a></li>
+							<li class="active">店铺列表</li>
 						</ul>
 					</div>
 					<!-- .breadcrumb -->
