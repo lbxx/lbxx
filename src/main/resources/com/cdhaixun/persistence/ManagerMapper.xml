@@ -13,9 +13,10 @@
     <result column="role" property="role" jdbcType="VARCHAR" />
     <result column="state" property="state" jdbcType="BIT" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, account, password, name, addtime, updatetime, lastlogintime, loginip, role, state, 
+    id, account, password ,mobile,name, addtime, updatetime, lastlogintime, loginip, role, state,
     remark
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -74,4 +75,41 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectByManager" resultMap="BaseResultMap" parameterType="com.cdhaixun.domain.Manager">
+    select
+    <include refid="Base_Column_List" />
+    from manager
+    <where>
+      <if test="account != null" >
+        account = #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null" >
+        addtime = #{addtime,jdbcType=DATE},
+      </if>
+      <if test="updatetime != null" >
+        updatetime = #{updatetime,jdbcType=DATE},
+      </if>
+      <if test="lastlogintime != null" >
+        lastlogintime = #{lastlogintime,jdbcType=DATE},
+      </if>
+      <if test="loginip != null" >
+        loginip = #{loginip,jdbcType=VARCHAR},
+      </if>
+      <if test="role != null" >
+        role = #{role,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=BIT},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </where>
+  </select>
 </mapper>

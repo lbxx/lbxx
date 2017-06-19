@@ -1,5 +1,9 @@
 package com.cdhaixun.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -8,6 +12,7 @@ import java.util.Date;
  * @Author tanggm
  * @Date 2017/6/6 23:41
  */
+
 public class Manager  implements Serializable {
     /**
      * id
@@ -17,6 +22,8 @@ public class Manager  implements Serializable {
      * 账号
      */
     private String account;
+
+    private String mobile;
     /**
      * 密码
      */
@@ -28,6 +35,7 @@ public class Manager  implements Serializable {
     /**
      * 添加时间
      */
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date addtime;
     /**
      * 更新时间
@@ -96,6 +104,14 @@ public class Manager  implements Serializable {
 
     public Date getUpdatetime() {
         return updatetime;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 
     public void setUpdatetime(Date updatetime) {
