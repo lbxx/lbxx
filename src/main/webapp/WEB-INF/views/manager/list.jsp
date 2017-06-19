@@ -53,8 +53,12 @@
             <!-- 右边内容开始 -->
             <div class="page-content">
                 <div class="row">
-                    <input type="text" id="searchName" placeholder="请输入菜单名查询"/>
-                    <button id="sbtn">测试搜索</button>
+                    <form class="navbar-form navbar-left" role="search">
+                        <div class="form-group">
+                            <input type="text"name="name" class="form-control" placeholder="请输入用户姓名">
+                        </div>
+                        <button type="submit" class="btn btn-default">搜索</button>
+                    </form>
                     <div class="col-xs-12">
                         <!-- 显示内容列表的table -->
                         <table id="grid-table"></table>
@@ -90,6 +94,7 @@
         jQuery(grid_selector).jqGrid({
             url: "${ctx}/manage/list",
             datatype: "json",
+            mtype:"POST",
             //height: 250,
             // jsonReader 这个参数必须和java后台参数一致
             jsonReader : {

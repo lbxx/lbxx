@@ -39,7 +39,7 @@ public class ManagerController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "list", method = RequestMethod.GET)
+    @RequestMapping(value = "list", method = RequestMethod.POST)
     public PageInfo<Manager> list(HttpServletRequest httpServletRequest, Manager manager) {
         Page<Manager> page = PageHelper.startPage(Integer.valueOf(httpServletRequest.getParameter("pageNum")), Integer.valueOf(httpServletRequest.getParameter("pageSize")), true);
         List<Manager> managerList = managerService.findManager(manager);
