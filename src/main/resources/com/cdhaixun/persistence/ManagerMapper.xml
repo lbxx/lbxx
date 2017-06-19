@@ -13,9 +13,10 @@
     <result column="role" property="role" jdbcType="VARCHAR" />
     <result column="state" property="state" jdbcType="BIT" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, account, password, name, addtime, updatetime, lastlogintime, loginip, role, state, 
+    id, account, password ,mobile,name, addtime, updatetime, lastlogintime, loginip, role, state,
     remark
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >

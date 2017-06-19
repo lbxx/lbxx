@@ -93,7 +93,7 @@
             //height: 250,
             // jsonReader 这个参数必须和java后台参数一致
             jsonReader : {
-                root : "result",
+                root : "list",
                 page : "pageNum",
                 total : "pages",
                 records : "total",
