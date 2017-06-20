@@ -17,7 +17,16 @@ public class ManagerServiceImpl implements IManagerService{
     private ManagerMapper managerMapper;
 
     @Override
-    public List<Manager> findManager(Manager manager) {
+    public List<Manager> findByManager(Manager manager) {
         return managerMapper.selectByManager(manager);
+    }
+
+    @Override
+    public void save(Manager manager) {
+        if(manager.getId()==null){
+            managerMapper.insert(manager);
+        }else{
+            managerMapper.updateByPrimaryKey(manager);
+        }
     }
 }

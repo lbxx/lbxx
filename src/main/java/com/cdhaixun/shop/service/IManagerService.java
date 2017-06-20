@@ -8,5 +8,7 @@ import java.util.List;
  * Created by tangxinmao on 2017/6/19.
  */
 public interface IManagerService {
-    List<Manager> findManager(Manager manager);
+    List<Manager> findByManager(Manager manager);
+
+    void save(Manager manager);
 }

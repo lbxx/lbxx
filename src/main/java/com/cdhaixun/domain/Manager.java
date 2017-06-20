@@ -22,7 +22,9 @@ public class Manager  implements Serializable {
      * 账号
      */
     private String account;
-
+    /**
+     * 手机号码
+     */
     private String mobile;
     /**
      * 密码
