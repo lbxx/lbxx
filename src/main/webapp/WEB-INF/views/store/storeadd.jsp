@@ -12,6 +12,10 @@
 .ui-jqgrid-bdiv {
 	height: 100% !important;
 }
+.noInput{
+    color:red;
+}
+
 </style>
 <!-- <script type="text/javascript" src="http://api.map.baidu.com/api?v=1.4"></script> -->
 <script src="http://api.map.baidu.com/api?v=2.0&ak=EZPCgQ6zGu6hZSmXlRrUMTpr"></script>
@@ -60,7 +64,7 @@
 					</div>
 					<ul class="breadcrumb"
 						style="padding-left: 10px;; line-height: 40px;">
-						<li>添加门店</li>
+						<li id="subTitle">添加门店</li>
 					</ul>
 					<!-- .breadcrumb -->
 				</div>
@@ -69,8 +73,9 @@
 				<div class="page-content">
 					<div class="row" style="width:1280px;height: 768px;overflow: hidden;">
 						<!-- ================= -->
-						<form class="form-horizontal" role="form"
+						<form id="storeForm" name="storeForm" class="form-horizontal" role="form"
 							enctype="multipart/form-data" action="${ctx}/store/add" method="POST">
+							<!-- -->
 							<div style="border: 1px solid #797979;border-bottom: none;">
 							<!--左上  -->
 							<div id="addStore_up_left"
@@ -82,23 +87,21 @@
 										style="width: 150px; margin-top: -3px; display: inline;">
 										<!-- <option value=""></option> -->
 									</select> <input type="text" id="storename" name="name" placeholder="连锁下属门店名称 "
-										class="" style="height: 32px; width: 56%;">
+										class="required" style="height: 32px; width: 56%;">
 									<div style="color: #AEAEAE;">单店连锁店名称请填写单店名称</div>
 								</div>
 								<div style="margin-bottom: 20px;">
-									<input type="text" id="district" placeholder="区号" class=""
-										style="width: 10%;">一 <label 
+									 <label 
 										style="float: left; line-height: 2em; width: 15%;">店铺座机</label>
-									<input type="text" id="tel" placeholder="座机号码"
-										class="" style="width: 70%;">
-										<input type="hidden" id="telephone" name="telephone"/>
-									<div style="color: #AEAEAE;">区号座机号分开填写</div>
+									<input type="text" id="telephone" name="telephone" maxlength="13" placeholder="座机号码"
+										class="required" style="width: 80%;">
+									<div style="color: #AEAEAE;">座机号码格式: '区号'-'座机号'</div>
 								</div>
 								<div style="margin-bottom: 1px;">
 									<label 
 										style="float: left; line-height: 2em; width: 15%;">手机</label>
 									<input type="text" id="cellphone" name="cellphone" placeholder="请填写负责人手机号码"
-										class="" style="width: 83%;">
+										class="" maxlength="11" style="width: 80%;">
 								</div>
 
 							</div>
@@ -136,7 +139,7 @@
 									style="line-height: 2em; padding-right: 27px;"> 店铺地址 </label> <input
 									type="text" id="cityName" name="location"
 									placeholder="请填写店铺的详细地址" class="" style="width: 70%;">
-								<input type="button" id="gps" value="定位" />
+								<input type="button" id="gps" name="gps" value="定位" />
 								<input type="hidden" name="longitude" id="lng" />
 								<input type="hidden" name="latitude"id="lat" />
 								<div id="searchResultPanel" style="border:1px solid #C0C0C0;width:70%;height:auto; display:none;"></div>
@@ -171,7 +174,7 @@
                             </div>
                             <div
                             style="margin: 50px auto 0 auto; padding-top: 50px; text-align: center; clear: both;">
-                            <input type="submit" id="submit" class="btn btn-info" value="确认添加" />
+                            <input type="button" id="submit" class="btn btn-info" value="确认添加" />
                                 <i class="ace-icon fa fa-check bigger-110"></i> 
 
                             &nbsp; &nbsp; &nbsp;
@@ -201,57 +204,154 @@
 	<jsp:include page="../bottomjs.jsp" />
 	<!-- 分页自定义js -->
 	
-	<script src="${ctx}/resources/js/map.jquery.min.js"></script>
+	<script src="${ctx}/resources/js/jquery.validate.min.js"></script>
+	<script src="${ctx}/resources/js/messages_zh.js"></script>
+	<script src="${ctx}/resources/js/additional-methods.min.js"></script>
 	<script type="text/javascript">
-	   $("form").submit(function(){
-		   $("#telephone").val($("#district").val() +"-"+ $("#tel").val());
-	   });
-	   
-	   /* $('#tel,#district').change(function () {
-		   $("telephone").val($("#district").val()+$("#tel").val());
-	}); */
+	/*======表单校验 */
+	$.validator.setDefaults({
+		debug:true,
+	    submitHandler: function() {
+	    	submitForm();
+	    }
+	});
+	// 手机号码验证
+	jQuery.validator.addMethod("isMobile", function(value, element) {
+	var length = value.length;
+	var mobile = /^(13[0-9]{9})|(18[0-9]{9})|(14[0-9]{9})|(17[0-9]{9})|(15[0-9]{9})$/; 
+	return this.optional(element) || (length == 11 && mobile.test(value));
+	}, "请正确填写您的手机号码");
+	
+	// 座机验证
+	jQuery.validator.addMethod("telephone", function(value, element) {
+	var tel = /^(^(\d{3,4}-)?\d{7,8})$|(13[0-9]{9}) $/g;
+	return this.optional(element) || (tel.test(value));
+	}, "座机号码格式错误:021-10101010!");	
+	
+    $("#storeForm").validate({
+        errorClass:"noInput",
+        rules:{
+            cellphone:{
+            required:true,
+            minlength:11,
+            isMobile:true
+            },
+            telephone:{
+            	required:true,
+                minlength:9,
+                maxlength:13,
+                telephone:true
+            }
+        },
+        messages : {  
+            cellphone : {  
+                required : "请输入手机号",  
+                minlength : "确认手机不能小于11个字符",  
+                isMobile : "请正确填写您的手机号码"  
+            } ,
+            telephone:{
+                required:"请输入座机号",
+                minlength:"座机号最少9位",
+                maxlength:"座机号最多13位",
+                telephone:"请正确填写座机号"
+            }
+             
+        }/* ,
+         errorPlacement : function(error, element) {  
+                error.appendTo(element.next().next());  
+            } */
+    });
+	/*======表单校验 */
+	var isFirstload=true;
 		jQuery(function($) {
-			var storeid = queryValueByKey("storeid");
-			if(storeid){
-				$("#submit").val("确认更新");
-				$.ajax({
-					url:"${ctx}/store/query?id="+storeid,
-					type: 'GET',
-					headers : {
-                        Accept : "application/json",
-                    },
-                    success : function(data, textStatus) {
-                        var store = data[0][0];
-                        var storeBusiness = data[1];
-                        for(id in storeBusiness){
-                        	var bCheck = $("#businessBox [name='business']");
-                        	if(bCheck.val() == storeBusiness[id]){
-                        		bCheck.attr("checked","checked");
-                        	}
-                        }
-                        var district = (store.telephone).substring(0,store.telephone.indexOf('-'));
-                        var tel = (store.telephone).substring(store.telephone.indexOf('-'));
-                        $("#chainstoreselect").val(store.chainstoreid);
-                        $("#storename").val(store.name);
-                        $("#district").val(district);
-                        $("#tel").val(tel);
-                        $("#cellphone").val(store.cellphone);
-                        $("#cityName").val(store.location);
-                        $("#description").val(store.description);
-                        if(store.pic){
-                        $("#storeimg").attr("src","${ctx}/upload"+store.pic);
-                        point = new BMap.Point(store.longitude, store.latitude); //创建点坐标
-                        }
-                        
-                    },
-                    error : function(data, textStatus, errorThrown) {
-                    },
-				});
-			}else{
-			}
 			
-			$
-					.ajax({
+			loadStoreinfo();
+			
+			
+			function loadStoreinfo() {
+			    var storeid = queryValueByKey("storeid");
+	            if(storeid){
+	                $("#submit").val("确认更新");
+	                $("#subTitle").text("更新门店");
+	                $("#storeForm").attr("action", "${ctx}/store/update");
+	                $.ajax({
+	                    url:"${ctx}/store/query?id="+storeid,
+	                    type: 'GET',
+	                    headers : {
+	                        Accept : "application/json",
+	                    },
+	                    success : function(data, textStatus) {
+	                        var store = data[0];
+	                        loadChainStoreList(function(){
+	                        	$("#chainstoreselect").val(store.chainstoreid);
+	                        });
+	                       
+	                        $("#storename").val(store.name);
+	                        $("#cellphone").val(store.cellphone);
+	                        $("#telephone").val(store.telephone);
+	                        $("#cityName").val(store.location);
+	                        $("#description").val(store.description);
+	                        if(store.pic){
+		                        $("#storeimg").attr("src","${ctx}/upload"+store.pic);
+	                        }
+	                        loadMap(store.longitude, store.latitude);
+	                        
+	                        map.addEventListener("tilesloaded",function(){
+	                        	if(isFirstload){
+	                        		 $("#cityName").val(store.location); 
+	                        		 isFirstload=false;
+	                        	}
+	                        	
+	                        	                     
+	                        });
+	                        getStoreBusiness(storeid);
+	                        
+	                    },
+	                    error : function(data, textStatus, errorThrown) {
+	                    },
+	                });
+	            }else{
+	            	//add store
+	            	loadChainStoreList();
+	            }
+			}
+			function submitForm(){
+			    var url = $("#storeForm").attr('action');  	
+			
+				$.ajax({
+					   var str_data=$("#storeForm input").map(function(){
+					  return ($(this).attr("name")+'='+$(this).val());
+					}).get().join("&"),
+					   type: "POST",
+					   url: url,
+					   data: str_data,
+					   success: function(msg){
+					     alert( "Data Saved: " + msg );
+					   }
+					});
+			}
+			function getStoreBusiness(storeid){
+				 $.ajax({
+                     url:"${ctx}/store/queryStoreBusiness?id="+storeid,
+                     type: 'GET',
+                     headers : {
+                         Accept : "application/json",
+                     },
+                     success : function(data, textStatus) {
+                    	 var storeBusiness = data;
+                         var bCheck = $("#businessBox [name='business']");
+                         loadBusiness(function () {
+                              for(id in storeBusiness){
+                                  $("#business"+storeBusiness[id]).attr("checked","checked");                                                
+                              }
+                         });
+                     },
+                     error : function(){
+                    	 }
+                     });
+			}
+			function loadChainStoreList(competion){
+			$.ajax({
 						url : "${ctx}/store/option",
 						type : 'GET',
 						headers : {
@@ -266,93 +366,111 @@
 												+ selection1[i].name
 												+ "</option>");
 							}
-					
+							  if(null != competion){
+								  competion();
+							  }
 						},
 						error : function(data, textStatus, errorThrown) {
 						},
 					});
+			}
 			
 			/*========获取业务  */
-			 $
-                    .ajax({
-                        url : "${ctx}/store/businessList",
-                        type : 'GET',
-                        headers : {
-                            /* Accept: "application/xml", */
-                            Accept : "application/json",
-                        },
-                        success : function(data, textStatus) {
-                        	$('#businessBox').html("");
-                            for (var i = 0; i < data.length; i++) {
-                                $('#businessBox').append(
-                                        "<label><input type='checkbox' id='business'"+data[i].id+" name='business' value='"+data[i].id+"'/>"
-                                                + data[i].name
-                                                + "</label>&nbsp;&nbsp;&nbsp;&nbsp;");
-                            }
-                        },
-                        error : function(data, textStatus, errorThrown) {
-                        },
-                    });
+			function loadBusiness(completion) {
+			     $.ajax({
+                     url : "${ctx}/store/businessList",
+                     type : 'GET',
+                     headers : {
+                         /* Accept: "application/xml", */
+                         Accept : "application/json",
+                     },
+                     success : function(data, textStatus) {
+                         $('#businessBox').html("");
+                         for (var i = 0; i < data.length; i++) {
+                             $('#businessBox').append(
+                                     "<label><input type='checkbox' id='business"+data[i].id+"' name='business' value='"+data[i].id+"'/>"
+                                             + data[i].name
+                                             + "</label>&nbsp;&nbsp;&nbsp;&nbsp;");
+                         }
+                         if(null!=completion){
+                        	 completion();
+                         }
+                     },
+                     error : function(data, textStatus, errorThrown) {
+                     },
+                 });
+			}
+		
 			/*========获取业务  */
-			
+		    function G(id) {
+			 return document.getElementById(id);
+            }
 
+			
+			function loadMap(lng,lat) {
+				var mapType1 = new BMap.MapTypeControl({mapTypes: [BMAP_NORMAL_MAP,BMAP_HYBRID_MAP]});
+	            var mapType2 = new BMap.MapTypeControl({anchor: BMAP_ANCHOR_TOP_RIGHT});
+	            var point = new BMap.Point(116.404, 39.915); //创建点坐标
+	          
+	            if(lng!=0&&lat!=0){
+	            	  point = new BMap.Point(lng, lat); //创建点坐标
+	            	  var marker = new BMap.Marker(point);
+	                  map.clearOverlays();         
+	                  map.addOverlay(marker); 
+	            }
+
+	            map.centerAndZoom(point, 14); //初始化地图，设置中心点坐标和地图级别
+
+	            map.enableScrollWheelZoom(); //激活滚轮调整大小功能
+
+	            map.addControl(new BMap.NavigationControl()); //添加控件：缩放地图的控件，默认在左上角；
+
+	            map.addControl(mapType1);          //2D图，卫星图
+	            map.addControl(mapType2);
+
+	            map.addControl(new BMap.ScaleControl()); //添加控件：地图显示比例的控件，默认在左下方；
+
+	            map.addControl(new BMap.OverviewMapControl()); //添加控件：地图的缩略图的控件，默认在右下方； TrafficContro
+			}
 			/*==================百度地图  */
+			var myValue;
 			var map = new BMap.Map("container"); //在container容器中创建一个地图,参数container为div的id属性;
-			var mapType1 = new BMap.MapTypeControl({mapTypes: [BMAP_NORMAL_MAP,BMAP_HYBRID_MAP]});
-		    var mapType2 = new BMap.MapTypeControl({anchor: BMAP_ANCHOR_TOP_RIGHT});
-			var point = new BMap.Point(116.404, 39.915); //创建点坐标
-
-			map.centerAndZoom(point, 14); //初始化地图，设置中心点坐标和地图级别
-
-			map.enableScrollWheelZoom(); //激活滚轮调整大小功能
-
-			map.addControl(new BMap.NavigationControl()); //添加控件：缩放地图的控件，默认在左上角；
-
-			map.addControl(mapType1);          //2D图，卫星图
-	        map.addControl(mapType2);
-			//map.addControl(new BMap.MapTypeControl()); //添加控件：地图类型控件，默认在右上方；
-			//map.addControl(new BMap.MapTypeControl({mapTypes: [BMAP_NORMAL_MAP,BMAP_HYBRID_MAP]}));
-
-			map.addControl(new BMap.ScaleControl()); //添加控件：地图显示比例的控件，默认在左下方；
-
-			map.addControl(new BMap.OverviewMapControl()); //添加控件：地图的缩略图的控件，默认在右下方； TrafficContro
+		
+			
 			var geoc = new BMap.Geocoder();    
-			 /*==============  */
-			 function G(id) {
-        return document.getElementById(id);
-    }
 
 		    var ac = new BMap.Autocomplete(    //建立一个自动完成的对象
 		        {"input" : "cityName"
 		        ,"location" : map
 		    });
 
-		    ac.addEventListener("onhighlight", function(e) {  //鼠标放在下拉列表上的事件
-		    var str = "";
-		        var _value = e.fromitem.value;
-		        var value = "";
-		        if (e.fromitem.index > -1) {
-		            value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
-		        }    
-		        str = "FromItem<br />index = " + e.fromitem.index + "<br />value = " + value;
-		        
-		        value = "";
-		        if (e.toitem.index > -1) {
-		            _value = e.toitem.value;
-		            value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
-		        }    
-		        str += "<br />ToItem<br />index = " + e.toitem.index + "<br />value = " + value;
-		        G("searchResultPanel").innerHTML = str;
-		    });
-
-		    var myValue;
-		    ac.addEventListener("onconfirm", function(e) {    //鼠标点击下拉列表后的事件
-		    var _value = e.item.value;
-		        myValue = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
-		        G("searchResultPanel").innerHTML ="onconfirm<br />index = " + e.item.index + "<br />myValue = " + myValue;
-		        
-		        setPlace();
-		    });
+		    ac.addEventListener("onhighlight",onhighlight);  //鼠标放在下拉列表上的事件
+		    ac.addEventListener("onconfirm", onconfirm);    //鼠标点击下拉列表后的事件
+		    
+		    function onhighlight(e) {
+		    	var str = "";
+                var _value = e.fromitem.value;
+                var value = "";
+                if (e.fromitem.index > -1) {
+                    value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+                }    
+                str = "FromItem<br />index = " + e.fromitem.index + "<br />value = " + value;
+                
+                value = "";
+                if (e.toitem.index > -1) {
+                    _value = e.toitem.value;
+                    value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+                }    
+                str += "<br />ToItem<br />index = " + e.toitem.index + "<br />value = " + value;
+                G("searchResultPanel").innerHTML = str;
+			}
+		    
+		    function onconfirm(e) {
+		    	 var _value = e.item.value;
+	                myValue = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+	                G("searchResultPanel").innerHTML ="onconfirm<br />index = " + e.item.index + "<br />myValue = " + myValue;
+	                setPlace();
+			}
 
 		    function setPlace(){
 		        map.clearOverlays();    //清除地图上所有覆盖物
@@ -427,10 +545,9 @@
 			$('#gps').click(function setCity() {
 				alert(document.getElementById("cityName").value);
 				search.search(document.getElementById("cityName").value);
-
 			});
 
-			search.search(document.getElementById("cityName").value);
+			//search.search(document.getElementById("cityName").value);
 			/*==================百度地图  */
 			//上班时间选择
 			$('#timepickerOn').timepicker({

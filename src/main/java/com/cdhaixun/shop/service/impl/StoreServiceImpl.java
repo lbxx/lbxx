@@ -66,6 +66,9 @@ public class StoreServiceImpl implements IStoreService {
     public int deleteStoreById(int id) {
         return storeMapper.deleteByPrimaryKey(id);
     }
+    public int updateIsDeleteById(int id){
+        return storeMapper.updateIsDeleteById(id);
+    }
     @Override
     public int updateByPrimaryKeySelective(Store store) {
         return storeMapper.updateByPrimaryKey(store);
