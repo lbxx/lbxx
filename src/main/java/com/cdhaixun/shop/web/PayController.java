@@ -19,6 +19,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -46,7 +47,7 @@ public class PayController extends BaseController{
      */
     @RequestMapping(value = "scanpay", method = RequestMethod.POST)
     @ResponseBody
-    public Result pay(Pay pay) throws IOException {
+    public Result pay(@RequestBody  Pay pay) throws IOException {
         Result result=new Result();
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("appid", pay.getAppid()));
