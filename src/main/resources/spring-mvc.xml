@@ -11,7 +11,7 @@
   
     <!-- 自动扫描controller包下的所有类，如果@Controller注入为bean -->  
     <context:component-scan base-package="com.cdhaixun" />
-    <mvc:annotation-driven >
+    <mvc:annotation-driven conversion-service="converter" >
     <mvc:message-converters  register-defaults="true">
         <bean id="httpMessageConverter" class="com.cdhaixun.common.httpMessageConverter.HttpMessageConverter">
           <property name="supportedMediaTypes">
@@ -22,6 +22,14 @@
         </bean>
     </mvc:message-converters>
     </mvc:annotation-driven>
+    <bean class="org.springframework.format.support.FormattingConversionServiceFactoryBean" id="converter">
+        <property name="converters">
+            <set>
+                <bean class="com.cdhaixun.common.dataBind.DateConverter"/>
+
+            </set>
+        </property>
+    </bean>
     
     <!-- 避免IE执行AJAX时,返回JSON出现下载文件 -->  
     <bean id="mappingJacksonHttpMessageConverter"  

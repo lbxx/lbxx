@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Date;
+
 /**
  * 用于测试的控制器，后期会删除
  * @author tanggm
@@ -52,5 +54,11 @@ public class TestController extends BaseController {
 	public Object testgrid(Pager pager, String name) {
 			Pager menus = testService.getMenuList(pager, name);
 			return menus;
+	}
+	@RequestMapping(value = "/testDate")
+	@ResponseBody
+	public Object testgrid(Date data) {
+
+		return null;
 	}
 }
