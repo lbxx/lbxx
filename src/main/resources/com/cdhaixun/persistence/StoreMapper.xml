@@ -6,8 +6,6 @@
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="telephone" property="telephone" jdbcType="VARCHAR" />
     <result column="cellphone" property="cellphone" jdbcType="VARCHAR" />
-    <result column="isprintbusiness" property="isprintbusiness" jdbcType="BIT" />
-    <result column="isprintmerchandise" property="isprintmerchandise" jdbcType="BIT" />
     <result column="openinghours" property="openinghours" jdbcType="TIME" />
     <result column="closinghours" property="closinghours" jdbcType="TIME" />
     <result column="pic" property="pic" jdbcType="VARCHAR" />
@@ -16,13 +14,12 @@
     <result column="chainstoreid" property="chainstoreid" jdbcType="INTEGER" />
     <result column="longitude" property="longitude" jdbcType="DECIMAL" />
     <result column="latitude" property="latitude" jdbcType="DECIMAL" />
+    <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="isdelete" property="isdelete" jdbcType="BIT" />
   </resultMap>
   <sql id="Base_Column_List" >
-      id, name, telephone, 
-      cellphone, isprintbusiness, isprintmerchandise, 
-      openinghours, closinghours, pic, 
-      location, description, chainstoreid, 
-      longitude, latitude
+    id, name, telephone, cellphone, openinghours, closinghours, pic, location, description, 
+    chainstoreid, longitude, latitude, createtime, isdelete
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -36,17 +33,20 @@
   </delete>
   <insert id="insert" parameterType="com.cdhaixun.domain.Store" >
     insert into store (id, name, telephone, 
-      cellphone, isprintbusiness, isprintmerchandise, 
-      openinghours, closinghours, pic, 
-      location, description, chainstoreid, 
-      longitude, latitude)
+      cellphone, openinghours, closinghours, 
+      pic, location, description, 
+      chainstoreid, longitude, latitude, 
+      createtime, isdelete)
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}, 
-      #{cellphone,jdbcType=VARCHAR}, #{isprintbusiness,jdbcType=BIT}, #{isprintmerchandise,jdbcType=BIT}, 
-      #{openinghours,jdbcType=TIME}, #{closinghours,jdbcType=TIME}, #{pic,jdbcType=VARCHAR}, 
-      #{location,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{chainstoreid,jdbcType=INTEGER}, 
-      #{longitude,jdbcType=DECIMAL}, #{latitude,jdbcType=DECIMAL})
+      #{cellphone,jdbcType=VARCHAR}, #{openinghours,jdbcType=TIME}, #{closinghours,jdbcType=TIME}, 
+      #{pic,jdbcType=VARCHAR}, #{location,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{chainstoreid,jdbcType=INTEGER}, #{longitude,jdbcType=DECIMAL}, #{latitude,jdbcType=DECIMAL}, 
+      #{createtime,jdbcType=TIMESTAMP}, #{isdelete,jdbcType=BIT})
   </insert>
-  <insert id="insertSelective" parameterType="com.cdhaixun.domain.Store" >
+  <insert id="insertSelective" parameterType="com.cdhaixun.domain.Store" useGeneratedKeys="true" keyProperty="id">
+  <!-- <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">  
+        SELECT LAST_INSERT_ID()  
+    </selectKey> -->
     insert into store
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -60,12 +60,6 @@
       </if>
       <if test="cellphone != null" >
         cellphone,
-      </if>
-      <if test="isprintbusiness != null" >
-        isprintbusiness,
-      </if>
-      <if test="isprintmerchandise != null" >
-        isprintmerchandise,
       </if>
       <if test="openinghours != null" >
         openinghours,
@@ -91,6 +85,12 @@
       <if test="latitude != null" >
         latitude,
       </if>
+      <if test="createtime != null" >
+        createtime,
+      </if>
+      <if test="isdelete != null" >
+        isdelete,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -104,12 +104,6 @@
       </if>
       <if test="cellphone != null" >
         #{cellphone,jdbcType=VARCHAR},
-      </if>
-      <if test="isprintbusiness != null" >
-        #{isprintbusiness,jdbcType=BIT},
-      </if>
-      <if test="isprintmerchandise != null" >
-        #{isprintmerchandise,jdbcType=BIT},
       </if>
       <if test="openinghours != null" >
         #{openinghours,jdbcType=TIME},
@@ -135,6 +129,12 @@
       <if test="latitude != null" >
         #{latitude,jdbcType=DECIMAL},
       </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isdelete != null" >
+        #{isdelete,jdbcType=BIT},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.cdhaixun.domain.Store" >
@@ -148,12 +148,6 @@
       </if>
       <if test="cellphone != null" >
         cellphone = #{cellphone,jdbcType=VARCHAR},
-      </if>
-      <if test="isprintbusiness != null" >
-        isprintbusiness = #{isprintbusiness,jdbcType=BIT},
-      </if>
-      <if test="isprintmerchandise != null" >
-        isprintmerchandise = #{isprintmerchandise,jdbcType=BIT},
       </if>
       <if test="openinghours != null" >
         openinghours = #{openinghours,jdbcType=TIME},
@@ -179,6 +173,12 @@
       <if test="latitude != null" >
         latitude = #{latitude,jdbcType=DECIMAL},
       </if>
+      <if test="createtime != null" >
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isdelete != null" >
+        isdelete = #{isdelete,jdbcType=BIT},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -187,8 +187,6 @@
     set name = #{name,jdbcType=VARCHAR},
       telephone = #{telephone,jdbcType=VARCHAR},
       cellphone = #{cellphone,jdbcType=VARCHAR},
-      isprintbusiness = #{isprintbusiness,jdbcType=BIT},
-      isprintmerchandise = #{isprintmerchandise,jdbcType=BIT},
       openinghours = #{openinghours,jdbcType=TIME},
       closinghours = #{closinghours,jdbcType=TIME},
       pic = #{pic,jdbcType=VARCHAR},
@@ -196,7 +194,9 @@
       description = #{description,jdbcType=VARCHAR},
       chainstoreid = #{chainstoreid,jdbcType=INTEGER},
       longitude = #{longitude,jdbcType=DECIMAL},
-      latitude = #{latitude,jdbcType=DECIMAL}
+      latitude = #{latitude,jdbcType=DECIMAL},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      isdelete = #{isdelete,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
   

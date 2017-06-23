@@ -1,6 +1,10 @@
 package com.cdhaixun.shop.web;
 
+import java.io.File;
+import java.security.Timestamp;
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -11,19 +15,30 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.w3c.dom.ls.LSInput;
 
+import com.cdhaixun.common.constant.SessionConstant;
 import com.cdhaixun.common.vo.Result;
 import com.cdhaixun.common.web.BaseController;
+import com.cdhaixun.domain.Business;
 import com.cdhaixun.domain.ChainStore;
 import com.cdhaixun.domain.Menu;
 import com.cdhaixun.domain.Store;
 import com.cdhaixun.shop.service.IStoreService;
+import com.cdhaixun.util.ImagesUtil;
 import com.cdhaixun.util.Pager;
+import com.cdhaixun.util.RandomUtil;
+import com.cdhaixun.util.UploadImages;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.mysql.fabric.xmlrpc.base.Array;
@@ -35,6 +50,9 @@ import com.mysql.fabric.xmlrpc.base.Array;
 @Controller
 @RequestMapping("/store")
 public class StoreController extends BaseController {
+    
+//    Logger logger = LoggerFactory.getLogger(StoreController.class); 
+    
     private static final String PATH = "store/";
     @Autowired
     public IStoreService storeService;
@@ -115,25 +133,49 @@ public class StoreController extends BaseController {
         result.setMsg("更新店铺成功!");
         return result;
     }
+    @SuppressWarnings("unchecked")
     @RequestMapping(value="/query")
     @ResponseBody
-    public List<Store> queryStoreById(HttpServletRequest request){
-            String id = request.getParameter("id");
-            return storeService.selectByPrimaryKey(Integer.parseInt(id));
+    public List queryStoreById(HttpServletRequest request){
+        List list = new ArrayList<>();
+        int id = Integer.parseInt(request.getParameter("id"));
+        list.add(storeService.selectByPrimaryKey(id));
+        list.add(storeService.getStoreBusinessByStoreId(id));
+            return list;
     }
     
     @RequestMapping(value="/add",method = RequestMethod.POST)
     @ResponseBody
-    public Result addStore(Store store){
+    public Result addStore(Store store,@RequestParam(value="file",required=false) MultipartFile file,
+            HttpServletRequest request){
         Result result = new Result();
+        String[] businessArr = request.getParameterValues("business");
         try {
-            storeService.updateByPrimaryKeySelective(store);
-        } catch (Exception e) {
+          
+          int storeid = storeService.insertSelective(store,file,request);
+          if(businessArr != null && businessArr.length > 0){
+           storeService.insertStoreBusiness(storeid,businessArr);
+          }
+        }catch(NullPointerException npe){
+            result.setResult(false);
+            result.setMsg("获取店铺id失败!");
+            return result;
+        }catch (Exception e) {
             result.setResult(false);
             result.setMsg("添加店铺失败!");
+            return result;
         }
         result.setResult(true);
         result.setMsg("添加店铺成功!");
         return result;
     }
+    
+    
+
+    @RequestMapping(value="businessList")
+    @ResponseBody
+    public List<Business> businessList(){
+        return storeService.listBusiness();
+    }
+    
 }

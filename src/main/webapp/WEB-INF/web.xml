@@ -4,7 +4,8 @@
     xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"  
     id="WebApp_ID" version="2.5">  
   
-    <display-name>shop</display-name>  
+    <display-name>shop</display-name>
+   
     <context-param>  
         <param-name>contextConfigLocation</param-name>  
         <param-value>classpath:spring.xml,classpath:spring-mybatis.xml</param-value>  

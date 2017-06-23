@@ -42,6 +42,7 @@
         <property name="filterChainDefinitions">
             <value>
                 /index/**=authc
+                /store/**=authc
                 /manager/**=authc
                 /admin/listUser**=authc,perms[admin:manage]
             </value>

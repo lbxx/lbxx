@@ -105,6 +105,10 @@
 	<jsp:include page="../footer.jsp"></jsp:include>
 	<!-- 引入顶部公共js -->
 	<jsp:include page="../bottomjs.jsp" />
+	<%-- <div id="storeaddpage">
+	<jsp:include page="storeadd.jsp" />
+	</div> --%>
+	
 	<!-- 分页自定义js -->
 	<script type="text/javascript">
 		/* var selection2; */
@@ -199,15 +203,19 @@
 					fixed : true,
 					sortable : false,
 					resize : false,
-					formatter : 'actions',
+//					formatter : 'actions',
+					formatter : function (value, grid, rows, state) {
+						return "<a href=\"#\" style=\"color:#f60\" onclick=\"Modify(" + rows.id + ")\">编辑</a>&nbsp;&nbsp;"
+					+ "<a href=\"#\" style=\"color:#f60\" onclick=\"del(" + rows.id + ")\">删除</a>"
+					}, 
 					formatoptions : {
 						keys : true,
 						 editformbutton:true,
 						 editOptions : {
 							 url : '${ctx}/store/update',
 							 closeAfterEdit:true,
-							 //recreateForm: true,
-							 //beforeShowForm:beforeEditCallback
+							 recreateForm: true,
+							 beforeShowForm:beforeEditCallback,
 							 //afterShowForm:$.GridUtils.afterEditCallback,
 							 afterSubmit: function(response, formid) {
 	                                var data = JSON.parse(response.responseText);
@@ -320,6 +328,7 @@
 					},
 					{},
 					{
+						closeAfterDelete:true,
 						reloadAfterSubmit : true,
 						closeOnEscape : true,
 						url : '${ctx}/store/delete',
@@ -409,7 +418,10 @@
 			}
 			
 			function beforeEditCallback(){
-				alert('beforeEdit');
+				$("#editmodgrid-table").css({
+					width:'1280px'
+				});
+				$("#editmodgrid-table").html($("#storeaddpage").html());
 			}
 			function afterSubmitCallback(response,formid){
 				var data = JSON.parse(response.responseText);
@@ -422,6 +434,12 @@
 			}
 
 		});
+		
+		function Modify(id) {
+              var grid_selector = "#grid-table";  
+              var model = jQuery(grid_selector).jqGrid('getRowData', id);
+              location.href="add?storeid="+id;
+          }
 	</script>
 </body>
 </html>
