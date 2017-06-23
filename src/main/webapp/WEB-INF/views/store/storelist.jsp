@@ -156,6 +156,10 @@
 							console.log(data);
 						},
 					});
+			// 数据列表table
+			var grid_selector = "#grid-table";
+			// 显示分页参数的table
+			var pager_selector = "#grid-pager";
 			// 自定义搜索方法，暂时先用，后期研究jqGrid搜索
 			$("#queryBtn").click(function() {
 				
@@ -164,7 +168,7 @@
 					alert("请先选择门店");
 					return;
 				}
-				$("#grid-table").jqGrid('setGridParam', { // grid-table 这个是表格的id, setGridParam这个值是固定值
+				$(grid_selector).jqGrid('setGridParam', { // grid-table 这个是表格的id, setGridParam这个值是固定值
 					url : "${ctx}/store/query", // 请求url
 					postData : {
 						"id" : id
@@ -174,10 +178,6 @@
 				}).trigger("reloadGrid"); // 渲染表格数据，这个  reloadGrid  是固定值
 			});
 
-			// 数据列表table
-			var grid_selector = "#grid-table";
-			// 显示分页参数的table
-			var pager_selector = "#grid-pager";
 
 			// 配置jqGrid列表table参数
 			jQuery(grid_selector).jqGrid({
@@ -222,7 +222,7 @@
 	                                if (data.result) {
 	                                    return [ true, "OK", data.id ];
 	                                } else {
-	                                    return [ false, data.errmsg ];
+	                                    return [ false, data.msg ];
 	                                }
 	                            },
 		                     //afterComplete:afterCompleteCallback
@@ -236,7 +236,7 @@
 								if (data.result) {
 									return [ true, "OK", data.id ];
 								} else {
-									return [ false, data.errmsg ];
+									return [ false, data.msg ];
 								}
 							}
 						}
@@ -322,7 +322,7 @@
                             if (data.result) {
                                 return [ true, "OK", data.id ];
                             } else {
-                                return [ false, data.errmsg ];
+                                return [ false, data.msg ];
                             }
                         }
 					},
@@ -340,10 +340,10 @@
 						},
 						afterSubmit : function(response, formid) {
 							var data = JSON.parse(response.responseText);
-							if (data.status) {
+							if (data.result) {
 								return [ true, "OK", data.id ];
 							} else {
-								return [ false, data.errmsg ];
+								return [ false, data.msg ];
 							}
 						}
 					},
@@ -429,7 +429,7 @@
                 if (data.result) {
                     return [ true, "OK", data.id ];
                 } else {
-                    return [ false, data.errmsg ];
+                    return [ false, data.msg ];
                 }
 			}
 
@@ -440,6 +440,24 @@
               var model = jQuery(grid_selector).jqGrid('getRowData', id);
               location.href="add?storeid="+id;
           }
+		function del(id) {
+			$.ajax({
+                url : "${ctx}/store/delete",
+                type : 'POST',
+                headers : {
+                    Accept : "application/json",
+                },
+                success : function(data) {
+                    if(data.result){
+                	var grid_selector = "#grid-table";  
+                	$(grid_selector).setGridParam({datatype:'json', page:1}).trigger('reloadGrid');  
+                    }
+                },
+                error:function(){
+                	
+                }
+               });
+        }
 	</script>
 </body>
 </html>

@@ -106,12 +106,14 @@ public class StoreController extends BaseController {
         String[] idArr = ids.split(",");
         try {
             for(String id : idArr){
-                storeService.deleteStoreById(Integer.parseInt(id));
+                int val = Integer.parseInt(id);
+                storeService.updateIsDeleteById(val);
             }
         } catch (Exception e) {
            result.setResult(false);
            result.setMsg("删除店铺失败!");
             e.printStackTrace();
+            return result;
         }
         result.setResult(true);
         result.setMsg("删除店铺成功!");
@@ -121,10 +123,12 @@ public class StoreController extends BaseController {
     
     @RequestMapping(value="/update",method = RequestMethod.POST)
     @ResponseBody
-    public Result updateStore(Store store){
+    public Result updateStore(Store store,@RequestParam(value="file",required=false) MultipartFile file,
+            HttpServletRequest request){
         Result result = new Result();
         try {
             storeService.updateByPrimaryKeySelective(store);
+            String[] businessArr = request.getParameterValues("business");
         } catch (Exception e) {
             result.setResult(false);
             result.setMsg("更新店铺失败!");
@@ -137,13 +141,17 @@ public class StoreController extends BaseController {
     @RequestMapping(value="/query")
     @ResponseBody
     public List queryStoreById(HttpServletRequest request){
-        List list = new ArrayList<>();
         int id = Integer.parseInt(request.getParameter("id"));
-        list.add(storeService.selectByPrimaryKey(id));
-        list.add(storeService.getStoreBusinessByStoreId(id));
-            return list;
+        return storeService.selectByPrimaryKey(id);
     }
     
+    @SuppressWarnings("unchecked")
+    @RequestMapping(value="/queryStoreBusiness")
+    @ResponseBody
+    public List queryStoreBusinessByStoreId(HttpServletRequest request){
+        int id = Integer.parseInt(request.getParameter("id"));
+            return storeService.getStoreBusinessByStoreId(id);
+    }
     @RequestMapping(value="/add",method = RequestMethod.POST)
     @ResponseBody
     public Result addStore(Store store,@RequestParam(value="file",required=false) MultipartFile file,

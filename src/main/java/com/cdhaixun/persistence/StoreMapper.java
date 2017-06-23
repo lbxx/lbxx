@@ -26,6 +26,7 @@ public interface StoreMapper extends BaseMapper<Store> {
     List<ChainStore>listChainStores();
     
     int deleteByPrimaryKey(int id);
+    int updateIsDeleteById(int id);
     int updateByPrimaryKeySelective(Store store);
     List<Store> selectByPrimaryKey(int id);
 

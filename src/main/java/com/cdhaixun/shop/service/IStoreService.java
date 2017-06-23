@@ -24,4 +24,5 @@ public interface IStoreService {
     int insertSelective(Store store,MultipartFile file,HttpServletRequest request);
     void insertStoreBusiness(int storeid, String[] businessArr);
     List getStoreBusinessByStoreId(int storeId);
+    int updateIsDeleteById(int id);
 }

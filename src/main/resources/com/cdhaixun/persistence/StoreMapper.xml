@@ -204,5 +204,10 @@
     select
     <include refid="Base_Column_List" />
     from store
+    where isdelete = 0
   </select>
+  <update id="updateIsDeleteById" parameterType="java.lang.Integer">
+    update store set isdelete = 1
+    where id = #{id,jdbcType=INTEGER}
+  </update>
 </mapper>
