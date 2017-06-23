@@ -1,11 +1,10 @@
 package com.cdhaixun.shop.web;
 
-import com.cdhaixun.common.appVo.Pay;
-import com.cdhaixun.common.appVo.PayResult;
+import com.cdhaixun.common.yyyVo.Pay;
+import com.cdhaixun.common.yyyVo.PayResult;
 import com.cdhaixun.common.appVo.Result;
 import com.cdhaixun.common.web.BaseController;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.codec.net.URLCodec;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -16,6 +15,7 @@ import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -47,8 +47,7 @@ public class PayController extends BaseController{
      */
     @RequestMapping(value = "scanpay", method = RequestMethod.POST)
     @ResponseBody
-    public Result pay(@RequestBody  Pay pay) throws IOException {
-        Result result=new Result();
+    public PayResult pay(@RequestBody  Pay pay) throws IOException {
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("appid", pay.getAppid()));
         params.add(new BasicNameValuePair("authcode", pay.getAuthcode()));
@@ -67,8 +66,6 @@ public class PayController extends BaseController{
         HttpEntity httpEntity = httpResponse.getEntity();
         String json = IOUtils.toString(httpEntity.getContent());
         PayResult payResult= objectMapper.readValue(json, PayResult.class);
-        result.setData(payResult);
-        result.setResult(true);
-        return  result;
+        return  payResult;
     }
 }
