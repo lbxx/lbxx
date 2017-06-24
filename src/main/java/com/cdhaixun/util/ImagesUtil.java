@@ -1,13 +1,24 @@
 package com.cdhaixun.util;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.awt.image.CropImageFilter;
 import java.awt.image.FilteredImageSource;
 import java.awt.image.ImageFilter;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
+
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @Author tanggm
@@ -60,4 +71,28 @@ public class ImagesUtil {
         }
         return ConfigContentUtils.PIC_ROOT_PATH+File.separator+imagePath;
        }
+    /** 
+     * 通过读取文件并获取其width及height的方式，来判断判断当前文件是否图片，这是一种非常简单的方式。 
+     *  
+     * @param imageFile 
+     * @return 
+     */  
+    public static boolean isImage(File imageFile) {  
+        if (!imageFile.exists()) {  
+            return false;  
+        }  
+        Image img = null;  
+        try {  
+            img = ImageIO.read(imageFile);  
+            if (img == null || img.getWidth(null) <= 0 || img.getHeight(null) <= 0) {  
+                return false;  
+            }  
+            return true;  
+        } catch (Exception e) {  
+            return false;  
+        } finally {  
+            img = null;  
+        }  
+    }  
+    
 }

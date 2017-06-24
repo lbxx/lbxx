@@ -1,5 +1,6 @@
 package com.cdhaixun.shop.web;
 
+import com.cdhaixun.common.vo.Result;
 import com.cdhaixun.domain.Manager;
 import com.cdhaixun.shop.service.IManagerService;
 import com.github.pagehelper.Page;
@@ -7,6 +8,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -42,9 +44,25 @@ public class ManagerController {
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public PageInfo<Manager> list(HttpServletRequest httpServletRequest, Manager manager) {
         Page<Manager> page = PageHelper.startPage(Integer.valueOf(httpServletRequest.getParameter("pageNum")), Integer.valueOf(httpServletRequest.getParameter("pageSize")), true);
-        List<Manager> managerList = managerService.findManager(manager);
-
+        List<Manager> managerList = managerService.findByManager(manager);
         PageInfo<Manager> pageInfo = page.toPageInfo();
         return pageInfo;
     }
+
+    /**
+     * 添加账号页面
+     */
+    @RequestMapping(value = "addIndex", method = RequestMethod.GET)
+    public String addIndex() {
+        return "manager/add";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "add", method = RequestMethod.POST)
+    public Result add(HttpServletRequest httpServletRequest, @Validated  Manager manager) {
+        Result result = new Result();
+        managerService.save(manager);
+        return result;
+    }
+
 }

@@ -2,7 +2,7 @@ package com.cdhaixun.domain;
 
 import java.util.Date;
 
-public class ChainStore {
+public class Business {
     private Integer id;
 
     private String name;

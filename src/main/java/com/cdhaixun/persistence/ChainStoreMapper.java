@@ -2,11 +2,10 @@ package com.cdhaixun.persistence;
 
 import java.util.List;
 
-import org.springframework.stereotype.Repository;
-
+import com.cdhaixun.common.persistence.BaseMapper;
 import com.cdhaixun.domain.ChainStore;
-@Repository
-public interface ChainStoreMapper {
+
+public interface ChainStoreMapper extends BaseMapper<ChainStore>{
     int deleteByPrimaryKey(Integer id);
 
     int insert(ChainStore record);

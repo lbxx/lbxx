@@ -22,13 +22,37 @@
     insert into category (id, name)
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR})
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.cdhaixun.domain.Category" >
+  <insert id="insertSelective" parameterType="com.cdhaixun.domain.Category" >
+    insert into category
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cdhaixun.domain.Category" >
     update category
     <set >
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
     </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cdhaixun.domain.Category" >
+    update category
+    set name = #{name,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

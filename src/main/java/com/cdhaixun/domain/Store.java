@@ -12,10 +12,6 @@ public class Store {
 
     private String cellphone;
 
-    private Boolean isprintbusiness;
-
-    private Boolean isprintmerchandise;
-
     private Date openinghours;
 
     private Date closinghours;
@@ -31,6 +27,10 @@ public class Store {
     private BigDecimal longitude;
 
     private BigDecimal latitude;
+
+    private Date createtime;
+
+    private Boolean isdelete;
 
     public Integer getId() {
         return id;
@@ -62,22 +62,6 @@ public class Store {
 
     public void setCellphone(String cellphone) {
         this.cellphone = cellphone == null ? null : cellphone.trim();
-    }
-
-    public Boolean getIsprintbusiness() {
-        return isprintbusiness;
-    }
-
-    public void setIsprintbusiness(Boolean isprintbusiness) {
-        this.isprintbusiness = isprintbusiness;
-    }
-
-    public Boolean getIsprintmerchandise() {
-        return isprintmerchandise;
-    }
-
-    public void setIsprintmerchandise(Boolean isprintmerchandise) {
-        this.isprintmerchandise = isprintmerchandise;
     }
 
     public Date getOpeninghours() {
@@ -144,12 +128,19 @@ public class Store {
         this.latitude = latitude;
     }
 
-    @Override
-    public String toString() {
-        return "Store [id=" + id + ", name=" + name + ", telephone=" + telephone + ", cellphone=" + cellphone
-                + ", isprintbusiness=" + isprintbusiness + ", isprintmerchandise=" + isprintmerchandise
-                + ", openinghours=" + openinghours + ", closinghours=" + closinghours + ", pic=" + pic + ", location="
-                + location + ", description=" + description + ", chainstoreid=" + chainstoreid + ", longitude="
-                + longitude + ", latitude=" + latitude + "]";
+    public Date getCreatetime() {
+        return createtime;
+    }
+
+    public void setCreatetime(Date createtime) {
+        this.createtime = createtime;
+    }
+
+    public Boolean getIsdelete() {
+        return isdelete;
+    }
+
+    public void setIsdelete(Boolean isdelete) {
+        this.isdelete = isdelete;
     }
 }

@@ -42,8 +42,11 @@
         <property name="filterChainDefinitions">
             <value>
                 /index/**=authc
+                /store/**=authc
                 /manager/**=authc
                 /admin/listUser**=authc,perms[admin:manage]
+                /login/**=anon
+                /pay/**=anon
             </value>
         </property>
     </bean>

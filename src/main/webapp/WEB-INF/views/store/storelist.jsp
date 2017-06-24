@@ -105,6 +105,10 @@
 	<jsp:include page="../footer.jsp"></jsp:include>
 	<!-- 引入顶部公共js -->
 	<jsp:include page="../bottomjs.jsp" />
+	<%-- <div id="storeaddpage">
+	<jsp:include page="storeadd.jsp" />
+	</div> --%>
+	
 	<!-- 分页自定义js -->
 	<script type="text/javascript">
 		/* var selection2; */
@@ -152,6 +156,10 @@
 							console.log(data);
 						},
 					});
+			// 数据列表table
+			var grid_selector = "#grid-table";
+			// 显示分页参数的table
+			var pager_selector = "#grid-pager";
 			// 自定义搜索方法，暂时先用，后期研究jqGrid搜索
 			$("#queryBtn").click(function() {
 				
@@ -160,7 +168,7 @@
 					alert("请先选择门店");
 					return;
 				}
-				$("#grid-table").jqGrid('setGridParam', { // grid-table 这个是表格的id, setGridParam这个值是固定值
+				$(grid_selector).jqGrid('setGridParam', { // grid-table 这个是表格的id, setGridParam这个值是固定值
 					url : "${ctx}/store/query", // 请求url
 					postData : {
 						"id" : id
@@ -170,10 +178,6 @@
 				}).trigger("reloadGrid"); // 渲染表格数据，这个  reloadGrid  是固定值
 			});
 
-			// 数据列表table
-			var grid_selector = "#grid-table";
-			// 显示分页参数的table
-			var pager_selector = "#grid-pager";
 
 			// 配置jqGrid列表table参数
 			jQuery(grid_selector).jqGrid({
@@ -199,22 +203,26 @@
 					fixed : true,
 					sortable : false,
 					resize : false,
-					formatter : 'actions',
+//					formatter : 'actions',
+					formatter : function (value, grid, rows, state) {
+						return "<a href=\"#\" style=\"color:#f60\" onclick=\"Modify(" + rows.id + ")\">编辑</a>&nbsp;&nbsp;"
+					+ "<a href=\"#\" style=\"color:#f60\" onclick=\"del(" + rows.id + ")\">删除</a>"
+					}, 
 					formatoptions : {
 						keys : true,
 						 editformbutton:true,
 						 editOptions : {
 							 url : '${ctx}/store/update',
 							 closeAfterEdit:true,
-							 //recreateForm: true,
-							 //beforeShowForm:beforeEditCallback
+							 recreateForm: true,
+							 beforeShowForm:beforeEditCallback,
 							 //afterShowForm:$.GridUtils.afterEditCallback,
 							 afterSubmit: function(response, formid) {
 	                                var data = JSON.parse(response.responseText);
 	                                if (data.result) {
 	                                    return [ true, "OK", data.id ];
 	                                } else {
-	                                    return [ false, data.errmsg ];
+	                                    return [ false, data.msg ];
 	                                }
 	                            },
 		                     //afterComplete:afterCompleteCallback
@@ -228,7 +236,7 @@
 								if (data.result) {
 									return [ true, "OK", data.id ];
 								} else {
-									return [ false, data.errmsg ];
+									return [ false, data.msg ];
 								}
 							}
 						}
@@ -314,12 +322,13 @@
                             if (data.result) {
                                 return [ true, "OK", data.id ];
                             } else {
-                                return [ false, data.errmsg ];
+                                return [ false, data.msg ];
                             }
                         }
 					},
 					{},
 					{
+						closeAfterDelete:true,
 						reloadAfterSubmit : true,
 						closeOnEscape : true,
 						url : '${ctx}/store/delete',
@@ -331,10 +340,10 @@
 						},
 						afterSubmit : function(response, formid) {
 							var data = JSON.parse(response.responseText);
-							if (data.status) {
+							if (data.result) {
 								return [ true, "OK", data.id ];
 							} else {
-								return [ false, data.errmsg ];
+								return [ false, data.msg ];
 							}
 						}
 					},
@@ -409,7 +418,10 @@
 			}
 			
 			function beforeEditCallback(){
-				alert('beforeEdit');
+				$("#editmodgrid-table").css({
+					width:'1280px'
+				});
+				$("#editmodgrid-table").html($("#storeaddpage").html());
 			}
 			function afterSubmitCallback(response,formid){
 				var data = JSON.parse(response.responseText);
@@ -417,11 +429,35 @@
                 if (data.result) {
                     return [ true, "OK", data.id ];
                 } else {
-                    return [ false, data.errmsg ];
+                    return [ false, data.msg ];
                 }
 			}
 
 		});
+		
+		function Modify(id) {
+              var grid_selector = "#grid-table";  
+              var model = jQuery(grid_selector).jqGrid('getRowData', id);
+              location.href="add?storeid="+id;
+          }
+		function del(id) {
+			$.ajax({
+                url : "${ctx}/store/delete",
+                type : 'POST',
+                headers : {
+                    Accept : "application/json",
+                },
+                success : function(data) {
+                    if(data.result){
+                	var grid_selector = "#grid-table";  
+                	$(grid_selector).setGridParam({datatype:'json', page:1}).trigger('reloadGrid');  
+                    }
+                },
+                error:function(){
+                	
+                }
+               });
+        }
 	</script>
 </body>
 </html>
