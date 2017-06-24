@@ -67,14 +67,12 @@
 
 
 				<ul class="nav nav-list">
-
-					<li class="active"><a href="${ctx}/index/index"> <i
-							class="icon-dashboard"></i> <span class="menu-text"> 控制台 </span>
-
+					<li><a href="${ctx}/index/index"> <i
+							class="icon-dashboard"></i> <span class="menu-text"> 控制台</span>
 					</a>
 					</li>
 					<c:forEach items="${sessionScope.menuList}" var="onemenu">
-						<li>
+						<li <c:if test="${menu.parentid == onemenu.id}">class="active open"</c:if> >
 							<c:if test="${not empty onemenu.menuList}">
 								<a href="${ctx}${onemenu.url}" class="dropdown-toggle">
 								<i class="icon-desktop"></i>
@@ -89,20 +87,20 @@
 					</a>
 					<ul class="submenu">
 						<c:forEach items="${onemenu.menuList}" var="twomenu">
-								<li>
+								<li <c:if test="${menu.id == twomenu.id}">class="active"</c:if>>
 									<c:if test="${not empty twomenu.menuList}">
-									    <a href="${ctx}${twomenu.url}" class="dropdown-toggle">
+									    <a href="${ctx}${twomenu.url}" class="dropdown-toggle <c:if test="${menu.id == twomenu.id}">class="active"</c:if>">
 										<i	class="icon-double-angle-right"></i> ${twomenu.name}
 										<b class="arrow icon-angle-down"></b>
 									</c:if>
 									<c:if test="${empty twomenu.menuList}">
-										<a href="${ctx}${twomenu.url}">
+										<a href="${ctx}${twomenu.url}" <c:if test="${menu.parentid == twomenu.id}">class="active"</c:if>>
 										<i	class="icon-leaf"></i> ${twomenu.name}
 									</c:if>
 								</a>
 								<ul class="submenu">
 									<c:forEach items="${twomenu.menuList}" var="threemenu">
-										<li><a href="${ctx}${threemenu.url}"> <i class="icon-leaf"></i> ${threemenu.name}
+										<li <c:if test="${menu.parentid == threemenu.id}">class="active"</c:if>><a href="${ctx}${threemenu.url}" <c:if test="${menu.id == threemenu.id}">class="active"</c:if>> <i class="icon-leaf"></i> ${threemenu.name}
 										</a></li>
 									</c:forEach>
 								</ul>

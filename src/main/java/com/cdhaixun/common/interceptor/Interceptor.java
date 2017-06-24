@@ -1,24 +1,17 @@
 package com.cdhaixun.common.interceptor;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.cdhaixun.common.constant.ModelConstant;
 import com.cdhaixun.domain.Menu;
 import com.cdhaixun.domain.Operate;
 import com.cdhaixun.shop.service.IMenuService;
 import com.cdhaixun.shop.service.IOperateService;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.http.entity.ContentType;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.session.Session;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Enumeration;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 public class Interceptor implements HandlerInterceptor {
@@ -48,9 +41,6 @@ public class Interceptor implements HandlerInterceptor {
                    modelAndView.addObject(ModelConstant.MENU_CODE,operateList);
                }
             }
-
-
-
     }
 
     @Override
