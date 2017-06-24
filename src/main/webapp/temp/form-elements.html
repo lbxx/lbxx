@@ -3990,11 +3990,11 @@
 
 				});
 
-			
 
-			
 
-				$(".chosen-select").chosen(); 
+
+
+				$(".chosen-select").chosen();
 
 				$('#chosen-multiple-style').on('click', function(e){
 
@@ -4008,15 +4008,15 @@
 
 				});
 
-			
 
-			
+
+
 
 				$('[data-rel=tooltip]').tooltip({container:'body'});
 
 				$('[data-rel=popover]').popover({container:'body'});
 
-				
+
 
 				$('textarea[class*=autosize]').autosize({append: "\n"});
 
@@ -4028,7 +4028,7 @@
 
 				});
 
-			
+
 
 				$.mask.definitions['~']='[+-]';
 
@@ -4040,11 +4040,11 @@
 
 				$(".input-mask-product").mask("a*-999-a999",{placeholder:" ",completed:function(){alert("You typed the following: "+this.val());}});
 
-			
 
-			
 
-			
+
+
+
 
 				$( "#input-size-slider" ).css('width','200px').slider({
 
@@ -4070,7 +4070,7 @@
 
 				});
 
-			
+
 
 				$( "#input-span-slider" ).slider({
 
@@ -4094,9 +4094,9 @@
 
 				});
 
-				
 
-				
+
+
 
 				$( "#slider-range" ).css('height','200px').slider({
 
@@ -4114,7 +4114,7 @@
 
 						var val = ui.values[$(ui.handle).index()-1]+"";
 
-			
+
 
 						if(! ui.handle.firstChild ) {
 
@@ -4132,7 +4132,7 @@
 
 				});
 
-				
+
 
 				$( "#slider-range-max" ).slider({
 
@@ -4146,7 +4146,7 @@
 
 				});
 
-				
+
 
 				$( "#eq > span" ).css({width:'90%', 'float':'left', margin:'15px'}).each(function() {
 
@@ -4162,15 +4162,15 @@
 
 						animate: true
 
-						
+
 
 					});
 
 				});
 
-			
 
-				
+
+
 
 				$('#id-input-file-1 , #id-input-file-2').ace_file_input({
 
@@ -4196,7 +4196,7 @@
 
 				});
 
-				
+
 
 				$('#id-input-file-3').ace_file_input({
 
@@ -4248,7 +4248,7 @@
 
 					}
 
-			
+
 
 				}).on('change', function(){
 
@@ -4258,9 +4258,9 @@
 
 				});
 
-				
 
-			
+
+
 
 				//dynamically change allowed formats by changing before_change callback function
 
@@ -4306,7 +4306,7 @@
 
 								}
 
-								
+
 
 								allowed_files.push(file);
 
@@ -4314,7 +4314,7 @@
 
 							if(allowed_files.length == 0) return false;
 
-			
+
 
 							return allowed_files;
 
@@ -4344,13 +4344,13 @@
 
 				});
 
-			
 
-			
 
-			
 
-			
+
+
+
+
 
 				$('#spinner1').ace_spinner({value:0,min:0,max:200,step:10, btn_up_class:'btn-info' , btn_down_class:'btn-info'})
 
@@ -4364,11 +4364,11 @@
 
 				$('#spinner3').ace_spinner({value:0,min:-100,max:100,step:10, on_sides: true, icon_up:'icon-plus smaller-75', icon_down:'icon-minus smaller-75', btn_up_class:'btn-success' , btn_down_class:'btn-danger'});
 
-			
 
-			
 
-				
+
+
+
 
 				$('.date-picker').datepicker({autoclose:true}).next().on(ace.click_event, function(){
 
@@ -4382,7 +4382,7 @@
 
 				});
 
-				
+
 
 				$('#timepicker1').timepicker({
 
@@ -4398,27 +4398,27 @@
 
 				});
 
-				
+
 
 				$('#colorpicker1').colorpicker();
 
 				$('#simple-colorpicker-1').ace_colorpicker();
 
-			
 
-				
+
+
 
 				$(".knob").knob();
 
-				
 
-				
+
+
 
 				//we could just set the data-provide="tag" of the element inside HTML, but IE8 fails!
 
 				var tag_input = $('#form-field-tags');
 
-				if(! ( /msie\s*(8|7|6)/.test(navigator.userAgent.toLowerCase())) ) 
+				if(! ( /msie\s*(8|7|6)/.test(navigator.userAgent.toLowerCase())) )
 
 				{
 
@@ -4448,13 +4448,13 @@
 
 				}
 
-				
 
-				
 
-				
 
-			
+
+
+
+
 
 				/////////
 
@@ -4474,7 +4474,7 @@
 
 				})
 
-				
+
 
 				//chosen plugin inside a modal will have a zero width because the select element is originally hidden
 
@@ -4510,13 +4510,13 @@
 
 				*/
 
-			
+
 
 			});
 
 		</script>
 
-	
+
 
 </body>
 
