@@ -9,8 +9,8 @@ import com.cdhaixun.common.web.BaseController;
 public class TechnicianController extends BaseController {
     private static final String PATH = "technician/";
     
-    @RequestMapping(value="/index")
-    public String index(){
+    @RequestMapping(value="/list")
+    public String list(){
         return PATH + "technician";
     }
 }
