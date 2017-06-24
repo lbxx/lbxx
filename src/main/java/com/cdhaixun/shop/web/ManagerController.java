@@ -63,8 +63,12 @@ public class ManagerController {
      * 添加账号页面
      */
     @RequestMapping(value = "addIndex", method = RequestMethod.GET)
-    public String addIndex(Model model) {
+    public String addIndex(Model model,Manager manager) {
         List<Role> roleList= roleSevice.findAll();
+        if(manager.getId()!=null){
+            Manager managerDb=   managerService.findById(manager.getId());
+            model.addAttribute("manager",managerDb);
+        }
         model.addAttribute("roleList",roleList);
         return "manager/add";
     }
@@ -75,7 +79,7 @@ public class ManagerController {
         Result result = new Result();
         String img = UploadImages.upLoadImage(httpServletRequest, file, ConfigContentUtils.getString("imgRoot","system.properties")+"\\manage", "img");
         manager.setImg(img);
-        manager.setPassword(DigestUtils.md5Hex(manager.getPassword()));
+        manager.setPassword(DigestUtils.sha512Hex(manager.getPassword()));
         managerService.save(manager);
         result.setResult(true);
         return result;

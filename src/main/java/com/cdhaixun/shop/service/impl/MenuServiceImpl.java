@@ -27,4 +27,9 @@ public class MenuServiceImpl implements IMenuService {
 		return oneMenus;
 	}
 
+	@Override
+	public Menu findOneByUrl(String servletPath) {
+		return menuMapper.selectOneByUrl(servletPath);
+	}
+
 }

@@ -11,4 +11,6 @@ public interface IManagerService {
     List<Manager> findByManager(Manager manager);
 
     void save(Manager manager);
+
+    Manager findById(Integer id);
 }
