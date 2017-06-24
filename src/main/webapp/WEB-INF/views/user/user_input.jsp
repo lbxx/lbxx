@@ -7,6 +7,7 @@
 <head>
     <!-- 引入公共js css -->
     <jsp:include page="../jscss.jsp" />
+    <link href="http://www.jq22.com/jquery/bootstrap-3.3.4.css" rel="stylesheet">
 </head>
 <body>
 
@@ -59,20 +60,20 @@
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right" for="name"> 会员姓名 </label>
-                                <div class="col-sm-9">
-                                    <input type="text" id="name" name="name" required maxlength="30" class="col-xs-10 col-sm-5" />
-                                    <%--<span class="help-inline col-xs-12 col-sm-7">
+                                <div class="col-sm-8">
+                                    <input type="text" id="name" name="name" maxlength="30" required class="col-xs-4 col-sm-4" />
+                                    <span class="col-xs-3 col-sm-3">
                                         <label class="middle">
                                             <input class="ace" type="checkbox" id="id-disable-check" />
-                                            <span class="lbl"> 手机号当做会员卡号!</span>
+                                            <span class="lbl"> 手机号做会员卡号!</span>
                                         </label>
-                                    </span>--%>
+                                    </span>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right" for="mobile"> 联系电话 </label>
                                 <div class="col-sm-9">
-                                    <input type="text" id="mobile" name="mobile" class="col-xs-10 col-sm-5" />
+                                    <input type="text" id="mobile" name="mobile" maxlength="11" class="col-xs-10 col-sm-5" />
                                 </div>
                             </div>
                             <div class="form-group">
@@ -97,42 +98,53 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right" for="blance"> 余额 </label>
                                 <div class="col-sm-9">
-                                    <input type="text" id="blance" name="blance" class="col-xs-10 col-sm-5" />
+                                    <input type="text" id="blance" name="blance" maxlength="8" class="col-xs-10 col-sm-5" />
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right" for="points"> 积分 </label>
                                 <div class="col-sm-9">
-                                    <input type="text" id="points" name="points" class="col-xs-10 col-sm-5" />
+                                    <input type="text" id="points" name="points" maxlength="8" class="col-xs-10 col-sm-5" />
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right" for="birthday"> 生日 </label>
+                                <label class="col-sm-3 control-label no-padding-right" required for="birthday"> 生日 </label>
                                 <div class="col-sm-9">
-                                    <input type="text" id="birthday" class="confS_input pg_input" required name="birthday" readonly onClick="WdatePicker({dateFmt:'yyyy-MM-dd'})">
+                                    <input type="text" id="birthday" class="confS_input pg_input" name="birthday" readonly onClick="WdatePicker({dateFmt:'yyyy-MM-dd'})">
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right" for="city"> 省市区 </label>
-                                <div class="col-sm-9">
-                                   <input type="text" id="province" name="province" required class="col-xs-10 col-sm-2" placeholder="省" />
-                                    <input type="text" id="city" name="city" required class="col-xs-10 col-sm-2" placeholder="市"/>
-                                    <input type="text" id="area" name="area" required class="col-xs-10 col-sm-2" placeholder="区"/>
+                            <div data-toggle="distpicker">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right" for="province"> 省 </label>
+                                    <div class="col-sm-5">
+                                        <select class="form-control" id="province" name="province" required></select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right" for="city"> 市 </label>
+                                    <div class="col-sm-5">
+                                        <select class="form-control" id="city" name="city" required></select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right" for="district"> 区 </label>
+                                    <div class="col-sm-5">
+                                        <select class="form-control" id="district" name="area" required></select>
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right" for="address"> 详细地址 </label>
                                 <div class="col-sm-9">
-                                    <input type="text" id="address" name="address" required class="col-xs-10 col-sm-5" autocomplete="off" tip="请输入邮箱"/>
+                                    <input type="text" id="address" name="address" maxlength="100" required class="col-xs-10 col-sm-5" autocomplete="off"/>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right" for="idcard">身份证 </label>
                                 <div class="col-sm-9">
-                                    <input type="text" id="idcard" name="idcard" class="col-xs-10 col-sm-5" simple="{emp:true,empmsg:'请输入登录账号'}"/>
+                                    <input type="text" id="idcard" name="idcard" maxlength="30" required class="col-xs-10 col-sm-5" />
                                 </div>
                             </div>
-
                             <div class="clearfix form-actions">
                                 <div class="col-md-offset-3 col-md-9">
                                     <button class="btn btn-info" type="submit">
@@ -155,9 +167,19 @@
         </div><!-- /.main-content -->
     </div><!-- /.main-container-inner -->
 </div><!-- /.main-container -->
+<jsp:include page="../footer.jsp"></jsp:include>
+<!-- 引入顶部公共js -->
+<jsp:include page="../bottomjs.jsp" />
+<!-- 自定义js -->
 <script src="${ctx}/resources/DatePicker/WdatePicker.js"></script>
-<script src="${ctx}/resources/js/messages_zh.js"></script>
 <script src="${ctx}/resources/js/jquery.validate.min.js"></script>
+<script src="${ctx}/resources/js/messages_zh.js"></script>
+
+<%--<script src="http://www.jq22.com/jquery/1.11.1/jquery.min.js"></script>--%>
+<script src="http://www.jq22.com/jquery/bootstrap-3.3.4.js"></script>
+<script src="${ctx}/resources/city/js/distpicker.data.js"></script>
+<script src="${ctx}/resources/city/js/distpicker.js"></script>
+<script src="${ctx}/resources/city/js/main.js"></script>
 <script>
     $(function(){
         // 手机号码验证
@@ -166,12 +188,12 @@
             var mobile = /^(13[0-9]{9})|(18[0-9]{9})|(14[0-9]{9})|(17[0-9]{9})|(15[0-9]{9})$/;
             return this.optional(element) || (length == 11 && mobile.test(value));
         }, "请正确填写您的手机号码");
-        // 余额验证
+        // 积分验证
         jQuery.validator.addMethod("blanceReg", function(value, element) {
             var length = value.length;
-            var blance =  /^d*(?:.d{0,2})?$/;
-            return this.optional(element) || (length == 11 && blance.test(value));
-        }, "余额格式不正确");
+            var blance =  /(\d{1,}\.\d{2}$)||(\d{1,}\.$)/;
+            return this.optional(element) || (blance.test(value));
+        }, "请正确填写您的手机号码");
         $('#validation-form').validate({
             errorElement: 'div',
             errorClass: 'help-block',
@@ -188,6 +210,10 @@
                 blance: {
                     required: true,
                     blanceReg:true
+                },
+                points: {
+                    required: true,
+                    number:true
                 }
             },
             messages: {
@@ -200,8 +226,12 @@
                     number:"电话格式错误"
                 },
                 blance: {
-                    required: "请输入金额",
-                    blanceReg:"格式错误"
+                    required: "请输入余额",
+                    blanceReg:"余额格式错误"
+                },
+                points: {
+                    required: "请输入积分",
+                    number:"格式错误"
                 }
             },
             invalidHandler: function (event, validator) { //display error alert on form submit
@@ -217,6 +247,16 @@
                 // 验证通过，它会自己提交form的action
             }
         });
+
+        $("#id-disable-check").click(function(){
+            var _this = $(this);
+            var mobile = $("#mobile").val();
+            if(_this.is(":checked")){
+                $("#usercard").val(mobile);
+            }else{
+                $("#usercard").val("");
+            }
+        })
     })
 </script>
 </body>

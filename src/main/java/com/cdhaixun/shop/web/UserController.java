@@ -4,10 +4,11 @@ import com.cdhaixun.domain.Store;
 import com.cdhaixun.domain.User;
 import com.cdhaixun.domain.UserType;
 import com.cdhaixun.shop.service.IUserService;
+import com.cdhaixun.util.ConfigContentUtils;
 import com.cdhaixun.util.MapUtils;
 import com.cdhaixun.util.Pager;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -71,6 +71,17 @@ public class UserController {
         request.setAttribute("typeList", typeList);
         return PATH + "user_input";
     }
+    /**
+     * 编辑会员
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/edit", method = RequestMethod.GET)
+    public String edit(HttpServletRequest request){
+        List<UserType> typeList = userService.selectTypeList();
+        request.setAttribute("typeList", typeList);
+        return PATH + "user_input";
+    }
 
     /**
      * 提交
@@ -81,6 +92,7 @@ public class UserController {
     public Object save(User user, HttpServletRequest request){
         try {
             int i = 0;
+            user.setPassword(DigestUtils.md5(ConfigContentUtils.getString("upassword", "system.properties")).toString());
             userService.save(user);
             if(i > 0){
                 return true;

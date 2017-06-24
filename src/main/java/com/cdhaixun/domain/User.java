@@ -29,8 +29,6 @@ public class User {
 
     private Long blance;
 
-    private Integer points;
-
     private Date birthday;
 
     private String province;
@@ -49,10 +47,11 @@ public class User {
 
     private Integer state;
 
-    private Integer isdelete;
+    private Boolean isdelete;
+
+    private Integer points;
 
     private String usercard;
-
 
     public Integer getId() {
         return id;
@@ -75,7 +74,7 @@ public class User {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password = password == null ? null : password.trim();
     }
 
     public String getMobile() {
@@ -83,7 +82,7 @@ public class User {
     }
 
     public void setMobile(String mobile) {
-        this.mobile = mobile;
+        this.mobile = mobile == null ? null : mobile.trim();
     }
 
     public Integer getSex() {
@@ -99,7 +98,7 @@ public class User {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email = email == null ? null : email.trim();
     }
 
     public String getNickname() {
@@ -107,7 +106,7 @@ public class User {
     }
 
     public void setNickname(String nickname) {
-        this.nickname = nickname;
+        this.nickname = nickname == null ? null : nickname.trim();
     }
 
     public String getName() {
@@ -115,7 +114,7 @@ public class User {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = name == null ? null : name.trim();
     }
 
     public Date getRegistertime() {
@@ -139,7 +138,7 @@ public class User {
     }
 
     public void setRemark(String remark) {
-        this.remark = remark;
+        this.remark = remark == null ? null : remark.trim();
     }
 
     public Integer getRegisttype() {
@@ -154,6 +153,10 @@ public class User {
         return blance;
     }
 
+    public void setBlance(Long blance) {
+        this.blance = blance;
+    }
+
     public Date getBirthday() {
         return birthday;
     }
@@ -162,26 +165,12 @@ public class User {
         this.birthday = birthday;
     }
 
-    public void setBlance(Long blance) {
-        this.blance = blance;
-    }
-
-    public Integer getPoints() {
-        return points;
-    }
-
-    public void setPoints(Integer points) {
-        this.points = points;
-    }
-
-
-
     public String getProvince() {
         return province;
     }
 
     public void setProvince(String province) {
-        this.province = province;
+        this.province = province == null ? null : province.trim();
     }
 
     public String getCity() {
@@ -189,7 +178,7 @@ public class User {
     }
 
     public void setCity(String city) {
-        this.city = city;
+        this.city = city == null ? null : city.trim();
     }
 
     public String getArea() {
@@ -197,7 +186,7 @@ public class User {
     }
 
     public void setArea(String area) {
-        this.area = area;
+        this.area = area == null ? null : area.trim();
     }
 
     public String getAddress() {
@@ -205,7 +194,7 @@ public class User {
     }
 
     public void setAddress(String address) {
-        this.address = address;
+        this.address = address == null ? null : address.trim();
     }
 
     public String getIdcard() {
@@ -213,7 +202,7 @@ public class User {
     }
 
     public void setIdcard(String idcard) {
-        this.idcard = idcard;
+        this.idcard = idcard == null ? null : idcard.trim();
     }
 
     public String getImg() {
@@ -221,7 +210,7 @@ public class User {
     }
 
     public void setImg(String img) {
-        this.img = img;
+        this.img = img == null ? null : img.trim();
     }
 
     public String getQrcode() {
@@ -229,7 +218,7 @@ public class User {
     }
 
     public void setQrcode(String qrcode) {
-        this.qrcode = qrcode;
+        this.qrcode = qrcode == null ? null : qrcode.trim();
     }
 
     public Integer getState() {
@@ -240,12 +229,20 @@ public class User {
         this.state = state;
     }
 
-    public Integer getIsdelete() {
+    public Boolean getIsdelete() {
         return isdelete;
     }
 
-    public void setIsdelete(Integer isdelete) {
+    public void setIsdelete(Boolean isdelete) {
         this.isdelete = isdelete;
+    }
+
+    public Integer getPoints() {
+        return points;
+    }
+
+    public void setPoints(Integer points) {
+        this.points = points;
     }
 
     public String getUsercard() {
@@ -253,6 +250,6 @@ public class User {
     }
 
     public void setUsercard(String usercard) {
-        this.usercard = usercard;
+        this.usercard = usercard == null ? null : usercard.trim();
     }
 }
