@@ -33,13 +33,14 @@ public class GeneralMyBatisCode {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        System.out.println("生成完成!");
     }
 
     public static void javaGen() throws IOException, XMLParserException, InvalidConfigurationException, SQLException, InterruptedException{
         List<String> warnings = new ArrayList<String>();
         boolean overwrite = true;
         //File configFile = new File("D:\\sts-bundle\\workspace\\AAv1\\src\\test\\resources\\generatorConfig.xml");
-        File configFile = new File("E:\\git\\lbxx\\src\\test\\resource\\generator.xml");
+        File configFile = new File("D:\\Workspace\\lbxx\\src\\test\\resource\\generator.xml");
         ConfigurationParser cp = new ConfigurationParser(warnings);
         Configuration config = cp.parseConfiguration(configFile);
         DefaultShellCallback callback = new DefaultShellCallback(overwrite);
