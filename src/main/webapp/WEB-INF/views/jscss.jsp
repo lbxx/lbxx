@@ -73,7 +73,9 @@
 <link rel="stylesheet" href="${ctx}/resources/css/ace-ie.min.css" />
 
 <![endif]-->
-
+<!--sco-->
+<link rel="stylesheet" href="${ctx}/resources/css/sco/scojs.css" />
+<link rel="stylesheet" href="${ctx}/resources/css/sco/sco.message.css" />
 
 
 <!-- inline styles related to this page -->

@@ -1,8 +1,10 @@
 package com.cdhaixun.persistence;
 
 import com.cdhaixun.common.persistence.BaseMapper;
-import com.cdhaixun.domain.User;
 import com.cdhaixun.domain.UserType;
 
-public interface UserTypeMapper extends BaseMapper<User>{
+import java.util.List;
+
+public interface UserTypeMapper extends BaseMapper<UserType>{
+    List<UserType> selectTypeList();
 }

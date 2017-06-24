@@ -75,4 +75,10 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+    <select id="selectOneByUrl" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from menu
+        where url =#{url}
+    </select>
 </mapper>

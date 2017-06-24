@@ -12,6 +12,7 @@ import java.util.Properties;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -39,6 +40,10 @@ public class StoreServiceImpl implements IStoreService {
     private BusinessMapper businessMapper;
     @Autowired
     private StoreBusinessMapper storeBusinessMapper;
+
+    @Value("#{configProperties['imgStore']}")
+    private String imgStore;
+
     @Override
     public void updateStoreBusiness(Integer storeId, String[] businessArr) {
         storeBusinessMapper.deleteByStoreId(storeId);
@@ -135,7 +140,7 @@ public class StoreServiceImpl implements IStoreService {
             e.printStackTrace();
         }  
         String path1 = prop.getProperty("imgRoot");  
-        String path2 = SessionConstant.RELATIVE_PATH_STOREIMG;
+        String path2 =imgStore;
         savePath = UploadImages.upLoadImage(request, file, path1, path2);  
          return savePath;
      }

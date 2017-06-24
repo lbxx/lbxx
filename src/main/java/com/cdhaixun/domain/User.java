@@ -5,7 +5,7 @@ import java.util.Date;
 public class User {
     private Integer id;
 
-    private Integer typeid;
+    private Integer storeid;
 
     private String password;
 
@@ -49,6 +49,11 @@ public class User {
 
     private Integer state;
 
+    private Integer isdelete;
+
+    private String usercard;
+
+
     public Integer getId() {
         return id;
     }
@@ -57,12 +62,12 @@ public class User {
         this.id = id;
     }
 
-    public Integer getTypeid() {
-        return typeid;
+    public Integer getStoreid() {
+        return storeid;
     }
 
-    public void setTypeid(Integer typeid) {
-        this.typeid = typeid;
+    public void setStoreid(Integer storeid) {
+        this.storeid = storeid;
     }
 
     public String getPassword() {
@@ -70,7 +75,7 @@ public class User {
     }
 
     public void setPassword(String password) {
-        this.password = password == null ? null : password.trim();
+        this.password = password;
     }
 
     public String getMobile() {
@@ -78,7 +83,7 @@ public class User {
     }
 
     public void setMobile(String mobile) {
-        this.mobile = mobile == null ? null : mobile.trim();
+        this.mobile = mobile;
     }
 
     public Integer getSex() {
@@ -94,7 +99,7 @@ public class User {
     }
 
     public void setEmail(String email) {
-        this.email = email == null ? null : email.trim();
+        this.email = email;
     }
 
     public String getNickname() {
@@ -102,7 +107,7 @@ public class User {
     }
 
     public void setNickname(String nickname) {
-        this.nickname = nickname == null ? null : nickname.trim();
+        this.nickname = nickname;
     }
 
     public String getName() {
@@ -110,7 +115,7 @@ public class User {
     }
 
     public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+        this.name = name;
     }
 
     public Date getRegistertime() {
@@ -134,7 +139,7 @@ public class User {
     }
 
     public void setRemark(String remark) {
-        this.remark = remark == null ? null : remark.trim();
+        this.remark = remark;
     }
 
     public Integer getRegisttype() {
@@ -149,6 +154,14 @@ public class User {
         return blance;
     }
 
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
+    }
+
     public void setBlance(Long blance) {
         this.blance = blance;
     }
@@ -161,20 +174,14 @@ public class User {
         this.points = points;
     }
 
-    public Date getBirthday() {
-        return birthday;
-    }
 
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
-    }
 
     public String getProvince() {
         return province;
     }
 
     public void setProvince(String province) {
-        this.province = province == null ? null : province.trim();
+        this.province = province;
     }
 
     public String getCity() {
@@ -182,7 +189,7 @@ public class User {
     }
 
     public void setCity(String city) {
-        this.city = city == null ? null : city.trim();
+        this.city = city;
     }
 
     public String getArea() {
@@ -190,7 +197,7 @@ public class User {
     }
 
     public void setArea(String area) {
-        this.area = area == null ? null : area.trim();
+        this.area = area;
     }
 
     public String getAddress() {
@@ -198,7 +205,7 @@ public class User {
     }
 
     public void setAddress(String address) {
-        this.address = address == null ? null : address.trim();
+        this.address = address;
     }
 
     public String getIdcard() {
@@ -206,7 +213,7 @@ public class User {
     }
 
     public void setIdcard(String idcard) {
-        this.idcard = idcard == null ? null : idcard.trim();
+        this.idcard = idcard;
     }
 
     public String getImg() {
@@ -214,7 +221,7 @@ public class User {
     }
 
     public void setImg(String img) {
-        this.img = img == null ? null : img.trim();
+        this.img = img;
     }
 
     public String getQrcode() {
@@ -222,7 +229,7 @@ public class User {
     }
 
     public void setQrcode(String qrcode) {
-        this.qrcode = qrcode == null ? null : qrcode.trim();
+        this.qrcode = qrcode;
     }
 
     public Integer getState() {
@@ -231,5 +238,21 @@ public class User {
 
     public void setState(Integer state) {
         this.state = state;
+    }
+
+    public Integer getIsdelete() {
+        return isdelete;
+    }
+
+    public void setIsdelete(Integer isdelete) {
+        this.isdelete = isdelete;
+    }
+
+    public String getUsercard() {
+        return usercard;
+    }
+
+    public void setUsercard(String usercard) {
+        this.usercard = usercard;
     }
 }

@@ -5,10 +5,11 @@
     <id column="menuid" property="menuid" jdbcType="INTEGER" />
     <id column="permission" property="permission" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="menucode" property="menucode" jdbcType="VARCHAR" />
     <result column="sort" property="sort" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    menuid, permission, name, sort
+    menuid, permission, name, sort,menucode
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.cdhaixun.domain.Operate" >
     select 
@@ -41,4 +42,10 @@
     where menuid = #{menuid,jdbcType=INTEGER}
       and permission = #{permission,jdbcType=VARCHAR}
   </update>
+  <select id="selectByMenuId"  resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from operate
+    where menuid = #{menuid}
+  </select>
 </mapper>

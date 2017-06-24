@@ -37,4 +37,9 @@
     </set>
     where code = #{code,jdbcType=VARCHAR}
   </update>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from role
+  </select>
 </mapper>
