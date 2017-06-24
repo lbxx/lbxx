@@ -61,4 +61,8 @@ public class TestController extends BaseController {
 
 		return null;
 	}
+	@RequestMapping(value = "/tt")
+	public String tt(){
+		return PATH + "tt";
+	}
 }

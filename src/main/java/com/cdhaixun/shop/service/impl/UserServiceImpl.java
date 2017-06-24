@@ -2,7 +2,9 @@ package com.cdhaixun.shop.service.impl;
 
 import com.cdhaixun.domain.Store;
 import com.cdhaixun.domain.User;
+import com.cdhaixun.domain.UserType;
 import com.cdhaixun.persistence.UserMapper;
+import com.cdhaixun.persistence.UserTypeMapper;
 import com.cdhaixun.shop.service.IUserService;
 import com.cdhaixun.util.Pager;
 import com.github.pagehelper.Page;
@@ -19,13 +21,20 @@ import java.util.Map;
  */
 @Service
 public class UserServiceImpl implements IUserService{
+    @Autowired
+    private UserMapper userMapper;
+    @Autowired
+    private UserTypeMapper userTypeMapper;
+
     @Override
     public List<Store> selectStoreList() {
         return userMapper.selectStoreList();
     }
 
-    @Autowired
-    private UserMapper userMapper;
+    @Override
+    public List<UserType> selectTypeList() {
+        return userTypeMapper.selectTypeList();
+    }
 
     @Override
     public User findById(Integer id) {

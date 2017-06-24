@@ -17,6 +17,15 @@
     from user_type
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="selectTypeList" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    FROM
+    user_type
+    WHERE
+    state = 1
+    AND isdelete = 0
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from user_type
     where id = #{id,jdbcType=INTEGER}

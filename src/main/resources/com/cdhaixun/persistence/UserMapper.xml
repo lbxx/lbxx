@@ -3,7 +3,7 @@
 <mapper namespace="com.cdhaixun.persistence.UserMapper" >
   <resultMap id="BaseResultMap" type="com.cdhaixun.domain.User" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="typeId" property="typeid" jdbcType="INTEGER" />
+    <result column="storeid" property="storeid" jdbcType="INTEGER" />
     <result column="password" property="password" jdbcType="VARCHAR" />
     <result column="mobile" property="mobile" jdbcType="VARCHAR" />
     <result column="sex" property="sex" jdbcType="INTEGER" />
@@ -25,11 +25,13 @@
     <result column="img" property="img" jdbcType="VARCHAR" />
     <result column="qrCode" property="qrcode" jdbcType="VARCHAR" />
     <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="isdelete" property="isdelete" jdbcType="INTEGER" />
+    <result column="usercard" property="usercard" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, typeId, password, mobile, sex, email, nickname, name, registertime, lastlogintime, 
+    id, storeid, password, mobile, sex, email, nickname, name, registertime, lastlogintime,
     remark, registType, blance, points, birthday, province, city, area, address, idcard, 
-    img, qrCode, state
+    img, qrCode, state, isdelete, usercard
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -58,9 +60,9 @@
     <if test="registertime != null and '' != registertime">
         AND DATE_FORMAT(registertime,'%Y-%m-%d') = DATE_FORMAT(registertime,#{registertime})
     </if>
-    <if test="type != null and '' != type">
-      <if test="type == 'idcard'">
-        AND u.idcard LIKE '%${typeval}%'
+    <if test="type != null and '' != type and '' != typeval">
+      <if test="type == 'usercard'">
+        AND u.usercard LIKE '%${typeval}%'
       </if>
       <if test="type == 'name'">
         AND u.name LIKE '%${typeval}%'
@@ -78,28 +80,28 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.cdhaixun.domain.User" >
-    insert into user (id, typeId, password, 
+    insert into user (id, storeid, password,
       mobile, sex, email, 
       nickname, name, registertime, 
       lastlogintime, remark, registType, 
       blance, points, birthday, 
       province, city, area, 
       address, idcard, img, 
-      qrCode, state)
-    values (#{id,jdbcType=INTEGER}, #{typeid,jdbcType=INTEGER}, #{password,jdbcType=VARCHAR}, 
+      qrCode, state, isdelete, usercard)
+    values (#{id,jdbcType=INTEGER}, #{storeid,jdbcType=INTEGER}, #{password,jdbcType=VARCHAR},
       #{mobile,jdbcType=VARCHAR}, #{sex,jdbcType=INTEGER}, #{email,jdbcType=VARCHAR}, 
       #{nickname,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{registertime,jdbcType=DATE}, 
       #{lastlogintime,jdbcType=DATE}, #{remark,jdbcType=VARCHAR}, #{registtype,jdbcType=INTEGER}, 
       #{blance,jdbcType=DECIMAL}, #{points,jdbcType=INTEGER}, #{birthday,jdbcType=DATE}, 
       #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{area,jdbcType=VARCHAR}, 
       #{address,jdbcType=VARCHAR}, #{idcard,jdbcType=VARCHAR}, #{img,jdbcType=VARCHAR}, 
-      #{qrcode,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER})
+      #{qrcode,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, #{isdelete,jdbcType=INTEGER}, #{usercard,jdbcType=VARCHAR},)
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.cdhaixun.domain.User" >
     update user
     <set >
-      <if test="typeid != null" >
-        typeId = #{typeid,jdbcType=INTEGER},
+      <if test="storeid != null" >
+        storeid = #{storeid,jdbcType=INTEGER},
       </if>
       <if test="password != null" >
         password = #{password,jdbcType=VARCHAR},
@@ -163,6 +165,12 @@
       </if>
       <if test="state != null" >
         state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="isdelete != null" >
+        isdelete = #{isdelete,jdbcType=INTEGER},
+      </if>
+      <if test="usercard != null" >
+        usercard = #{usercard,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}

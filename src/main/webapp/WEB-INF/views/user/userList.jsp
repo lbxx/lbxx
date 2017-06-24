@@ -68,7 +68,7 @@
                         <div class="col-md-2 tn aol">
                             <select class="form-control" id="type">
                                 <option value="">全部</option>
-                                <option value="idcard">会员卡号</option>
+                                <option value="usercard">会员卡号</option>
                                 <option value="name">会员姓名</option>
                                 <option value="mobile">会员电话</option>
                             </select>

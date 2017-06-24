@@ -1,6 +1,8 @@
 package com.cdhaixun.shop.web;
 
 import com.cdhaixun.domain.Store;
+import com.cdhaixun.domain.User;
+import com.cdhaixun.domain.UserType;
 import com.cdhaixun.shop.service.IUserService;
 import com.cdhaixun.util.MapUtils;
 import com.cdhaixun.util.Pager;
@@ -38,21 +40,56 @@ public class UserController {
         model.addAttribute("storeList", storeList);
         return PATH + "userList";
     }
+
+    /**
+     * 查询用户列表
+     * @param pager
+     * @param request
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/userList", method = RequestMethod.GET)
     public Object userList(Pager pager, HttpServletRequest request){
         try{
             Map<String, Object> parMap = MapUtils.getParamMapObj(request);
-            /*Map<String, Object> parMap = new HashMap<>();
-            parMap.put("registertime", parMap1.get("registertime"));
-            parMap.put("storeId", parMap1.get("storeId"));
-            parMap.put("type", parMap1.get("type"));
-            parMap.put("typeval", parMap1.get("typeval"));*/
             Pager resPager = userService.getUserList(pager, parMap);
             return resPager;
         }catch(Exception e){
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     * 添加会员
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/add", method = RequestMethod.GET)
+    public String add(HttpServletRequest request){
+        List<UserType> typeList = userService.selectTypeList();
+        request.setAttribute("typeList", typeList);
+        return PATH + "user_input";
+    }
+
+    /**
+     * 提交
+     * @param
+     * @return
+     */
+    @RequestMapping(value = "/save")
+    public Object save(User user, HttpServletRequest request){
+        try {
+            int i = 0;
+            userService.save(user);
+            if(i > 0){
+                return true;
+            }else{
+                return false;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
     }
 }
