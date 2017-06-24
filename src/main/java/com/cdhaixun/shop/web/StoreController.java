@@ -1,23 +1,11 @@
 package com.cdhaixun.shop.web;
 
-import java.io.File;
-import java.security.Timestamp;
-import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,23 +13,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.w3c.dom.ls.LSInput;
 
-import com.cdhaixun.common.constant.SessionConstant;
+import com.cdhaixun.common.emun.Code;
 import com.cdhaixun.common.vo.Result;
 import com.cdhaixun.common.web.BaseController;
 import com.cdhaixun.domain.Business;
 import com.cdhaixun.domain.ChainStore;
-import com.cdhaixun.domain.Menu;
 import com.cdhaixun.domain.Store;
 import com.cdhaixun.shop.service.IStoreService;
-import com.cdhaixun.util.ImagesUtil;
 import com.cdhaixun.util.Pager;
-import com.cdhaixun.util.RandomUtil;
-import com.cdhaixun.util.UploadImages;
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
-import com.mysql.fabric.xmlrpc.base.Array;
 
 /**
  * @author DengQi
@@ -64,7 +44,8 @@ public class StoreController extends BaseController {
     }
     
     @RequestMapping(value="/add")
-    public String add(){
+    public String add(HttpServletRequest request){
+        
         return PATH+"storeadd";
     }
     
@@ -126,15 +107,18 @@ public class StoreController extends BaseController {
     public Result updateStore(Store store,@RequestParam(value="file",required=false) MultipartFile file,
             HttpServletRequest request){
         Result result = new Result();
+        String[] businessArr = request.getParameterValues("business");
         try {
-            storeService.updateByPrimaryKeySelective(store);
-            String[] businessArr = request.getParameterValues("business");
+            storeService.updateByPrimaryKeySelective(store,businessArr);
         } catch (Exception e) {
+            e.printStackTrace();
             result.setResult(false);
             result.setMsg("更新店铺失败!");
+            return result;
         }
         result.setResult(true);
         result.setMsg("更新店铺成功!");
+        result.setCode(Code.OPER_UPDATE);
         return result;
     }
     @SuppressWarnings("unchecked")
@@ -165,16 +149,19 @@ public class StoreController extends BaseController {
            storeService.insertStoreBusiness(storeid,businessArr);
           }
         }catch(NullPointerException npe){
+            npe.printStackTrace();
             result.setResult(false);
             result.setMsg("获取店铺id失败!");
             return result;
         }catch (Exception e) {
+            e.printStackTrace();
             result.setResult(false);
             result.setMsg("添加店铺失败!");
             return result;
         }
         result.setResult(true);
-        result.setMsg("添加店铺成功!");
+        result.setMsg("添加店铺成功!");        
+        result.setCode(Code.OPER_ADD);
         return result;
     }
     

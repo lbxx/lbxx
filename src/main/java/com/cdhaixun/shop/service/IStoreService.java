@@ -18,11 +18,13 @@ public interface IStoreService {
     List<ChainStore> listChainStores();
     Pager getStoreList(Pager pager, String name);
     int deleteStoreById(int id);
-    int updateByPrimaryKeySelective(Store store);
+    int updateByPrimaryKeySelective(Store store,String[] businessArr);
     List<Store> selectByPrimaryKey(int id);
     List<Business> listBusiness();
     int insertSelective(Store store,MultipartFile file,HttpServletRequest request);
-    void insertStoreBusiness(int storeid, String[] businessArr);
-    List getStoreBusinessByStoreId(int storeId);
+    void insertStoreBusiness(int storeid, String[] businessArr);      
+    List<Integer> getStoreBusinessByStoreId(int storeId);
     int updateIsDeleteById(int id);
+    void updateByPrimaryKeySelective(Store store, MultipartFile file, HttpServletRequest request);
+    void updateStoreBusiness(Integer id, String[] businessArr);
 }

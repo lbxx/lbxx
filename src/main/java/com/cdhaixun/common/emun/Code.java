@@ -10,6 +10,8 @@ public enum Code {
     PASSWORD_ERROR,//密码错误
     ACCOUNT_LOCKED,//用户已锁定
     EXCESSIVE_ATTEMPTS,//登录次数过多
+    OPER_UPDATE,//更新操作
+    OPER_ADD,//添加操作
 ;
     public static void main(String[] args) {
 
