@@ -77,6 +77,7 @@
       <if test="remark != null" >
         remark = #{remark,jdbcType=VARCHAR},
       </if>
+
       <if test="mobile != null" >
         mobile = #{mobile,jdbcType=VARCHAR},
       </if>
