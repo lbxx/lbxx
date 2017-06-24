@@ -12,8 +12,13 @@
 .ui-jqgrid-bdiv {
 	height: 100% !important;
 }
+.noInput{
+    color:red;
+}
+
 </style>
-<script type="text/javascript" src="http://api.map.baidu.com/api?v=1.4"></script>
+<!-- <script type="text/javascript" src="http://api.map.baidu.com/api?v=1.4"></script> -->
+<script src="http://api.map.baidu.com/api?v=2.0&ak=EZPCgQ6zGu6hZSmXlRrUMTpr"></script>
 </head>
 <body>
 
@@ -59,206 +64,127 @@
 					</div>
 					<ul class="breadcrumb"
 						style="padding-left: 10px;; line-height: 40px;">
-						<li>添加门店</li>
+						<li id="subTitle">添加门店</li>
 					</ul>
 					<!-- .breadcrumb -->
 				</div>
 				<!-- 当前页定位结束 -->
 				<!-- 右边内容开始 -->
 				<div class="page-content">
-					<div class="row">
+					<div class="row" style="width:1100px;height: 768px;overflow: hidden;">
 						<!-- ================= -->
-						<form class="form-horizontal" role="form"
-							enctype="multipart/form-data" action="">
+						<form id="storeForm" name="storeForm" class="form-horizontal" role="form"
+							enctype="multipart/form-data" action="${ctx}/store/add" method="POST">
+							<input type="hidden" name="id" value="5"/>
+							<!-- -->
+							<div style="border: 1px solid #797979;border-bottom: none;">
 							<!--左上  -->
 							<div id="addStore_up_left"
-								style="border: 1px solid #797979; width: 50%; float: left;">
-								<div style="margin: 10px 0px;">
-									<label for="form-field-select-1"
+								style="width: 50%;height:100%; float: left;">
+								<div style="margin: 20px 0px;">
+									<label 
 										style="float: left; line-height: 2em; width: 15%;">店铺名称</label>
-									<select class="form-control" id="form-field-select-1"
+									<select class="form-control" id="chainstoreselect" name="chainstoreid"
 										style="width: 150px; margin-top: -3px; display: inline;">
 										<!-- <option value=""></option> -->
-									</select> <input type="text" id="form-field-1" placeholder="连锁下属门店名称 "
-										class="" style="height: 32px; width: 56%;">
+									</select> <input type="text" id="storename" name="name" placeholder="连锁下属门店名称 "
+										class="required" style="height: 32px; width: 56%;">
 									<div style="color: #AEAEAE;">单店连锁店名称请填写单店名称</div>
 								</div>
-								<div style="margin-bottom: 10px;">
-									<input type="text" id="form-field-1" placeholder="区号" class=""
-										style="width: 10%;">一 <label for="form-field-select-1"
+								<div style="margin-bottom: 20px;">
+									 <label 
 										style="float: left; line-height: 2em; width: 15%;">店铺座机</label>
-									<input type="text" id="form-field-1" placeholder="座机号码"
-										class="" style="width: 70%;">
-									<div style="color: #AEAEAE;">区号座机号分开填写</div>
+									<input type="text" id="telephone" name="telephone" maxlength="12" placeholder="座机号码"
+										class="required" style="width: 80%;">
+									<div style="color: #AEAEAE;">座机号码格式: '区号'-'座机号'</div>
 								</div>
-								<div style="margin-bottom: 24px;">
-									<label for="form-field-select-1"
+								<div style="margin-bottom: 1px;">
+									<label 
 										style="float: left; line-height: 2em; width: 15%;">手机</label>
-									<input type="text" id="form-field-1" placeholder="请填写负责人手机号码"
-										class="" style="width: 83%;">
+									<input type="text" id="cellphone" name="cellphone" placeholder="请填写负责人手机号码"
+										class="" maxlength="11" style="width: 80%;">
 								</div>
 
 							</div>
 							<!--右上  -->
 							<div id="addStore_up_right"
-								style="border: 1px solid #797979; width: 50%; height: 100%; float: right;">
+								style="width: 50%; height: 100%; float: right;border-left:1px solid #797979; ">
 								<div
 									style="width: 40%; height: inherit; float: left; margin: 10px 0px;">
-									<label for="form-field-select-1"
+									<label 
 										style="line-height: 2em; font-size: 20px; padding-left: 30px;">店面图</label>
 
-									<div style="margin: 15px 0px;">
-										<label for="form-field-select-1"
+									<div style="margin: 30px 0px;">
+										<label 
 											style="font-size: 14px; padding-left: 30px;">支持jpg、jpeg、jpe、png、pns等格式</label>
 									</div>
 									<!-- <input type="file" id="file"
 										style="margin: 15px 30px; width: 100%;" /> -->
-									<input type="file" onchange="previewImage(this)" />
+									<input type="file" onchange="previewImage(this)" name="file" accept="image/*" style="margin: 60px 30px;"/>
 
 								</div>
 								<div id="preview"
-									style="width: 60%; float: right; height: 100%;border:1px solid black;">
-									<img alt="店铺店面图" id="imghead"
+									style="width: 60%; float: right; height: 100%;border-left:1px solid #797979;">
+									<img alt="店铺店面图" id="storeimg"
 										src="${ctx}/resources/images/default.jpg" width="100%"
-										height="180px;" >
+										height="300px;" >
 								</div>
 							</div>
+							<div style="clear: both;"></div>
+							</div>
+							<div>
 							<!--左下  -->
 							<div id="addStore_bottom_left"
-								style="border: 1px solid #797979; width: 50%; float: left;clear:left;">
-								<label class="" for="form-field-1-1"
+								style="border: 1px solid #797979; width: 50%;height:100%; float: left;">
+								<label class="" 
 									style="line-height: 2em; padding-right: 27px;"> 店铺地址 </label> <input
 									type="text" id="cityName" name="location"
 									placeholder="请填写店铺的详细地址" class="" style="width: 70%;">
-								<!-- <button class="btn btn-sm btn-primary" style="border-radius: 5px;" onclick="setCity()">定位</button> -->
-								<input type="button" id="gps" value="定位" />
-								<div id="container" style="width: 100%; height: 250px;"></div>
+								<input type="button" id="gps" name="gps" value="定位" />
+								<input type="hidden" name="longitude" id="lng" />
+								<input type="hidden" name="latitude"id="lat" />
+								<div id="searchResultPanel" style="border:1px solid #C0C0C0;width:70%;height:auto; display:none;"></div>
+								<div class="bMap" id="container" style="width: 100%; height: 300px;"></div>
 							</div>
 							<!--右下  -->
 							<div id="addStore_bottom_right"
-								style="border: 1px solid #797979; width: 50%; float: right; clear: right;">
+								style="border: 1px solid #797979; width: 50%; float: right;">
 								<div>
 									<!--门店设置  -->
 									<div
 										style="background-color: #438EB9; color: white; font-size: 16px; padding: 5px;">门店设置</div>
+										<div style="height: 151px;overflow-y: scroll;">
+										  <span>&nbsp;请选择需要开启的业务:</span>
+										  <div id="businessBox" style="padding-left: 5px;"></div>
+										</div>
 								</div>
 								<!--门店设置  -->
-								<div class="control-group"
-									style="float: left; margin-left: 30px;">
-									<label class="control-label bolder"
-										style="vertical-align: middle; padding-right: 20px;">是否支持游泳</label>
-
-									<label style="padding-right: 27px;"> <input name="swim"
-										type="radio" class="ace"> <span class="lbl">是</span>
-									</label> <label> <input name="swim" type="radio" class="ace">
-										<span class="lbl">否</span>
-									</label>
-								</div>
-								<div class="control-group"
-									style="float: right; margin-right: 30px;">
-									<label class="control-label bolder"
-										style="vertical-align: middle; padding-right: 20px;">是否支持游泳预约</label>
-
-									<label style="padding-right: 27px;"> <input
-										name="swimOrder" type="radio" class="ace"> <span
-										class="lbl">是</span>
-									</label> <label> <input name="swimOrder" type="radio"
-										class="ace"> <span class="lbl">否</span>
-									</label>
-								</div>
-								<div class="control-group"
-									style="float: left; margin-left: 30px;">
-									<label class="control-label bolder"
-										style="vertical-align: middle; padding-right: 20px;">是否支持洗澡</label>
-									<label style="padding-right: 27px;"> <input
-										name="bathe" type="radio" class="ace"> <span
-										class="lbl">是</span>
-									</label> <label> <input name="bathe" type="radio" class="ace">
-										<span class="lbl">否</span>
-									</label>
-								</div>
-								<div class="control-group"
-									style="float: right; margin-right: 30px;">
-									<label class="control-label bolder"
-										style="vertical-align: middle; padding-right: 20px;">是否支持洗澡预约</label>
-
-									<label style="padding-right: 27px;"> <input
-										name="batheOrder" type="radio" class="ace"> <span
-										class="lbl">是</span>
-									</label> <label> <input name="batheOrder" type="radio"
-										class="ace"> <span class="lbl">否</span>
-									</label>
-								</div>
-								<div class="control-group"
-									style="float: left; margin-left: 30px;">
-									<label class="control-label bolder"
-										style="vertical-align: middle; padding-right: 20px;">预约打印小票</label>
-
-									<label style="padding-right: 27px;"> <input
-										name="printReceipt" type="radio" class="ace"> <span
-										class="lbl">是</span>
-									</label> <label> <input name="printReceipt" type="radio"
-										class="ace"> <span class="lbl">否</span>
-									</label>
-
-								</div>
-								<div class="control-group"
-									style="float: right; margin-right: 30px;">
-									<label class="control-label bolder"
-										style="vertical-align: middle; padding-right: 20px;">自动接收预约</label>
-
-									<label style="padding-right: 27px;"> <input
-										name="autoReceive" type="radio" class="ace"> <span
-										class="lbl">是</span>
-									</label> <label> <input name="autoReceive" type="radio"
-										class="ace"> <span class="lbl">否</span>
-									</label>
-								</div>
-								<div style="float: left; margin-left: 30px; width: 30%;">
-									<label class="control-label bolder"
-										style="vertical-align: middle; padding-right: 20px;">上班时间</label>
-									<div class="input-group bootstrap-timepicker">
-										<input id="timepickerOn" type="text" name="openingHours" /> <span
-											class="input-group-addon"> <i
-											class="fa fa-clock-o bigger-110"></i>
-										</span>
-									</div>
-								</div>
-								<div style="float: right; margin-right: 30px; width: 30%;">
-									<label class="control-label bolder"
-										style="vertical-align: middle; padding-right: 20px;">下班时间</label>
-									<div class="input-group bootstrap-timepicker">
-										<input id="timepickerOff" type="text" name="closingHours" />
-										<span class="input-group-addon"> <i
-											class="fa fa-clock-o bigger-110"></i>
-										</span>
-									</div>
-								</div>
-								<br /> <br /> <br /> <br /> <br /> <br /> <br /> <br />
-								<div>
+								
+								<div style="clear: both;"></div>
+								<div style="margin-top: 0;">
 									<!--店铺说明  -->
 									<div
 										style="background-color: #438EB9; color: white; font-size: 16px; padding: 5px;">店铺说明</div>
 								</div>
 								<!--店铺说明  -->
 								<div>
-									<textarea class="form-control" id="form-field-8"
-										placeholder="请输入..." style="height: 63px;" name="description"></textarea>
+									<textarea class="form-control" id="description"
+										placeholder="请输入..." style="height: 114px;" name="description";border-bottom:none;></textarea>
 								</div>
 							</div>
+                            </div>
+                            <div
+                            style="margin: 50px auto 0 auto; padding-top: 10px; text-align: center; clear: both;">
+                            <input type="submit" id="submit" class="btn btn-info" value="确认添加" />
+                                <i class="ace-icon fa fa-check bigger-110"></i> 
 
+                            &nbsp; &nbsp; &nbsp;
+                            <button class="btn" type="reset">
+                                <i class="ace-icon fa fa-undo bigger-110"></i> 取消
+                            </button>
+                        </div>
 						</form>
-						<div
-							style="margin: 30px auto; padding: 10px 0px; text-align: center; clear: both;">
-							<button class="btn btn-info" type="button">
-								<i class="ace-icon fa fa-check bigger-110"></i> 确认添加
-							</button>
-
-							&nbsp; &nbsp; &nbsp;
-							<button class="btn" type="reset">
-								<i class="ace-icon fa fa-undo bigger-110"></i> 取消
-							</button>
-						</div>
+						
 					</div>
 
 				</div>
@@ -278,11 +204,155 @@
 	<!-- 引入顶部公共js -->
 	<jsp:include page="../bottomjs.jsp" />
 	<!-- 分页自定义js -->
+	
+	<script src="${ctx}/resources/js/jquery.validate.min.js"></script>
+	<script src="${ctx}/resources/js/messages_zh.js"></script>
+	<script src="${ctx}/resources/js/additional-methods.min.js"></script>
 	<script type="text/javascript">
-		/* var selection2; */
-		jQuery(function($) {
-			$
-					.ajax({
+	
+	/*======表单校验 */
+	var isFirstload=true;
+		jQuery(function($){
+			
+			loadStoreinfo();
+			/*======表单校验 */
+		    $.validator.setDefaults({
+		        debug:false,
+		        submitHandler: function() {
+		            alert("Enter submitHandler");
+		            submitForm();
+		        }
+		    });
+		    // 手机号码验证
+		    jQuery.validator.addMethod("isMobile", function(value, element) {
+		    var length = value.length;
+		    var mobile = /^(13[0-9]{9})|(18[0-9]{9})|(14[0-9]{9})|(17[0-9]{9})|(15[0-9]{9})$/; 
+		    return this.optional(element) || (length == 11 && mobile.test(value));
+		    }, "请正确填写您的手机号码");
+		    
+		    // 座机验证
+		    jQuery.validator.addMethod("telephone", function(value, element) {
+		    var tel = /^(^(\d{3,4}-)?\d{7,8})$|(13[0-9]{9}) $/g;
+		    return this.optional(element) || (tel.test(value));
+		    }, "座机号码格式错误:021-10101010!");   
+		    
+		    $("#storeForm").validate({
+		        errorClass:"noInput",
+		        rules:{
+		            cellphone:{
+		            required:true,
+		            minlength:11,
+		            isMobile:true
+		            },
+		            telephone:{
+		                required:true,
+		                minlength:9,
+		                maxlength:12,
+		                telephone:true
+		            }
+		        },
+		        messages : {  
+		            cellphone : {  
+		                required : "请输入手机号",  
+		                minlength : "确认手机不能小于11个字符",  
+		                isMobile : "请正确填写您的手机号码"  
+		            } ,
+		            telephone:{
+		                required:"请输入座机号",
+		                minlength:"座机号最少9位",
+		                maxlength:"座机号最多12位",
+		                telephone:"请正确填写座机号"
+		            }
+		             
+		        }/* ,
+		         errorPlacement : function(error, element) {  
+		                error.appendTo(element.next().next());  
+		            } */
+		    });
+			
+			function loadStoreinfo() {
+			    var storeid = queryValueByKey("storeid");
+	            if(storeid){
+	                $("#submit").val("确认更新");
+	                $("#subTitle").text("更新门店");
+	                $("#storeForm").attr("action", "${ctx}/store/update");
+	                $.ajax({
+	                    url:"${ctx}/store/query?id="+storeid,
+	                    type: 'GET',
+	                    headers : {
+	                        Accept : "application/json",
+	                    },
+	                    success : function(data, textStatus) {
+	                        var store = data[0];
+	                        loadChainStoreList(function(){
+	                        	$("#chainstoreselect").val(store.chainstoreid);
+	                        });
+	                       
+	                        $("#storename").val(store.name);
+	                        $("#cellphone").val(store.cellphone);
+	                        $("#telephone").val(store.telephone);
+	                        $("#cityName").val(store.location);
+	                        $("#description").val(store.description);
+	                        if(store.pic){
+		                        $("#storeimg").attr("src","${ctx}/upload"+store.pic);
+	                        }
+	                        loadMap(store.longitude, store.latitude);
+	                        
+	                        map.addEventListener("tilesloaded",function(){
+	                        	if(isFirstload){
+	                        		 $("#cityName").val(store.location); 
+	                        		 isFirstload=false;
+	                        	}
+	                        	
+	                        	                     
+	                        });
+	                        getStoreBusiness(storeid);
+	                        
+	                    },
+	                    error : function(data, textStatus, errorThrown) {
+	                    },
+	                });
+	            }else{
+	            	//add store
+	            	loadChainStoreList();
+	            	loadBusiness();
+	            }
+			}
+			function submitForm(){
+			    var url = $("#storeForm").attr('action');  	
+			    var ajax_option={  
+			    	    url:url,  
+			    	    success:function(data){  
+			    	         alert("submited");
+			    	            },
+			    	    error:function(){
+			    	    	alert('submit failed');
+			    	    }
+			    	};
+			    $('#storeForm').ajaxSubmit(ajax_option);
+			}
+			function getStoreBusiness(storeid){
+				 $.ajax({
+                     url:"${ctx}/store/queryStoreBusiness?id="+storeid,
+                     type: 'GET',
+                     headers : {
+                         Accept : "application/json",
+                     },
+                     success : function(data, textStatus) {
+                    	 var storeBusiness = data;
+                         var bCheck = $("#businessBox [name='business']");
+                         loadBusiness(function () {
+                              for(id in storeBusiness){
+                                  $("#business"+storeBusiness[id]).attr("checked","checked");                                                
+                              }
+                         });
+                     },
+                     error : function(){
+                    	 }
+                     });
+			}
+			function loadChainStoreList(competion){
+			$.ajax({
 						url : "${ctx}/store/option",
 						type : 'GET',
 						headers : {
@@ -290,333 +360,152 @@
 							Accept : "application/json",
 						},
 						success : function(data, textStatus) {
-							$('#form-field-select-1').html(
-									"<option value=''></option>");
 							var selection1 = data[0];
 							for (var i = 0; i < selection1.length; i++) {
-								$('#form-field-select-1').append(
+								$('#chainstoreselect').append(
 										"<option value='"+selection1[i].id+"'>"
 												+ selection1[i].name
 												+ "</option>");
 							}
-							var selection2 = objOfPropertyToArr(data[1]);
-							$('#form-field-select-1')
-									.change(
-											function() {
-												$('#form-field-select-2').html(
-														"");
-												var id = $(this).val();
-												for (var i = 0; i < selection2.length; i++) {
-													for (var j = 0; j < selection2[i].length; j++) {
-														if (selection2[i][j].chainstoreid == id) {
-															$(
-																	'#form-field-select-2')
-																	.append(
-																			"<option value='"+selection2[i][j].id+"'>"
-																					+ selection2[i][j].name
-																					+ "</option>")
-														}
-													}
-												}
-											});
+							  if(null != competion){
+								  competion();
+							  }
 						},
 						error : function(data, textStatus, errorThrown) {
-							console.log(data);
 						},
 					});
-			// 自定义搜索方法，暂时先用，后期研究jqGrid搜索
-			$("#queryBtn").click(function() {
-
-				var id = $("#form-field-select-2").val();
-				if (id == null || id == '') {
-					alert("请先选择门店");
-					return;
-				}
-				$("#grid-table").jqGrid('setGridParam', { // grid-table 这个是表格的id, setGridParam这个值是固定值
-					url : "${ctx}/store/query", // 请求url
-					postData : {
-						"id" : id
-					}, // 搜索过滤条件
-					page : 1
-				// 点击搜索，默认是加载搜索后第一页数据
-				}).trigger("reloadGrid"); // 渲染表格数据，这个  reloadGrid  是固定值
-			});
-
-			// 数据列表table
-			var grid_selector = "#grid-table";
-			// 显示分页参数的table
-			var pager_selector = "#grid-pager";
-
-			// 配置jqGrid列表table参数
-			jQuery(grid_selector).jqGrid({
-				url : "${ctx}/store/list",
-				editUrl : "${ctx}/store/update",
-				datatype : "json",
-				height : 250,
-				// jsonReader 这个参数必须和java后台参数一致
-				jsonReader : {
-					root : "result",
-					page : "pageNum",
-					total : "pages",
-					records : "total",
-					repeatitems : false
-				},
-				// 用于显示列表页table的列头
-				colNames : [ '管理', 'ID', '店铺名称', '店铺地址', '联系方式' ],
-				// 列表页数据绑定
-				colModel : [ {
-					name : 'myac',
-					index : '',
-					width : 80,
-					fixed : true,
-					sortable : false,
-					resize : false,
-					formatter : 'actions',
-					formatoptions : {
-						keys : true,
-						editformbutton : true,
-						editOptions : {
-							url : '${ctx}/store/update',
-							closeAfterEdit : true,
-							//recreateForm: true,
-							//beforeShowForm:beforeEditCallback
-							//afterShowForm:$.GridUtils.afterEditCallback,
-							afterSubmit : function(response, formid) {
-								var data = JSON.parse(response.responseText);
-								if (data.result) {
-									return [ true, "OK", data.id ];
-								} else {
-									return [ false, data.errmsg ];
-								}
-							},
-						//afterComplete:afterCompleteCallback
-						},
-						delOptions : {
-							url : '${ctx}/store/delete',
-							recreateForm : true,
-							beforeShowForm : beforeDeleteCallback,
-							afterSubmit : function(response, formid) {
-								var data = JSON.parse(response.responseText);
-								if (data.result) {
-									return [ true, "OK", data.id ];
-								} else {
-									return [ false, data.errmsg ];
-								}
-							}
-						}
-					}
-				},
-				// 下面是列表页其它数据，name属性与java属性的set匹配
-				{
-					name : 'id',
-					index : 'id',
-					width : 60,
-					sorttype : "int",
-					editable : false
-				}, {
-					name : 'name',
-					index : 'name',
-					width : 150,
-					editable : true,
-					editoptions : {
-						size : "20",
-						maxlength : "30"
-					}
-				}, {
-					name : 'location',
-					index : 'location',
-					width : 150,
-					editable : true
-				}, {
-					name : 'telephone',
-					index : 'telephone',
-					width : 150,
-					editable : true
-				} ],
-				viewrecords : true,
-				rowNum : 10,
-				rowList : [ 10, 20, 30 ],
-				prmNames : {
-					page : "pageNum",
-					rows : "pageSize"
-				},
-				pager : pager_selector,
-				altRows : true,
-				//toppager: true,
-				multiselect : true,
-				//multikey: "ctrlKey",
-				multiboxonly : true,
-				loadComplete : function() {
-					var table = this;
-					setTimeout(function() {
-						updatePagerIcons(table);
-					}, 0);
-
-				},
-				autowidth : true,
-			});
-			// 配置jqGrid列表下面的分页页数table参数
-			jQuery(grid_selector).jqGrid(
-					'navGrid',
-					pager_selector,
-					{
-						refresh : true,
-						refreshicon : 'icon-refresh green',
-						view : true,
-						viewicon : 'icon-zoom-in grey',
-						edit : false,
-						//addfunc : openDialog4Adding,    // (1) 点击添加按钮，则调用openDialog4Adding方法  
-						//editfunc : openDialog4Updating, // (2) 点击编辑按钮，则调用openDialog4Updating方法  
-						//delfunc : openDialog4Deleting, // (3) 点击删除按钮，则调用openDialog4Deleting方法  
-						alerttext : "请选择需要操作的数据行!" // (4) 当未选中任何行而点击编辑、删除、查看按钮时，弹出的提示信息
-					},
-					{
-						reloadAfterSubmit : true,
-						//closeOnEscape : true,
-						closeAfterEdit : true,
-						url : '${ctx}/store/update',
-						beforeShowForm : function(form) {
-						},
-						afterComplete : function() {
-							//jQuery(grid_selector).jqGrid('clearGridData', true);
-							//jQuery("#shipFactorList_d2").jqGrid('clearGridData', true);
-						},
-						afterSubmit : function(response, formid) {
-							var data = JSON.parse(response.responseText);
-							if (data.result) {
-								return [ true, "OK", data.id ];
-							} else {
-								return [ false, data.errmsg ];
-							}
-						}
-					},
-					{},
-					{
-						reloadAfterSubmit : true,
-						closeOnEscape : true,
-						url : '${ctx}/store/delete',
-						beforeShowForm : function(form) {
-						},
-						afterComplete : function() {
-							//jQuery("#shipFactorList_d").jqGrid('clearGridData', true);
-							//jQuery("#shipFactorList_d2").jqGrid('clearGridData', true);
-						},
-						afterSubmit : function(response, formid) {
-							var data = JSON.parse(response.responseText);
-							if (data.status) {
-								return [ true, "OK", data.id ];
-							} else {
-								return [ false, data.errmsg ];
-							}
-						}
-					},
-					{
-
-						recreateForm : true,
-
-						beforeShowForm : function(e) {
-							var form = $(e[0]);
-
-							form.closest('.ui-jqdialog').find(
-									'.ui-jqdialog-title').wrap(
-									'<div class="widget-header" />')
-
-						}
-
-					});
-
-			// 列表中的删除按钮调用的方法
-			function style_delete_form(form) {
-				var buttons = form.next().find('.EditButton .fm-button');
-
-				buttons.addClass('btn btn-sm').find('[class*="-icon"]')
-						.remove();//ui-icon, s-icon
-
-				buttons.eq(0).addClass('btn-danger').prepend(
-						'<i class="icon-trash"></i>');
-
-				buttons.eq(1).prepend('<i class="icon-remove"></i>')
-
 			}
-			// 此方法在 style_delete_form()方法调用之前调用，如果删除，后期可以考虑只用一个方法
-			function beforeDeleteCallback(e) {
-				var form = $(e[0]);
-				if (form.data('styled'))
-					return false;
-				form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar')
-						.wrapInner('<div class="widget-header" />')
-				style_delete_form(form);
-				form.data('styled', true);
+			
+			/*========获取业务  */
+			function loadBusiness(completion) {
+			     $.ajax({
+                     url : "${ctx}/store/businessList",
+                     type : 'GET',
+                     headers : {
+                         /* Accept: "application/xml", */
+                         Accept : "application/json",
+                     },
+                     success : function(data, textStatus) {
+                         $('#businessBox').html("");
+                         for (var i = 0; i < data.length; i++) {
+                             $('#businessBox').append(
+                                     "<label><input type='checkbox' id='business"+data[i].id+"' name='business' value='"+data[i].id+"'/>"
+                                             + data[i].name
+                                             + "</label>&nbsp;&nbsp;&nbsp;&nbsp;");
+                         }
+                         if(null!=completion){
+                        	 completion();
+                         }
+                     },
+                     error : function(data, textStatus, errorThrown) {
+                     },
+                 });
 			}
-			// 这个方法是 渲染  上一页 下一页的  > >>   <  <<
-			function updatePagerIcons(table) {
-				var replacement = {
-					'ui-icon-seek-first' : 'icon-double-angle-left bigger-140',
-					'ui-icon-seek-prev' : 'icon-angle-left bigger-140',
-					'ui-icon-seek-next' : 'icon-angle-right bigger-140',
-					'ui-icon-seek-end' : 'icon-double-angle-right bigger-140'
-				};
-				$(
-						'.ui-pg-table:not(.navtable) > tbody > tr > .ui-pg-button > .ui-icon')
-						.each(
-								function() {
-									var icon = $(this);
-									var $class = $.trim(icon.attr('class')
-											.replace('ui-icon', ''));
-									if ($class in replacement)
-										icon.attr('class', 'ui-icon '
-												+ replacement[$class]);
-								})
-			}
+		
+			/*========获取业务  */
+		    function G(id) {
+			 return document.getElementById(id);
+            }
 
-			//将object 转换成数组
-			function objOfPropertyToArr(object) {
-				var arr = [];
-				var i = 0;
-				for ( var item in object) {
-					arr[i] = object[item];
-					i++;
-				}
-				return arr;
-			}
+			
+			function loadMap(lng,lat) {
+				var mapType1 = new BMap.MapTypeControl({mapTypes: [BMAP_NORMAL_MAP,BMAP_HYBRID_MAP]});
+	            var mapType2 = new BMap.MapTypeControl({anchor: BMAP_ANCHOR_TOP_RIGHT});
+	            var point = new BMap.Point(116.404, 39.915); //创建点坐标
+	          
+	            if(lng!=0&&lat!=0){
+	            	  point = new BMap.Point(lng, lat); //创建点坐标
+	            	  var marker = new BMap.Marker(point);
+	                  map.clearOverlays();         
+	                  map.addOverlay(marker); 
+	            }
 
-			function beforeEditCallback() {
-				alert('beforeEdit');
-			}
-			function afterSubmitCallback(response, formid) {
-				var data = JSON.parse(response.responseText);
-				console.log(data);
-				if (data.result) {
-					return [ true, "OK", data.id ];
-				} else {
-					return [ false, data.errmsg ];
-				}
-			}
+	            map.centerAndZoom(point, 14); //初始化地图，设置中心点坐标和地图级别
 
-			function selectFile() {
-				alert(1);
-				//触发 文件选择的click事件  
-				$("#file").trigger("click");
+	            map.enableScrollWheelZoom(); //激活滚轮调整大小功能
 
-				//其他code如 alert($("#file").attr("value"))  
+	            map.addControl(new BMap.NavigationControl()); //添加控件：缩放地图的控件，默认在左上角；
+
+	            map.addControl(mapType1);          //2D图，卫星图
+	            map.addControl(mapType2);
+
+	            map.addControl(new BMap.ScaleControl()); //添加控件：地图显示比例的控件，默认在左下方；
+
+	            map.addControl(new BMap.OverviewMapControl()); //添加控件：地图的缩略图的控件，默认在右下方； TrafficContro
 			}
-
 			/*==================百度地图  */
+			var myValue;
 			var map = new BMap.Map("container"); //在container容器中创建一个地图,参数container为div的id属性;
+		
+			
+			var geoc = new BMap.Geocoder();    
 
-			var point = new BMap.Point(120.2, 30.25); //创建点坐标
+		    var ac = new BMap.Autocomplete(    //建立一个自动完成的对象
+		        {"input" : "cityName"
+		        ,"location" : map
+		    });
 
-			map.centerAndZoom(point, 14); //初始化地图，设置中心点坐标和地图级别
+		    ac.addEventListener("onhighlight",onhighlight);  //鼠标放在下拉列表上的事件
+		    ac.addEventListener("onconfirm", onconfirm);    //鼠标点击下拉列表后的事件
+		    
+		    function onhighlight(e) {
+		    	var str = "";
+                var _value = e.fromitem.value;
+                var value = "";
+                if (e.fromitem.index > -1) {
+                    value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+                }    
+                str = "FromItem<br />index = " + e.fromitem.index + "<br />value = " + value;
+                
+                value = "";
+                if (e.toitem.index > -1) {
+                    _value = e.toitem.value;
+                    value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+                }    
+                str += "<br />ToItem<br />index = " + e.toitem.index + "<br />value = " + value;
+                G("searchResultPanel").innerHTML = str;
+			}
+		    
+		    function onconfirm(e) {
+		    	 var _value = e.item.value;
+	                myValue = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+	                G("searchResultPanel").innerHTML ="onconfirm<br />index = " + e.item.index + "<br />myValue = " + myValue;
+	                setPlace();
+			}
 
-			map.enableScrollWheelZoom(); //激活滚轮调整大小功能
-
-			map.addControl(new BMap.NavigationControl()); //添加控件：缩放地图的控件，默认在左上角；
-
-			map.addControl(new BMap.MapTypeControl()); //添加控件：地图类型控件，默认在右上方；
-
-			map.addControl(new BMap.ScaleControl()); //添加控件：地图显示比例的控件，默认在左下方；
-
-			map.addControl(new BMap.OverviewMapControl()); //添加控件：地图的缩略图的控件，默认在右下方； TrafficControl    
+		    function setPlace(){
+		        map.clearOverlays();    //清除地图上所有覆盖物
+		        function myFun(){
+		            var pp = local.getResults().getPoi(0).point;    //获取第一个智能搜索的结果
+		            $('#lng').val(pp.lng);
+		            console.log($('#lng').val());
+	                $('#lat').val(pp.lat);
+		            map.centerAndZoom(pp, 18);
+		            map.addOverlay(new BMap.Marker(pp));    //添加标注
+		        }
+		        var local = new BMap.LocalSearch(map, { //智能搜索
+		          onSearchComplete: myFun
+		        });
+		        local.search(myValue);
+		    }
+			 /*==============  */
+			function showInfo(e){
+				var lng=e.point.lng;
+				var lat=e.point.lat;
+				$('#lng').val(lng);
+				$('#lat').val(lat);
+				var marker = new BMap.Marker(new BMap.Point(lng, lat));
+				map.clearOverlays();         
+				map.addOverlay(marker); 
+			    var pt = e.point;
+		        geoc.getLocation(pt, function(rs){
+		            var addComp = rs.addressComponents;
+		            var address=addComp.province + addComp.city + addComp.district  + addComp.street  + addComp.streetNumber;
+		            $('#cityName').val(address);
+		            //alert(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
+		        }); 
+		    }
+		    map.addEventListener("click", showInfo);    
 
 			var search = new BMap.LocalSearch("中国", {
 
@@ -627,6 +516,10 @@
 						var res = result.getPoi(0);
 
 						var point = res.point;
+						
+						$("#lng").val(point.lng);
+						
+						$("#lat").val(point.lat);
 
 						map.centerAndZoom(point, 11);
 
@@ -648,15 +541,14 @@
 
 				}//这一段可以不要，只不过是为学习更深层次应用而加入的。
 
-			});
+			}); 
 
 			$('#gps').click(function setCity() {
 				alert(document.getElementById("cityName").value);
 				search.search(document.getElementById("cityName").value);
-
 			});
 
-			search.search(document.getElementById("cityName").value);
+			//search.search(document.getElementById("cityName").value);
 			/*==================百度地图  */
 			//上班时间选择
 			$('#timepickerOn').timepicker({
@@ -692,20 +584,6 @@
 				$(this).prev().focus();
 			});
 
-			$('#id-input-file-1 , #id-input-file-2').ace_file_input({
-				no_file : 'No File ...',
-				btn_choose : 'Chosen',
-				btn_change : 'Change',
-				droppable : false,
-				onchange : null,
-				thumbnail : false,
-				//| true | large
-				whitelist : 'gif|png|jpg|jpeg'
-			//blacklist:'exe|php'
-			//onchange:''
-			//
-			});
-
 		});
 
 		
@@ -713,19 +591,19 @@
 		//图片上传预览    IE是用了滤镜。
         function previewImage(file)
         {
-          var MAXWIDTH  = 220; 
-          var MAXHEIGHT = 180;
+          var MAXWIDTH  = 382; 
+          var MAXHEIGHT = 350;
           var div = document.getElementById('preview');
           if (file.files && file.files[0])
           {
-              div.innerHTML ='<img id=imghead>';
-              var img = document.getElementById('imghead');
+              div.innerHTML ='<img id=storeimg>';
+              var img = document.getElementById('storeimg');
               img.onload = function(){
                 var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
                 img.width  =  rect.width;
                 img.height =  rect.height;
 //                 img.style.marginLeft = rect.left+'px';
-                img.style.marginTop = rect.top+'px';
+                //img.style.marginTop = rect.top+'px';
               }
               var reader = new FileReader();
               reader.onload = function(evt){img.src = evt.target.result;}
@@ -736,8 +614,8 @@
             var sFilter='filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale,src="';
             file.select();
             var src = document.selection.createRange().text;
-            div.innerHTML = '<img id=imghead>';
-            var img = document.getElementById('imghead');
+            div.innerHTML = '<img id=storeimg>';
+            var img = document.getElementById('storeimg');
             img.filters.item('DXImageTransform.Microsoft.AlphaImageLoader').src = src;
             var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
             status =('rect:'+rect.top+','+rect.left+','+rect.width+','+rect.height);
@@ -767,6 +645,29 @@
             return param;
         }
       //页面图上上传预览//
+        
+          function queryValueByKey(name) {
+            var result = window.location.search.match(new RegExp("[\?\&]" + name + "=([^\&]+)", "i"));
+            if (result == null || result.length < 1) {
+                return null;
+            }
+            var value = decodeURIComponent(result[1]);
+            if ("null" == value) {
+                value = null;
+            }
+            return value;
+        }
+
+        //将object 转换成数组
+          function objOfPropertyToArr(object) {
+              var arr = [];
+              var i = 0;
+              for ( var item in object) {
+                  arr[i] = object[item];
+                  i++;
+              }
+              return arr;
+          }
 	</script>
 
 </body>

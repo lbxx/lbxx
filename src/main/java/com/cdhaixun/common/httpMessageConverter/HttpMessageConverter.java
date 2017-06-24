@@ -1,7 +1,9 @@
 package com.cdhaixun.common.httpMessageConverter;
 
 
+import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.binary.Hex;
 import org.apache.log4j.helpers.DateTimeDateFormat;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
@@ -28,6 +30,7 @@ import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class HttpMessageConverter extends AbstractHttpMessageConverter<Object> {
     @Value("#{configProperties['aes']}")
@@ -35,6 +38,8 @@ public class HttpMessageConverter extends AbstractHttpMessageConverter<Object> {
     @Autowired
     private ObjectMapper objectMapper;
     private Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+
+
 
     public HttpMessageConverter() throws NoSuchPaddingException, NoSuchAlgorithmException {
     }
@@ -57,7 +62,14 @@ public class HttpMessageConverter extends AbstractHttpMessageConverter<Object> {
             Key key = new SecretKeySpec(Base64.decodeBase64(aes), "AES");
             cipher.init(Cipher.DECRYPT_MODE, key);
             String temp = StreamUtils.copyToString(httpInputMessage.getBody(), Charset.forName("UTF-8"));
-            byte[] result = cipher.doFinal(Base64.decodeBase64(temp));
+
+            byte[] result;
+            String regex="^[A-Fa-f0-9]+$";
+            if (Pattern.matches(regex, temp)){
+                result = cipher.doFinal(Hex.decodeHex(temp.toCharArray()));
+            }else {
+                result = cipher.doFinal(Base64.decodeBase64(temp));
+            }
             System.out.printf(new String(result,"UTF-8"));
             Object object = objectMapper.readValue(result, aClass);
             return object;
@@ -67,6 +79,8 @@ public class HttpMessageConverter extends AbstractHttpMessageConverter<Object> {
         } catch (IllegalBlockSizeException e) {
             e.printStackTrace();
         } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        } catch (DecoderException e) {
             e.printStackTrace();
         }
 

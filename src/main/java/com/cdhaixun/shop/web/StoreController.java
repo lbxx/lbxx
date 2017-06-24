@@ -1,32 +1,27 @@
 package com.cdhaixun.shop.web;
 
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.cdhaixun.common.emun.Code;
 import com.cdhaixun.common.vo.Result;
 import com.cdhaixun.common.web.BaseController;
+import com.cdhaixun.domain.Business;
 import com.cdhaixun.domain.ChainStore;
-import com.cdhaixun.domain.Menu;
 import com.cdhaixun.domain.Store;
 import com.cdhaixun.shop.service.IStoreService;
 import com.cdhaixun.util.Pager;
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
-import com.mysql.fabric.xmlrpc.base.Array;
 
 /**
  * @author DengQi
@@ -35,6 +30,9 @@ import com.mysql.fabric.xmlrpc.base.Array;
 @Controller
 @RequestMapping("/store")
 public class StoreController extends BaseController {
+    
+//    Logger logger = LoggerFactory.getLogger(StoreController.class); 
+    
     private static final String PATH = "store/";
     @Autowired
     public IStoreService storeService;
@@ -46,7 +44,8 @@ public class StoreController extends BaseController {
     }
     
     @RequestMapping(value="/add")
-    public String add(){
+    public String add(HttpServletRequest request){
+        
         return PATH+"storeadd";
     }
     
@@ -88,12 +87,14 @@ public class StoreController extends BaseController {
         String[] idArr = ids.split(",");
         try {
             for(String id : idArr){
-                storeService.deleteStoreById(Integer.parseInt(id));
+                int val = Integer.parseInt(id);
+                storeService.updateIsDeleteById(val);
             }
         } catch (Exception e) {
            result.setResult(false);
            result.setMsg("删除店铺失败!");
             e.printStackTrace();
+            return result;
         }
         result.setResult(true);
         result.setMsg("删除店铺成功!");
@@ -103,37 +104,73 @@ public class StoreController extends BaseController {
     
     @RequestMapping(value="/update",method = RequestMethod.POST)
     @ResponseBody
-    public Result updateStore(Store store){
+    public Result updateStore(Store store,@RequestParam(value="file",required=false) MultipartFile file,
+            HttpServletRequest request){
         Result result = new Result();
+        String[] businessArr = request.getParameterValues("business");
         try {
-            storeService.updateByPrimaryKeySelective(store);
+            storeService.updateByPrimaryKeySelective(store,businessArr);
         } catch (Exception e) {
+            e.printStackTrace();
             result.setResult(false);
             result.setMsg("更新店铺失败!");
+            return result;
         }
         result.setResult(true);
         result.setMsg("更新店铺成功!");
+        result.setCode(Code.OPER_UPDATE);
         return result;
     }
+    @SuppressWarnings("unchecked")
     @RequestMapping(value="/query")
     @ResponseBody
-    public List<Store> queryStoreById(HttpServletRequest request){
-            String id = request.getParameter("id");
-            return storeService.selectByPrimaryKey(Integer.parseInt(id));
+    public List queryStoreById(HttpServletRequest request){
+        int id = Integer.parseInt(request.getParameter("id"));
+        return storeService.selectByPrimaryKey(id);
     }
     
+    @SuppressWarnings("unchecked")
+    @RequestMapping(value="/queryStoreBusiness")
+    @ResponseBody
+    public List queryStoreBusinessByStoreId(HttpServletRequest request){
+        int id = Integer.parseInt(request.getParameter("id"));
+            return storeService.getStoreBusinessByStoreId(id);
+    }
     @RequestMapping(value="/add",method = RequestMethod.POST)
     @ResponseBody
-    public Result addStore(Store store){
+    public Result addStore(Store store,@RequestParam(value="file",required=false) MultipartFile file,
+            HttpServletRequest request){
         Result result = new Result();
+        String[] businessArr = request.getParameterValues("business");
         try {
-            storeService.updateByPrimaryKeySelective(store);
-        } catch (Exception e) {
+          
+          int storeid = storeService.insertSelective(store,file,request);
+          if(businessArr != null && businessArr.length > 0){
+           storeService.insertStoreBusiness(storeid,businessArr);
+          }
+        }catch(NullPointerException npe){
+            npe.printStackTrace();
+            result.setResult(false);
+            result.setMsg("获取店铺id失败!");
+            return result;
+        }catch (Exception e) {
+            e.printStackTrace();
             result.setResult(false);
             result.setMsg("添加店铺失败!");
+            return result;
         }
         result.setResult(true);
-        result.setMsg("添加店铺成功!");
+        result.setMsg("添加店铺成功!");        
+        result.setCode(Code.OPER_ADD);
         return result;
     }
+    
+    
+
+    @RequestMapping(value="businessList")
+    @ResponseBody
+    public List<Business> businessList(){
+        return storeService.listBusiness();
+    }
+    
 }
