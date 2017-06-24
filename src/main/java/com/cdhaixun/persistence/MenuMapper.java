@@ -16,4 +16,6 @@ public interface MenuMapper {
 	 * @return
 	 */
 	List<Menu> findAll(Map<String, Object> parMap);
+
+    Menu selectOneByUrl(@Param(value = "url") String servletPath);
 }

@@ -5,4 +5,5 @@ package com.cdhaixun.common.constant;
  */
 public interface ModelConstant {
     String MENU_CODE="menucode";
+    String MENU="menu";
 }
