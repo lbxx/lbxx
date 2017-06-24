@@ -79,7 +79,7 @@ public class ManagerController {
         Result result = new Result();
         String img = UploadImages.upLoadImage(httpServletRequest, file, ConfigContentUtils.getString("imgRoot","system.properties")+"\\manage", "img");
         manager.setImg(img);
-        manager.setPassword(DigestUtils.md5Hex(manager.getPassword()));
+        manager.setPassword(DigestUtils.sha512Hex(manager.getPassword()));
         managerService.save(manager);
         result.setResult(true);
         return result;
