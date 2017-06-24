@@ -71,10 +71,11 @@
 				<!-- 当前页定位结束 -->
 				<!-- 右边内容开始 -->
 				<div class="page-content">
-					<div class="row" style="width:1280px;height: 768px;overflow: hidden;">
+					<div class="row" style="width:1100px;height: 768px;overflow: hidden;">
 						<!-- ================= -->
 						<form id="storeForm" name="storeForm" class="form-horizontal" role="form"
 							enctype="multipart/form-data" action="${ctx}/store/add" method="POST">
+							<input type="hidden" name="id" value="5"/>
 							<!-- -->
 							<div style="border: 1px solid #797979;border-bottom: none;">
 							<!--左上  -->
@@ -93,7 +94,7 @@
 								<div style="margin-bottom: 20px;">
 									 <label 
 										style="float: left; line-height: 2em; width: 15%;">店铺座机</label>
-									<input type="text" id="telephone" name="telephone" maxlength="13" placeholder="座机号码"
+									<input type="text" id="telephone" name="telephone" maxlength="12" placeholder="座机号码"
 										class="required" style="width: 80%;">
 									<div style="color: #AEAEAE;">座机号码格式: '区号'-'座机号'</div>
 								</div>
@@ -173,8 +174,8 @@
 							</div>
                             </div>
                             <div
-                            style="margin: 50px auto 0 auto; padding-top: 50px; text-align: center; clear: both;">
-                            <input type="button" id="submit" class="btn btn-info" value="确认添加" />
+                            style="margin: 50px auto 0 auto; padding-top: 10px; text-align: center; clear: both;">
+                            <input type="submit" id="submit" class="btn btn-info" value="确认添加" />
                                 <i class="ace-icon fa fa-check bigger-110"></i> 
 
                             &nbsp; &nbsp; &nbsp;
@@ -208,65 +209,66 @@
 	<script src="${ctx}/resources/js/messages_zh.js"></script>
 	<script src="${ctx}/resources/js/additional-methods.min.js"></script>
 	<script type="text/javascript">
-	/*======表单校验 */
-	$.validator.setDefaults({
-		debug:true,
-	    submitHandler: function() {
-	    	submitForm();
-	    }
-	});
-	// 手机号码验证
-	jQuery.validator.addMethod("isMobile", function(value, element) {
-	var length = value.length;
-	var mobile = /^(13[0-9]{9})|(18[0-9]{9})|(14[0-9]{9})|(17[0-9]{9})|(15[0-9]{9})$/; 
-	return this.optional(element) || (length == 11 && mobile.test(value));
-	}, "请正确填写您的手机号码");
 	
-	// 座机验证
-	jQuery.validator.addMethod("telephone", function(value, element) {
-	var tel = /^(^(\d{3,4}-)?\d{7,8})$|(13[0-9]{9}) $/g;
-	return this.optional(element) || (tel.test(value));
-	}, "座机号码格式错误:021-10101010!");	
-	
-    $("#storeForm").validate({
-        errorClass:"noInput",
-        rules:{
-            cellphone:{
-            required:true,
-            minlength:11,
-            isMobile:true
-            },
-            telephone:{
-            	required:true,
-                minlength:9,
-                maxlength:13,
-                telephone:true
-            }
-        },
-        messages : {  
-            cellphone : {  
-                required : "请输入手机号",  
-                minlength : "确认手机不能小于11个字符",  
-                isMobile : "请正确填写您的手机号码"  
-            } ,
-            telephone:{
-                required:"请输入座机号",
-                minlength:"座机号最少9位",
-                maxlength:"座机号最多13位",
-                telephone:"请正确填写座机号"
-            }
-             
-        }/* ,
-         errorPlacement : function(error, element) {  
-                error.appendTo(element.next().next());  
-            } */
-    });
 	/*======表单校验 */
 	var isFirstload=true;
-		jQuery(function($) {
+		jQuery(function($){
 			
 			loadStoreinfo();
-			
+			/*======表单校验 */
+		    $.validator.setDefaults({
+		        debug:false,
+		        submitHandler: function() {
+		            alert("Enter submitHandler");
+		            submitForm();
+		        }
+		    });
+		    // 手机号码验证
+		    jQuery.validator.addMethod("isMobile", function(value, element) {
+		    var length = value.length;
+		    var mobile = /^(13[0-9]{9})|(18[0-9]{9})|(14[0-9]{9})|(17[0-9]{9})|(15[0-9]{9})$/; 
+		    return this.optional(element) || (length == 11 && mobile.test(value));
+		    }, "请正确填写您的手机号码");
+		    
+		    // 座机验证
+		    jQuery.validator.addMethod("telephone", function(value, element) {
+		    var tel = /^(^(\d{3,4}-)?\d{7,8})$|(13[0-9]{9}) $/g;
+		    return this.optional(element) || (tel.test(value));
+		    }, "座机号码格式错误:021-10101010!");   
+		    
+		    $("#storeForm").validate({
+		        errorClass:"noInput",
+		        rules:{
+		            cellphone:{
+		            required:true,
+		            minlength:11,
+		            isMobile:true
+		            },
+		            telephone:{
+		                required:true,
+		                minlength:9,
+		                maxlength:12,
+		                telephone:true
+		            }
+		        },
+		        messages : {  
+		            cellphone : {  
+		                required : "请输入手机号",  
+		                minlength : "确认手机不能小于11个字符",  
+		                isMobile : "请正确填写您的手机号码"  
+		            } ,
+		            telephone:{
+		                required:"请输入座机号",
+		                minlength:"座机号最少9位",
+		                maxlength:"座机号最多12位",
+		                telephone:"请正确填写座机号"
+		            }
+		             
+		        }/* ,
+		         errorPlacement : function(error, element) {  
+		                error.appendTo(element.next().next());  
+		            } */
+		    });
 			
 			function loadStoreinfo() {
 			    var storeid = queryValueByKey("storeid");
@@ -313,22 +315,21 @@
 	            }else{
 	            	//add store
 	            	loadChainStoreList();
+	            	loadBusiness();
 	            }
 			}
 			function submitForm(){
 			    var url = $("#storeForm").attr('action');  	
-			
-				$.ajax({
-					   var str_data=$("#storeForm input").map(function(){
-					  return ($(this).attr("name")+'='+$(this).val());
-					}).get().join("&"),
-					   type: "POST",
-					   url: url,
-					   data: str_data,
-					   success: function(msg){
-					     alert( "Data Saved: " + msg );
-					   }
-					});
+			    var ajax_option={  
+			    	    url:url,  
+			    	    success:function(data){  
+			    	         alert("submited");
+			    	            },
+			    	    error:function(){
+			    	    	alert('submit failed');
+			    	    }
+			    	};
+			    $('#storeForm').ajaxSubmit(ajax_option);
 			}
 			function getStoreBusiness(storeid){
 				 $.ajax({
