@@ -63,8 +63,12 @@ public class ManagerController {
      * 添加账号页面
      */
     @RequestMapping(value = "addIndex", method = RequestMethod.GET)
-    public String addIndex(Model model) {
+    public String addIndex(Model model,Manager manager) {
         List<Role> roleList= roleSevice.findAll();
+        if(manager.getId()!=null){
+            Manager managerDb=   managerService.findById(manager.getId());
+            model.addAttribute("manager",managerDb);
+        }
         model.addAttribute("roleList",roleList);
         return "manager/add";
     }

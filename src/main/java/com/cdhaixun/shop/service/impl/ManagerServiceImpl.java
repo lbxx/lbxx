@@ -29,4 +29,9 @@ public class ManagerServiceImpl implements IManagerService{
             managerMapper.updateByPrimaryKey(manager);
         }
     }
+
+    @Override
+    public Manager findById(Integer id) {
+        return managerMapper.selectByPrimaryKey(id);
+    }
 }
