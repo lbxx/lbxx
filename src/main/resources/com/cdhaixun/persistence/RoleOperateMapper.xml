@@ -3,15 +3,19 @@
 <mapper namespace="com.cdhaixun.persistence.RoleOperateMapper" >
   <resultMap id="BaseResultMap" type="com.cdhaixun.domain.RoleOperate" >
     <id column="role" property="role" jdbcType="VARCHAR" />
-    <id column="menu" property="menu" jdbcType="INTEGER" />
+    <id column="operateid" property="operateid" jdbcType="INTEGER" />
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="com.cdhaixun.domain.RoleOperate" >
     delete from role_operate
     where role = #{role,jdbcType=VARCHAR}
-      and menu = #{menu,jdbcType=INTEGER}
+      and operateid = #{operateid,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.cdhaixun.domain.RoleOperate" >
-    insert into role_operate (role, menu)
-    values (#{role,jdbcType=VARCHAR}, #{menu,jdbcType=INTEGER})
+    insert into role_operate (role, operateid)
+    values (#{role,jdbcType=VARCHAR}, #{operateid,jdbcType=INTEGER})
   </insert>
+  <select id="selectByRole" resultMap="BaseResultMap">
+    SELECT  role,operateid from role_operate
+    where role=#{role}
+  </select>
 </mapper>

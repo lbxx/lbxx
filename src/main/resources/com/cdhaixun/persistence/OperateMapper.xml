@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.cdhaixun.persistence.OperateMapper" >
   <resultMap id="BaseResultMap" type="com.cdhaixun.domain.Operate" >
+    <id column="id" property="id" jdbcType="INTEGER" />
     <id column="menuid" property="menuid" jdbcType="INTEGER" />
     <id column="permission" property="permission" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
@@ -9,14 +10,13 @@
     <result column="sort" property="sort" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    menuid, permission, name, sort,menucode
+  id,  menuid, permission, name, sort,menucode
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.cdhaixun.domain.Operate" >
     select 
     <include refid="Base_Column_List" />
     from operate
-    where menuid = #{menuid,jdbcType=INTEGER}
-      and op = #{op,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="com.cdhaixun.domain.Operate" >
     delete from operate

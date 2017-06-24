@@ -19,6 +19,15 @@ public class PayResult {
     private String trxstatus;
     private String retcode;
     private String retmsg;
+    private  String errmsg;
+
+    public String getErrmsg() {
+        return errmsg;
+    }
+
+    public void setErrmsg(String errmsg) {
+        this.errmsg = errmsg;
+    }
 
     public String getRetmsg() {
         return retmsg;

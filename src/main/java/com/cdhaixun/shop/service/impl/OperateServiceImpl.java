@@ -19,4 +19,8 @@ public class OperateServiceImpl implements IOperateService {
     public List<Operate> findByMenuId(Integer id) {
         return operateMapper.selectByMenuId(id);
     }
+    @Override
+    public Operate findById(Integer operateid) {
+        return operateMapper.selectByPrimaryKey(operateid);
+    }
 }

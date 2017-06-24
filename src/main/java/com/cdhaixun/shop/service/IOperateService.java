@@ -14,4 +14,11 @@ public interface IOperateService {
      * @return
      */
     List<Operate> findByMenuId(Integer id);
+
+    /**
+     * 根据id查询operateid
+     * @param operateid
+     * @return
+     */
+    Operate findById(Integer operateid);
 }
