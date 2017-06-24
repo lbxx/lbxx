@@ -58,7 +58,7 @@
                         <div class="form-group">
                             <input type="text"name="name" class="form-control" placeholder="请输入用户姓名">
                         </div>
-                        <shiro:hasPermission name="manage:add"><button type="submit" class="btn btn-default">搜索</button></shiro:hasPermission>
+                        <shiro:hasPermission name="manage:list"><button type="submit" class="btn btn-default">搜索</button></shiro:hasPermission>
                     </form>
                     <div class="col-xs-12">
                         <!-- 显示内容列表的table -->
