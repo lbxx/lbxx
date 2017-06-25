@@ -1,5 +1,7 @@
 package com.cdhaixun.persistence;
 
+import java.util.List;
+
 import com.cdhaixun.domain.Technician;
 
 public interface TechnicianMapper {
@@ -14,4 +16,6 @@ public interface TechnicianMapper {
     int updateByPrimaryKeySelective(Technician record);
 
     int updateByPrimaryKey(Technician record);
+    
+    List<Technician> selectTechnicianList();
 }

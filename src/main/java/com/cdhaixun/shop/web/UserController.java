@@ -1,23 +1,23 @@
 package com.cdhaixun.shop.web;
 
-import com.cdhaixun.domain.Store;
-import com.cdhaixun.domain.User;
-import com.cdhaixun.domain.UserType;
-import com.cdhaixun.shop.service.IUserService;
-import com.cdhaixun.util.MapUtils;
-import com.cdhaixun.util.Pager;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.cdhaixun.domain.Store;
+import com.cdhaixun.domain.User;
+import com.cdhaixun.domain.UserType;
+import com.cdhaixun.shop.service.IUserService;
+import com.cdhaixun.util.MapUtils;
+import com.cdhaixun.util.Pager;
 
 /**
  * 会员管理

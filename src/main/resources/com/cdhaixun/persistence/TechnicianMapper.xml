@@ -150,4 +150,10 @@
       isdelete = #{isdelete,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectTechnicianList" resultMap="BaseResultMap">
+     select 
+    <include refid="Base_Column_List" />
+    from technician
+    where isdelete = 0
+  </select>
 </mapper>
