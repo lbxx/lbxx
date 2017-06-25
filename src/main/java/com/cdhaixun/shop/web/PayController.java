@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,10 +62,10 @@ public class PayController extends BaseController{
         String url = URLEncodedUtils.format(params, "utf-8");
         String sign = DigestUtils.md5Hex(url).toUpperCase();
         params.add(new BasicNameValuePair("sign", sign));
-        HttpPost httppost = new HttpPost(scanpay+"?" +URLEncodedUtils.format(params, "utf-8"));
+        HttpPost httppost = new HttpPost(scanpay+"?" +URLEncodedUtils.format(params, Charset.forName("UTF-8")));
         HttpResponse httpResponse = hc.execute(httppost);
         HttpEntity httpEntity = httpResponse.getEntity();
-        String json = IOUtils.toString(httpEntity.getContent());
+        String json = IOUtils.toString(httpEntity.getContent(),"utf-8");
         PayResult payResult= objectMapper.readValue(json, PayResult.class);
         return  payResult;
     }
