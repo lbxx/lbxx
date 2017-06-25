@@ -42,18 +42,29 @@
                 <ul class="breadcrumb">
                     <li>
                         <i class="icon-home home-icon"></i>
-                        <a href="#">Home</a>
+                        <a href="javascript:;">Home</a>
                     </li>
                     <li>
-                        <a href="#">Tables</a>
+                        <a href="javascript:;">${menu.name}</a>
                     </li>
-                    <li class="active">jqGrid plugin</li>
+                    <li class="active">
+                        <c:forEach items="${menucode}" var="operator">
+                            <c:if test="${menu.id == operator.id}">
+                                ${operator.name}
+                            </c:if>
+                        </c:forEach>
+                    </li>
                 </ul><!-- .breadcrumb -->
             </div>
             <!-- 当前页定位结束 -->
             <!-- 右边内容开始 -->
             <div class="page-content">
                 <div class="row">
+                    <div class="col-xs-12">
+                        <c:forEach items="${menucode}" var="operator">
+                            <button class="btn btn-sm btn-primary" onclick="${operator.permission}()">${operator.name}</button>
+                        </c:forEach>
+                    </div>
                     <div class="col-xs-12">
                         <div class="col-md-2 tn aol">
                             <select class="form-control" id="storeId">
