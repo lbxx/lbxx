@@ -8,6 +8,7 @@ import java.io.Serializable;
  * @Date 2017/6/6 23:41
  */
 public class Operate implements Serializable {
+    private Integer id;
     /**
      * 操作名
      */
@@ -29,12 +30,30 @@ public class Operate implements Serializable {
      */
     private String permission;
 
+     private String menucode;
+
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
+    }
+
+    public String getMenucode() {
+        return menucode;
+    }
+
+    public void setMenucode(String menucode) {
+        this.menucode = menucode;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Integer getSort() {

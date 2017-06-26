@@ -34,3 +34,8 @@ window.jQuery || document.write("<script src='${ctx}/resources/js/jquery-1.10.2.
 <script src="${ctx}/resources/js/ace.min.js"></script>
 <script src="${ctx}/resources/js/jquery-ui.custom.min.js"></script>
 <script src="${ctx}/resources/js/chosen.jquery.min.js"></script>
+<script src="${ctx}/resources/js/jquery.form.min.js"></script>
+<script src="${ctx}/resources/js/jquery.validate.min.js"></script>
+<script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/localization/messages_zh.js"></script>
+<!-- sco -->
+<script src="${ctx}/resources/js/sco/sco.message.js"></script>

@@ -5,7 +5,7 @@ import java.util.Date;
 public class User {
     private Integer id;
 
-    private Integer typeid;
+    private Integer storeid;
 
     private String password;
 
@@ -29,8 +29,6 @@ public class User {
 
     private Long blance;
 
-    private Integer points;
-
     private Date birthday;
 
     private String province;
@@ -49,6 +47,12 @@ public class User {
 
     private Integer state;
 
+    private Boolean isdelete;
+
+    private Integer points;
+
+    private String usercard;
+
     public Integer getId() {
         return id;
     }
@@ -57,12 +61,12 @@ public class User {
         this.id = id;
     }
 
-    public Integer getTypeid() {
-        return typeid;
+    public Integer getStoreid() {
+        return storeid;
     }
 
-    public void setTypeid(Integer typeid) {
-        this.typeid = typeid;
+    public void setStoreid(Integer storeid) {
+        this.storeid = storeid;
     }
 
     public String getPassword() {
@@ -153,14 +157,6 @@ public class User {
         this.blance = blance;
     }
 
-    public Integer getPoints() {
-        return points;
-    }
-
-    public void setPoints(Integer points) {
-        this.points = points;
-    }
-
     public Date getBirthday() {
         return birthday;
     }
@@ -231,5 +227,29 @@ public class User {
 
     public void setState(Integer state) {
         this.state = state;
+    }
+
+    public Boolean getIsdelete() {
+        return isdelete;
+    }
+
+    public void setIsdelete(Boolean isdelete) {
+        this.isdelete = isdelete;
+    }
+
+    public Integer getPoints() {
+        return points;
+    }
+
+    public void setPoints(Integer points) {
+        this.points = points;
+    }
+
+    public String getUsercard() {
+        return usercard;
+    }
+
+    public void setUsercard(String usercard) {
+        this.usercard = usercard == null ? null : usercard.trim();
     }
 }

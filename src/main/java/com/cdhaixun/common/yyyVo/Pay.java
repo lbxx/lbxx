@@ -1,4 +1,4 @@
-package com.cdhaixun.common.appVo;
+package com.cdhaixun.common.yyyVo;
 
 /**
  * Created by tangxinmao on 2017/6/23.

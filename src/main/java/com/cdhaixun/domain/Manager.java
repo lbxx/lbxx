@@ -59,6 +59,11 @@ public class Manager  implements Serializable {
      * 状态  1 正常，0禁用
      */
     private Boolean state;
+    private String qq;
+    private String email;
+    private String nickname;
+    private String img;
+    private Boolean sex;
     /**
      * 备注
      */
@@ -70,6 +75,46 @@ public class Manager  implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getQq() {
+        return qq;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
+
+    public Boolean getSex() {
+        return sex;
+    }
+
+    public void setSex(Boolean sex) {
+        this.sex = sex;
+    }
+
+    public void setQq(String qq) {
+        this.qq = qq;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public String getAccount() {

@@ -1,8 +1,11 @@
-package com.cdhaixun.common.appVo;
+package com.cdhaixun.common.yyyVo;
+
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 /**
  * Created by tangxinmao on 2017/6/23.
  */
+@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
 public class PayResult {
     private String acct;
     private String appid;
@@ -10,11 +13,29 @@ public class PayResult {
     private String cusid;
     private String fintime;
     private String reqsn;
-    private String retcode;
     private String sign;
     private String trxcode;
     private String trxid;
     private String trxstatus;
+    private String retcode;
+    private String retmsg;
+    private  String errmsg;
+
+    public String getErrmsg() {
+        return errmsg;
+    }
+
+    public void setErrmsg(String errmsg) {
+        this.errmsg = errmsg;
+    }
+
+    public String getRetmsg() {
+        return retmsg;
+    }
+
+    public void setRetmsg(String retmsg) {
+        this.retmsg = retmsg;
+    }
 
     public String getAcct() {
         return acct;

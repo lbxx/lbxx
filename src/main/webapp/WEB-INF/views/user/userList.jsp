@@ -13,6 +13,7 @@
             height:100%!important;
         }
     </style>
+    <script src="${ctx}/resources/DatePicker/WdatePicker.js"></script>
 </head>
 <body>
 
@@ -53,8 +54,30 @@
             <!-- 右边内容开始 -->
             <div class="page-content">
                 <div class="row">
-                    <input type="text" id="searchName" placeholder="请输入菜单名查询"/>
-                    <button id="sbtn">测试搜索</button>
+                    <div class="col-xs-12">
+                        <div class="col-md-2 tn aol">
+                            <select class="form-control" id="storeId">
+                                <option value="">全部</option>
+                                <c:forEach items="${storeList}" var="item">
+                                    <option value="${item.id}">${item.name}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                        <div class="col-md-2 tn aol"><input type="text" id="registertime" placeholder="请输入时间" class="confS_input pg_input" onClick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></span>
+                        </div>
+                        <div class="col-md-2 tn aol">
+                            <select class="form-control" id="type">
+                                <option value="">全部</option>
+                                <option value="usercard">会员卡号</option>
+                                <option value="name">会员姓名</option>
+                                <option value="mobile">会员电话</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2 tn aol"><input type="text" id="typeval" placeholder="" class="confS_input pg_input"></span>
+                        </div>
+                        <div class="col-md-2 pull-left">
+                            <button type="button" class="btn btn-pill btn-primary" style="display: inline-block;" id="searchBtn" title="搜索">搜索</button></div>
+                    </div>
                     <div class="col-xs-12">
                         <!-- 显示内容列表的table -->
                         <table id="grid-table"></table>
@@ -72,11 +95,14 @@
 <script type="text/javascript">
     jQuery(function($) {
         // 自定义搜索方法，暂时先用，后期研究jqGrid搜索
-        $("#sbtn").click(function(){
-            var name = $("#searchName").val();
+        $("#searchBtn").click(function(){
+            var storeId = $("#storeId").val();
+            var registertime = $("#registertime").val();
+            var type = $("#type").val();
+            var typeval = $("#typeval").val();
             $("#grid-table").jqGrid('setGridParam',{  // grid-table 这个是表格的id, setGridParam这个值是固定值
-                url:"${ctx}/test/testgrid", // 请求url
-                postData:{"name":name},    // 搜索过滤条件
+                url:"${ctx}/user/userList", // 请求url
+                postData:{"storeId":storeId,"registertime":registertime,"type":type,"typeval":typeval},    // 搜索过滤条件
                 page:1                    // 点击搜索，默认是加载搜索后第一页数据
             }).trigger("reloadGrid");     // 渲染表格数据，这个  reloadGrid  是固定值
         });
@@ -88,7 +114,7 @@
 
         // 配置jqGrid列表table参数
         jQuery(grid_selector).jqGrid({
-            url: "${ctx}/test/testgrid",
+            url: "${ctx}/user/userList",
             datatype: "json",
             //height: 250,
             // jsonReader 这个参数必须和java后台参数一致

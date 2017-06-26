@@ -31,4 +31,5 @@ public interface StoreMapper extends BaseMapper<Store> {
     List<Store> selectByPrimaryKey(int id);
 
     int insertSelective(Store store);
+    
 }
