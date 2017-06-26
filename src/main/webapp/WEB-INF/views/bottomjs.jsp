@@ -39,3 +39,5 @@ window.jQuery || document.write("<script src='${ctx}/resources/js/jquery-1.10.2.
 <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/localization/messages_zh.js"></script>
 <!-- sco -->
 <script src="${ctx}/resources/js/sco/sco.message.js"></script>
+
+<script src="${ctx}/resources/js/admin.js"></script>

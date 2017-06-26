@@ -35,36 +35,14 @@
         <!-- 右边内容开始 -->
         <div class="main-content">
             <!-- 当前页定位开始 -->
-            <div class="breadcrumbs" id="breadcrumbs">
-                <script type="text/javascript">
-                    try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
-                </script>
-                <ul class="breadcrumb">
-                    <li>
-                        <i class="icon-home home-icon"></i>
-                        <a href="javascript:;">Home</a>
-                    </li>
-                    <li>
-                        <a href="javascript:;">${menu.name}</a>
-                    </li>
-                    <li class="active">
-                        <c:forEach items="${menucode}" var="operator">
-                            <c:if test="${menu.id == operator.id}">
-                                ${operator.name}
-                            </c:if>
-                        </c:forEach>
-                    </li>
-                </ul><!-- .breadcrumb -->
-            </div>
+            <jsp:include page="../location.jsp"/>
             <!-- 当前页定位结束 -->
             <!-- 右边内容开始 -->
             <div class="page-content">
                 <div class="row">
-                    <div class="col-xs-12">
-                        <c:forEach items="${menucode}" var="operator">
-                            <button class="btn btn-sm btn-primary" onclick="${operator.permission}()">${operator.name}</button>
-                        </c:forEach>
-                    </div>
+                    <!-- 引入权限jsp -->
+                    <jsp:include page="../permission.jsp"/>
+
                     <div class="col-xs-12">
                         <div class="col-md-2 tn aol">
                             <select class="form-control" id="storeId">
@@ -140,7 +118,7 @@
             colNames:[' ', '会员卡','姓名','电话','性别','店铺名','用户类别','注册时间'],
             // 列表页数据绑定
             colModel:[
-                {name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
+                {name:'id',index:'', width:80, fixed:true, sortable:false, resize:false,
                     formatter:'actions',
                     formatoptions:{
                         keys:true,

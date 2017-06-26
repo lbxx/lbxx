@@ -30,7 +30,7 @@ public class Operate implements Serializable {
      */
     private String permission;
 
-     private String menucode;
+    private String menucode;
 
     public String getName() {
         return name;

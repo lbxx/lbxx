@@ -104,4 +104,20 @@ public class UserController {
             return false;
         }
     }
+
+    /**
+     * 删除
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/remove", method = RequestMethod.GET)
+    public Object remove(User user){
+        try{
+           userService.delete(user);
+        }catch(Exception e){
+            e.printStackTrace();
+            return "删除失败";
+        }
+        return "删除成功";
+    }
 }
