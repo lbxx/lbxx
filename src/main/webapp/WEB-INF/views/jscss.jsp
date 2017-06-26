@@ -43,7 +43,21 @@
 <link rel="stylesheet" href="${ctx}/resources/css/bootstrap-timepicker.css" />
 
 <link rel="stylesheet" href="${ctx}/resources/css/chosen.css" />
-<link rel="stylesheet" href="${ctx}/resources/css/fonts.googleapis.com.css" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 <link rel="stylesheet" href="${ctx}/resources/css/ui.jqgrid.css" />
@@ -75,6 +89,9 @@
 <link rel="stylesheet" href="${ctx}/resources/css/ace-ie.min.css" />
 
 <![endif]-->
+<!--sco-->
+<link rel="stylesheet" href="${ctx}/resources/css/sco/scojs.css" />
+<link rel="stylesheet" href="${ctx}/resources/css/sco/sco.message.css" />
 
 
 

@@ -7,8 +7,6 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.cdhaixun.common.appVo.Mobile;
-import com.cdhaixun.util.SMSUtil;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -27,11 +25,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cdhaixun.common.appVo.Mobile;
 import com.cdhaixun.common.constant.SessionConstant;
 import com.cdhaixun.common.emun.Code;
 import com.cdhaixun.common.redisVo.Captcha;
 import com.cdhaixun.common.vo.Result;
 import com.cdhaixun.common.web.BaseController;
+import com.cdhaixun.util.SMSUtil;
 
 /**
  * Created by tangxinmao on 2017/5/30.
