@@ -49,7 +49,6 @@ function mydialog(url,msg){
     // 下面这个方法是dialog样式文件，勿删
     $.widget("ui.dialog", $.extend({}, $.ui.dialog.prototype, {
         _title: function(title) {
-            alert(title)
             var $title = this.options.title || '&nbsp;'
             if( ("title_html" in this.options) && this.options.title_html == true )
                 title.html($title);
