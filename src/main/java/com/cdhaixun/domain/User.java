@@ -47,7 +47,7 @@ public class User {
 
     private Integer state;
 
-    private Boolean isdelete;
+    private Integer isdelete;
 
     private Integer points;
 
@@ -229,11 +229,11 @@ public class User {
         this.state = state;
     }
 
-    public Boolean getIsdelete() {
+    public Integer getIsdelete() {
         return isdelete;
     }
 
-    public void setIsdelete(Boolean isdelete) {
+    public void setIsdelete(Integer isdelete) {
         this.isdelete = isdelete;
     }
 

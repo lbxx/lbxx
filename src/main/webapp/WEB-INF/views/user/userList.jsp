@@ -13,6 +13,81 @@
             height:100%!important;
         }
     </style>
+
+    <link href="${ctx}/resources/css/bootstrap.min.css" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/font-awesome/3.2.1/css/font-awesome.min.css">
+
+
+
+    <!--[if IE 7]>
+
+    <link rel="stylesheet" href="${ctx}/resources/css/font-awesome-ie7.min.css" />
+
+    <![endif]-->
+
+
+
+    <!-- page specific plugin styles -->
+
+
+
+    <link rel="stylesheet" href="${ctx}/resources/css/jquery-ui-1.10.3.full.min.css" />
+
+
+
+    <!-- fonts -->
+
+
+
+
+
+
+
+    <!-- ace styles -->
+
+
+
+    <link rel="stylesheet" href="${ctx}/resources/css/ace.min.css" />
+
+    <link rel="stylesheet" href="${ctx}/resources/css/ace-rtl.min.css" />
+
+    <link rel="stylesheet" href="${ctx}/resources/css/ace-skins.min.css" />
+
+
+
+    <!--[if lte IE 8]>
+
+    <link rel="stylesheet" href="${ctx}/resources/css/ace-ie.min.css" />
+
+    <![endif]-->
+
+
+
+    <!-- inline styles related to this page -->
+
+
+
+    <!-- ace settings handler -->
+
+
+
+    <script src="${ctx}/resources/js/ace-extra.min.js"></script>
+
+
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+
+
+
+    <!--[if lt IE 9]>
+
+    <script src="${ctx}/resources/js/html5shiv.js"></script>
+
+    <script src="${ctx}/resources/js/respond.min.js"></script>
+
+    <![endif]-->
+
     <script src="${ctx}/resources/DatePicker/WdatePicker.js"></script>
 </head>
 <body>
@@ -162,23 +237,13 @@
                 view: true,
                 viewicon : 'icon-zoom-in grey',
             },
-
-
             {
-
-
                 recreateForm: true,
-
                 beforeShowForm: function(e){
-
                     var form = $(e[0]);
-
                     form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />')
-
                 }
-
             }
-
         )
 
 
@@ -217,6 +282,31 @@
             })
         }
 
+
+        $( "#btn" ).on('click', function(e) {
+            e.preventDefault();
+            var dialog = $( "#dialog-message" ).removeClass('hide').dialog({
+                modal: true,
+                title: "<div class='widget-header widget-header-small'><h4 class='smaller'><i class='icon-ok'></i> jQuery UI Dialog</h4></div>",
+                title_html: true,
+                buttons: [
+                    {
+                        text: "Cancel",
+                        "class" : "btn btn-xs",
+                        click: function() {
+                            $( this ).dialog( "close" );
+                        }
+                    },
+                    {
+                        text: "OK",
+                        "class" : "btn btn-primary btn-xs",
+                        click: function() {
+                            $( this ).dialog( "close" );
+                        }
+                    }
+                ]
+            });
+        });
     });
 
 </script>

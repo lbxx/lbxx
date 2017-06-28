@@ -39,5 +39,13 @@ window.jQuery || document.write("<script src='${ctx}/resources/js/jquery-1.10.2.
 <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/localization/messages_zh.js"></script>
 <!-- sco -->
 <script src="${ctx}/resources/js/sco/sco.message.js"></script>
-
+<!-- 下面这个是引入dialog弹窗的js -->
+<script src="${ctx}/resources/js/jquery-ui-1.10.3.full.min.js"></script>
+<script src="${ctx}/resources/js/jquery.ui.touch-punch.min.js"></script>
+<!-- 公共跳转的js,依赖上面js -->
 <script src="${ctx}/resources/js/admin.js"></script>
+
+<!-- 弹窗dialog公共DIV-->
+<div id="dialog-message" class="hide">
+    <p></p>
+</div>

@@ -24,7 +24,7 @@
     <result column="img" property="img" jdbcType="VARCHAR" />
     <result column="qrcode" property="qrcode" jdbcType="VARCHAR" />
     <result column="state" property="state" jdbcType="INTEGER" />
-    <result column="isdelete" property="isdelete" jdbcType="BIT" />
+    <result column="isdelete" property="isdelete" jdbcType="INTEGER" />
     <result column="points" property="points" jdbcType="INTEGER" />
     <result column="usercard" property="usercard" jdbcType="VARCHAR" />
   </resultMap>
@@ -96,7 +96,7 @@
       #{blance,jdbcType=DECIMAL}, #{birthday,jdbcType=DATE}, #{province,jdbcType=VARCHAR}, 
       #{city,jdbcType=VARCHAR}, #{area,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
       #{idcard,jdbcType=VARCHAR}, #{img,jdbcType=VARCHAR}, #{qrcode,jdbcType=VARCHAR}, 
-      #{state,jdbcType=INTEGER}, #{isdelete,jdbcType=BIT}, #{points,jdbcType=INTEGER}, 
+      #{state,jdbcType=INTEGER}, #{isdelete,jdbcType=INTEGER}, #{points,jdbcType=INTEGER},
       #{usercard,jdbcType=VARCHAR})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.cdhaixun.domain.User" >
@@ -166,7 +166,7 @@
         state = #{state,jdbcType=INTEGER},
       </if>
       <if test="isdelete != null" >
-        isdelete = #{isdelete,jdbcType=BIT},
+        isdelete = #{isdelete,jdbcType=INTEGER},
       </if>
       <if test="points != null" >
         points = #{points,jdbcType=INTEGER},

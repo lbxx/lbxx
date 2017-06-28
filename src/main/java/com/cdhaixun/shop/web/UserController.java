@@ -91,14 +91,9 @@ public class UserController {
     @RequestMapping(value = "/save")
     public Object save(User user, HttpServletRequest request){
         try {
-            int i = 0;
             user.setPassword(DigestUtils.md5(ConfigContentUtils.getString("upassword", "system.properties")).toString());
             userService.save(user);
-            if(i > 0){
-                return true;
-            }else{
-                return false;
-            }
+            return true;
         }catch (Exception e){
             e.printStackTrace();
             return false;
