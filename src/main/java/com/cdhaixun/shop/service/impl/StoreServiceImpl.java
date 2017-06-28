@@ -123,8 +123,8 @@ public class StoreServiceImpl implements IStoreService {
             store.setPic(picPath);
         }
         Date date = new Date();
-        java.sql.Timestamp timeStamp = new java.sql.Timestamp(date.getTime());
-        store.setCreatetime(timeStamp);
+//        java.sql.Timestamp timeStamp = new java.sql.Timestamp(date.getTime());
+        store.setCreatetime(date);
         storeMapper.insertSelective(store);
         return store.getId();
     }
@@ -173,8 +173,7 @@ public class StoreServiceImpl implements IStoreService {
             store.setPic(picPath);
         }
         Date date = new Date();
-        java.sql.Timestamp timeStamp = new java.sql.Timestamp(date.getTime());
-        store.setCreatetime(timeStamp);
+        store.setCreatetime(date);
         storeMapper.updateByPrimaryKeySelective(store);
     }
     

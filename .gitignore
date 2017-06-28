@@ -3,3 +3,6 @@ target/**
 # IDEA #
 .idea/**
 *.iml
+src/main/resources/jdbc.properties
+/.classpath
+/.project

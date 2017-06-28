@@ -95,15 +95,5 @@ public class Pay {
         this.reqsn = reqsn;
     }
 
-    public String getInteger() {
-        return Integer;
-    }
-
-    public void setInteger(String integer) {
-        Integer = integer;
-    }
-
-    private String Integer;//支付金额
-
 
 }

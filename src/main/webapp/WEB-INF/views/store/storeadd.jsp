@@ -75,7 +75,7 @@
 						<!-- ================= -->
 						<form id="storeForm" name="storeForm" class="form-horizontal" role="form"
 							enctype="multipart/form-data" action="${ctx}/store/add" method="POST">
-							<input type="hidden" name="id" value="5"/>
+							<input type="hidden" name="id" id="id" value=""/>
 							<!-- -->
 							<div style="border: 1px solid #797979;border-bottom: none;">
 							<!--左上  -->
@@ -207,7 +207,7 @@
 	
 	<script src="${ctx}/resources/js/jquery.validate.min.js"></script>
 	<script src="${ctx}/resources/js/messages_zh.js"></script>
-	<script src="${ctx}/resources/js/additional-methods.min.js"></script>
+	<script src="${ctx}/resources/js/jquery.form.min.js"></script>
 	<script type="text/javascript">
 	
 	/*======表单校验 */
@@ -219,7 +219,6 @@
 		    $.validator.setDefaults({
 		        debug:false,
 		        submitHandler: function() {
-		            alert("Enter submitHandler");
 		            submitForm();
 		        }
 		    });
@@ -275,6 +274,7 @@
 	            if(storeid){
 	                $("#submit").val("确认更新");
 	                $("#subTitle").text("更新门店");
+	                $("#id").val(storeid);
 	                $("#storeForm").attr("action", "${ctx}/store/update");
 	                $.ajax({
 	                    url:"${ctx}/store/query?id="+storeid,
@@ -322,11 +322,17 @@
 			    var url = $("#storeForm").attr('action');  	
 			    var ajax_option={  
 			    	    url:url,  
-			    	    success:function(data){  
-			    	         alert("submited");
+			    	    success:function(data){
+			    	    	if(data.result){
+			    	    		if(data.code == "OPER_UPDATE"){
+			    	    			
+			    	    		}
+			    	    		location.href="${ctx}/store/index";
+			    	    	}
 			    	            },
 			    	    error:function(){
-			    	    	alert('submit failed');
+			    	    	alert('操作失败!');
+			    	    	return false;
 			    	    }
 			    	};
 			    $('#storeForm').ajaxSubmit(ajax_option);
@@ -544,7 +550,6 @@
 			}); 
 
 			$('#gps').click(function setCity() {
-				alert(document.getElementById("cityName").value);
 				search.search(document.getElementById("cityName").value);
 			});
 
