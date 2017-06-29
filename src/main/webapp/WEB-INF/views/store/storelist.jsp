@@ -438,7 +438,7 @@
 		function Modify(id) {
               var grid_selector = "#grid-table";  
               var model = jQuery(grid_selector).jqGrid('getRowData', id);
-              location.href="${ctx}/store/add?storeid="+id;
+              location.href="${ctx}/store/addIndex?storeid="+id;
           }
 		function del(id) {
 			$.ajax({

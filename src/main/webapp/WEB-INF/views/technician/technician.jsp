@@ -115,13 +115,13 @@
                 {name:'id',index:'id', width:150,editable: true,editoptions:{size:"20",maxlength:"30"}},
                 {name:'name',index:'name', width:150,editable: true,editoptions:{size:"20",maxlength:"30"}},
                 {name:'gender',index:'gender', width:150,editable: true,editoptions:{size:"20",maxlength:"30"}},
-                {name:'mon',index:'mon', width:150,editable: true,editoptions:{size:"20",maxlength:"30"}},
-                {name:'tue',index:'tue', width:150,editable: true,editoptions:{size:"20",maxlength:"30"}},
-                {name:'wed',index:'wed', width:150,editable: true,editoptions:{size:"20",maxlength:"30"}},
-                {name:'thu',index:'thu', width:150,editable: true,editoptions:{size:"20",maxlength:"30"}},
-                {name:'fri',index:'fri', width:150,editable: true,editoptions:{size:"20",maxlength:"30"}},
-                {name:'sat',index:'sat', width:150,editable: true,editoptions:{size:"20",maxlength:"30"}},
-                {name:'sun',index:'sun', width:150,editable: true,editoptions:{size:"20",maxlength:"30"}}
+                {name:'mon',index:'mon', width:150,align:'center',editable: true,editoptions:{size:"20",maxlength:"30"},formatter:formatCellvalue},
+                {name:'tue',index:'tue', width:150,align:'center',editable: true,editoptions:{size:"20",maxlength:"30"},formatter:formatCellvalue},
+                {name:'wed',index:'wed', width:150,align:'center',editable: true,editoptions:{size:"20",maxlength:"30"},formatter:formatCellvalue},
+                {name:'thu',index:'thu', width:150,align:'center',editable: true,editoptions:{size:"20",maxlength:"30"},formatter:formatCellvalue},
+                {name:'fri',index:'fri', width:150,align:'center',editable: true,editoptions:{size:"20",maxlength:"30"},formatter:formatCellvalue},
+                {name:'sat',index:'sat', width:150,align:'center',editable: true,editoptions:{size:"20",maxlength:"30"},formatter:formatCellvalue},
+                {name:'sun',index:'sun', width:150,align:'center',editable: true,editoptions:{size:"20",maxlength:"30"},formatter:formatCellvalue}
             ],
             viewrecords : true,
             rowNum:10,
@@ -142,7 +142,14 @@
             },
             autowidth: true
         });
-
+        //格式化表格中的值
+        function formatCellvalue(cellvalue,options,rowdata){
+        	if(cellvalue == '1'){
+        		return '<i class="ace-icon glyphicon glyphicon-ok"></i>';
+        	}else{
+        		return '';
+        	}
+        }
         // 配置jqGrid列表下面的分页页数table参数
         jQuery(grid_selector).jqGrid('navGrid',pager_selector,
             {

@@ -26,7 +26,7 @@ public class TechnicianController extends BaseController {
      * 技师首页
      * @return
      */
-    @RequestMapping(value="/list")
+    @RequestMapping(value="/listIndex")
     public String list(){
         return PATH + "technician";
     }
