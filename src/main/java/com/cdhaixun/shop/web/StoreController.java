@@ -38,12 +38,12 @@ public class StoreController extends BaseController {
     public IStoreService storeService;
     
     @SuppressWarnings("unused")
-    @RequestMapping(value="/index")
+    @RequestMapping(value="/listIndex")
     public String index(){
         return PATH+"storelist";
     }
     
-    @RequestMapping(value="/add")
+    @RequestMapping(value="/addIndex")
     public String add(HttpServletRequest request){
         
         return PATH+"storeadd";

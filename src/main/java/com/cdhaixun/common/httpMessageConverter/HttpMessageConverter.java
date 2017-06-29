@@ -63,13 +63,8 @@ public class HttpMessageConverter extends AbstractHttpMessageConverter<Object> {
             cipher.init(Cipher.DECRYPT_MODE, key);
             String temp = StreamUtils.copyToString(httpInputMessage.getBody(), Charset.forName("UTF-8"));
 
-            byte[] result;
-            String regex="^[A-Fa-f0-9]+$";
-            if (Pattern.matches(regex, temp)){
-                result = cipher.doFinal(Hex.decodeHex(temp.toCharArray()));
-            }else {
-                result = cipher.doFinal(Base64.decodeBase64(temp));
-            }
+            byte[] result = cipher.doFinal(Base64.decodeBase64(temp));
+
             System.out.printf(new String(result,"UTF-8"));
             Object object = objectMapper.readValue(result, aClass);
             return object;
@@ -79,8 +74,6 @@ public class HttpMessageConverter extends AbstractHttpMessageConverter<Object> {
         } catch (IllegalBlockSizeException e) {
             e.printStackTrace();
         } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (DecoderException e) {
             e.printStackTrace();
         }
 

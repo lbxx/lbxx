@@ -1,6 +1,5 @@
 package com.cdhaixun.shop.web;
 
-
 import com.cdhaixun.shop.service.IMenuService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;

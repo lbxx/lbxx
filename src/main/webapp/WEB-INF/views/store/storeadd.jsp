@@ -179,7 +179,7 @@
                                 <i class="ace-icon fa fa-check bigger-110"></i> 
 
                             &nbsp; &nbsp; &nbsp;
-                            <button class="btn" type="reset">
+                            <button class="btn" type="reset" id="cancelBtn">
                                 <i class="ace-icon fa fa-undo bigger-110"></i> 取消
                             </button>
                         </div>
@@ -316,6 +316,7 @@
 	            	//add store
 	            	loadChainStoreList();
 	            	loadBusiness();
+	            	loadMap();
 	            }
 			}
 			function submitForm(){
@@ -415,11 +416,12 @@
 
 			
 			function loadMap(lng,lat) {
+				map = new BMap.Map("container");
 				var mapType1 = new BMap.MapTypeControl({mapTypes: [BMAP_NORMAL_MAP,BMAP_HYBRID_MAP]});
 	            var mapType2 = new BMap.MapTypeControl({anchor: BMAP_ANCHOR_TOP_RIGHT});
 	            var point = new BMap.Point(116.404, 39.915); //创建点坐标
 	          
-	            if(lng!=0&&lat!=0){
+	            if(lng&&lat&&lng!=0&&lat!=0){
 	            	  point = new BMap.Point(lng, lat); //创建点坐标
 	            	  var marker = new BMap.Marker(point);
 	                  map.clearOverlays();         
@@ -431,7 +433,7 @@
 	            map.enableScrollWheelZoom(); //激活滚轮调整大小功能
 
 	            map.addControl(new BMap.NavigationControl()); //添加控件：缩放地图的控件，默认在左上角；
-
+	            map.addEventListener("click", showInfo);
 	            map.addControl(mapType1);          //2D图，卫星图
 	            map.addControl(mapType2);
 
@@ -441,7 +443,7 @@
 			}
 			/*==================百度地图  */
 			var myValue;
-			var map = new BMap.Map("container"); //在container容器中创建一个地图,参数container为div的id属性;
+			var map = null; //在container容器中创建一个地图,参数container为div的id属性;
 		
 			
 			var geoc = new BMap.Geocoder();    
@@ -511,7 +513,7 @@
 		            //alert(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
 		        }); 
 		    }
-		    map.addEventListener("click", showInfo);    
+		       
 
 			var search = new BMap.LocalSearch("中国", {
 
@@ -590,7 +592,10 @@
 			});
 
 		});
-
+		
+	    $("#cancelBtn").click(function(){
+	    	location.href="${ctx}/store/listIndex";
+	    });
 		
 		//页面图上上传预览//
 		//图片上传预览    IE是用了滤镜。
