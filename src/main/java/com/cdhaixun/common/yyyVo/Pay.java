@@ -13,6 +13,7 @@ public class Pay {
     private String remark;//备注
     private String reqsn;//订单号
     private Long trxamt;//支付金额
+    private String  sign;//签名
 
     public Long getTrxamt() {
         return trxamt;
@@ -20,6 +21,14 @@ public class Pay {
 
     public void setTrxamt(Long trxamt) {
         this.trxamt = trxamt;
+    }
+
+    public String getSign() {
+        return sign;
+    }
+
+    public void setSign(String sign) {
+        this.sign = sign;
     }
 
     public String getAppid() {
