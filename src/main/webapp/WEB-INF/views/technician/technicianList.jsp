@@ -144,11 +144,11 @@
         });
         //格式化表格中的值
         function formatCellvalue(cellvalue,options,rowdata){
-        	if(cellvalue == '1'){
-        		return '<i class="ace-icon glyphicon glyphicon-ok"></i>';
-        	}else{
-        		return '';
-        	}
+            if(cellvalue == '1'){
+                return '<i class="ace-icon glyphicon glyphicon-ok"></i>';
+            }else{
+                return '';
+            }
         }
         // 配置jqGrid列表下面的分页页数table参数
         jQuery(grid_selector).jqGrid('navGrid',pager_selector,
@@ -218,4 +218,3 @@
 </script>
 </body>
 </html>
-

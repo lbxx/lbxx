@@ -37,39 +37,27 @@
 			<!-- 右边内容开始 -->
 			<div class="main-content">
 				<!-- 当前页定位开始 -->
-				<div class="breadcrumbs" id="breadcrumbs">
+				<!-- <div class="breadcrumbs" id="breadcrumbs">
 					<script type="text/javascript">
 						try {
 							ace.settings.check('breadcrumbs', 'fixed')
 						} catch (e) {
 						}
 					</script>
-					<div class="breadcrumbs ace-save-state">
-						<li
-							style="list-style: none; padding-left: 20px; font-size: 16px; float: left;"><span
-							class="dropdown-toggle"> <i class=""> </i>店铺管理
-						</span></li>
-						<ul class="breadcrumb" style="float: right; line-height: 40px;">
-							您的当前位置:
-							<li><a href="#">店铺管理</a></li>
-							<li class="active">店铺列表</li>
-						</ul>
-					</div>
-					<!-- .breadcrumb -->
-				</div>
+				</div> -->
 				<!-- 当前页定位结束 -->
+				<jsp:include page="../location.jsp" />
 				<!-- 右边内容开始 -->
 				<div class="page-content">
+					<!-- 当前页定位开始 -->
+
+					<!-- 当前页定位结束 -->
 					<div class="row">
-						<input type="text" id="searchName" placeholder="请输入菜单名查询" />
-						<button id="sbtn">测试搜索</button>
+						<!-- 引入权限jsp -->
 						<!-- ================= -->
-						<div style="padding: 10px;">
-							<button id="refesh" class="btn btn-success"
-								style="border-radius: 5px;">刷新</button>
-							<button class="btn btn-success" style="border-radius: 5px;">导入店铺</button>
-							<button class="btn btn-success" style="border-radius: 5px;">导出店铺</button>
-							<div style="display: inline; float: right;">
+						<div style="padding: 5px;">
+							<jsp:include page="../permission.jsp" />
+							<div style="display: inline; position: absolute; right: 30px;">
 								<label for="form-field-select-1" style="font-size: 20px;">门店</label>
 								<select class="form-control" id="form-field-select-1"
 									style="width: 150px; display: inline;">
@@ -85,7 +73,7 @@
 							</div>
 						</div>
 						<!-- ================= -->
-						<div class="col-xs-12">
+						<div class="col-xs-12" style="margin-top: 10px;">
 							<!-- 显示内容列表的table -->
 							<table id="grid-table"></table>
 							<!-- 下面页面数一栏的table -->
@@ -108,7 +96,7 @@
 	<%-- <div id="storeaddpage">
 	<jsp:include page="storeadd.jsp" />
 	</div> --%>
-	
+
 	<!-- 分页自定义js -->
 	<script type="text/javascript">
 		/* var selection2; */
@@ -162,9 +150,9 @@
 			var pager_selector = "#grid-pager";
 			// 自定义搜索方法，暂时先用，后期研究jqGrid搜索
 			$("#queryBtn").click(function() {
-				
+
 				var id = $("#form-field-select-2").val();
-				if(id == null || id == ''){
+				if (id == null || id == '') {
 					alert("请先选择门店");
 					return;
 				}
@@ -177,7 +165,6 @@
 				// 点击搜索，默认是加载搜索后第一页数据
 				}).trigger("reloadGrid"); // 渲染表格数据，这个  reloadGrid  是固定值
 			});
-
 
 			// 配置jqGrid列表table参数
 			jQuery(grid_selector).jqGrid({
@@ -194,59 +181,75 @@
 					repeatitems : false
 				},
 				// 用于显示列表页table的列头
-				colNames : [ '管理', 'ID', '店铺名称', '店铺地址', '联系方式' ],
+				colNames : [ 'ID', '店铺名称', '店铺地址', '联系方式' ],
 				// 列表页数据绑定
-				colModel : [ {
+				colModel : [
+				/* {
 					name : 'myac',
 					index : '',
 					width : 80,
 					fixed : true,
 					sortable : false,
 					resize : false,
-//					formatter : 'actions',
-					formatter : function (value, grid, rows, state) {
-						return "<a href=\"#\" style=\"color:#f60\" onclick=\"Modify(" + rows.id + ")\">编辑</a>&nbsp;&nbsp;"
-					+ "<a href=\"#\" style=\"color:#f60\" onclick=\"del(" + rows.id + ")\">删除</a>"
+					//					formatter : 'actions',
+					formatter : function(value, grid,
+							rows, state) {
+						return "<a href=\"#\" style=\"color:#f60\" onclick=\"Modify("
+								+ rows.id
+								+ ")\">编辑</a>&nbsp;&nbsp;"
+								+ "<a href=\"#\" style=\"color:#f60\" onclick=\"del("
+								+ rows.id
+								+ ")\">删除</a>"
 					}, 
 					formatoptions : {
 						keys : true,
-						 editformbutton:true,
-						 editOptions : {
-							 url : '${ctx}/store/update',
-							 closeAfterEdit:true,
-							 recreateForm: true,
-							 beforeShowForm:beforeEditCallback,
-							 //afterShowForm:$.GridUtils.afterEditCallback,
-							 afterSubmit: function(response, formid) {
-	                                var data = JSON.parse(response.responseText);
-	                                if (data.result) {
-	                                    return [ true, "OK", data.id ];
-	                                } else {
-	                                    return [ false, data.msg ];
-	                                }
-	                            },
-		                     //afterComplete:afterCompleteCallback
-		                     },
+						editformbutton : true,
+						editOptions : {
+							url : '${ctx}/store/update',
+							closeAfterEdit : true,
+							recreateForm : true,
+							beforeShowForm : beforeEditCallback,
+							//afterShowForm:$.GridUtils.afterEditCallback,
+							afterSubmit : function(
+									response, formid) {
+								var data = JSON
+										.parse(response.responseText);
+								if (data.result) {
+									return [ true,
+											"OK",
+											data.id ];
+								} else {
+									return [ false,
+											data.msg ];
+								}
+							},
+						//afterComplete:afterCompleteCallback
+						},
 						delOptions : {
 							url : '${ctx}/store/delete',
 							recreateForm : true,
 							beforeShowForm : beforeDeleteCallback,
-							afterSubmit : function(response, formid) {
-								var data = JSON.parse(response.responseText);
+							afterSubmit : function(
+									response, formid) {
+								var data = JSON
+										.parse(response.responseText);
 								if (data.result) {
-									return [ true, "OK", data.id ];
+									return [ true,
+											"OK",
+											data.id ];
 								} else {
-									return [ false, data.msg ];
+									return [ false,
+											data.msg ];
 								}
 							}
 						}
 					}
-				},
+				},*/
 				// 下面是列表页其它数据，name属性与java属性的set匹配
 				{
 					name : 'id',
 					index : 'id',
-					width : 60,
+					width : 40,
 					sorttype : "int",
 					editable : false
 				}, {
@@ -308,27 +311,27 @@
 					},
 					{
 						reloadAfterSubmit : true,
-                        //closeOnEscape : true,
-                        closeAfterEdit:true,
-                        url : '${ctx}/store/update',
-                        beforeShowForm : function(form) {
-                        },
-                        afterComplete : function() {
-                            //jQuery(grid_selector).jqGrid('clearGridData', true);
-                            //jQuery("#shipFactorList_d2").jqGrid('clearGridData', true);
-                        },
-                        afterSubmit : function(response, formid) {
-                            var data = JSON.parse(response.responseText);
-                            if (data.result) {
-                                return [ true, "OK", data.id ];
-                            } else {
-                                return [ false, data.msg ];
-                            }
-                        }
+						//closeOnEscape : true,
+						closeAfterEdit : true,
+						url : '${ctx}/store/update',
+						beforeShowForm : function(form) {
+						},
+						afterComplete : function() {
+							//jQuery(grid_selector).jqGrid('clearGridData', true);
+							//jQuery("#shipFactorList_d2").jqGrid('clearGridData', true);
+						},
+						afterSubmit : function(response, formid) {
+							var data = JSON.parse(response.responseText);
+							if (data.result) {
+								return [ true, "OK", data.id ];
+							} else {
+								return [ false, data.msg ];
+							}
+						}
 					},
 					{},
 					{
-						closeAfterDelete:true,
+						closeAfterDelete : true,
 						reloadAfterSubmit : true,
 						closeOnEscape : true,
 						url : '${ctx}/store/delete',
@@ -416,48 +419,153 @@
 				}
 				return arr;
 			}
-			
-			function beforeEditCallback(){
+
+			function beforeEditCallback() {
 				$("#editmodgrid-table").css({
-					width:'1280px'
+					width : '1280px'
 				});
 				$("#editmodgrid-table").html($("#storeaddpage").html());
 			}
-			function afterSubmitCallback(response,formid){
+			function afterSubmitCallback(response, formid) {
 				var data = JSON.parse(response.responseText);
-                console.log(data);
-                if (data.result) {
-                    return [ true, "OK", data.id ];
-                } else {
-                    return [ false, data.msg ];
-                }
+				console.log(data);
+				if (data.result) {
+					return [ true, "OK", data.id ];
+				} else {
+					return [ false, data.msg ];
+				}
 			}
 
 		});
-		
+
 		function Modify(id) {
-              var grid_selector = "#grid-table";  
-              var model = jQuery(grid_selector).jqGrid('getRowData', id);
-              location.href="${ctx}/store/addIndex?storeid="+id;
-          }
-		function del(id) {
-			$.ajax({
-                url : "${ctx}/store/delete",
-                type : 'POST',
-                headers : {
-                    Accept : "application/json",
-                },
-                success : function(data) {
-                    if(data.result){
-                	var grid_selector = "#grid-table";  
-                	$(grid_selector).setGridParam({datatype:'json', page:1}).trigger('reloadGrid');  
-                    }
-                },
-                error:function(){
-                	
-                }
-               });
-        }
+			var grid_selector = "#grid-table";
+			var model = jQuery(grid_selector).jqGrid('getRowData', id);
+			location.href = "${ctx}/store/addIndex?storeid=" + id;
+		}
+
+		//自定义删除按钮方法
+		$('#removeButton').removeAttr('onclick');//移除元素上原有的click事件
+		$('#removeButton').bind(
+				'click',
+				function() {
+					var grid_selector = "#grid-table";
+					var selectedIds = $(grid_selector).jqGrid('getGridParam',
+							'selarrrow');
+					if (selectedIds == undefined || selectedIds.length == 0) {
+						mydialog("", '对不起，请选择一个选项!');
+					} else {
+						if (selectedIds.length <= 0) {
+							return;
+						} else {
+							//var id = $idsCheckedCheck.parent().parent().attr("id");
+							var url = '${ctx}/store/remove' + "?id="
+									+ selectedIds[0];
+							mydialog(url, '您确定要删除吗?');
+						}
+					}
+					return false;
+
+				});
+
+		//自定义编辑按钮方法
+		$('#editButton').removeAttr('onclick');//移除添加按钮上原有的click事件
+		$('#editButton').bind(
+				'click',
+				function() {
+					var grid_selector = "#grid-table";
+					var selectedIds = $(grid_selector).jqGrid('getGridParam',
+							'selarrrow');
+					if (selectedIds == undefined || selectedIds.length == 0 || selectIds.length >1) {
+						mydialog("", '对不起，请选择一个选项!');
+					} else {
+						if (selectedIds.length <= 0) {
+							return;
+						} else {
+							location.href = "${ctx}/store/addIndex?storeid=" + selectedIds[0];
+						}
+					}
+				});
+		
+		//自定义添加按钮方法
+        $('#addButton').removeAttr('onclick');//移除添加按钮上原有的click事件
+        $('#addButton').bind(
+                'click',
+                function() {
+                            location.href = "${ctx}/store/addIndex";
+                });
+		// 下面是dialog弹窗的
+		function mydialog(url, msg) {
+			var grid_selector = "#grid-table";
+			// 动态生成弹窗内容
+			$("#dialog-message p").html(msg);
+			// 下面这个方法是dialog样式文件，勿删
+			$.widget("ui.dialog", $.extend({}, $.ui.dialog.prototype, {
+				_title : function(title) {
+					var $title = this.options.title || '&nbsp;'
+					if (("title_html" in this.options)
+							&& this.options.title_html == true)
+						title.html($title);
+					else
+						title.text($title);
+				}
+			}));
+			var dialog = $("#dialog-message")
+					.removeClass('hide')
+					.dialog(
+							{
+								modal : true,
+								title : "<div class='widget-header widget-header-small'><h4 class='smaller'><i class='icon-ok'></i>提示信息</h4></div>",
+								title_html : true,
+								buttons : [
+										{
+											text : "Cancel",
+											"class" : "btn btn-xs",
+											click : function() {
+												// 取消关闭弹窗
+												$(this).dialog("close");
+											}
+										},
+										{
+											text : "OK",
+											"class" : "btn btn-primary btn-xs",
+											click : function() {
+												// 确定关闭弹窗，然后执行操作
+												$(this).dialog("close");
+												// 判断url是否为空
+												if (url != "" && url != null) {
+													alert(url);
+													$
+															.ajax({
+																url : url,
+																type : 'GET',
+																headers : {
+																	Accept : "application/json",
+																},
+																success : function(
+																		data) {
+																	if (data.result) {
+
+																		$(
+																				grid_selector)
+																				.setGridParam(
+																						{
+																							datatype : 'json',
+																							page : 1
+																						})
+																				.trigger(
+																						'reloadGrid');
+																	}
+																},
+																error : function() {
+
+																}
+															});
+												}
+											}
+										} ]
+							});
+		}
 	</script>
 </body>
 </html>

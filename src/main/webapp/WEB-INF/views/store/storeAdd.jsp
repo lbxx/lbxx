@@ -43,7 +43,7 @@
 			<!-- 右边内容开始 -->
 			<div class="main-content">
 				<!-- 当前页定位开始 -->
-				<div class="breadcrumbs" id="breadcrumbs">
+				<!-- <div class="breadcrumbs" id="breadcrumbs">
 					<script type="text/javascript">
 						try {
 							ace.settings.check('breadcrumbs', 'fixed')
@@ -66,15 +66,16 @@
 						style="padding-left: 10px;; line-height: 40px;">
 						<li id="subTitle">添加门店</li>
 					</ul>
-					<!-- .breadcrumb -->
-				</div>
+					.breadcrumb
+				</div> -->
 				<!-- 当前页定位结束 -->
+                <jsp:include page="../location.jsp" />
 				<!-- 右边内容开始 -->
 				<div class="page-content">
 					<div class="row" style="width:1100px;height: 768px;overflow: hidden;">
 						<!-- ================= -->
 						<form id="storeForm" name="storeForm" class="form-horizontal" role="form"
-							enctype="multipart/form-data" action="${ctx}/store/add" method="POST">
+							enctype="multipart/form-data" action="${ctx}/store/save" method="POST">
 							<input type="hidden" name="id" id="id" value=""/>
 							<!-- -->
 							<div style="border: 1px solid #797979;border-bottom: none;">
@@ -273,7 +274,7 @@
 			    var storeid = queryValueByKey("storeid");
 	            if(storeid){
 	                $("#submit").val("确认更新");
-	                $("#subTitle").text("更新门店");
+	                /* $("#subTitle").text("更新门店"); */
 	                $("#id").val(storeid);
 	                $("#storeForm").attr("action", "${ctx}/store/update");
 	                $.ajax({
@@ -328,7 +329,7 @@
 			    	    		if(data.code == "OPER_UPDATE"){
 			    	    			
 			    	    		}
-			    	    		location.href="${ctx}/store/index";
+			    	    		location.href="${ctx}/store/listIndex";
 			    	    	}
 			    	            },
 			    	    error:function(){
@@ -414,7 +415,9 @@
 			 return document.getElementById(id);
             }
 
-			
+		    /*==================百度地图  */
+            var myValue;
+            var map = null; //在container容器中创建一个地图,参数container为div的id属性;
 			function loadMap(lng,lat) {
 				map = new BMap.Map("container");
 				var mapType1 = new BMap.MapTypeControl({mapTypes: [BMAP_NORMAL_MAP,BMAP_HYBRID_MAP]});
@@ -441,10 +444,6 @@
 
 	            map.addControl(new BMap.OverviewMapControl()); //添加控件：地图的缩略图的控件，默认在右下方； TrafficContro
 			}
-			/*==================百度地图  */
-			var myValue;
-			var map = null; //在container容器中创建一个地图,参数container为div的id属性;
-		
 			
 			var geoc = new BMap.Geocoder();    
 

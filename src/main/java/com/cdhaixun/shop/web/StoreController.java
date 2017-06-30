@@ -40,13 +40,13 @@ public class StoreController extends BaseController {
     @SuppressWarnings("unused")
     @RequestMapping(value="/listIndex")
     public String index(){
-        return PATH+"storelist";
+        return PATH+"storeList";
     }
     
     @RequestMapping(value="/addIndex")
-    public String add(HttpServletRequest request){
+    public String addIndex(HttpServletRequest request){
         
-        return PATH+"storeadd";
+        return PATH+"storeAdd";
     }
     
     @RequestMapping(value="/option")
@@ -77,7 +77,7 @@ public class StoreController extends BaseController {
         return stores;
     }
     
-    @RequestMapping(value="/delete",method = RequestMethod.POST)
+    @RequestMapping(value="/remove",method = RequestMethod.GET)
     @ResponseBody
     public Result deleteStore(HttpServletRequest request){
         Result result = new Result();
@@ -102,7 +102,7 @@ public class StoreController extends BaseController {
 //        return "{'msg':'ok','result':'true'}";
     }
     
-    @RequestMapping(value="/update",method = RequestMethod.POST)
+    @RequestMapping(value="/edit",method = RequestMethod.POST)
     @ResponseBody
     public Result updateStore(Store store,@RequestParam(value="file",required=false) MultipartFile file,
             HttpServletRequest request){
@@ -136,7 +136,7 @@ public class StoreController extends BaseController {
         int id = Integer.parseInt(request.getParameter("id"));
             return storeService.getStoreBusinessByStoreId(id);
     }
-    @RequestMapping(value="/add",method = RequestMethod.POST)
+    @RequestMapping(value="/save",method = RequestMethod.POST)
     @ResponseBody
     public Result addStore(Store store,@RequestParam(value="file",required=false) MultipartFile file,
             HttpServletRequest request){

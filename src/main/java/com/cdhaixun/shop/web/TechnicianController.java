@@ -30,6 +30,14 @@ public class TechnicianController extends BaseController {
     public String list(){
         return PATH + "technician";
     }
+    /**
+     * 添加技师
+     * @return
+     */
+    @RequestMapping(value="/addIndex")
+    public String add(){
+        return PATH + "technicianadd";
+    }
     
     @RequestMapping(value="/listgrid",method = RequestMethod.GET)
     @ResponseBody
