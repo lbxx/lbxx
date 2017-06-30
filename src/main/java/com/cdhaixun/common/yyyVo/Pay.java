@@ -13,7 +13,7 @@ public class Pay {
     private String remark;//备注
     private String reqsn;//订单号
     private Long trxamt;//支付金额
-    private String  sign;//签名
+    private String  sign;//签名1
 
     public Long getTrxamt() {
         return trxamt;
