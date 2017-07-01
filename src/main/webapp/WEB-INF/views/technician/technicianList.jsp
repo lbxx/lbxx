@@ -50,11 +50,13 @@
                 </ul><!-- .breadcrumb -->
             </div>
             <!-- 当前页定位结束 -->
+            <jsp:include page="../location.jsp" />
             <!-- 右边内容开始 -->
             <div class="page-content">
                 <div class="row">
-                    <input type="text" id="searchName" placeholder="请输入菜单名查询"/>
-                    <button id="sbtn">测试搜索</button>
+                    <jsp:include page="../permission.jsp" />
+                    <!-- <input type="text" id="searchName" placeholder="请输入菜单名查询"/>
+                    <button id="sbtn">测试搜索</button> -->
                     <div class="col-xs-12">
                         <!-- 显示内容列表的table -->
                         <table id="grid-table"></table>
