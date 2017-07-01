@@ -174,6 +174,7 @@
 <jsp:include page="../bottomjs.jsp" />
 <script>
     $(function () {
+        alert()
         var contextPath = $('input[name="contextPath"]').val();
          $("#addForm").validate({
          submitHandler: function (form) {
