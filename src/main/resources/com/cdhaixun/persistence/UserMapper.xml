@@ -20,6 +20,7 @@
     <result column="city" property="city" jdbcType="VARCHAR" />
     <result column="area" property="area" jdbcType="VARCHAR" />
     <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="signature" property="signature" jdbcType="VARCHAR" />
     <result column="idcard" property="idcard" jdbcType="VARCHAR" />
     <result column="img" property="img" jdbcType="VARCHAR" />
     <result column="qrcode" property="qrcode" jdbcType="VARCHAR" />
@@ -31,7 +32,7 @@
   <sql id="Base_Column_List" >
     id, storeid, password, mobile, sex, email, nickname, name, registertime, lastlogintime, 
     remark, registtype, blance, birthday, province, city, area, address, idcard, img, 
-    qrcode, state, isdelete, points, usercard
+    qrcode, state, isdelete, points, usercard,signature
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -88,7 +89,7 @@
       city, area, address, 
       idcard, img, qrcode, 
       state, isdelete, points, 
-      usercard)
+      usercard,signature)
     values (#{id,jdbcType=INTEGER}, #{storeid,jdbcType=INTEGER}, #{password,jdbcType=VARCHAR}, 
       #{mobile,jdbcType=VARCHAR}, #{sex,jdbcType=INTEGER}, #{email,jdbcType=VARCHAR}, 
       #{nickname,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{registertime,jdbcType=DATE}, 
@@ -97,7 +98,7 @@
       #{city,jdbcType=VARCHAR}, #{area,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
       #{idcard,jdbcType=VARCHAR}, #{img,jdbcType=VARCHAR}, #{qrcode,jdbcType=VARCHAR}, 
       #{state,jdbcType=INTEGER}, #{isdelete,jdbcType=INTEGER}, #{points,jdbcType=INTEGER},
-      #{usercard,jdbcType=VARCHAR})
+      #{usercard,jdbcType=VARCHAR},#{signature})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.cdhaixun.domain.User" >
     update user
@@ -120,6 +121,10 @@
       <if test="nickname != null" >
         nickname = #{nickname,jdbcType=VARCHAR},
       </if>
+      <if test="signature != null" >
+        signature = #{signature,jdbcType=VARCHAR},
+      </if>
+
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
@@ -190,6 +195,9 @@
   </if>
   <if test="mobile != null" >
     and  mobile = #{mobile,jdbcType=VARCHAR},
+  </if>
+  <if test="signature != null" >
+    signature = #{signature,jdbcType=VARCHAR},
   </if>
   <if test="sex != null" >
     and  sex = #{sex,jdbcType=INTEGER},
