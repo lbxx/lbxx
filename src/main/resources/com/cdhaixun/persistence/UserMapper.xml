@@ -177,4 +177,84 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectOneByUser" parameterType="com.cdhaixun.domain.User"resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user
+<where>
+  <if test="storeid != null" >
+    and storeid = #{storeid,jdbcType=INTEGER},
+  </if>
+  <if test="password != null" >
+    and password = #{password,jdbcType=VARCHAR},
+  </if>
+  <if test="mobile != null" >
+    and  mobile = #{mobile,jdbcType=VARCHAR},
+  </if>
+  <if test="sex != null" >
+    and  sex = #{sex,jdbcType=INTEGER},
+  </if>
+  <if test="email != null" >
+    and email = #{email,jdbcType=VARCHAR},
+  </if>
+  <if test="nickname != null" >
+    and  nickname = #{nickname,jdbcType=VARCHAR},
+  </if>
+  <if test="name != null" >
+    and  name = #{name,jdbcType=VARCHAR},
+  </if>
+  <if test="registertime != null" >
+    and registertime = #{registertime,jdbcType=DATE},
+  </if>
+  <if test="lastlogintime != null" >
+    and  lastlogintime = #{lastlogintime,jdbcType=DATE},
+  </if>
+  <if test="remark != null" >
+    and remark = #{remark,jdbcType=VARCHAR},
+  </if>
+  <if test="registtype != null" >
+    and registtype = #{registtype,jdbcType=INTEGER},
+  </if>
+  <if test="blance != null" >
+    and blance = #{blance,jdbcType=DECIMAL},
+  </if>
+  <if test="birthday != null" >
+    and birthday = #{birthday,jdbcType=DATE},
+  </if>
+  <if test="province != null" >
+    and province = #{province,jdbcType=VARCHAR},
+  </if>
+  <if test="city != null" >
+    and  city = #{city,jdbcType=VARCHAR},
+  </if>
+  <if test="area != null" >
+    and area = #{area,jdbcType=VARCHAR},
+  </if>
+  <if test="address != null" >
+    and address = #{address,jdbcType=VARCHAR},
+  </if>
+  <if test="idcard != null" >
+    and idcard = #{idcard,jdbcType=VARCHAR},
+  </if>
+  <if test="img != null" >
+    and img = #{img,jdbcType=VARCHAR},
+  </if>
+  <if test="qrcode != null" >
+    and qrcode = #{qrcode,jdbcType=VARCHAR},
+  </if>
+  <if test="state != null" >
+    and state = #{state,jdbcType=INTEGER},
+  </if>
+  <if test="isdelete != null" >
+    and   isdelete = #{isdelete,jdbcType=INTEGER},
+  </if>
+  <if test="points != null" >
+  and  points = #{points,jdbcType=INTEGER},
+  </if>
+  <if test="usercard != null" >
+   and usercard = #{usercard,jdbcType=VARCHAR},
+  </if>
+</where>
+
+  </select>
 </mapper>

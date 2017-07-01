@@ -34,4 +34,11 @@ public class ManagerServiceImpl implements IManagerService{
     public Manager findById(Integer id) {
         return managerMapper.selectByPrimaryKey(id);
     }
+
+    @Override
+    public Manager findByMobile(String mobile) {
+        Manager manager=new Manager();
+        manager.setMobile(mobile);
+        return  managerMapper.selectOneByManager(manager);
+    }
 }

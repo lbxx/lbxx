@@ -19,4 +19,11 @@ public interface IUserService extends BaseService<User> {
     List<Store> selectStoreList();
 
     List<UserType> selectTypeList();
+
+    /**
+     * 根据电话查询用户
+     * @param mobile
+     * @return
+     */
+    User findByMobile(String mobile);
 }

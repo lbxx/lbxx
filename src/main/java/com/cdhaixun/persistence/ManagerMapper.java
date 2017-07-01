@@ -12,6 +12,6 @@ import java.util.List;
 public interface ManagerMapper extends BaseMapper<Manager>{
     @Select("select * from manager where account=#{account}")
     Manager findByAccount(String account);
-
     List<Manager> selectByManager(Manager manager);
+    Manager    selectOneByManager(Manager manager);
 }

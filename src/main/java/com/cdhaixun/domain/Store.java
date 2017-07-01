@@ -18,7 +18,9 @@ public class Store {
 
     private String pic;
 
-    private String location;
+    private String city;//城市名称
+
+    private String location;//详细地址
 
     private String description;
 
@@ -31,6 +33,23 @@ public class Store {
     private Date createtime;
 
     private Boolean isdelete;
+    private String orderBy;
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public void setOrderBy(String orderBy) {
+        this.orderBy = orderBy;
+    }
+
+    public String getOrderBy() {
+        return orderBy;
+    }
 
     public Integer getId() {
         return id;
