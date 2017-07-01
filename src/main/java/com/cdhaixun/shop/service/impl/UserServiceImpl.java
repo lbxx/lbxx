@@ -37,6 +37,13 @@ public class UserServiceImpl implements IUserService{
     }
 
     @Override
+    public User findByMobile(String mobile) {
+        User user =new User();
+        user.setMobile(mobile);
+        return userMapper.selectOneByUser(user);
+    }
+
+    @Override
     public User findById(Integer id) {
         return userMapper.selectByPrimaryKey(id);
     }
