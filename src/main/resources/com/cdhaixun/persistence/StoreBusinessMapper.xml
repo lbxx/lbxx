@@ -130,19 +130,19 @@
         from store_business
         <where>
             <if test="storeid != null">
-                and storeid = #{storeid,jdbcType=INTEGER},
+                and storeid = #{storeid,jdbcType=INTEGER}
             </if>
             <if test="businessid != null">
-                and businessid = #{businessid,jdbcType=INTEGER},
+                and businessid = #{businessid,jdbcType=INTEGER}
             </if>
             <if test="isopen != null">
-                and isopen = #{isopen,jdbcType=BIT},
+                and isopen = #{isopen,jdbcType=BIT}
             </if>
             <if test="isdelete != null">
-                and isdelete = #{isdelete,jdbcType=BIT},
+                and isdelete = #{isdelete,jdbcType=BIT}
             </if>
             <if test="createtime != null">
-                and createtime = #{createtime,jdbcType=TIMESTAMP},
+                and createtime = #{createtime,jdbcType=TIMESTAMP}
             </if>
         </where>
     </select>
