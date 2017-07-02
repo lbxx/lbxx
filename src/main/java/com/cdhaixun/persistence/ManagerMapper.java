@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
 public interface ManagerMapper extends BaseMapper<Manager>{
     @Select("select * from manager where account=#{account}")
     Manager findByAccount(String account);

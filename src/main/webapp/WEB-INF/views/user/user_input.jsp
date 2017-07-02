@@ -52,16 +52,17 @@
                     <div class="col-xs-12">
                         <!-- PAGE CONTENT BEGINS -->
                         <form class="form-horizontal" id="validation-form" role="form" method="post" action="${ctx}/user/save">
+                            <input type="hidden" name="id" value="${dto.id}"/>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right" for="idcard"> 会员卡号 </label>
                                 <div class="col-sm-9">
-                                    <input type="text" id="usercard" name="usercard" maxlength="30" class="col-xs-10 col-sm-5" />
+                                    <input type="text" id="usercard" name="usercard" maxlength="30" value="${dto.usercard}" class="col-xs-10 col-sm-5" />
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right" for="name"> 会员姓名 </label>
                                 <div class="col-sm-8">
-                                    <input type="text" id="name" name="name" maxlength="30" required class="col-xs-4 col-sm-4" />
+                                    <input type="text" id="name" name="name" value="${dto.name}" maxlength="30" required class="col-xs-4 col-sm-4" />
                                     <span class="col-xs-3 col-sm-3">
                                         <label class="middle">
                                             <input class="ace" type="checkbox" id="id-disable-check" />
@@ -73,15 +74,15 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right" for="mobile"> 联系电话 </label>
                                 <div class="col-sm-9">
-                                    <input type="text" id="mobile" name="mobile" maxlength="11" class="col-xs-10 col-sm-5" />
+                                    <input type="text" id="mobile" name="mobile" value="${dto.mobile}" maxlength="11" class="col-xs-10 col-sm-5" />
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right" required for="sex"> 会员性别 </label>
                                 <div class="col-sm-9">
                                     <select id="sex" name="sex">
-                                        <option value="1">男</option>
-                                        <option value="0">女</option>
+                                        <option value="1" <c:if test="${dto.sex == 1}">checked</c:if>>男</option>
+                                        <option value="0" <c:if test="${dto.sex == 0}">checked</c:if>>女</option>
                                     </select>
                                 </div>
                             </div>
@@ -90,7 +91,7 @@
                                 <div class="col-sm-9">
                                     <select id="storeid" name="storeid">
                                         <c:forEach items="${typeList}" var="item">
-                                            <option value="${item.id}">${item.typename}</option>
+                                            <option value="${item.id}" <c:if test="${dto.storeid == item.id}">selected</c:if>>${item.typename}</option>
                                         </c:forEach>
                                     </select>
                                 </div>
@@ -98,51 +99,51 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right" for="blance"> 余额 </label>
                                 <div class="col-sm-9">
-                                    <input type="text" id="blance" name="blance" maxlength="8" class="col-xs-10 col-sm-5" />
+                                    <input type="text" id="blance" name="blance" value="${dto.blance}" maxlength="8" class="col-xs-10 col-sm-5" />
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right" for="points"> 积分 </label>
                                 <div class="col-sm-9">
-                                    <input type="text" id="points" name="points" maxlength="8" class="col-xs-10 col-sm-5" />
+                                    <input type="text" id="points" name="points" value="${dto.points}" maxlength="8" class="col-xs-10 col-sm-5" />
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right" required for="birthday"> 生日 </label>
                                 <div class="col-sm-9">
-                                    <input type="text" id="birthday" class="confS_input pg_input" name="birthday" readonly onClick="WdatePicker({dateFmt:'yyyy-MM-dd'})">
+                                    <input type="text" id="birthday" class="confS_input pg_input" value="${dto.birthday}" name="birthday" readonly onClick="WdatePicker({dateFmt:'yyyy-MM-dd'})">
                                 </div>
                             </div>
                             <div data-toggle="distpicker">
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label no-padding-right" for="province"> 省 </label>
                                     <div class="col-sm-5">
-                                        <select class="form-control" id="province" name="province" required></select>
+                                        <select class="form-control" id="province" value="${dto.province}" name="province" required></select>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label no-padding-right" for="city"> 市 </label>
                                     <div class="col-sm-5">
-                                        <select class="form-control" id="city" name="city" required></select>
+                                        <select class="form-control" id="city"  value="${dto.city}" name="city" required></select>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label no-padding-right" for="district"> 区 </label>
                                     <div class="col-sm-5">
-                                        <select class="form-control" id="district" name="area" required></select>
+                                        <select class="form-control" id="district"  name="area" required></select>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right" for="address"> 详细地址 </label>
                                 <div class="col-sm-9">
-                                    <input type="text" id="address" name="address" maxlength="100" required class="col-xs-10 col-sm-5" autocomplete="off"/>
+                                    <input type="text" id="address" name="address" value="${dto.address}" maxlength="100" required class="col-xs-10 col-sm-5" autocomplete="off"/>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right" for="idcard">身份证 </label>
                                 <div class="col-sm-9">
-                                    <input type="text" id="idcard" name="idcard" maxlength="30" required class="col-xs-10 col-sm-5" />
+                                    <input type="text" id="idcard" name="idcard" maxlength="30" value="${dto.idcard}" required class="col-xs-10 col-sm-5" />
                                 </div>
                             </div>
                             <div class="clearfix form-actions">
@@ -177,10 +178,16 @@
 
 <%--<script src="http://www.jq22.com/jquery/1.11.1/jquery.min.js"></script>--%>
 <script src="http://www.jq22.com/jquery/bootstrap-3.3.4.js"></script>
+<script src="${ctx}/resources/city/js/main.js"></script>
 <script src="${ctx}/resources/city/js/distpicker.data.js"></script>
 <script src="${ctx}/resources/city/js/distpicker.js"></script>
-<script src="${ctx}/resources/city/js/main.js"></script>
 <script>
+    $(document).ready(function(){
+        $("#province").val("${dto.province}");
+        $("#city").val("${dto.city}");
+        $("#district").val("${dto.area}");
+    });
+
     $(function(){
         // 手机号码验证
         jQuery.validator.addMethod("mobileReg", function(value, element) {
@@ -233,6 +240,21 @@
                     required: "请输入积分",
                     number:"格式错误"
                 }
+            },
+            submitHandler: function (form) {
+                //
+                $(form).ajaxSubmit({
+                    success: function (data) {
+                       if(data.ok){
+                           $.scojs_message(data.msg, $.scojs_message.TYPE_OK);
+                           window.location.assign("${ctx}/user/list");
+                       }else{
+                           $.scojs_message(data.msg, $.scojs_message.TYPE_ERROR);
+                       }
+                    },error:function (data) {
+                        $.scojs_message(data.msg, $.scojs_message.TYPE_ERROR);
+                    }
+                });
             },
             invalidHandler: function (event, validator) { //display error alert on form submit
             },

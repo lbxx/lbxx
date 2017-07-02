@@ -100,4 +100,11 @@ public class TechnicianServiceImpl implements ITechnicianService {
         
     }
 
+    @Override
+    public List<Technician> findByStoreId(Integer storeid) {
+        Technician technician=new Technician();
+        technician.setStoreid(storeid);
+     List<Technician> technicianList=   technicianMapper.selectByTechnician(technician);
+        return technicianList;
+    }
 }

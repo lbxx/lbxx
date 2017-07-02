@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cdhaixun.persistence.BabyMapper">
+    <resultMap id="BaseResultMap" type="com.cdhaixun.domain.Baby">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="birthday" property="birthday" jdbcType="TIMESTAMP"/>
+        <result column="gender" property="gender" jdbcType="BIT"/>
+        <result column="createtime" property="createtime" jdbcType="TIMESTAMP"/>
+        <result column="userid" property="userid" jdbcType="INTEGER"/>
+        <result column="isdelete" property="isdelete" jdbcType="BIT"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, name, birthday, gender, createtime, userid, isdelete,remark
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from baby
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from baby
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.cdhaixun.domain.Baby">
+    insert into baby (id, name, birthday, 
+      gender, createtime, userid, 
+      isdelete,remark)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{birthday,jdbcType=TIMESTAMP}, 
+      #{gender,jdbcType=BIT}, #{createtime,jdbcType=TIMESTAMP}, #{userid,jdbcType=INTEGER}, 
+      #{isdelete,jdbcType=BIT},#{remark})
+  </insert>
+    <insert id="insertSelective" parameterType="com.cdhaixun.domain.Baby">
+        insert into baby
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="birthday != null">
+                birthday,
+            </if>
+            <if test="gender != null">
+                gender,
+            </if>
+            <if test="createtime != null">
+                createtime,
+            </if>
+            <if test="userid != null">
+                userid,
+            </if>
+            <if test="isdelete != null">
+                isdelete,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+
+            <if test="birthday != null">
+                #{birthday,jdbcType=TIMESTAMP},
+            </if>
+            <if test="gender != null">
+                #{gender,jdbcType=BIT},
+            </if>
+            <if test="createtime != null">
+                #{createtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="userid != null">
+                #{userid,jdbcType=INTEGER},
+            </if>
+            <if test="isdelete != null">
+                #{isdelete,jdbcType=BIT},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.cdhaixun.domain.Baby">
+        update baby
+        <set>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="birthday != null">
+                birthday = #{birthday,jdbcType=TIMESTAMP},
+            </if>
+            <if test="gender != null">
+                gender = #{gender,jdbcType=BIT},
+            </if>
+            <if test="remark != null">
+                remark = #{remark ,jdbcType=VARCHAR},
+            </if>
+            <if test="createtime != null">
+                createtime = #{createtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="userid != null">
+                userid = #{userid,jdbcType=INTEGER},
+            </if>
+            <if test="isdelete != null">
+                isdelete = #{isdelete,jdbcType=BIT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.cdhaixun.domain.Baby">
+    update baby
+    set name = #{name,jdbcType=VARCHAR},
+      birthday = #{birthday,jdbcType=TIMESTAMP},
+      remark = #{remark ,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=BIT},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      userid = #{userid,jdbcType=INTEGER},
+      isdelete = #{isdelete,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <select id="selectByBaby" resultMap="BaseResultMap" parameterType="com.cdhaixun.domain.Baby">
+        select
+        <include refid="Base_Column_List"/>
+        from baby
+        <where>
+            <if test="name != null">
+                and name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="birthday != null">
+                and birthday = #{birthday,jdbcType=TIMESTAMP},
+            </if>
+            <if test="gender != null">
+                and gender = #{gender,jdbcType=BIT},
+            </if>
+            <if test="remark != null">
+                and remark = #{remark ,jdbcType=VARCHAR},
+            </if>
+            <if test="createtime != null">
+                and createtime = #{createtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="userid != null">
+                and userid = #{userid,jdbcType=INTEGER},
+            </if>
+            <if test="isdelete != null">
+                and isdelete = #{isdelete,jdbcType=BIT},
+            </if>
+        </where>
+    </select>
+</mapper>

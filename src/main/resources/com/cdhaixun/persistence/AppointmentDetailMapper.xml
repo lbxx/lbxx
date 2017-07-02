@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cdhaixun.persistence.AppointmentDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.cdhaixun.domain.AppointmentDetail" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="userid" property="userid" jdbcType="INTEGER" />
+    <result column="babyid" property="babyid" jdbcType="INTEGER" />
+    <result column="technicianid" property="technicianid" jdbcType="INTEGER" />
+    <result column="bussinessid" property="bussinessid" jdbcType="INTEGER" />
+    <result column="starttime" property="starttime" jdbcType="TIMESTAMP" />
+    <result column="endtime" property="endtime" jdbcType="TIMESTAMP" />
+    <result column="appointmentid" property="appointmentid" jdbcType="INTEGER" />
+    <result column="solution" property="solution" jdbcType="VARCHAR" />
+    <result column="timebucketid" property="timebucketid" jdbcType="INTEGER" />
+    <result column="isdelete" property="isdelete" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, userid, babyid, technicianid, bussinessid, starttime, endtime, appointmentid, 
+    solution, timebucketid, isdelete
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from appointment_detail
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from appointment_detail
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cdhaixun.domain.AppointmentDetail" >
+    insert into appointment_detail (id, userid, babyid, 
+      technicianid, bussinessid, starttime, 
+      endtime, appointmentid, solution, 
+      timebucketid, isdelete)
+    values (#{id,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{babyid,jdbcType=INTEGER}, 
+      #{technicianid,jdbcType=INTEGER}, #{bussinessid,jdbcType=INTEGER}, #{starttime,jdbcType=TIMESTAMP}, 
+      #{endtime,jdbcType=TIMESTAMP}, #{appointmentid,jdbcType=INTEGER}, #{solution,jdbcType=VARCHAR}, 
+      #{timebucketid,jdbcType=INTEGER}, #{isdelete,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cdhaixun.domain.AppointmentDetail" >
+    insert into appointment_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userid != null" >
+        userid,
+      </if>
+      <if test="babyid != null" >
+        babyid,
+      </if>
+      <if test="technicianid != null" >
+        technicianid,
+      </if>
+      <if test="bussinessid != null" >
+        bussinessid,
+      </if>
+      <if test="starttime != null" >
+        starttime,
+      </if>
+      <if test="endtime != null" >
+        endtime,
+      </if>
+      <if test="appointmentid != null" >
+        appointmentid,
+      </if>
+      <if test="solution != null" >
+        solution,
+      </if>
+      <if test="timebucketid != null" >
+        timebucketid,
+      </if>
+      <if test="isdelete != null" >
+        isdelete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="babyid != null" >
+        #{babyid,jdbcType=INTEGER},
+      </if>
+      <if test="technicianid != null" >
+        #{technicianid,jdbcType=INTEGER},
+      </if>
+      <if test="bussinessid != null" >
+        #{bussinessid,jdbcType=INTEGER},
+      </if>
+      <if test="starttime != null" >
+        #{starttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endtime != null" >
+        #{endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="appointmentid != null" >
+        #{appointmentid,jdbcType=INTEGER},
+      </if>
+      <if test="solution != null" >
+        #{solution,jdbcType=VARCHAR},
+      </if>
+      <if test="timebucketid != null" >
+        #{timebucketid,jdbcType=INTEGER},
+      </if>
+      <if test="isdelete != null" >
+        #{isdelete,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cdhaixun.domain.AppointmentDetail" >
+    update appointment_detail
+    <set >
+      <if test="userid != null" >
+        userid = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="babyid != null" >
+        babyid = #{babyid,jdbcType=INTEGER},
+      </if>
+      <if test="technicianid != null" >
+        technicianid = #{technicianid,jdbcType=INTEGER},
+      </if>
+      <if test="bussinessid != null" >
+        bussinessid = #{bussinessid,jdbcType=INTEGER},
+      </if>
+      <if test="starttime != null" >
+        starttime = #{starttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endtime != null" >
+        endtime = #{endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="appointmentid != null" >
+        appointmentid = #{appointmentid,jdbcType=INTEGER},
+      </if>
+      <if test="solution != null" >
+        solution = #{solution,jdbcType=VARCHAR},
+      </if>
+      <if test="timebucketid != null" >
+        timebucketid = #{timebucketid,jdbcType=INTEGER},
+      </if>
+      <if test="isdelete != null" >
+        isdelete = #{isdelete,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cdhaixun.domain.AppointmentDetail" >
+    update appointment_detail
+    set userid = #{userid,jdbcType=INTEGER},
+      babyid = #{babyid,jdbcType=INTEGER},
+      technicianid = #{technicianid,jdbcType=INTEGER},
+      bussinessid = #{bussinessid,jdbcType=INTEGER},
+      starttime = #{starttime,jdbcType=TIMESTAMP},
+      endtime = #{endtime,jdbcType=TIMESTAMP},
+      appointmentid = #{appointmentid,jdbcType=INTEGER},
+      solution = #{solution,jdbcType=VARCHAR},
+      timebucketid = #{timebucketid,jdbcType=INTEGER},
+      isdelete = #{isdelete,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByAppointmentDetail" resultMap="BaseResultMap" parameterType="com.cdhaixun.domain.AppointmentDetail" >
+    select
+    <include refid="Base_Column_List" />
+    from appointment_detail
+<where>
+  <if test="userid != null" >
+    and userid = #{userid,jdbcType=INTEGER},
+  </if>
+  <if test="babyid != null" >
+   and  babyid = #{babyid,jdbcType=INTEGER},
+  </if>
+  <if test="technicianid != null" >
+   and  technicianid = #{technicianid,jdbcType=INTEGER},
+  </if>
+  <if test="bussinessid != null" >
+   and  bussinessid = #{bussinessid,jdbcType=INTEGER},
+  </if>
+  <if test="starttime != null" >
+   and  starttime = #{starttime,jdbcType=TIMESTAMP},
+  </if>
+  <if test="starttimeFrom != null" >
+    and  starttimeFrom  &gt;= #{starttimeFrom,jdbcType=TIMESTAMP},
+  </if>
+  <if test="starttimeTo != null" >
+    and  starttimeTo  &lt;#{starttimeTo,jdbcType=TIMESTAMP},
+  </if>
+  <if test="endtime != null" >
+  and  endtime = #{endtime,jdbcType=TIMESTAMP},
+  </if>
+  <if test="appointmentid != null" >
+   and  appointmentid = #{appointmentid,jdbcType=INTEGER},
+  </if>
+  <if test="solution != null" >
+   and  solution = #{solution,jdbcType=VARCHAR},
+  </if>
+  <if test="timebucketid != null" >
+    and timebucketid = #{timebucketid,jdbcType=INTEGER},
+  </if>
+  <if test="isdelete != null" >
+   and  isdelete = #{isdelete,jdbcType=BIT},
+  </if>
+</where>
+  </select>
+</mapper>

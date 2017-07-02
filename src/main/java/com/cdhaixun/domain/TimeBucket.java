@@ -1,12 +1,14 @@
 package com.cdhaixun.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class TimeBucket {
     private Integer id;
-
+    @JsonFormat(pattern="HH:mm:ss")
     private Date starttime;
-
+    @JsonFormat(pattern="HH:mm:ss")
     private Date endtime;
 
     private Integer storeid;

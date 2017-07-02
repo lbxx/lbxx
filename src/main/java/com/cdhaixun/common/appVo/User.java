@@ -52,6 +52,15 @@ public class User {
     private Integer points;
 
     private String usercard;
+    private String signature;
+
+    public String getSignature() {
+        return signature;
+    }
+
+    public void setSignature(String signature) {
+        this.signature = signature;
+    }
 
     public Integer getId() {
         return id;

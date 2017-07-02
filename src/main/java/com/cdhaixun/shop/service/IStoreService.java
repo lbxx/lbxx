@@ -34,4 +34,6 @@ public interface IStoreService {
      * @return
      */
     List<Store> find(Store store);
+
+    Store findById(Integer storeid);
 }
