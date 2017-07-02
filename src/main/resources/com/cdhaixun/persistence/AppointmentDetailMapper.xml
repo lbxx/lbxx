@@ -7,8 +7,8 @@
     <result column="babyid" property="babyid" jdbcType="INTEGER" />
     <result column="technicianid" property="technicianid" jdbcType="INTEGER" />
     <result column="bussinessid" property="bussinessid" jdbcType="INTEGER" />
-    <result column="starttime" property="starttime" jdbcType="TIMESTAMP" />
-    <result column="endtime" property="endtime" jdbcType="TIMESTAMP" />
+    <result column="starttime" property="starttime" jdbcType="TIMESTAMP"/>
+    <result column="endtime" property="endtime" jdbcType="TIMESTAMP"/>
     <result column="appointmentid" property="appointmentid" jdbcType="INTEGER" />
     <result column="solution" property="solution" jdbcType="VARCHAR" />
     <result column="timebucketid" property="timebucketid" jdbcType="INTEGER" />
