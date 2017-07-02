@@ -38,7 +38,7 @@ public class ManagerController {
     /**
      * 账号首页
      */
-    @RequestMapping(value = "listIndex", method = RequestMethod.GET)
+    @RequestMapping(value = "list", method = RequestMethod.GET)
     public String listIndex() {
         return "manager/list";
     }
@@ -62,7 +62,7 @@ public class ManagerController {
     /**
      * 添加账号页面
      */
-    @RequestMapping(value = "addIndex", method = RequestMethod.GET)
+    @RequestMapping(value = "add", method = RequestMethod.GET)
     public String addIndex(Model model,Manager manager) {
         List<Role> roleList= roleSevice.findAll();
         if(manager.getId()!=null){

@@ -35,30 +35,17 @@
         <!-- 右边内容开始 -->
         <div class="main-content">
             <!-- 当前页定位开始 -->
-            <div class="breadcrumbs" id="breadcrumbs">
-                <script type="text/javascript">
-                    try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
-                </script>
-                <ul class="breadcrumb">
-                    <li>
-                        <i class="icon-home home-icon"></i>
-                        <a href="#">Home</a>
-                    </li>
-                    <li>
-                        <a href="#">Tables</a>
-                    </li>
-                    <li class="active">jqGrid plugin</li>
-                </ul><!-- .breadcrumb -->
-            </div>
+            <jsp:include page="../location.jsp"/>
             <!-- 当前页定位结束 -->
             <!-- 右边内容开始 -->
             <div class="page-content">
                 <div class="row">
+                    <jsp:include page="../permission.jsp"/>
                     <form class="navbar-form navbar-left" role="search">
                         <div class="form-group">
                             <input type="text"name="name" class="form-control" placeholder="请输入用户姓名">
                         </div>
-                        <shiro:hasPermission name="manage:list"><button type="submit" class="btn btn-default">搜索</button></shiro:hasPermission>
+                      <button type="submit" class="btn btn-default">搜索</button>
                     </form>
                     <div class="col-xs-12">
                         <!-- 显示内容列表的table -->
