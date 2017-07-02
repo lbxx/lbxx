@@ -13,4 +13,6 @@ public interface IManagerService {
     void save(Manager manager);
 
     Manager findById(Integer id);
+
+    Manager findByMobile(String mobile);
 }

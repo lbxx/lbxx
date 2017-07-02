@@ -55,7 +55,7 @@
 					<div class="row">
 						<!-- 引入权限jsp -->
 						<!-- ================= -->
-						<div style="padding: 5px;">
+						<div style="padding: 10px;">
 							<jsp:include page="../permission.jsp" />
 							<div style="display: inline; position: absolute; right: 30px;">
 								<label for="form-field-select-1" style="font-size: 20px;">门店</label>
@@ -476,7 +476,7 @@
 					var grid_selector = "#grid-table";
 					var selectedIds = $(grid_selector).jqGrid('getGridParam',
 							'selarrrow');
-					if (selectedIds == undefined || selectedIds.length == 0 || selectIds.length >1) {
+					if (selectedIds == undefined || selectedIds.length == 0 || selectedIds.length >1) {
 						mydialog("", '对不起，请选择一个选项!');
 					} else {
 						if (selectedIds.length <= 0) {

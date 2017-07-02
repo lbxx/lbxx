@@ -12,4 +12,6 @@ public interface UserMapper extends BaseMapper<User> {
     List<User> findUserList(Map<String, Object> parMap);
 
     List<Store> selectStoreList();
+
+    User selectOneByUser(User user);
 }

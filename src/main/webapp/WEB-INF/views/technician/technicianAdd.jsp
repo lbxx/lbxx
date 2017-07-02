@@ -51,7 +51,7 @@
 						} catch (e) {
 						}
 					</script>
-					<div class="breadcrumbs ace-save-state">
+					<!-- <div class="breadcrumbs ace-save-state">
 						<li
 							style="list-style: none; padding-left: 20px; font-size: 16px; float: left;"><span
 							class="dropdown-toggle"> <i class=""> </i>店铺管理
@@ -62,7 +62,8 @@
 							<li class="active">技师设置</li>
 						</ul>
 
-					</div>
+					</div> -->
+					<jsp:include page="../location.jsp" />
 					<ul class="breadcrumb"
 						style="padding-left: 10px;; line-height: 40px;">
 						<li id="subTitle">技师设置</li>
@@ -80,16 +81,50 @@
 							action="${ctx}/technician/add" method="POST">
 							<input type="hidden" name="id" id="id" value="" />
 							<!-- -->
-							<div style="border: 1px solid #797979; border-bottom: none;">
-								<div style="display: inline-block;">
-								<label style="line-height: 2em; width: 15%;">技师姓名:</label>
-								<input type="text" id="name" name="name" placeholder="请输入技师姓名 "
-                                        class="required" style="height: 32px; width: 56%;">
+							<div style="border: 1px solid #797979; padding: 10px;">
+								<div style="display: inline-block; width: 40%;margin:3px;">
+									<label style="line-height: 2em; width: 20%; font-weight: bold;">技师姓名:</label>
+									<input type="text" id="name" name="name" placeholder="请输入技师姓名 "
+										class="required" style="height: 32px; width: 70%;">
+								</div>
+								<div style="display: inline-block; width: 40%;margin:3px;">
+									<label style="line-height: 2em; width: 20%; font-weight: bold;">技师手机:</label>
+									<input type="text" id="name" name="name" placeholder="请输入技师手机"
+										class="required" style="height: 32px; width: 70%;">
+								</div>
+								<div style="display: inline-block; width: 40%;margin:3px;">
+									<label style="line-height: 2em; width: 20%; font-weight: bold;">技师性别:</label>
+									<select style="display: inline-block; width: 20%;">
+										<option value="1" selected="selected">男</option>
+										<option value="2">女</option>
+									</select>
+								</div>
+								<div style="display: inline-block;width:50%;margin:3px;">
+									<label style="line-height: 2em; width: 16%; font-weight: bold;">上班时间:</label>
+									<label><input name="day1" type="checkbox" value="1" />星期一
+									</label> <label><input name="day2" type="checkbox" value="2" />星期二
+									</label> <label><input name="day3" type="checkbox" value="3" />星期三
+									</label> <label><input name="day4" type="checkbox" value="4" />星期四
+									</label> <label><input name="day4" type="checkbox" value="5" />星期五
+									</label> <label><input name="day4" type="checkbox" value="6" />星期六
+									</label> <label><input name="day4" type="checkbox" value="7" />星期日
+									</label>
+								</div>
+								<div style="display: inline-block; width: 100%;margin:3px;">
+                                    <label style="line-height: 2em; width: 8%; font-weight: bold;">时间设置:</label>
+                                    <div style="display: inline-block;width: 30%;">
+                                                                                                            婴儿洗澡时间:<input type="text" id="name" name="name" 
+                                        class="required" style="height: 32px;">
+                                    </div>
+                                    <div style="display: inline-block;width: 30%;">
+                                                                                                            婴儿游泳时间:<input type="text" id="name" name="name" 
+                                        class="required" style="height: 32px;">
+                                    </div>
                                 </div>
-								<div style="display: inline-block;">
-								<label style="line-height: 2em; width: 15%;">技师姓名:</label>
-								<input type="text" id="name" name="name" placeholder="请输入技师姓名 "
-                                        class="required" style="height: 32px; width: 56%;">
+                                <div style="display: inline-block; width: 40%;margin:3px;">
+                                    <label style="line-height: 2em; width: 20%; font-weight: bold;">技师说明:</label>
+                                    <textarea rows="10" cols="150" placeholder="请输入技师说明..." 
+                                    style="overflow: hidden;"></textarea>
                                 </div>
 							</div>
 							<div
