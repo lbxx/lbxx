@@ -9,5 +9,8 @@ import java.util.List;
  * Created by tangxinmao on 2017/7/2.
  */
 public interface IAppointmentDetailService {
+
     List<AppointmentDetail> findByStartTimeAndTechnicianId(Date createtimeFrom, Date createtimeTo, Integer technicianid);
+
+    void save(AppointmentDetail appointmentDetail);
 }

@@ -18,4 +18,7 @@ public interface TechnicianBusinessMapper {
     int updateByPrimaryKey(TechnicianBusiness record);
 
     List<TechnicianBusiness> selectByTechnicianBusiness(TechnicianBusiness technicianBusiness);
+
+    TechnicianBusiness selectOneByTechnicianBusiness(TechnicianBusiness technicianBusiness);
+
 }

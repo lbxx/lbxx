@@ -2,6 +2,7 @@ package com.cdhaixun.shop.service;
 
 import com.cdhaixun.domain.TimeBucket;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -10,4 +11,5 @@ import java.util.List;
 public interface ITimeBucketService {
     List<TimeBucket> findAll();
 
+    TimeBucket findOneByCreateTime(Date createtime);
 }

@@ -24,4 +24,13 @@ public class AppointmentDetailServiceImpl implements IAppointmentDetailService {
         appointmentDetail.setCreatetimeTo(createtimeTo);
         return appointmentDetailMapper.selectByAppointmentDetail(appointmentDetail);
     }
+
+    @Override
+    public void save(AppointmentDetail appointmentDetail) {
+        if(appointmentDetail.getId()==null){
+            appointmentDetailMapper.insert(appointmentDetail);
+        }else{
+            appointmentDetailMapper.updateByPrimaryKeySelective(appointmentDetail);
+        }
+    }
 }

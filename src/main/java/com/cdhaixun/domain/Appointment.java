@@ -14,6 +14,24 @@ public class Appointment {
     private String state;
 
     private Boolean isdelete;
+    private String remark;
+    private  Integer technicianid;
+
+    public Integer getTechnicianid() {
+        return technicianid;
+    }
+
+    public void setTechnicianid(Integer technicianid) {
+        this.technicianid = technicianid;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
 
     public Integer getId() {
         return id;

@@ -11,6 +11,15 @@ public class Business {
 
     private Boolean isdelete;
     private Integer categoryid;
+    private Integer spend;//
+
+    public Integer getSpend() {
+        return spend;
+    }
+
+    public void setSpend(Integer spend) {
+        this.spend = spend;
+    }
 
     public Integer getCategoryid() {
         return categoryid;

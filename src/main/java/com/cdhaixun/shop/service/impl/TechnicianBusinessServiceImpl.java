@@ -21,4 +21,12 @@ public class TechnicianBusinessServiceImpl implements ITechnicianBusinessService
         technicianBusiness.setBusinessidList(businessidList);
         return technicianBusinessMapper.selectByTechnicianBusiness(technicianBusiness);
     }
+
+    @Override
+    public TechnicianBusiness findByBusinessIdAndTechnicianId(Integer id, Integer technicianid) {
+        TechnicianBusiness technicianBusiness=new TechnicianBusiness();
+        technicianBusiness.setBusinessid(id);
+        technicianBusiness.setTechnicianid(technicianid);
+        return technicianBusinessMapper.selectOneByTechnicianBusiness(technicianBusiness);
+    }
 }

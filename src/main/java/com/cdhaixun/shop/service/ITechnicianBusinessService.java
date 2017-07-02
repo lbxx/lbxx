@@ -11,4 +11,5 @@ public interface ITechnicianBusinessService {
 
     List<TechnicianBusiness> findByBusinessIdList(List<Integer> businessidList);
 
+    TechnicianBusiness findByBusinessIdAndTechnicianId(Integer id, Integer technicianid);
 }

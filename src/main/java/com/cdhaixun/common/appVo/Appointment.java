@@ -1,6 +1,11 @@
 package com.cdhaixun.common.appVo;
 
+import com.cdhaixun.domain.*;
+import com.cdhaixun.domain.Baby;
+import com.cdhaixun.domain.Business;
+
 import java.util.Date;
+import java.util.List;
 
 public class Appointment {
     private Integer id;
@@ -16,6 +21,42 @@ public class Appointment {
     private Boolean isdelete;
     private Integer badyCount;//宝宝数量
     private Integer technicianid;//技师
+    private  Date starttime; //预约时间段
+    private  Date endtime;
+    List<Baby> babyList;//宝宝
+    List<Business> businessList;//所选业务
+
+    public Date getStarttime() {
+        return starttime;
+    }
+
+    public void setStarttime(Date starttime) {
+        this.starttime = starttime;
+    }
+
+    public Date getEndtime() {
+        return endtime;
+    }
+
+    public void setEndtime(Date endtime) {
+        this.endtime = endtime;
+    }
+
+    public List<Business> getBusinessList() {
+        return businessList;
+    }
+
+    public void setBusinessList(List<Business> businessList) {
+        this.businessList = businessList;
+    }
+
+    public List<Baby> getBabyList() {
+        return babyList;
+    }
+
+    public void setBabyList(List<Baby> babyList) {
+        this.babyList = babyList;
+    }
 
     public Integer getTechnicianid() {
         return technicianid;
