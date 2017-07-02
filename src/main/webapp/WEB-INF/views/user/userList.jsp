@@ -88,7 +88,6 @@
 
     <![endif]-->
 
-    <script src="${ctx}/resources/DatePicker/WdatePicker.js"></script>
 </head>
 <body>
 

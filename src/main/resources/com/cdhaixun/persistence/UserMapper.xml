@@ -71,6 +71,7 @@
         AND u.mobile LIKE '%${typeval}%'
       </if>
     </if>
+    order by u.registertime desc
   </select>
   <select id="selectStoreList" resultType="com.cdhaixun.domain.Store" >
     select * from store where isdelete = 0

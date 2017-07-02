@@ -9,8 +9,6 @@ import com.cdhaixun.persistence.ManagerMapper;
 import com.cdhaixun.shop.service.IMenuService;
 import com.cdhaixun.shop.service.IOperateService;
 import com.cdhaixun.shop.service.IRoleOperateService;
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -58,7 +56,7 @@ public class MyRealm extends AuthorizingRealm {
         if (manager != null) {
             AuthenticationInfo authcInfo = new SimpleAuthenticationInfo(manager.getAccount(), manager.getPassword(), this.getName());
             this.setSession(SessionConstant.MANAGER, manager);
-            String role = "supper";
+            String role = manager.getRole();
             List<Menu> menuList = menuService.getMenus(role);
             this.setSession(SessionConstant.MENU_LIST, menuList);
             return authcInfo;

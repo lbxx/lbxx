@@ -6,6 +6,7 @@ import com.cdhaixun.domain.User;
 import com.cdhaixun.domain.UserType;
 import com.cdhaixun.shop.service.IUserService;
 import com.cdhaixun.util.ConfigContentUtils;
+import com.cdhaixun.util.JsonMsgUtil;
 import com.cdhaixun.util.MapUtils;
 import com.cdhaixun.util.Pager;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
+import java.util.Date;
 
 /**
  * 会员管理
@@ -79,7 +81,15 @@ public class UserController {
      */
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
     public String edit(HttpServletRequest request){
+        User user = null;
+        try{
+            Integer id = Integer.valueOf(request.getParameter("id"));
+            user = userService.findById(id);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
         List<UserType> typeList = userService.selectTypeList();
+        request.setAttribute("dto", user);
         request.setAttribute("typeList", typeList);
         return PATH + "user_input";
     }
@@ -89,15 +99,25 @@ public class UserController {
      * @param
      * @return
      */
-    @RequestMapping(value = "/save")
+    @ResponseBody
+    @RequestMapping(value = "/save", method = RequestMethod.POST)
     public Object save(User user, HttpServletRequest request){
         try {
-            user.setPassword(DigestUtils.md5(ConfigContentUtils.getString("upassword", "system.properties")).toString());
-            userService.save(user);
-            return true;
+            Integer id = user.getId();
+            if(id == null ){
+                user.setPassword(DigestUtils.md5(ConfigContentUtils.getString("upassword", "system.properties")).toString());
+                user.setNickname(user.getName());
+                user.setState(1);
+                user.setIsdelete(1);
+                user.setRegistertime(new Date());
+                userService.save(user);
+            }else{
+                userService.update(user);
+            }
+            return JsonMsgUtil.getSuccessJsonMsg("操作成功");
         }catch (Exception e){
             e.printStackTrace();
-            return false;
+            return JsonMsgUtil.getFailJsonMsg("操作失败");
         }
     }
 
@@ -112,8 +132,8 @@ public class UserController {
            userService.delete(user);
         }catch(Exception e){
             e.printStackTrace();
-            return "删除失败";
+            return JsonMsgUtil.getFailJsonMsg("删除失败!");
         }
-        return "删除成功";
+        return JsonMsgUtil.getSuccessJsonMsg("删除成功!");
     }
 }

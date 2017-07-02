@@ -4,6 +4,6 @@
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <div class="col-xs-12" style="display:inline-block;">
 	<c:forEach items="${menucode}" var="operator">
-		<button class="btn btn-sm btn-primary" id="${operator.permission}Button" onclick="${operator.permission}Button('${ctx}/${operator.menucode}/${operator.permission}')">${operator.name}</button>
+		<button class="btn btn-sm btn-primary" id="${operator.permission}Button" onclick="${operator.permission}Button('${ctx}/${operator.menucode}','${operator.permission}')">${operator.name}</button>
 	</c:forEach>
 </div>
