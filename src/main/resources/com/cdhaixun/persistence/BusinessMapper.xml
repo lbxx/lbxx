@@ -97,16 +97,16 @@
     from business
     <where>
       <if test="name != null" >
-       and  name = #{name,jdbcType=VARCHAR},
+       and  name = #{name,jdbcType=VARCHAR}
       </if>
       <if test="createtime != null" >
-       and createtime = #{createtime,jdbcType=TIMESTAMP},
+       and createtime = #{createtime,jdbcType=TIMESTAMP}
       </if>
       <if test="isdelete != null" >
-       and   isdelete = #{isdelete,jdbcType=BIT},
+       and   isdelete = #{isdelete,jdbcType=BIT}
       </if>
       <if test="categoryid != null" >
-        and categoryid = #{categoryid},
+        and categoryid = #{categoryid}
       </if>
     </where>
   </select>
