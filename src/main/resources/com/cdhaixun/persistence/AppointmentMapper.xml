@@ -9,10 +9,12 @@
         <result column="state" property="state" jdbcType="CHAR"/>
         <result column="isdelete" property="isdelete" jdbcType="BIT"/>
         <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="starttime" property="starttime" jdbcType="TIMESTAMP"/>
+        <result column="endtime" property="endtime" jdbcType="TIMESTAMP"/>
         <result column="technicianid" property="technicianid" jdbcType="INTEGER"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, createtime, userid, storeid, state, isdelete,remark,technicianid
+    id, createtime, userid, storeid, state, isdelete,remark,technicianid,endtime,starttime
   </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
@@ -26,9 +28,9 @@
   </delete>
     <insert id="insert" parameterType="com.cdhaixun.domain.Appointment">
     insert into appointment (id, createtime, userid, 
-      storeid, state, isdelete,remark,technicianid)
+      storeid, state, isdelete,remark,technicianid,starttime,endtime)
     values (#{id,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}, #{userid,jdbcType=INTEGER}, 
-      #{storeid,jdbcType=INTEGER}, #{state,jdbcType=CHAR}, #{isdelete,jdbcType=BIT},#{remark},#{technicianid})
+      #{storeid,jdbcType=INTEGER}, #{state,jdbcType=CHAR}, #{isdelete,jdbcType=BIT},#{remark},#{technicianid},#{starttime},endtime)
   </insert>
     <insert id="insertSelective" parameterType="com.cdhaixun.domain.Appointment">
         insert into appointment
@@ -38,6 +40,12 @@
             </if>
             <if test="createtime != null">
                 createtime,
+            </if>
+            <if test="starttime != null">
+                starttime,
+            </if>
+            <if test="endtime != null">
+                endtime,
             </if>
             <if test="technicianid != null">
                 technicianid,
@@ -66,6 +74,12 @@
             <if test="createtime != null">
                 #{createtime,jdbcType=TIMESTAMP},
             </if>
+            <if test="starttime != null">
+                #{starttime} ,
+            </if>
+            <if test="endtime != null">
+                #{endtime},
+            </if>
             <if test="technicianid != null">
                 #{technicianid},
             </if>
@@ -92,6 +106,12 @@
             <if test="createtime != null">
                 createtime = #{createtime,jdbcType=TIMESTAMP},
             </if>
+            <if test="starttime != null">
+                starttime = #{starttime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endtime != null">
+                endtime = #{endtime,jdbcType=TIMESTAMP},
+            </if>
             <if test="userid != null">
                 userid = #{userid,jdbcType=INTEGER},
             </if>
@@ -117,6 +137,8 @@
     update appointment
     set createtime = #{createtime,jdbcType=TIMESTAMP},
       userid = #{userid,jdbcType=INTEGER},
+          endtime = #{endtime},
+              starttime = #{starttime},
       storeid = #{storeid,jdbcType=INTEGER},
            technicianid=#{technicianid},
       state = #{state,jdbcType=CHAR},
@@ -124,4 +146,41 @@
       remark = #{remark}
     where id = #{id,jdbcType=INTEGER}
   </update>
+    <select id="selectByAppointment" resultMap="BaseResultMap" parameterType="com.cdhaixun.domain.Appointment">
+        select
+        <include refid="Base_Column_List"/>
+        from appointment
+        <where>
+            <if test="createtime != null">
+                and createtime = #{createtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="starttime != null">
+                and starttime = #{starttime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="starttimeFrom != null">
+                and starttimeFrom &gt;= #{starttimeFrom,jdbcType=TIMESTAMP},
+            </if>
+            <if test="starttimeTo != null">
+                and starttimeTo &lt;#{starttimeTo,jdbcType=TIMESTAMP},
+            </if>
+            <if test="userid != null">
+                and userid = #{userid,jdbcType=INTEGER},
+            </if>
+            <if test="storeid != null">
+                and storeid = #{storeid,jdbcType=INTEGER},
+            </if>
+            <if test="technicianid != null">
+                and technicianid=#{technicianid},
+            </if>
+            <if test="state != null">
+                and state = #{state,jdbcType=CHAR},
+            </if>
+            <if test="isdelete != null">
+                and isdelete = #{isdelete,jdbcType=BIT},
+            </if>
+            <if test="remark != null">
+                and remark = #{remark},
+            </if>
+        </where>
+    </select>
 </mapper>

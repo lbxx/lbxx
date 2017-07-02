@@ -12,6 +12,52 @@ public class Appointment {
     private Integer storeid;
 
     private String state;
+    private  Date starttime; //预约开始时间
+    private  Date endtime;//结束时间
+    private  Date createtimeFrom ;
+    private  Date createtimeTo ;
+    private  Integer appointnumber;//预约人数
+
+    public Integer getAppointnumber() {
+        return appointnumber;
+    }
+
+    public void setAppointnumber(Integer appointnumber) {
+        this.appointnumber = appointnumber;
+    }
+
+    public Date getCreatetimeFrom() {
+        return createtimeFrom;
+    }
+
+    public void setCreatetimeFrom(Date createtimeFrom) {
+        this.createtimeFrom = createtimeFrom;
+    }
+
+    public Date getCreatetimeTo() {
+        return createtimeTo;
+    }
+
+    public void setCreatetimeTo(Date createtimeTo) {
+        this.createtimeTo = createtimeTo;
+    }
+
+    public Date getEndtime() {
+        return endtime;
+    }
+
+    public void setEndtime(Date endtime) {
+        this.endtime = endtime;
+    }
+
+    public Date getStarttime() {
+
+        return starttime;
+    }
+
+    public void setStarttime(Date starttime) {
+        this.starttime = starttime;
+    }
 
     private Boolean isdelete;
     private String remark;
@@ -80,4 +126,6 @@ public class Appointment {
     public void setIsdelete(Boolean isdelete) {
         this.isdelete = isdelete;
     }
+
+
 }

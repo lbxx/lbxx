@@ -42,15 +42,17 @@ public class AppointmentAppController {
     public Result addAppointment(@RequestBody Appointment appointment, HttpServletRequest httpServletRequest) throws InvocationTargetException, IllegalAccessException {
         Result result = new Result();
         //获取预约起始时间
-        List<AppointmentDetail> appointmentDetailList = appointmentDetailService.findByStartTimeAndTechnicianId(appointment.getStarttime(), appointment.getEndtime(), appointment.getTechnicianid());
+        List<com.cdhaixun.domain.Appointment> appointmentList = appointmentService.findByStartTimeAndTechnicianId(appointment.getStarttime(), appointment.getEndtime(), appointment.getTechnicianid());
         Date starttime = appointment.getStarttime();
-        for (AppointmentDetail appointmentDetail : appointmentDetailList) {
-            if (appointmentDetail.getEndtime().compareTo(starttime) > 0) {
-                starttime = appointmentDetail.getEndtime();
+        for (com.cdhaixun.domain.Appointment appointmentTemp : appointmentList) {
+            if (appointmentTemp.getEndtime().compareTo(starttime) > 0) {
+                starttime = appointmentTemp.getEndtime();
             }
         }
         com.cdhaixun.domain.Appointment appointment1Db=new com.cdhaixun.domain.Appointment();
         BeanUtils.copyProperties(appointment1Db,appointment);
+        appointment1Db.setStarttime(starttime);
+        appointment1Db.setCreatetime(new Date());
         appointmentService.save(appointment1Db);
         for (Business business : appointment.getBusinessList()) {
             TechnicianBusiness technicianBusiness=technicianBusinessService.findByBusinessIdAndTechnicianId(business.getId(),appointment.getTechnicianid());
@@ -66,12 +68,24 @@ public class AppointmentAppController {
                 calendar.roll(Calendar.MINUTE,technicianBusiness.getSpend());
                 starttime=calendar.getTime();
                 appointmentDetail.setEndtime(calendar.getTime());
+                appointment1Db.setEndtime(appointmentDetail.getEndtime());
                 appointmentDetailService.save(appointmentDetail);
             }
         }
+        List<com.cdhaixun.domain.Appointment> appointmentList1 = appointmentService.findByStartTimeAndTechnicianId(new Date(), appointment1Db.getEndtime(), appointment.getTechnicianid());
+        appointment1Db.setAppointnumber(appointmentList1.size());
+        result.setData(appointment1Db);
         result.setResult(true);
         return result;
     }
 
-
+    @RequestMapping(value = "listByUserId", method = RequestMethod.POST)
+    @ResponseBody
+    public Result listByUserId(@RequestBody Appointment appointment){
+        Result result = new Result();
+       List<com.cdhaixun.domain.Appointment> appointmentList= appointmentService.findByUserId(appointment.getUserid());
+        result.setData(appointmentList);
+        result.setResult(true);
+        return result;
+    }
 }
