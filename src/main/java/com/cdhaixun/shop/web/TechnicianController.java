@@ -58,18 +58,16 @@ public class TechnicianController extends BaseController {
     }
     
     /**
-     * 添加会员
+     * 跳转添加技师
      * @param request
      * @return
      */
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String add(HttpServletRequest request){
-        List<UserType> typeList = techinicianService.selectTypeList();
-        request.setAttribute("typeList", typeList);
-        return PATH + "user_input";
+        return PATH + "technicianAdd";
     }
     /**
-     * 编辑会员
+     * 编辑技师跳转
      * @param request
      * @return
      */
@@ -87,14 +85,9 @@ public class TechnicianController extends BaseController {
      */
     @RequestMapping(value = "/save")
     public Object save(User user, HttpServletRequest request){
-        try {
-            user.setPassword(DigestUtils.md5(ConfigContentUtils.getString("upassword", "system.properties")).toString());
-//            techinicianService.save(user);
-            return true;
-        }catch (Exception e){
-            e.printStackTrace();
-            return false;
-        }
+        @SuppressWarnings("unused")
+        Map<String, Object> parMap = MapUtils.getParamMapObj(request);
+        return null;
     }
 
     /**

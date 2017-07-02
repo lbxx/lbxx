@@ -177,7 +177,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="selectOneByUser" parameterType="com.cdhaixun.domain.User"resultMap="BaseResultMap">
+  <select id="selectOneByUser" parameterType="com.cdhaixun.domain.User" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from user
