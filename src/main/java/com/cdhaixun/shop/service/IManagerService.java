@@ -15,4 +15,6 @@ public interface IManagerService {
     Manager findById(Integer id);
 
     Manager findByMobile(String mobile);
+
+    Manager findOneByAccount(String username);
 }

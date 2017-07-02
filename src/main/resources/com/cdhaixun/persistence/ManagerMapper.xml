@@ -1,40 +1,40 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.cdhaixun.persistence.ManagerMapper" >
-  <resultMap id="BaseResultMap" type="com.cdhaixun.domain.Manager" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="account" property="account" jdbcType="VARCHAR" />
-    <result column="password" property="password" jdbcType="VARCHAR" />
-    <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="addtime" property="addtime" jdbcType="DATE" />
-    <result column="updatetime" property="updatetime" jdbcType="DATE" />
-    <result column="lastlogintime" property="lastlogintime" jdbcType="DATE" />
-    <result column="loginip" property="loginip" jdbcType="VARCHAR" />
-    <result column="role" property="role" jdbcType="VARCHAR" />
-    <result column="state" property="state" jdbcType="BIT" />
-    <result column="remark" property="remark" jdbcType="VARCHAR" />
-    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
-    <result column="qq" property="qq" jdbcType="VARCHAR" />
-    <result column="email" property="email" jdbcType="VARCHAR" />
-    <result column="nickname" property="nickname" jdbcType="VARCHAR" />
-    <result column="sex" property="sex" jdbcType="BIT" />
-    <result column="img" property="img" jdbcType="VARCHAR" />
-  </resultMap>
-  <sql id="Base_Column_List" >
+<mapper namespace="com.cdhaixun.persistence.ManagerMapper">
+    <resultMap id="BaseResultMap" type="com.cdhaixun.domain.Manager">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="account" property="account" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="addtime" property="addtime" jdbcType="DATE"/>
+        <result column="updatetime" property="updatetime" jdbcType="DATE"/>
+        <result column="lastlogintime" property="lastlogintime" jdbcType="DATE"/>
+        <result column="loginip" property="loginip" jdbcType="VARCHAR"/>
+        <result column="role" property="role" jdbcType="VARCHAR"/>
+        <result column="state" property="state" jdbcType="BIT"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="mobile" property="mobile" jdbcType="VARCHAR"/>
+        <result column="qq" property="qq" jdbcType="VARCHAR"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="nickname" property="nickname" jdbcType="VARCHAR"/>
+        <result column="sex" property="sex" jdbcType="BIT"/>
+        <result column="img" property="img" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
     id, account, password ,mobile,name, addtime, updatetime, lastlogintime, loginip, role, state,qq,email,nickname,sex,img,
     remark
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from manager
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from manager
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from manager
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.cdhaixun.domain.Manager" >
+    <insert id="insert" parameterType="com.cdhaixun.domain.Manager">
     insert into manager (id, account, password, 
       name, addtime, updatetime, 
       lastlogintime, loginip, role, 
@@ -44,135 +44,135 @@
       #{lastlogintime,jdbcType=DATE},#{loginip,jdbcType=VARCHAR},#{role,jdbcType=VARCHAR},
       #{state,jdbcType=BIT}, #{remark,jdbcType=VARCHAR},#{mobile},#{qq},#{email},#{nickname},#{sex},#{img})
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.cdhaixun.domain.Manager" >
-    update manager
-    <set >
-      <if test="account != null" >
-        account = #{account,jdbcType=VARCHAR},
-      </if>
-      <if test="password != null" >
-        password = #{password,jdbcType=VARCHAR},
-      </if>
-      <if test="name != null" >
-        name = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="addtime != null" >
-        addtime = #{addtime,jdbcType=DATE},
-      </if>
-      <if test="updatetime != null" >
-        updatetime = #{updatetime,jdbcType=DATE},
-      </if>
-      <if test="lastlogintime != null" >
-        lastlogintime = #{lastlogintime,jdbcType=DATE},
-      </if>
-      <if test="loginip != null" >
-        loginip = #{loginip,jdbcType=VARCHAR},
-      </if>
-      <if test="role != null" >
-        role = #{role,jdbcType=VARCHAR},
-      </if>
-      <if test="state != null" >
-        state = #{state,jdbcType=BIT},
-      </if>
-      <if test="remark != null" >
-        remark = #{remark,jdbcType=VARCHAR},
-      </if>
+    <update id="updateByPrimaryKey" parameterType="com.cdhaixun.domain.Manager">
+        update manager
+        <set>
+            <if test="account != null">
+                account = #{account,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                password = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="addtime != null">
+                addtime = #{addtime,jdbcType=DATE},
+            </if>
+            <if test="updatetime != null">
+                updatetime = #{updatetime,jdbcType=DATE},
+            </if>
+            <if test="lastlogintime != null">
+                lastlogintime = #{lastlogintime,jdbcType=DATE},
+            </if>
+            <if test="loginip != null">
+                loginip = #{loginip,jdbcType=VARCHAR},
+            </if>
+            <if test="role != null">
+                role = #{role,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                state = #{state,jdbcType=BIT},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
 
-      <if test="mobile != null" >
-        mobile = #{mobile,jdbcType=VARCHAR},
-      </if>
-      <if test="qq != null" >
-        qq = #{qq,jdbcType=VARCHAR},
-      </if>
-      <if test="email != null" >
-        email = #{email},
-      </if>
-      <if test="nickname != null" >
-        nickname = #{nickname},
-      </if>
-      <if test="sex != null" >
-        sex = #{sex},
-      </if>
-      <if test="img != null" >
-        img = #{img},
-      </if>
+            <if test="mobile != null">
+                mobile = #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="qq != null">
+                qq = #{qq,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                email = #{email},
+            </if>
+            <if test="nickname != null">
+                nickname = #{nickname},
+            </if>
+            <if test="sex != null">
+                sex = #{sex},
+            </if>
+            <if test="img != null">
+                img = #{img},
+            </if>
 
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <select id="selectByManager" resultMap="BaseResultMap" parameterType="com.cdhaixun.domain.Manager">
-    select
-    <include refid="Base_Column_List" />
-    from manager
-    <where>
-      <if test="account != null" >
-        account = #{account,jdbcType=VARCHAR},
-      </if>
-      <if test="password != null" >
-        password = #{password,jdbcType=VARCHAR},
-      </if>
-      <if test="name != null" >
-        name = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="addtime != null" >
-        addtime = #{addtime,jdbcType=DATE},
-      </if>
-      <if test="updatetime != null" >
-        updatetime = #{updatetime,jdbcType=DATE},
-      </if>
-      <if test="lastlogintime != null" >
-        lastlogintime = #{lastlogintime,jdbcType=DATE},
-      </if>
-      <if test="loginip != null" >
-        loginip = #{loginip,jdbcType=VARCHAR},
-      </if>
-      <if test="role != null" >
-        role = #{role,jdbcType=VARCHAR},
-      </if>
-      <if test="state != null" >
-        state = #{state,jdbcType=BIT},
-      </if>
-      <if test="remark != null" >
-        remark = #{remark,jdbcType=VARCHAR},
-      </if>
-    </where>
-  </select>
-  <select id="selectOneByManager" resultMap="BaseResultMap" parameterType="com.cdhaixun.domain.Manager">
-    select
-    <include refid="Base_Column_List" />
-    from manager
-    <where>
-      <if test="account != null" >
-        account = #{account,jdbcType=VARCHAR},
-      </if>
-      <if test="password != null" >
-        password = #{password,jdbcType=VARCHAR},
-      </if>
-      <if test="name != null" >
-        name = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="addtime != null" >
-        addtime = #{addtime,jdbcType=DATE},
-      </if>
-      <if test="updatetime != null" >
-        updatetime = #{updatetime,jdbcType=DATE},
-      </if>
-      <if test="lastlogintime != null" >
-        lastlogintime = #{lastlogintime,jdbcType=DATE},
-      </if>
-      <if test="loginip != null" >
-        loginip = #{loginip,jdbcType=VARCHAR},
-      </if>
-      <if test="role != null" >
-        role = #{role,jdbcType=VARCHAR},
-      </if>
-      <if test="state != null" >
-        state = #{state,jdbcType=BIT},
-      </if>
-      <if test="remark != null" >
-        remark = #{remark,jdbcType=VARCHAR},
-      </if>
-    </where>
-  </select>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <select id="selectByManager" resultMap="BaseResultMap" parameterType="com.cdhaixun.domain.Manager">
+        select
+        <include refid="Base_Column_List"/>
+        from manager
+        <where>
+            <if test="account != null">
+                and account = #{account,jdbcType=VARCHAR}
+            </if>
+            <if test="password != null">
+                and password = #{password,jdbcType=VARCHAR}
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR}
+            </if>
+            <if test="addtime != null">
+                and addtime = #{addtime,jdbcType=DATE}
+            </if>
+            <if test="updatetime != null">
+                and updatetime = #{updatetime,jdbcType=DATE}
+            </if>
+            <if test="lastlogintime != null">
+                and lastlogintime = #{lastlogintime,jdbcType=DATE}
+            </if>
+            <if test="loginip != null">
+                and loginip = #{loginip,jdbcType=VARCHAR}
+            </if>
+            <if test="role != null">
+                and role = #{role,jdbcType=VARCHAR}
+            </if>
+            <if test="state != null">
+                and state = #{state,jdbcType=BIT}
+            </if>
+            <if test="remark != null">
+                and remark = #{remark,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+    <select id="selectOneByManager" resultMap="BaseResultMap" parameterType="com.cdhaixun.domain.Manager">
+        select
+        <include refid="Base_Column_List"/>
+        from manager
+        <where>
+            <if test="account != null">
+                and account = #{account,jdbcType=VARCHAR}
+            </if>
+            <if test="password != null">
+                and password = #{password,jdbcType=VARCHAR}
+            </if>
+            <if test="name != null">
+                and name = #{name,jdbcType=VARCHAR}
+            </if>
+            <if test="addtime != null">
+                and addtime = #{addtime,jdbcType=DATE}
+            </if>
+            <if test="updatetime != null">
+                and updatetime = #{updatetime,jdbcType=DATE}
+            </if>
+            <if test="lastlogintime != null">
+                and lastlogintime = #{lastlogintime,jdbcType=DATE}
+            </if>
+            <if test="loginip != null">
+                and loginip = #{loginip,jdbcType=VARCHAR}
+            </if>
+            <if test="role != null">
+                and role = #{role,jdbcType=VARCHAR}
+            </if>
+            <if test="state != null">
+                and state = #{state,jdbcType=BIT}
+            </if>
+            <if test="remark != null">
+                and remark = #{remark,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
 
 </mapper>

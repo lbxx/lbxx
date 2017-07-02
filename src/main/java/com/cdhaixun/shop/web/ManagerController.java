@@ -62,7 +62,7 @@ public class ManagerController {
     /**
      * 添加账号页面
      */
-    @RequestMapping(value = "add", method = RequestMethod.GET)
+    @RequestMapping(value = {"add","edit"}, method = RequestMethod.GET)
     public String addIndex(Model model,Manager manager) {
         List<Role> roleList= roleSevice.findAll();
         if(manager.getId()!=null){
