@@ -11,4 +11,6 @@ public interface IBabyService {
     void save(Baby babyDo);
 
     List<Baby> findByUserId(Integer id);
+
+    void delete(Baby babyDo);
 }

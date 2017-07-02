@@ -17,6 +17,15 @@ public class Baby {
 
     private Boolean isdelete;
     private String remark;
+    private Integer babyid;
+
+    public Integer getBabyid() {
+        return babyid;
+    }
+
+    public void setBabyid(Integer babyid) {
+        this.babyid = babyid;
+    }
 
     public String getRemark() {
         return remark;

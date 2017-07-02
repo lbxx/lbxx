@@ -15,19 +15,26 @@ import java.util.List;
 public class BabyServiceImpl implements IBabyService {
     @Autowired
     private BabyMapper babyMapper;
+
     @Override
     public void save(Baby babyDo) {
-        if(babyDo.getId()!=null){
+        if (babyDo.getId() != null) {
             babyMapper.updateByPrimaryKeySelective(babyDo);
-        }else{
+        } else {
             babyMapper.insert(babyDo);
         }
     }
 
     @Override
     public List<Baby> findByUserId(Integer id) {
-        Baby baby=new Baby();
+        Baby baby = new Baby();
         baby.setUserid(id);
         return babyMapper.selectByBaby(baby);
+    }
+
+    @Override
+    public void delete(Baby babyDo) {
+        babyDo.setIsdelete(true);
+        babyMapper.updateByPrimaryKeySelective(babyDo);
     }
 }

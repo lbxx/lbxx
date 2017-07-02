@@ -34,6 +34,16 @@ public class BabyAppController extends BaseController {
         result.setResult(true);
         return result;
     }
+    @RequestMapping(value = "deleteBady", method = RequestMethod.POST)
+    @ResponseBody
+    public Result deleteBady(@RequestBody Baby baby , HttpServletRequest httpServletRequest) throws InvocationTargetException, IllegalAccessException {
+        Result result = new Result();
+        com.cdhaixun.domain.Baby babyDo=new com.cdhaixun.domain.Baby();
+        babyDo.setId(baby.getBabyid());
+        babyService.delete(babyDo);
+        result.setResult(true);
+        return result;
+    }
 
 
 }
