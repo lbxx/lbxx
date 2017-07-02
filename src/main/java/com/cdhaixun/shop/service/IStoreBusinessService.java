@@ -14,4 +14,6 @@ public interface IStoreBusinessService {
      * @return
      */
     List<StoreBusiness> findByBusinessId(Integer id);
+
+    List<StoreBusiness> findByStoreId(Integer storeid);
 }

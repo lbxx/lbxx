@@ -103,4 +103,33 @@
       isdelete = #{isdelete,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectByTechnicianBusiness" resultMap="BaseResultMap" parameterType="com.cdhaixun.domain.TechnicianBusiness" >
+    select
+    <include refid="Base_Column_List" />
+    from technician_business
+<where>
+  <if test="technicianid != null" >
+   and  technicianid = #{technicianid,jdbcType=INTEGER},
+  </if>
+  <if test="businessid != null" >
+   and  businessid = #{businessid,jdbcType=INTEGER},
+  </if>
+  <if test="spend != null" >
+  and   spend = #{spend,jdbcType=INTEGER},
+  </if>
+  <if test="createtime != null" >
+    createtime = #{createtime,jdbcType=TIMESTAMP},
+  </if>
+  <if test="isdelete != null" >
+   and  isdelete = #{isdelete,jdbcType=BIT},
+  </if>
+  <if test="businessidList !=null and businessidList.size >0">
+   and businessid  in
+    <foreach collection="businessidList" item="businessid" index="index"
+             open="(" close=")" separator=",">
+      #{businessid}
+    </foreach>
+  </if>
+</where>
+  </select>
 </mapper>

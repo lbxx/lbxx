@@ -16,4 +16,5 @@ public interface ITechnicianService extends BaseService<Technician>{
 
     void delete(User user);
 
+    List<Technician> findByStoreId(Integer storeid);
 }

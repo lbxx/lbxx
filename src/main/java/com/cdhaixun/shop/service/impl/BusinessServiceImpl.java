@@ -22,4 +22,9 @@ public class BusinessServiceImpl implements IBusinessService{
         business.setCategoryid(id);
         return businessMapper.selectByBusiness(business);
     }
+
+    @Override
+    public Business findById(Integer businessid) {
+        return businessMapper.selectByPrimaryKey(businessid);
+    }
 }

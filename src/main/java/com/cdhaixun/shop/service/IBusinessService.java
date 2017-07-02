@@ -10,4 +10,6 @@ import java.util.List;
 public interface IBusinessService {
 
     List<Business> findByCategoryId(Integer id);
+
+    Business findById(Integer businessid);
 }
