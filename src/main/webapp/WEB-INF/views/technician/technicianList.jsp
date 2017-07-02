@@ -38,7 +38,7 @@
                 <script type="text/javascript">
                     try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
                 </script>
-                <ul class="breadcrumb">
+                <!-- <ul class="breadcrumb">
                     <li>
                         <i class="icon-home home-icon"></i>
                         <a href="#">Home</a>
@@ -47,10 +47,10 @@
                         <a href="#">Tables</a>
                     </li>
                     <li class="active">jqGrid plugin</li>
-                </ul><!-- .breadcrumb -->
+                </ul>.breadcrumb -->
+            <jsp:include page="../location.jsp" />
             </div>
             <!-- 当前页定位结束 -->
-            <jsp:include page="../location.jsp" />
             <!-- 右边内容开始 -->
             <div class="page-content">
                 <div class="row">

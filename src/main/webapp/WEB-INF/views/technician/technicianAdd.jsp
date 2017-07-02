@@ -87,14 +87,29 @@
 									<input type="text" id="name" name="name" placeholder="请输入技师姓名 "
 										class="required" style="height: 32px; width: 70%;">
 								</div>
+								
+								<div style="display: inline-block; width: 40%;margin:3px;">
+                                    <label style="line-height: 2em; width: 20%; font-weight: bold;">所属门店:</label>
+                                    <select id="chainstoreselect" style="width:130px;">
+                                        <!-- <option value="">1</option> -->
+                                    </select>
+                                    <select id="storeselect" style="width:200px;">
+                                        <option value="" selected="selected">请选择分店...</option>
+                                        <option value="">s1</option>
+                                        <option value="">s2</option>
+                                        <option value="">s3</option>
+                                        
+                                    </select>
+                                </div>
+								
 								<div style="display: inline-block; width: 40%;margin:3px;">
 									<label style="line-height: 2em; width: 20%; font-weight: bold;">技师手机:</label>
-									<input type="text" id="cellphone" name="cellphone" placeholder="请输入技师手机"
+									<input type="text" id="cellphone" name="cellphone" maxlength="11" placeholder="请输入技师手机"
 										class="required" style="height: 32px; width: 70%;">
 								</div>
 								<div style="display: inline-block; width: 40%;margin:3px;">
 									<label style="line-height: 2em; width: 20%; font-weight: bold;">技师性别:</label>
-									<select style="display: inline-block; width: 20%;" id="gender" name="gender">
+									<select style="display: inline-block; width: 130px;" id="gender" name="gender">
 										<option value="1" selected="selected">男</option>
 										<option value="2">女</option>
 									</select>
@@ -164,207 +179,217 @@
 	<script src="${ctx}/resources/js/messages_zh.js"></script>
 	<script src="${ctx}/resources/js/jquery.form.min.js"></script>
 	<script type="text/javascript">
-		/*======表单校验 */
-		var isFirstload = true;
-		jQuery(function($) {
-
-			loadStoreinfo();
-			/*======表单校验 */
-			$.validator.setDefaults({
-				debug : false,
-				submitHandler : function() {
-					submitForm();
-				}
-			});
-			// 手机号码验证
-			jQuery.validator
-					.addMethod(
-							"isMobile",
-							function(value, element) {
-								var length = value.length;
-								var mobile = /^(13[0-9]{9})|(18[0-9]{9})|(14[0-9]{9})|(17[0-9]{9})|(15[0-9]{9})$/;
-								return this.optional(element)
-										|| (length == 11 && mobile.test(value));
-							}, "请正确填写您的手机号码");
-
-			// 座机验证
-			jQuery.validator.addMethod("telephone", function(value, element) {
-				var tel = /^(^(\d{3,4}-)?\d{7,8})$|(13[0-9]{9}) $/g;
-				return this.optional(element) || (tel.test(value));
-			}, "座机号码格式错误:021-10101010!");
-
-			$("#storeForm").validate({
-				errorClass : "noInput",
-				rules : {
-					cellphone : {
-						required : true,
-						minlength : 11,
-						isMobile : true
-					},
-					telephone : {
-						required : true,
-						minlength : 9,
-						maxlength : 12,
-						telephone : true
-					}
-				},
-				messages : {
-					cellphone : {
-						required : "请输入手机号",
-						minlength : "确认手机不能小于11个字符",
-						isMobile : "请正确填写您的手机号码"
-					},
-					telephone : {
-						required : "请输入座机号",
-						minlength : "座机号最少9位",
-						maxlength : "座机号最多12位",
-						telephone : "请正确填写座机号"
-					}
-
-				}
-			/* ,
-					         errorPlacement : function(error, element) {  
-					                error.appendTo(element.next().next());  
-					            } */
-			});
-
-			function loadStoreinfo() {
-				var storeid = queryValueByKey("storeid");
-				if (storeid) {
-					$("#submit").val("确认更新");
-					$("#subTitle").text("更新门店");
-					$("#id").val(storeid);
-					$("#storeForm").attr("action", "${ctx}/store/update");
-					$.ajax({
-						url : "${ctx}/store/query?id=" + storeid,
-						type : 'GET',
-						headers : {
-							Accept : "application/json",
-						},
-						success : function(data, textStatus) {
-							var store = data[0];
-							loadChainStoreList(function() {
-								$("#chainstoreselect").val(store.chainstoreid);
-							});
-
-							$("#storename").val(store.name);
-							$("#cellphone").val(store.cellphone);
-							$("#telephone").val(store.telephone);
-							$("#cityName").val(store.location);
-							$("#description").val(store.description);
-							if (store.pic) {
-								$("#storeimg").attr("src",
-										"${ctx}/upload" + store.pic);
-							}
-							loadMap(store.longitude, store.latitude);
-
-							map.addEventListener("tilesloaded", function() {
-								if (isFirstload) {
-									$("#cityName").val(store.location);
-									isFirstload = false;
-								}
-
-							});
-							getStoreBusiness(storeid);
-
-						},
-						error : function(data, textStatus, errorThrown) {
-						},
-					});
-				} else {
-					//add store
-					loadChainStoreList();
-					loadBusiness();
-					loadMap();
-				}
-			}
-			function submitForm() {
-				var url = $("#storeForm").attr('action');
-				var ajax_option = {
-					url : url,
-					success : function(data) {
-						if (data.result) {
-							if (data.code == "OPER_UPDATE") {
-
-							}
-							location.href = "${ctx}/store/index";
-						}
-					},
-					error : function() {
-						alert('操作失败!');
-						return false;
-					}
-				};
-				$('#storeForm').ajaxSubmit(ajax_option);
-			}
-		});
-
+	/*======表单校验 */
+    var isFirstload=true;
+        jQuery(function($){
+            
+            loadStoreinfo();
+            /*======表单校验 */
+            $.validator.setDefaults({
+                debug:false,
+                submitHandler: function() {
+                    submitForm();
+                }
+            });
+       });
+            // 手机号码验证
+            jQuery.validator.addMethod("isMobile", function(value, element) {
+            var length = value.length;
+            var mobile = /^(13[0-9]{9})|(18[0-9]{9})|(14[0-9]{9})|(17[0-9]{9})|(15[0-9]{9})$/; 
+            return this.optional(element) || (length == 11 && mobile.test(value));
+            }, "请正确填写您的手机号码");
+            
+            // 座机验证
+            jQuery.validator.addMethod("telephone", function(value, element) {
+            var tel = /^(^(\d{3,4}-)?\d{7,8})$|(13[0-9]{9}) $/g;
+            return this.optional(element) || (tel.test(value));
+            }, "座机号码格式错误:021-10101010!");   
+            
+            $("#technicianForm").validate({
+                errorClass:"noInput",
+                rules:{
+                    cellphone:{
+                    required:true,
+                    minlength:11,
+                    isMobile:true
+                    },
+                    name:{
+                    required:true
+                    }
+                },
+                messages : {  
+                    cellphone : {  
+                        required : "请输入手机号",  
+                        minlength : "确认手机不能小于11个字符",  
+                        isMobile : "请正确填写您的手机号码"  
+                    },
+                    name:{
+                    	required:"这是一个必填字段"
+                    }
+                }/* ,
+                 errorPlacement : function(error, element) {  
+                        error.appendTo(element.next().next());  
+                    } */
+            });
+            
+            function loadStoreinfo() {
+                var storeid = queryValueByKey("storeid");
+                if(storeid){
+                    $("#submit").val("确认更新");
+                    /* $("#subTitle").text("更新门店"); */
+                    $("#id").val(storeid);
+                    $("#storeForm").attr("action", "${ctx}/store/update");
+                    $.ajax({
+                        url:"${ctx}/store/query?id="+storeid,
+                        type: 'GET',
+                        headers : {
+                            Accept : "application/json",
+                        },
+                        success : function(data, textStatus) {
+                            var store = data[0];
+                            loadChainStoreList(function(){
+                                $("#chainstoreselect").val(store.chainstoreid);
+                            });
+                           
+                            $("#storename").val(store.name);
+                            $("#cellphone").val(store.cellphone);
+                            $("#telephone").val(store.telephone);
+                            $("#cityName").val(store.location);
+                            $("#description").val(store.description);
+                            if(store.pic){
+                                $("#storeimg").attr("src","${ctx}/upload"+store.pic);
+                            }
+                            
+                            getStoreBusiness(storeid);
+                            
+                        },
+                        error : function(data, textStatus, errorThrown) {
+                        },
+                    });
+                }else{
+                    //add store
+                    loadChainStoreList();
+                    loadBusiness();
+                    loadMap();
+                }
+            }
+            function submitForm(){
+                var url = $("#storeForm").attr('action');   
+                var ajax_option={  
+                        url:url,  
+                        success:function(data){
+                            if(data.result){
+                                if(data.code == "OPER_UPDATE"){
+                                    
+                                }
+                                location.href="${ctx}/store/listIndex";
+                            }
+                                },
+                        error:function(){
+                            alert('操作失败!');
+                            return false;
+                        }
+                    };
+                $('#storeForm').ajaxSubmit(ajax_option);
+            }
+            function getStoreBusiness(storeid){
+                 $.ajax({
+                     url:"${ctx}/store/queryStoreBusiness?id="+storeid,
+                     type: 'GET',
+                     headers : {
+                         Accept : "application/json",
+                     },
+                     success : function(data, textStatus) {
+                         var storeBusiness = data;
+                         var bCheck = $("#businessBox [name='business']");
+                         loadBusiness(function () {
+                              for(id in storeBusiness){
+                                  $("#business"+storeBusiness[id]).attr("checked","checked");                                                
+                              }
+                         });
+                     },
+                     error : function(){
+                         }
+                     });
+            }
+            function loadChainStoreList(competion){
+            $.ajax({
+                        url : "${ctx}/store/option",
+                        type : 'GET',
+                        headers : {
+                            /* Accept: "application/xml", */
+                            Accept : "application/json",
+                        },
+                        success : function(data, textStatus) {
+                            var selection1 = data[0];
+                            $('#chainstoreselect').html("");
+                            for (var i = 0; i < selection1.length; i++) {
+                                $('#chainstoreselect').append(
+                                        "<option value='"+selection1[i].id+"'>"
+                                                + selection1[i].name
+                                                + "</option>");
+                            }
+                              if(null != competion){
+                                  competion();
+                              }
+                              var selection2 = objOfPropertyToArr(data[1]);
+                              $('#chainstoreselect')
+                                      .change(
+                                              function() {
+                                                  $('#storeselect').html(
+                                                          "");
+                                                  var id = $(this).val();
+                                                  for (var i = 0; i < selection2.length; i++) {
+                                                      for (var j = 0; j < selection2[i].length; j++) {
+                                                          if (selection2[i][j].chainstoreid == id) {
+                                                              $(
+                                                                      '#storeselect')
+                                                                      .append(
+                                                                              "<option value='"+selection2[i][j].id+"'>"
+                                                                                      + selection2[i][j].name
+                                                                                      + "</option>")
+                                                          }
+                                                      }
+                                                  }
+                                              });
+                        },
+                        error : function(data, textStatus, errorThrown) {
+                        },
+                    });
+            }
+            
+            /*========获取业务  */
+            function loadBusiness(completion) {
+                 $.ajax({
+                     url : "${ctx}/store/businessList",
+                     type : 'GET',
+                     headers : {
+                         /* Accept: "application/xml", */
+                         Accept : "application/json",
+                     },
+                     success : function(data, textStatus) {
+                         $('#businessBox').html("");
+                         for (var i = 0; i < data.length; i++) {
+                             $('#businessBox').append(
+                                     "<label><input type='checkbox' id='business"+data[i].id+"' name='business' value='"+data[i].id+"'/>"
+                                             + data[i].name
+                                             + "</label>&nbsp;&nbsp;&nbsp;&nbsp;");
+                         }
+                         if(null!=completion){
+                             completion();
+                         }
+                     },
+                     error : function(data, textStatus, errorThrown) {
+                     },
+                 });
+            }
+        
+            /*========获取业务  */
 		$("#cancelBtn").click(function() {
 			location.href = "${ctx}/store/listIndex";
 		});
 
-		//页面图上上传预览//
-		//图片上传预览    IE是用了滤镜。
-		function previewImage(file) {
-			var MAXWIDTH = 382;
-			var MAXHEIGHT = 350;
-			var div = document.getElementById('preview');
-			if (file.files && file.files[0]) {
-				div.innerHTML = '<img id=storeimg>';
-				var img = document.getElementById('storeimg');
-				img.onload = function() {
-					var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT,
-							img.offsetWidth, img.offsetHeight);
-					img.width = rect.width;
-					img.height = rect.height;
-					//                 img.style.marginLeft = rect.left+'px';
-					//img.style.marginTop = rect.top+'px';
-				}
-				var reader = new FileReader();
-				reader.onload = function(evt) {
-					img.src = evt.target.result;
-				}
-				reader.readAsDataURL(file.files[0]);
-			} else //兼容IE
-			{
-				var sFilter = 'filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale,src="';
-				file.select();
-				var src = document.selection.createRange().text;
-				div.innerHTML = '<img id=storeimg>';
-				var img = document.getElementById('storeimg');
-				img.filters.item('DXImageTransform.Microsoft.AlphaImageLoader').src = src;
-				var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT,
-						img.offsetWidth, img.offsetHeight);
-				status = ('rect:' + rect.top + ',' + rect.left + ','
-						+ rect.width + ',' + rect.height);
-				div.innerHTML = "<div id=divhead style='width:"+rect.width+"px;height:"+rect.height+"px;margin-top:"+rect.top+"px;"+sFilter+src+"\"'></div>";
-			}
-		}
-		function clacImgZoomParam(maxWidth, maxHeight, width, height) {
-			var param = {
-				top : 0,
-				left : 0,
-				width : width,
-				height : height
-			};
-			if (width > maxWidth || height > maxHeight) {
-				rateWidth = width / maxWidth;
-				rateHeight = height / maxHeight;
-
-				if (rateWidth > rateHeight) {
-					param.width = maxWidth;
-					param.height = Math.round(height / rateWidth);
-				} else {
-					param.width = Math.round(width / rateHeight);
-					param.height = maxHeight;
-				}
-			}
-
-			param.left = Math.round((maxWidth - param.width) / 2);
-			param.top = Math.round((maxHeight - param.height) / 2);
-			return param;
-		}
-		//页面图上上传预览//
+		
 
 		function queryValueByKey(name) {
 			var result = window.location.search.match(new RegExp("[\?\&]"

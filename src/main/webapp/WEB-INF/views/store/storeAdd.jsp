@@ -378,6 +378,26 @@
 							  if(null != competion){
 								  competion();
 							  }
+							  var selection2 = objOfPropertyToArr(data[1]);
+	                            $('#form-field-select-1')
+	                                    .change(
+	                                            function() {
+	                                                $('#form-field-select-2').html(
+	                                                        "");
+	                                                var id = $(this).val();
+	                                                for (var i = 0; i < selection2.length; i++) {
+	                                                    for (var j = 0; j < selection2[i].length; j++) {
+	                                                        if (selection2[i][j].chainstoreid == id) {
+	                                                            $(
+	                                                                    '#form-field-select-2')
+	                                                                    .append(
+	                                                                            "<option value='"+selection2[i][j].id+"'>"
+	                                                                                    + selection2[i][j].name
+	                                                                                    + "</option>")
+	                                                        }
+	                                                    }
+	                                                }
+	                                            });
 						},
 						error : function(data, textStatus, errorThrown) {
 						},
