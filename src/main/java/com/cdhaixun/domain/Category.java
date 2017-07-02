@@ -13,8 +13,24 @@ public class Category {
     private Boolean isdelete;
     private List<Business> businessList;
 
-    private Integer enterStoreCount;
-    private Integer nearbyStoreCount;
+    private Integer enterStoreCount=0;//入驻商家
+    private Integer nearbyStoreCount=0;//附近商家
+
+    public Integer getEnterStoreCount() {
+        return enterStoreCount;
+    }
+
+    public void setEnterStoreCount(Integer enterStoreCount) {
+        this.enterStoreCount = enterStoreCount;
+    }
+
+    public Integer getNearbyStoreCount() {
+        return nearbyStoreCount;
+    }
+
+    public void setNearbyStoreCount(Integer nearbyStoreCount) {
+        this.nearbyStoreCount = nearbyStoreCount;
+    }
 
     public List<Business> getBusinessList() {
         return businessList;

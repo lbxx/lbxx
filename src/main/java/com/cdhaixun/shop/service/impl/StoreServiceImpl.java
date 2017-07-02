@@ -50,6 +50,11 @@ public class StoreServiceImpl implements IStoreService {
     }
 
     @Override
+    public Store findById(Integer storeid) {
+        return storeMapper.selectByPrimaryKey(storeid);
+    }
+
+    @Override
     public void updateStoreBusiness(Integer storeId, String[] businessArr) {
         storeBusinessMapper.deleteByStoreId(storeId);
         Date date = new Date();
