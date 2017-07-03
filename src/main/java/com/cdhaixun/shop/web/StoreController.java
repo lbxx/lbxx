@@ -49,6 +49,10 @@ public class StoreController extends BaseController {
         return PATH+"storeAdd";
     }
     
+    /**
+     * @return
+     * 获取下拉列表数据
+     */
     @RequestMapping(value="/option")
     @ResponseBody
     public List option(){

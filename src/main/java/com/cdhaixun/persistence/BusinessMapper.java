@@ -20,4 +20,6 @@ public interface BusinessMapper {
     List<Business> listBusiness();
 
     List<Business> selectByBusiness(Business business);
+
+    List<Business> getBusinessInfoByStoreId(Integer storeId);
 }

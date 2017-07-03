@@ -110,4 +110,14 @@
       </if>
     </where>
   </select>
+  <select id="getBusinessInfoByStoreId" resultMap="BaseResultMap" parameterType="com.cdhaixun.domain.Business">
+    SELECT b.id,b.name 
+        FROM business b 
+        WHERE b.id IN(
+        SELECT businessid 
+        FROM store_business 
+        WHERE storeid = #{id,jdbcType=INTEGER}
+        AND isopen = 1
+        AND isdelete = 0 )
+  </select>
 </mapper>

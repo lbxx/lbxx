@@ -12,4 +12,5 @@ public interface IBusinessService {
     List<Business> findByCategoryId(Integer id);
 
     Business findById(Integer businessid);
+    List<Business> findByStoreId(Integer storeId);
 }

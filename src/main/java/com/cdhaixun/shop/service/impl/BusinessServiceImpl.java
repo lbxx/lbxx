@@ -27,4 +27,9 @@ public class BusinessServiceImpl implements IBusinessService{
     public Business findById(Integer businessid) {
         return businessMapper.selectByPrimaryKey(businessid);
     }
+
+    @Override
+    public List<Business> findByStoreId(Integer storeId) {
+        return businessMapper.getBusinessInfoByStoreId(storeId);
+    }
 }

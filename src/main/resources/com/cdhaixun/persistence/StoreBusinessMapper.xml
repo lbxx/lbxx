@@ -18,14 +18,14 @@
         from store_business
         where id = #{id,jdbcType=INTEGER}
     </select>
-    <!-- <select id="getStoreBusinessByStoreId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    <select id="getStoreBusinessByStoreId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
     select 
     businessid
     from store_business
     where storeid = #{id,jdbcType=INTEGER}
     and isopen = 1
-  </select> -->
-    <select id="getStoreBusinessByStoreId" resultMap="HashMap" parameterType="java.lang.Integer">
+  </select>
+    <!-- <select id="getStoreBusinessByStoreId" resultMap="HashMap" parameterType="java.lang.Integer">
     SELECT b.id,b.name 
         FROM business b 
         WHERE b.id IN(
@@ -34,7 +34,7 @@
         WHERE storeid = #{id,jdbcType=INTEGER}
         AND isopen = 1
         AND isdelete = 0 )
-  </select>
+  </select> -->
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from store_business
     where id = #{id,jdbcType=INTEGER}

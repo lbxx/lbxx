@@ -5,7 +5,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,10 +12,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cdhaixun.common.web.BaseController;
+import com.cdhaixun.domain.Business;
 import com.cdhaixun.domain.User;
 import com.cdhaixun.domain.UserType;
+import com.cdhaixun.shop.service.IBusinessService;
 import com.cdhaixun.shop.service.ITechnicianService;
-import com.cdhaixun.util.ConfigContentUtils;
 import com.cdhaixun.util.MapUtils;
 import com.cdhaixun.util.Pager;
 @Controller
@@ -26,6 +26,8 @@ public class TechnicianController extends BaseController {
     
     @Autowired
     ITechnicianService techinicianService;
+    @Autowired
+    IBusinessService businessService;
     
     /**
      * 技师首页
@@ -104,5 +106,12 @@ public class TechnicianController extends BaseController {
             return "删除失败";
         }
         return "删除成功";
+    }
+    
+    @RequestMapping(value="businessInfo",method=RequestMethod.GET)
+    @ResponseBody
+    public List<Business> getBusinessInfoByStoreId(HttpServletRequest request){
+        int storeId = Integer.parseInt(request.getParameter("storeId"));
+        return businessService.findByStoreId(storeId);
     }
 }
