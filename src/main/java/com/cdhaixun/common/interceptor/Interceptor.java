@@ -31,7 +31,7 @@ public class Interceptor implements HandlerInterceptor {
     @Override
     public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object arg2, ModelAndView modelAndView)
             throws Exception {
-
+          if(httpServletRequest.getContentType()==null){
             String servletPath= httpServletRequest.getServletPath();
             Menu menu= menuService.findOneByUrl(servletPath);
             if(menu!=null){
@@ -41,6 +41,7 @@ public class Interceptor implements HandlerInterceptor {
                    modelAndView.addObject(ModelConstant.MENU_CODE,operateList);
                }
             }
+}
     }
 
     @Override

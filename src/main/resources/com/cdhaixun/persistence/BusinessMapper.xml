@@ -6,9 +6,11 @@
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
     <result column="isdelete" property="isdelete" jdbcType="BIT" />
+    <result column="categoryid" property="categoryid" jdbcType="INTEGER" />
+
   </resultMap>
   <sql id="Base_Column_List" >
-    id, name, createtime, isdelete
+    id, name, createtime, isdelete,categoryid
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -22,9 +24,9 @@
   </delete>
   <insert id="insert" parameterType="com.cdhaixun.domain.Business" >
     insert into business (id, name, createtime, 
-      isdelete)
+      isdelete,categoryid)
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, 
-      #{isdelete,jdbcType=BIT})
+      #{isdelete,jdbcType=BIT},#{categoryid})
   </insert>
   <insert id="insertSelective" parameterType="com.cdhaixun.domain.Business" >
     insert into business
@@ -69,6 +71,9 @@
       <if test="isdelete != null" >
         isdelete = #{isdelete,jdbcType=BIT},
       </if>
+      <if test="categoryid != null" >
+        categoryid = #{categoryid},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -76,12 +81,33 @@
     update business
     set name = #{name,jdbcType=VARCHAR},
       createtime = #{createtime,jdbcType=TIMESTAMP},
-      isdelete = #{isdelete,jdbcType=BIT}
+      isdelete = #{isdelete,jdbcType=BIT},
+      categoryid=#{categoryid}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="listBusiness" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from business
+  </select>
+
+  <select id="selectByBusiness" parameterType="com.cdhaixun.domain.Business" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from business
+    <where>
+      <if test="name != null" >
+       and  name = #{name,jdbcType=VARCHAR}
+      </if>
+      <if test="createtime != null" >
+       and createtime = #{createtime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="isdelete != null" >
+       and   isdelete = #{isdelete,jdbcType=BIT}
+      </if>
+      <if test="categoryid != null" >
+        and categoryid = #{categoryid}
+      </if>
+    </where>
   </select>
 </mapper>

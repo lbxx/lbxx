@@ -18,4 +18,6 @@ public interface TechnicianMapper {
     int updateByPrimaryKey(Technician record);
     
     List<Technician> selectTechnicianList();
+
+    List<Technician> selectByTechnician(Technician technician);
 }

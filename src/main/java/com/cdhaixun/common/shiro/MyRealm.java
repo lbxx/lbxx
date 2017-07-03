@@ -6,11 +6,10 @@ import com.cdhaixun.domain.Menu;
 import com.cdhaixun.domain.Operate;
 import com.cdhaixun.domain.RoleOperate;
 import com.cdhaixun.persistence.ManagerMapper;
+import com.cdhaixun.shop.service.IManagerService;
 import com.cdhaixun.shop.service.IMenuService;
 import com.cdhaixun.shop.service.IOperateService;
 import com.cdhaixun.shop.service.IRoleOperateService;
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -26,7 +25,7 @@ import java.util.List;
 
 public class MyRealm extends AuthorizingRealm {
     @Autowired
-    private ManagerMapper managerMapper;
+    private IManagerService managerService;
     @Autowired
     private IMenuService menuService;
     @Autowired
@@ -54,11 +53,13 @@ public class MyRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authcToken) throws AuthenticationException {
 
         UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
-        Manager manager = managerMapper.findByAccount(token.getUsername());
+        Manager    manager = managerService.findOneByAccount(token.getUsername());
+
+
         if (manager != null) {
             AuthenticationInfo authcInfo = new SimpleAuthenticationInfo(manager.getAccount(), manager.getPassword(), this.getName());
             this.setSession(SessionConstant.MANAGER, manager);
-            String role = "supper";
+            String role = manager.getRole();
             List<Menu> menuList = menuService.getMenus(role);
             this.setSession(SessionConstant.MENU_LIST, menuList);
             return authcInfo;

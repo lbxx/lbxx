@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cdhaixun.domain.Technician;
+import com.cdhaixun.domain.User;
+import com.cdhaixun.domain.UserType;
 import com.cdhaixun.persistence.TechnicianMapper;
 import com.cdhaixun.shop.service.ITechnicianService;
 import com.cdhaixun.util.Pager;
@@ -86,4 +88,23 @@ public class TechnicianServiceImpl implements ITechnicianService {
         return pager;
     }
 
+    @Override
+    public List<UserType> selectTypeList() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public void delete(User user) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public List<Technician> findByStoreId(Integer storeid) {
+        Technician technician=new Technician();
+        technician.setStoreid(storeid);
+     List<Technician> technicianList=   technicianMapper.selectByTechnician(technician);
+        return technicianList;
+    }
 }

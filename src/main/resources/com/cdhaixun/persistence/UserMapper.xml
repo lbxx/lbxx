@@ -1,85 +1,87 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.cdhaixun.persistence.UserMapper" >
-  <resultMap id="BaseResultMap" type="com.cdhaixun.domain.User" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="storeid" property="storeid" jdbcType="INTEGER" />
-    <result column="password" property="password" jdbcType="VARCHAR" />
-    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
-    <result column="sex" property="sex" jdbcType="INTEGER" />
-    <result column="email" property="email" jdbcType="VARCHAR" />
-    <result column="nickname" property="nickname" jdbcType="VARCHAR" />
-    <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="registertime" property="registertime" jdbcType="DATE" />
-    <result column="lastlogintime" property="lastlogintime" jdbcType="DATE" />
-    <result column="remark" property="remark" jdbcType="VARCHAR" />
-    <result column="registtype" property="registtype" jdbcType="INTEGER" />
-    <result column="blance" property="blance" jdbcType="DECIMAL" />
-    <result column="birthday" property="birthday" jdbcType="DATE" />
-    <result column="province" property="province" jdbcType="VARCHAR" />
-    <result column="city" property="city" jdbcType="VARCHAR" />
-    <result column="area" property="area" jdbcType="VARCHAR" />
-    <result column="address" property="address" jdbcType="VARCHAR" />
-    <result column="idcard" property="idcard" jdbcType="VARCHAR" />
-    <result column="img" property="img" jdbcType="VARCHAR" />
-    <result column="qrcode" property="qrcode" jdbcType="VARCHAR" />
-    <result column="state" property="state" jdbcType="INTEGER" />
-    <result column="isdelete" property="isdelete" jdbcType="INTEGER" />
-    <result column="points" property="points" jdbcType="INTEGER" />
-    <result column="usercard" property="usercard" jdbcType="VARCHAR" />
-  </resultMap>
-  <sql id="Base_Column_List" >
+<mapper namespace="com.cdhaixun.persistence.UserMapper">
+    <resultMap id="BaseResultMap" type="com.cdhaixun.domain.User">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="storeid" property="storeid" jdbcType="INTEGER"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="mobile" property="mobile" jdbcType="VARCHAR"/>
+        <result column="sex" property="sex" jdbcType="INTEGER"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="nickname" property="nickname" jdbcType="VARCHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="registertime" property="registertime" jdbcType="DATE"/>
+        <result column="lastlogintime" property="lastlogintime" jdbcType="DATE"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="registtype" property="registtype" jdbcType="INTEGER"/>
+        <result column="blance" property="blance" jdbcType="DECIMAL"/>
+        <result column="birthday" property="birthday" jdbcType="DATE"/>
+        <result column="province" property="province" jdbcType="VARCHAR"/>
+        <result column="city" property="city" jdbcType="VARCHAR"/>
+        <result column="area" property="area" jdbcType="VARCHAR"/>
+        <result column="address" property="address" jdbcType="VARCHAR"/>
+        <result column="signature" property="signature" jdbcType="VARCHAR"/>
+        <result column="idcard" property="idcard" jdbcType="VARCHAR"/>
+        <result column="img" property="img" jdbcType="VARCHAR"/>
+        <result column="qrcode" property="qrcode" jdbcType="VARCHAR"/>
+        <result column="state" property="state" jdbcType="INTEGER"/>
+        <result column="isdelete" property="isdelete" jdbcType="INTEGER"/>
+        <result column="points" property="points" jdbcType="INTEGER"/>
+        <result column="usercard" property="usercard" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
     id, storeid, password, mobile, sex, email, nickname, name, registertime, lastlogintime, 
     remark, registtype, blance, birthday, province, city, area, address, idcard, img, 
-    qrcode, state, isdelete, points, usercard
+    qrcode, state, isdelete, points, usercard,signature
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from user
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <select id="findUserList" resultType="com.cdhaixun.vo.UserVo" parameterType="map" >
-    SELECT
-    u.id,
-    u.mobile mobile,
-    u.`name` NAME,
-    u.sex sex,
-    s.`name` storeName,
-    ut.typeName typeName,
-    u.registertime registertime
-    FROM
-    `user` u
-    LEFT JOIN store s ON u.storeId = s.id
-    LEFT JOIN user_type ut ON ut.chainstoreid = s.id
-    WHERE
-    u.state = 1
-    <if test="storeId != null and '' != storeId">
-      AND u.storeId = #{storeId}
-    </if>
-    <if test="registertime != null and '' != registertime">
-      AND DATE_FORMAT(registertime,'%Y-%m-%d') = DATE_FORMAT(registertime,#{registertime})
-    </if>
-    <if test="type != null and '' != type and '' != typeval">
-      <if test="type == 'usercard'">
-        AND u.usercard LIKE '%${typeval}%'
-      </if>
-      <if test="type == 'name'">
-        AND u.name LIKE '%${typeval}%'
-      </if>
-      <if test="type == 'mobile'">
-        AND u.mobile LIKE '%${typeval}%'
-      </if>
-    </if>
-  </select>
-  <select id="selectStoreList" resultType="com.cdhaixun.domain.Store" >
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="findUserList" resultType="com.cdhaixun.vo.UserVo" parameterType="map">
+        SELECT
+        u.id,
+        u.mobile mobile,
+        u.`name` NAME,
+        u.sex sex,
+        s.`name` storeName,
+        ut.typeName typeName,
+        u.registertime registertime
+        FROM
+        `user` u
+        LEFT JOIN store s ON u.storeId = s.id
+        LEFT JOIN user_type ut ON ut.chainstoreid = s.id
+        WHERE
+        u.state = 1
+        <if test="storeId != null and '' != storeId">
+            AND u.storeId = #{storeId}
+        </if>
+        <if test="registertime != null and '' != registertime">
+            AND DATE_FORMAT(registertime,'%Y-%m-%d') = DATE_FORMAT(registertime,#{registertime})
+        </if>
+        <if test="type != null and '' != type and '' != typeval">
+            <if test="type == 'usercard'">
+                AND u.usercard LIKE '%${typeval}%'
+            </if>
+            <if test="type == 'name'">
+                AND u.name LIKE '%${typeval}%'
+            </if>
+            <if test="type == 'mobile'">
+                AND u.mobile LIKE '%${typeval}%'
+            </if>
+        </if>
+        order by u.registertime desc
+    </select>
+    <select id="selectStoreList" resultType="com.cdhaixun.domain.Store">
     select * from store where isdelete = 0
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from user
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.cdhaixun.domain.User" >
+    <insert id="insert" parameterType="com.cdhaixun.domain.User">
     insert into user (id, storeid, password, 
       mobile, sex, email, 
       nickname, name, registertime, 
@@ -88,7 +90,7 @@
       city, area, address, 
       idcard, img, qrcode, 
       state, isdelete, points, 
-      usercard)
+      usercard,signature)
     values (#{id,jdbcType=INTEGER}, #{storeid,jdbcType=INTEGER}, #{password,jdbcType=VARCHAR}, 
       #{mobile,jdbcType=VARCHAR}, #{sex,jdbcType=INTEGER}, #{email,jdbcType=VARCHAR}, 
       #{nickname,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{registertime,jdbcType=DATE}, 
@@ -97,84 +99,171 @@
       #{city,jdbcType=VARCHAR}, #{area,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
       #{idcard,jdbcType=VARCHAR}, #{img,jdbcType=VARCHAR}, #{qrcode,jdbcType=VARCHAR}, 
       #{state,jdbcType=INTEGER}, #{isdelete,jdbcType=INTEGER}, #{points,jdbcType=INTEGER},
-      #{usercard,jdbcType=VARCHAR})
+      #{usercard,jdbcType=VARCHAR},#{signature})
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.cdhaixun.domain.User" >
-    update user
-    <set >
-      <if test="storeid != null" >
-        storeid = #{storeid,jdbcType=INTEGER},
-      </if>
-      <if test="password != null" >
-        password = #{password,jdbcType=VARCHAR},
-      </if>
-      <if test="mobile != null" >
-        mobile = #{mobile,jdbcType=VARCHAR},
-      </if>
-      <if test="sex != null" >
-        sex = #{sex,jdbcType=INTEGER},
-      </if>
-      <if test="email != null" >
-        email = #{email,jdbcType=VARCHAR},
-      </if>
-      <if test="nickname != null" >
-        nickname = #{nickname,jdbcType=VARCHAR},
-      </if>
-      <if test="name != null" >
-        name = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="registertime != null" >
-        registertime = #{registertime,jdbcType=DATE},
-      </if>
-      <if test="lastlogintime != null" >
-        lastlogintime = #{lastlogintime,jdbcType=DATE},
-      </if>
-      <if test="remark != null" >
-        remark = #{remark,jdbcType=VARCHAR},
-      </if>
-      <if test="registtype != null" >
-        registtype = #{registtype,jdbcType=INTEGER},
-      </if>
-      <if test="blance != null" >
-        blance = #{blance,jdbcType=DECIMAL},
-      </if>
-      <if test="birthday != null" >
-        birthday = #{birthday,jdbcType=DATE},
-      </if>
-      <if test="province != null" >
-        province = #{province,jdbcType=VARCHAR},
-      </if>
-      <if test="city != null" >
-        city = #{city,jdbcType=VARCHAR},
-      </if>
-      <if test="area != null" >
-        area = #{area,jdbcType=VARCHAR},
-      </if>
-      <if test="address != null" >
-        address = #{address,jdbcType=VARCHAR},
-      </if>
-      <if test="idcard != null" >
-        idcard = #{idcard,jdbcType=VARCHAR},
-      </if>
-      <if test="img != null" >
-        img = #{img,jdbcType=VARCHAR},
-      </if>
-      <if test="qrcode != null" >
-        qrcode = #{qrcode,jdbcType=VARCHAR},
-      </if>
-      <if test="state != null" >
-        state = #{state,jdbcType=INTEGER},
-      </if>
-      <if test="isdelete != null" >
-        isdelete = #{isdelete,jdbcType=INTEGER},
-      </if>
-      <if test="points != null" >
-        points = #{points,jdbcType=INTEGER},
-      </if>
-      <if test="usercard != null" >
-        usercard = #{usercard,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+    <update id="updateByPrimaryKey" parameterType="com.cdhaixun.domain.User">
+        update user
+        <set>
+            <if test="storeid != null">
+                storeid = #{storeid,jdbcType=INTEGER},
+            </if>
+            <if test="password != null">
+                password = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="mobile != null">
+                mobile = #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="sex != null">
+                sex = #{sex,jdbcType=INTEGER},
+            </if>
+            <if test="email != null">
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="nickname != null">
+                nickname = #{nickname,jdbcType=VARCHAR},
+            </if>
+            <if test="signature != null">
+                signature = #{signature,jdbcType=VARCHAR},
+            </if>
+
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="registertime != null">
+                registertime = #{registertime,jdbcType=DATE},
+            </if>
+            <if test="lastlogintime != null">
+                lastlogintime = #{lastlogintime,jdbcType=DATE},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="registtype != null">
+                registtype = #{registtype,jdbcType=INTEGER},
+            </if>
+            <if test="blance != null">
+                blance = #{blance,jdbcType=DECIMAL},
+            </if>
+            <if test="birthday != null">
+                birthday = #{birthday,jdbcType=DATE},
+            </if>
+            <if test="province != null">
+                province = #{province,jdbcType=VARCHAR},
+            </if>
+            <if test="city != null">
+                city = #{city,jdbcType=VARCHAR},
+            </if>
+            <if test="area != null">
+                area = #{area,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                address = #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="idcard != null">
+                idcard = #{idcard,jdbcType=VARCHAR},
+            </if>
+            <if test="img != null">
+                img = #{img,jdbcType=VARCHAR},
+            </if>
+            <if test="qrcode != null">
+                qrcode = #{qrcode,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                state = #{state,jdbcType=INTEGER},
+            </if>
+            <if test="isdelete != null">
+                isdelete = #{isdelete,jdbcType=INTEGER},
+            </if>
+            <if test="points != null">
+                points = #{points,jdbcType=INTEGER},
+            </if>
+            <if test="usercard != null">
+                usercard = #{usercard,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <select id="selectOneByUser" parameterType="com.cdhaixun.domain.User" resultMap="BaseResultMap" >
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        <where>
+            <if test="storeid != null">
+                and storeid = #{storeid,jdbcType=INTEGER},
+            </if>
+            <if test="password != null">
+                and password = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="mobile != null">
+                and mobile = #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="signature != null">
+                signature = #{signature,jdbcType=VARCHAR},
+            </if>
+            <if test="sex != null">
+                and sex = #{sex,jdbcType=INTEGER},
+            </if>
+            <if test="email != null">
+                and email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="nickname != null">
+                and nickname = #{nickname,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                and name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="registertime != null">
+                and registertime = #{registertime,jdbcType=DATE},
+            </if>
+            <if test="lastlogintime != null">
+                and lastlogintime = #{lastlogintime,jdbcType=DATE},
+            </if>
+            <if test="remark != null">
+                and remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="registtype != null">
+                and registtype = #{registtype,jdbcType=INTEGER},
+            </if>
+            <if test="blance != null">
+                and blance = #{blance,jdbcType=DECIMAL},
+            </if>
+            <if test="birthday != null">
+                and birthday = #{birthday,jdbcType=DATE},
+            </if>
+            <if test="province != null">
+                and province = #{province,jdbcType=VARCHAR},
+            </if>
+            <if test="city != null">
+                and city = #{city,jdbcType=VARCHAR},
+            </if>
+            <if test="area != null">
+                and area = #{area,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                and address = #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="idcard != null">
+                and idcard = #{idcard,jdbcType=VARCHAR},
+            </if>
+            <if test="img != null">
+                and img = #{img,jdbcType=VARCHAR},
+            </if>
+            <if test="qrcode != null">
+                and qrcode = #{qrcode,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                and state = #{state,jdbcType=INTEGER},
+            </if>
+            <if test="isdelete != null">
+                and isdelete = #{isdelete,jdbcType=INTEGER},
+            </if>
+            <if test="points != null">
+                and points = #{points,jdbcType=INTEGER},
+            </if>
+            <if test="usercard != null">
+                and usercard = #{usercard,jdbcType=VARCHAR},
+            </if>
+        </where>
+
+    </select>
 </mapper>

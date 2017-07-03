@@ -6,6 +6,12 @@ import com.cdhaixun.common.emun.Code;
 import com.cdhaixun.common.redisVo.Captcha;
 import com.cdhaixun.common.vo.Result;
 import com.cdhaixun.common.web.BaseController;
+import com.cdhaixun.domain.Baby;
+import com.cdhaixun.domain.Manager;
+import com.cdhaixun.domain.User;
+import com.cdhaixun.shop.service.IBabyService;
+import com.cdhaixun.shop.service.IManagerService;
+import com.cdhaixun.shop.service.IUserService;
 import com.cdhaixun.util.SMSUtil;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -24,6 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -34,6 +41,12 @@ import java.util.Set;
 public class LoginController extends BaseController {
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
+    @Autowired
+    private IManagerService managerService;
+    @Autowired
+    private IBabyService babyService;
+    @Autowired
+    private IUserService userService;
 
 
     /**
@@ -71,13 +84,20 @@ public class LoginController extends BaseController {
     }
     @RequestMapping(value = "appLogin", method = RequestMethod.POST )
     @ResponseBody
-    public com.cdhaixun.common.appVo.Result appLogin(@RequestBody Mobile mobile, HttpSession httpSession) {
+    public com.cdhaixun.common.appVo.Result appLogin(@RequestBody Mobile mobile, HttpSession httpSession) throws Exception {
         com.cdhaixun.common.appVo.Result result = new com.cdhaixun.common.appVo.Result();
-        Captcha captcha = (Captcha) redisTemplate.boundHashOps("captcha").get(mobile.getMobile());
+        Captcha captcha = (Captcha) redisTemplate.boundHashOps("captcha").entries().remove(mobile.getMobile());
         if(captcha!=null&&captcha.getCaptcha().equals(mobile.getCaptcha())&&(new Date().getTime()-captcha.getCreateTime().getTime())<3*60*1000){
+            User user= userService.findByMobile(mobile.getMobile());
+            if(user==null){
+                userService.save(user);
+            }else{
+               List<Baby> babyList= babyService.findByUserId(user.getId());
+                user.setBabyList(babyList);
+            }
+            result.setData(user);
             result.setResult(true);
         }else{
-            redisTemplate.boundHashOps("captcha").rename(mobile.getMobile());
             result.setCode(Code.CAPTCHA_ERROR);
         }
         return result;

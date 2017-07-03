@@ -14,4 +14,6 @@ public interface TechnicianLeaveMapper {
     int updateByPrimaryKeySelective(TechnicianLeave record);
 
     int updateByPrimaryKey(TechnicianLeave record);
+
+    TechnicianLeave selectOneByTechnicianLeave(TechnicianLeave technicianLeave);
 }

@@ -27,4 +27,13 @@ public interface IStoreService {
     int updateIsDeleteById(int id);
     void updateByPrimaryKeySelective(Store store, MultipartFile file, HttpServletRequest request);
     void updateStoreBusiness(Integer id, String[] businessArr);
+
+    /**
+     * 根据对象查询list
+     * @param store
+     * @return
+     */
+    List<Store> find(Store store);
+
+    Store findById(Integer storeid);
 }

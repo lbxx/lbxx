@@ -10,6 +10,24 @@ public class Business {
     private Date createtime;
 
     private Boolean isdelete;
+    private Integer categoryid;
+    private Integer spend;//
+
+    public Integer getSpend() {
+        return spend;
+    }
+
+    public void setSpend(Integer spend) {
+        this.spend = spend;
+    }
+
+    public Integer getCategoryid() {
+        return categoryid;
+    }
+
+    public void setCategoryid(Integer categoryid) {
+        this.categoryid = categoryid;
+    }
 
     public Integer getId() {
         return id;

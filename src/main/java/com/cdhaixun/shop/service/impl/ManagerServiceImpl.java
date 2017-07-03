@@ -12,7 +12,7 @@ import java.util.List;
  * Created by tangxinmao on 2017/6/19.
  */
 @Service
-public class ManagerServiceImpl implements IManagerService{
+public class ManagerServiceImpl implements IManagerService {
     @Autowired
     private ManagerMapper managerMapper;
 
@@ -23,9 +23,9 @@ public class ManagerServiceImpl implements IManagerService{
 
     @Override
     public void save(Manager manager) {
-        if(manager.getId()==null){
+        if (manager.getId() == null) {
             managerMapper.insert(manager);
-        }else{
+        } else {
             managerMapper.updateByPrimaryKey(manager);
         }
     }
@@ -33,5 +33,19 @@ public class ManagerServiceImpl implements IManagerService{
     @Override
     public Manager findById(Integer id) {
         return managerMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public Manager findByMobile(String mobile) {
+        Manager manager = new Manager();
+        manager.setMobile(mobile);
+        return managerMapper.selectOneByManager(manager);
+    }
+
+    @Override
+    public Manager findOneByAccount(String username) {
+        Manager manager = new Manager();
+        manager.setAccount(username);
+        return managerMapper.selectOneByManager(manager);
     }
 }

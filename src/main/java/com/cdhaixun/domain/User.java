@@ -1,6 +1,9 @@
 package com.cdhaixun.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
+import java.util.List;
 
 public class User {
     private Integer id;
@@ -18,7 +21,7 @@ public class User {
     private String nickname;
 
     private String name;
-
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date registertime;
 
     private Date lastlogintime;
@@ -52,6 +55,24 @@ public class User {
     private Integer points;
 
     private String usercard;
+    private String signature;
+    private List<Baby> babyList;
+
+    public List<Baby> getBabyList() {
+        return babyList;
+    }
+
+    public void setBabyList(List<Baby> babyList) {
+        this.babyList = babyList;
+    }
+
+    public String getSignature() {
+        return signature;
+    }
+
+    public void setSignature(String signature) {
+        this.signature = signature;
+    }
 
     public Integer getId() {
         return id;

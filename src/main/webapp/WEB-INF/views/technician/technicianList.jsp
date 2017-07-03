@@ -38,7 +38,7 @@
                 <script type="text/javascript">
                     try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
                 </script>
-                <ul class="breadcrumb">
+                <!-- <ul class="breadcrumb">
                     <li>
                         <i class="icon-home home-icon"></i>
                         <a href="#">Home</a>
@@ -47,14 +47,16 @@
                         <a href="#">Tables</a>
                     </li>
                     <li class="active">jqGrid plugin</li>
-                </ul><!-- .breadcrumb -->
+                </ul>.breadcrumb -->
+            <jsp:include page="../location.jsp" />
             </div>
             <!-- 当前页定位结束 -->
             <!-- 右边内容开始 -->
             <div class="page-content">
                 <div class="row">
-                    <input type="text" id="searchName" placeholder="请输入菜单名查询"/>
-                    <button id="sbtn">测试搜索</button>
+                    <jsp:include page="../permission.jsp" />
+                    <!-- <input type="text" id="searchName" placeholder="请输入菜单名查询"/>
+                    <button id="sbtn">测试搜索</button> -->
                     <div class="col-xs-12">
                         <!-- 显示内容列表的table -->
                         <table id="grid-table"></table>

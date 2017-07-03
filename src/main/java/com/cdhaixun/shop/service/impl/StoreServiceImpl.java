@@ -45,6 +45,16 @@ public class StoreServiceImpl implements IStoreService {
     private String imgStore;
 
     @Override
+    public List<Store> find(Store store) {
+        return storeMapper.selectByStore(store);
+    }
+
+    @Override
+    public Store findById(Integer storeid) {
+        return storeMapper.selectByPrimaryKey(storeid);
+    }
+
+    @Override
     public void updateStoreBusiness(Integer storeId, String[] businessArr) {
         storeBusinessMapper.deleteByStoreId(storeId);
         Date date = new Date();
