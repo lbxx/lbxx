@@ -76,6 +76,8 @@ function mydialog(url,msg){
                     $( this ).dialog( "close" );
                     // 判断url是否为空
                     if(url != "" && url != null){
+                    	alert(url);
+                    	return;
                         location.href = url;
                     }
                 }
