@@ -30,7 +30,7 @@
       #{spend,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}, #{isdelete,jdbcType=BIT}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.cdhaixun.domain.TechnicianBusiness" >
+  <insert id="insertSelective" parameterType="com.cdhaixun.domain.TechnicianBusiness" useGeneratedKeys="true" keyProperty="id">
     insert into technician_business
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -161,5 +161,16 @@
         </foreach>
       </if>
     </where>
+  </select>
+  <delete id="deleteByTechnicianId" parameterType="java.lang.Integer">
+    update technician_business
+    set isdelete = 1
+    where technicianid = #{technicianid,jdbcType=INTEGER}
+  </delete>
+  <select id="selectByTechnicianId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+   SELECT *
+   FROM technician_business
+   WHERE technicianid = #{technicianid,jdbcType=INTEGER}
+   
   </select>
 </mapper>

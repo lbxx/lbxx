@@ -37,7 +37,7 @@
       #{gender,jdbcType=BIT}, #{workday,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
       #{isdelete,jdbcType=BIT})
   </insert>
-    <insert id="insertSelective" parameterType="com.cdhaixun.domain.Technician">
+    <insert id="insertSelective" parameterType="com.cdhaixun.domain.Technician" useGeneratedKeys="true" keyProperty="id">
         insert into technician
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">

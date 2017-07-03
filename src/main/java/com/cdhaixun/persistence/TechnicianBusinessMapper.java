@@ -21,4 +21,6 @@ public interface TechnicianBusinessMapper {
 
     TechnicianBusiness selectOneByTechnicianBusiness(TechnicianBusiness technicianBusiness);
 
+    List<TechnicianBusiness> selectByTechnicianId(Integer technicianId);
+
 }

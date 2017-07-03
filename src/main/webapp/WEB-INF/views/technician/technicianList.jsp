@@ -216,6 +216,25 @@
         }
 
     });
+    
+  //自定义编辑按钮方法
+    $('#editButton').removeAttr('onclick');//移除添加按钮上原有的click事件
+    $('#editButton').bind(
+            'click',
+            function() {
+                var grid_selector = "#grid-table";
+                var selectedIds = $(grid_selector).jqGrid('getGridParam',
+                        'selarrrow');
+                if (selectedIds == undefined || selectedIds.length == 0 || selectedIds.length >1) {
+                    mydialog("", '对不起，请选择一个选项!');
+                } else {
+                    if (selectedIds.length <= 0) {
+                        return;
+                    } else {
+                        location.href = "${ctx}/technician/addIndex?technicianid=" + selectedIds[0];
+                    }
+                }
+            });
 
 </script>
 </body>

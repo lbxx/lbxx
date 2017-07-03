@@ -1,5 +1,6 @@
 package com.cdhaixun.shop.web;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -11,11 +12,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cdhaixun.common.vo.Result;
 import com.cdhaixun.common.web.BaseController;
 import com.cdhaixun.domain.Business;
+import com.cdhaixun.domain.Store;
+import com.cdhaixun.domain.Technician;
 import com.cdhaixun.domain.User;
-import com.cdhaixun.domain.UserType;
 import com.cdhaixun.shop.service.IBusinessService;
+import com.cdhaixun.shop.service.IStoreService;
+import com.cdhaixun.shop.service.ITechnicianBusinessService;
 import com.cdhaixun.shop.service.ITechnicianService;
 import com.cdhaixun.util.MapUtils;
 import com.cdhaixun.util.Pager;
@@ -28,6 +33,10 @@ public class TechnicianController extends BaseController {
     ITechnicianService techinicianService;
     @Autowired
     IBusinessService businessService;
+    @Autowired
+    ITechnicianBusinessService technicianBusinessService;
+    @Autowired
+    IStoreService storeService;
     
     /**
      * 技师首页
@@ -75,9 +84,7 @@ public class TechnicianController extends BaseController {
      */
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
     public String edit(HttpServletRequest request){
-        List<UserType> typeList = techinicianService.selectTypeList();
-        request.setAttribute("typeList", typeList);
-        return PATH + "user_input";
+        return PATH + "technicianAdd";
     }
 
     /**
@@ -85,11 +92,13 @@ public class TechnicianController extends BaseController {
      * @param
      * @return
      */
+    @SuppressWarnings("unused")
     @RequestMapping(value = "/save")
-    public Object save(User user, HttpServletRequest request){
+    @ResponseBody
+    public Result save( Technician technician,HttpServletRequest request){
         @SuppressWarnings("unused")
-        Map<String, Object> parMap = MapUtils.getParamMapObj(request);
-        return null;
+        Map<String, Object> parMap = MapUtils.getParamMap(request);
+        return techinicianService.save(technician,parMap);
     }
 
     /**
@@ -100,7 +109,6 @@ public class TechnicianController extends BaseController {
     @RequestMapping(value = "/remove", method = RequestMethod.GET)
     public Object remove(User user){
         try{
-            techinicianService.delete(user);
         }catch(Exception e){
             e.printStackTrace();
             return "删除失败";
@@ -114,4 +122,18 @@ public class TechnicianController extends BaseController {
         int storeId = Integer.parseInt(request.getParameter("storeId"));
         return businessService.findByStoreId(storeId);
     }
+    
+    @RequestMapping(value="technicianInfo",method=RequestMethod.GET)
+    @ResponseBody
+    public List<Object> selectByPrimaryKey(HttpServletRequest request){
+        List<Object> technicianInfo = new ArrayList<Object>();
+        int technicianid = Integer.parseInt(request.getParameter("id"));
+        Technician technician = techinicianService.selectByPrimaryKey(technicianid);
+         technicianInfo.add(technician);
+         technicianInfo.add(technicianBusinessService.findByTechnicianId(technicianid));
+         Store store = storeService.findById(technician.getStoreid());
+         technicianInfo.add(store);
+         return technicianInfo;
+    }
+    
 }

@@ -20,4 +20,6 @@ public interface TechnicianMapper {
     List<Technician> selectTechnicianList();
 
     List<Technician> selectByTechnician(Technician technician);
+
+    void deleteByTechnicianId(Integer id);
 }
