@@ -118,19 +118,19 @@
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label no-padding-right" for="province"> 省 </label>
                                     <div class="col-sm-5">
-                                        <select class="form-control" id="province" value="${dto.province}" name="province" required></select>
+                                        <select class="form-control" id="province" data-province="${dto.province}" name="province" required></select>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label no-padding-right" for="city"> 市 </label>
                                     <div class="col-sm-5">
-                                        <select class="form-control" id="city"  value="${dto.city}" name="city" required></select>
+                                        <select class="form-control" id="city"  data-city="${dto.city}" value="${dto.city}" name="city" required></select>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label no-padding-right" for="district"> 区 </label>
                                     <div class="col-sm-5">
-                                        <select class="form-control" id="district"  name="area" required></select>
+                                        <select class="form-control" id="district" data-district="${dto.area}"  name="area" required></select>
                                     </div>
                                 </div>
                             </div>
@@ -182,11 +182,11 @@
 <script src="${ctx}/resources/city/js/distpicker.data.js"></script>
 <script src="${ctx}/resources/city/js/distpicker.js"></script>
 <script>
-    $(document).ready(function(){
+    /*$(document).ready(function(){
         $("#province").val("${dto.province}");
         $("#city").val("${dto.city}");
         $("#district").val("${dto.area}");
-    });
+    });*/
 
     $(function(){
         // 手机号码验证

@@ -41,7 +41,7 @@ public class UserController {
         // 查询店铺列表
         List<Store> storeList = userService.selectStoreList();
         model.addAttribute("storeList", storeList);
-        return PATH + "userList";
+        return PATH + "user_list";
     }
 
     /**
@@ -108,7 +108,7 @@ public class UserController {
                 user.setPassword(DigestUtils.md5(ConfigContentUtils.getString("upassword", "system.properties")).toString());
                 user.setNickname(user.getName());
                 user.setState(1);
-                user.setIsdelete(1);
+                user.setIsdelete(0);
                 user.setRegistertime(new Date());
                 userService.save(user);
             }else{

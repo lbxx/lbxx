@@ -31,7 +31,7 @@ public class User {
     private Integer registtype;
 
     private Long blance;
-
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date birthday;
 
     private String province;

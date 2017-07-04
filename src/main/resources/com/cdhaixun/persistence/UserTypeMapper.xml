@@ -7,9 +7,12 @@
     <result column="rebate" property="rebate" jdbcType="DECIMAL" />
     <result column="points" property="points" jdbcType="INTEGER" />
     <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="chainstoreid" property="chainstoreid" jdbcType="INTEGER" />
+    <result column="isdelete" property="isdelete" jdbcType="INTEGER" />
+    <result column="createtime" property="createtime" jdbcType="DATE" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, typeName, rebate, points, state
+    id, typeName, rebate, points, state, chainstoreid, isdelete, createtime
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -17,14 +20,26 @@
     from user_type
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="selectTypeList" resultMap="BaseResultMap" >
+  <select id="findUserTypeList" resultType="com.cdhaixun.vo.UserTypeListVo" parameterType="map">
     select
-    <include refid="Base_Column_List" />
+    u.id, u.typeName, u.rebate, u.points, u.state, u.chainstoreid, u.isdelete, u.createtime, c.name chainstoreName
     FROM
-    user_type
+    user_type u,chain_store c
     WHERE
-    state = 1
-    AND isdelete = 0
+    u.state = 1
+    AND u.isdelete = 0
+    AND c.id = u.chainstoreid
+    <if test="typename != null and '' != typename">
+      AND u.typename = #{typename}
+    </if>
+  </select>
+  <select id="getChainStoreList" resultType="com.cdhaixun.domain.ChainStore">
+    select
+    id,name
+    FROM
+    chain_store
+    WHERE
+    isdelete = 0
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from user_type
@@ -32,9 +47,10 @@
   </delete>
   <insert id="insert" parameterType="com.cdhaixun.domain.UserType" >
     insert into user_type (id, typeName, rebate, 
-      points, state)
+      points, state, chainstoreid, isdelete, createtime)
     values (#{id,jdbcType=INTEGER}, #{typename,jdbcType=VARCHAR}, #{rebate,jdbcType=DECIMAL}, 
-      #{points,jdbcType=INTEGER}, #{state,jdbcType=INTEGER})
+      #{points,jdbcType=INTEGER}, #{state,jdbcType=INTEGER}, #{chainstoreid,jdbcType=INTEGER},
+      #{isdelete,jdbcType=INTEGER}, #{createtime,jdbcType=DATE})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.cdhaixun.domain.UserType" >
     update user_type
@@ -50,6 +66,15 @@
       </if>
       <if test="state != null" >
         state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="chainstoreid != null" >
+        chainstoreid = #{chainstoreid,jdbcType=INTEGER},
+      </if>
+      <if test="isdelete != null" >
+        isdelete = #{isdelete,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        createtime = #{createtime,jdbcType=DATE},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
