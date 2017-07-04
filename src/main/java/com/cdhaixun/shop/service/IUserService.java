@@ -14,7 +14,7 @@ import java.util.Map;
  * @Date 2017/6/14 23:13
  */
 public interface IUserService extends BaseService<User> {
-     Pager getUserList(Pager pager, Map<String, Object> parMap);
+     Pager<User> getUserList(Pager pager, Map<String, Object> parMap);
 
     List<Store> selectStoreList();
 
@@ -26,4 +26,6 @@ public interface IUserService extends BaseService<User> {
      * @return
      */
     User findByMobile(String mobile);
+
+    List<User> getUserListBy(Map<String, Object> parMap);
 }

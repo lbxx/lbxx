@@ -182,6 +182,12 @@
 <script src="${ctx}/resources/city/js/distpicker.data.js"></script>
 <script src="${ctx}/resources/city/js/distpicker.js"></script>
 <script>
+    /*$(document).ready(function(){
+        $("#province").val("${dto.province}");
+        $("#city").val("${dto.city}");
+        $("#district").val("${dto.area}");
+    });*/
+
     $(function(){
         // 手机号码验证
         jQuery.validator.addMethod("mobileReg", function(value, element) {

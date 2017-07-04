@@ -47,12 +47,10 @@
         u.`name` NAME,
         u.sex sex,
         s.`name` storeName,
-        ut.typeName typeName,
         u.registertime registertime
         FROM
         `user` u
-        LEFT JOIN store s ON u.storeId = s.id
-        LEFT JOIN user_type ut ON ut.chainstoreid = s.id
+        INNER JOIN store s ON u.storeId = s.id
         WHERE
         u.state = 1
         <if test="storeId != null and '' != storeId">

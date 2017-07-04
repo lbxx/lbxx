@@ -2,10 +2,11 @@ package com.cdhaixun.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class User {
+public class User implements Serializable{
     private Integer id;
 
     private Integer storeid;
@@ -21,7 +22,7 @@ public class User {
     private String nickname;
 
     private String name;
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date registertime;
 
     private Date lastlogintime;
@@ -31,7 +32,7 @@ public class User {
     private Integer registtype;
 
     private Long blance;
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date birthday;
 
     private String province;

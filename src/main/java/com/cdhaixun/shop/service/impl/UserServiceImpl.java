@@ -44,6 +44,11 @@ public class UserServiceImpl implements IUserService{
     }
 
     @Override
+    public List<User> getUserListBy(Map<String, Object> parMap) {
+        return userMapper.findUserList(parMap);
+    }
+
+    @Override
     public User findById(Integer id) {
         return userMapper.selectByPrimaryKey(id);
     }
@@ -64,7 +69,7 @@ public class UserServiceImpl implements IUserService{
     }
 
     @Override
-    public Pager getUserList(Pager pager, Map<String, Object> parMap) {
+    public Pager<User> getUserList(Pager pager, Map<String, Object> parMap) {
         Page dbpage = PageHelper.startPage(pager.getPageNum(), pager.getPageSize());
         List<User> userList = userMapper.findUserList(parMap);
         pager.setTotal(dbpage.getTotal());

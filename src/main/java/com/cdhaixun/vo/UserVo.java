@@ -1,7 +1,6 @@
 package com.cdhaixun.vo;
 
-import com.alibaba.fastjson.annotation.JSONField;
-import org.springframework.format.annotation.DateTimeFormat;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
 
@@ -17,8 +16,7 @@ public class UserVo {
     private Integer sex;
     private String storeName;
     private String typeName;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @JSONField(format = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date registertime;
 
     public Integer getId() {

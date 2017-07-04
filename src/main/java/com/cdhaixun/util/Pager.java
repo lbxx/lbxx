@@ -8,7 +8,7 @@ import java.util.List;
  * @Author tanggm
  * @Date 2017/6/11 17:31
  */
-public class Pager {
+public class Pager<T> {
     /**
      * 每页显示条数
      */
@@ -25,7 +25,7 @@ public class Pager {
      * 总记录数
      */
     private long total;
-    private List result = new ArrayList();
+    private List<T> result = new ArrayList();
 
     public int getPageSize() {
         return pageSize;
@@ -59,11 +59,11 @@ public class Pager {
         this.total = total;
     }
 
-    public List getResult() {
+    public List<T> getResult() {
         return result;
     }
 
-    public void setResult(List result) {
+    public void setResult(List<T> result) {
         this.result = result;
     }
 }
