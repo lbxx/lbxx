@@ -30,7 +30,7 @@
     AND u.isdelete = 0
     AND c.id = u.chainstoreid
     <if test="typename != null and '' != typename">
-      AND u.typename = #{typename}
+      AND u.typename LIKE '%${typename}%'
     </if>
   </select>
   <select id="getChainStoreList" resultType="com.cdhaixun.domain.ChainStore">
