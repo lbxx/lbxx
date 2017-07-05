@@ -52,6 +52,7 @@ public class UploadController {
     @ResponseBody
     @RequestMapping(value = "uploadFile", method = RequestMethod.POST)
     public Result uploadFile(HttpServletRequest httpServletRequest, MultipartFile file, String servletPath) throws IOException {
+        System.out.println(servletPath);
         Result result = new Result();
         String serverName = httpServletRequest.getServerName();
         StringUtils.split(allowDomainName,",");
@@ -61,6 +62,7 @@ public class UploadController {
         if(!allowDomainNameList.contains(serverName)){
             return  result;
         }
+        System.out.println(imgRoot + servletPath + "/" + file.getOriginalFilename());
         java.io.File destination = new java.io.File(imgRoot + servletPath + "/" + file.getOriginalFilename());
         FileUtils.copyInputStreamToFile(file.getInputStream(), destination);
         result.setResult(true);
