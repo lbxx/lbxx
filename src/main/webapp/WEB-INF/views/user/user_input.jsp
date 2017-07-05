@@ -39,9 +39,9 @@
                         <a href="#">Home</a>
                     </li>
                     <li>
-                        <a href="#">Tables</a>
+                        <a href="#">用户管理</a>
                     </li>
-                    <li class="active">jqGrid plugin</li>
+                    <li class="active">用户列表</li>
                 </ul><!-- .breadcrumb -->
             </div>
             <!-- 当前页定位结束 -->
@@ -194,7 +194,7 @@
             var length = value.length;
             var blance =  /(\d{1,}\.\d{2}$)||(\d{1,}\.$)/;
             return this.optional(element) || (blance.test(value));
-        }, "请正确填写您的手机号码");
+        }, "请正确填写您的积分");
         $('#validation-form').validate({
             errorElement: 'div',
             errorClass: 'help-block',
