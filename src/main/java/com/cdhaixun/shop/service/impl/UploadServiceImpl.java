@@ -41,8 +41,6 @@ public class UploadServiceImpl implements IUploadService {
         String originalFilename = file.getOriginalFilename();
         String prefix=originalFilename.substring(originalFilename.lastIndexOf("."));
         String fileName= UUID.randomUUID()+prefix;
-        System.out.println(fileName);
-        System.out.println(httpServletRequest.getServletPath());
         multipartEntityBuilder.addBinaryBody("file", file.getInputStream(), ContentType.APPLICATION_OCTET_STREAM,fileName );
         multipartEntityBuilder.addTextBody("servletPath", httpServletRequest.getServletPath());
         httppost.setEntity(multipartEntityBuilder.build());
