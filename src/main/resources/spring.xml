@@ -47,6 +47,7 @@
                 /admin/listUser**=authc,perms[admin:manage]
                 /login/**=anon
                 /pay/**=anon
+                /upload/**=anon
             </value>
         </property>
     </bean>
