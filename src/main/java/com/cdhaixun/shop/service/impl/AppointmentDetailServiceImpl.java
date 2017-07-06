@@ -3,11 +3,13 @@ package com.cdhaixun.shop.service.impl;
 import com.cdhaixun.domain.AppointmentDetail;
 import com.cdhaixun.persistence.AppointmentDetailMapper;
 import com.cdhaixun.shop.service.IAppointmentDetailService;
+import com.cdhaixun.vo.AppointmentDetailVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by tangxinmao on 2017/7/2.
@@ -32,5 +34,10 @@ public class AppointmentDetailServiceImpl implements IAppointmentDetailService {
         }else{
             appointmentDetailMapper.updateByPrimaryKeySelective(appointmentDetail);
         }
+    }
+
+    @Override
+    public List<AppointmentDetailVo> getAppointmentDetailList(Map<String, Object> parMap) {
+        return appointmentDetailMapper.getAppointmentDetailList(parMap);
     }
 }

@@ -24,6 +24,33 @@
     from appointment_detail
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="getAppointmentDetailList" resultType="com.cdhaixun.vo.AppointmentDetailVo" parameterType="map" >
+    SELECT
+        ad.id id,
+        ad.starttime starttime,
+        ad.endtime endtime,
+        ad.solution solution,
+        u.`name` uname,
+        b.`name` bname,
+        t.`name` tname
+    FROM
+        appointment_detail ad
+    INNER JOIN `user` u ON ad.userid = u.id
+    INNER JOIN baby b ON b.id = ad.babyid
+    INNER JOIN technician t ON t.id = ad.technicianid
+    INNER JOIN business bs ON bs.id = ad.bussinessid
+    INNER JOIN appointment a ON a.id = ad.appointmentid
+    INNER JOIN timebucket tk ON tk.id = ad.timebucketid
+    INNER JOIN store s ON s.id = tk.storeid
+    WHERE
+        u.isdelete = 0
+    AND b.isdelete = 0
+    AND t.isdelete = 0
+    AND bs.isdelete = 0
+    AND a.isdelete = 0
+    AND ad.isdelete = 0
+    AND ad.appointmentid = #{id}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from appointment_detail
     where id = #{id,jdbcType=INTEGER}

@@ -22,6 +22,31 @@
         from appointment
         where id = #{id,jdbcType=INTEGER}
     </select>
+    <select id="getAppointmentList" resultType="com.cdhaixun.vo.AppointmentVo" parameterType="map">
+        SELECT
+            a.createtime acreatetime,
+            u.`name` uname,
+            s.`name` sname,
+            t.`name` tname,
+            a.endtime aendtime,
+            a.starttime astarttime
+        FROM
+            appointment a
+        INNER JOIN `user` u ON a.userid = u.id
+        INNER JOIN store s ON a.storeid = s.id
+        INNER JOIN technician t ON a.technicianid = t.id
+        WHERE
+            a.isdelete = 0
+        AND u.isdelete = 0
+        AND s.isdelete = 0
+        AND t.isdelete = 0
+        <if test="uname != null and '' != uname">
+          AND u.name LIKE '%${uname}%'
+        </if>
+        <if test="tname != null and '' != tname">
+          AND t.name LIKE '%${tname}%'
+        </if>
+    </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from appointment
     where id = #{id,jdbcType=INTEGER}

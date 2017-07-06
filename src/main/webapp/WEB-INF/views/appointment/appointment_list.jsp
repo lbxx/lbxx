@@ -44,25 +44,9 @@
                     <jsp:include page="../permission.jsp"/>
 
                     <div class="col-xs-12">
-                        <div class="col-md-2 tn aol">
-                            <select class="form-control" id="storeId">
-                                <option value="">全部</option>
-                                <c:forEach items="${storeList}" var="item">
-                                    <option value="${item.id}">${item.name}</option>
-                                </c:forEach>
-                            </select>
+                        <div class="col-md-2 tn aol"><input type="text" id="uname" placeholder="请输入用户名" class="confS_input pg_input"></span>
                         </div>
-                        <div class="col-md-2 tn aol"><input type="text" id="registertime" placeholder="请输入时间" class="confS_input pg_input" onClick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></span>
-                        </div>
-                        <div class="col-md-2 tn aol">
-                            <select class="form-control" id="type">
-                                <option value="">全部</option>
-                                <option value="usercard">会员卡号</option>
-                                <option value="name">会员姓名</option>
-                                <option value="mobile">会员电话</option>
-                            </select>
-                        </div>
-                        <div class="col-md-2 tn aol"><input type="text" id="typeval" placeholder="" class="confS_input pg_input"></span>
+                        <div class="col-md-2 tn aol"><input type="text" id="tname" placeholder="请输入技师名" class="confS_input pg_input"></span>
                         </div>
                         <div class="col-md-2 pull-left">
                             <button type="button" class="btn btn-pill btn-primary" style="display: inline-block;" id="searchBtn" title="搜索">搜索</button></div>
@@ -85,13 +69,11 @@
     jQuery(function($) {
         // 自定义搜索方法，暂时先用，后期研究jqGrid搜索
         $("#searchBtn").click(function(){
-            var storeId = $("#storeId").val();
-            var registertime = $("#registertime").val();
-            var type = $("#type").val();
-            var typeval = $("#typeval").val();
+            var uname = $("#uname").val();
+            var tname = $("#tname").val();
             $("#grid-table").jqGrid('setGridParam',{  // grid-table 这个是表格的id, setGridParam这个值是固定值
-                url:"${ctx}/user/userList", // 请求url
-                postData:{"storeId":storeId,"registertime":registertime,"type":type,"typeval":typeval},    // 搜索过滤条件
+                url:"${ctx}/appointment/queryList", // 请求url
+                postData:{"uname":uname,"tname":tname},    // 搜索过滤条件
                 page:1                    // 点击搜索，默认是加载搜索后第一页数据
             }).trigger("reloadGrid");     // 渲染表格数据，这个  reloadGrid  是固定值
         });
@@ -103,7 +85,7 @@
 
         // 配置jqGrid列表table参数
         jQuery(grid_selector).jqGrid({
-            url: "${ctx}/user/userList",
+            url: "${ctx}/appointment/queryList",
             datatype: "json",
             mtype:"POST",
             //height: 250,
@@ -116,7 +98,7 @@
                 repeatitems : false
             },
             // 用于显示列表页table的列头
-            colNames:[' ', '会员卡','姓名','电话','性别','店铺名','注册时间'],
+            colNames:[' ', '用户','连锁店','技师','开始时间','结束时间','创建时间'],
             // 列表页数据绑定
             colModel:[
                 {name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
@@ -127,12 +109,12 @@
                     }
                 },
                 // 下面是列表页其它数据，name属性与java属性的set匹配
-                {name:'mobile',index:'mobile', width:150,editable: true,editoptions:{size:"20",maxlength:"30"}},
-                {name:'name',index:'name', width:150,editable: true,editoptions:{size:"20",maxlength:"30"}},
-                {name:'mobile',index:'mobile', width:150,editable: true,editoptions:{size:"20",maxlength:"30"}},
-                {name:'sex',index:'sex', width:150,editable: true,editoptions:{value:'1:男;0:女'}},
-                {name:'storeName',index:'storeName', width:150,editable: true,editoptions:{size:"20",maxlength:"30"}},
-                {name:'registertime',index:'registertime', width:150,editable: true,editoptions:{size:"20",maxlength:"30"}}
+                {name:'uname',index:'uname', width:150},
+                {name:'sname',index:'sname', width:150},
+                {name:'tname',index:'tname', width:150},
+                {name:'astarttime',index:'astarttime', width:150},
+                {name:'aendtime',index:'aendtime', width:150},
+                {name:'acreatetime',index:'acreatetime', width:150}
             ],
             viewrecords : true,
             rowNum:10,
