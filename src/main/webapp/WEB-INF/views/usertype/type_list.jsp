@@ -41,11 +41,10 @@
                 <div class="row">
                     <!-- 引入权限jsp -->
                     <jsp:include page="../permission.jsp"/>
-
                     <div class="col-xs-12">
                         <div class="col-md-2 tn aol"><input type="text" id="typename" name="typename" placeholder="请输入类型名" class="confS_input pg_input"></span>
                         </div>
-                        <div class="col-md-2 pull-left">
+                        <div class="col-md-1 pull-left">
                             <button type="button" class="btn btn-pill btn-primary" style="display: inline-block;" id="searchBtn" title="搜索">搜索</button></div>
                     </div>
                     <div class="col-xs-12">
@@ -104,7 +103,7 @@
                 {name:'rebate',index:'rebate', width:150,editable: true,editoptions:{size:"20",maxlength:"30"}},
                 {name:'points',index:'points', width:150,editable: true,editoptions:{size:"20",maxlength:"30"}},
                 {name:'state',index:'state', width:150,editable: true,editoptions:{value:'1:启用;0:禁用'}},
-                {name:'chainstorenName',index:'chainstorenName', width:150,editable: true,editoptions:{size:"20",maxlength:"30"}},
+                {name:'chainstoreName',index:'chainstoreName', width:150,editable: true,editoptions:{size:"20",maxlength:"30"}},
                 {name:'createtime',index:'createtime', width:150,editable: true,editoptions:{size:"20",maxlength:"30"}}
             ],
             viewrecords : true,

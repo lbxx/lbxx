@@ -64,7 +64,7 @@ public class UserTypeController {
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String add(HttpServletRequest request){
         List<ChainStore> chainStoreList = userTypeService.getChainStoreList();
-        request.setAttribute("chainStoreList", chainStoreList);
+        request.setAttribute("typeList", chainStoreList);
         return PATH + "type_input";
     }
     /**
@@ -81,6 +81,8 @@ public class UserTypeController {
         }catch(Exception e){
             e.printStackTrace();
         }
+        List<ChainStore> chainStoreList = userTypeService.getChainStoreList();
+        request.setAttribute("typeList", chainStoreList);
         request.setAttribute("dto", userType);
         return PATH + "type_input";
     }
