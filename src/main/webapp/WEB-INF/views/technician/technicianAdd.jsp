@@ -268,14 +268,13 @@
 	                        		$("#businessTime_"+technicianBusiness[i].technicianid).val(technicianBusiness[i].spend);
 	                        	}
 	                        }
-	                        return;
 
 	                        $("#name").val(technician.name);
 	                        $("#cellphone").val(technician.cellphone);
 	                        $("#cityName").val(store.location);
 	                        $("#description").val(technician.description);
 	                        
-	                        getStoreBusiness(storeid);
+	                       // getStoreBusiness(storeid);
 
 	                    },
 	                    error : function(data, textStatus, errorThrown) {
