@@ -17,7 +17,6 @@ import com.cdhaixun.common.web.BaseController;
 import com.cdhaixun.domain.Business;
 import com.cdhaixun.domain.Store;
 import com.cdhaixun.domain.Technician;
-import com.cdhaixun.domain.User;
 import com.cdhaixun.shop.service.IBusinessService;
 import com.cdhaixun.shop.service.IStoreService;
 import com.cdhaixun.shop.service.ITechnicianBusinessService;
@@ -93,7 +92,7 @@ public class TechnicianController extends BaseController {
      * @return
      */
     @SuppressWarnings("unused")
-    @RequestMapping(value = "/save")
+    @RequestMapping(value = "/save",method = RequestMethod.POST)
     @ResponseBody
     public Result save( Technician technician,HttpServletRequest request){
         @SuppressWarnings("unused")
@@ -107,13 +106,21 @@ public class TechnicianController extends BaseController {
      */
     @ResponseBody
     @RequestMapping(value = "/remove", method = RequestMethod.GET)
-    public Object remove(User user){
+    public Object remove(HttpServletRequest request){
+        Result result = new Result();
         try{
+            int technicianId = Integer.valueOf(request.getParameter("id"));
+            techinicianService.deleteByTechnicianId(technicianId);//删除技师
+            technicianBusinessService.deleteByTechnicianId(technicianId);//删除技师相关业务
         }catch(Exception e){
             e.printStackTrace();
-            return "删除失败";
+            result.setResult(false);
+            result.setMsg("删除失败");
+            return  result;
         }
-        return "删除成功";
+        result.setResult(true);
+        result.setMsg("删除成功");
+        return result;
     }
     
     @RequestMapping(value="businessInfo",method=RequestMethod.GET)

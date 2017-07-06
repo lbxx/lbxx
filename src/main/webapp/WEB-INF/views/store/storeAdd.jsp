@@ -99,12 +99,16 @@
 										class="required" style="width: 80%;">
 									<div style="color: #AEAEAE;">座机号码格式: '区号'-'座机号'</div>
 								</div>
-								<div style="margin-bottom: 1px;">
+								<div style="margin-bottom: 20px;">
 									<label 
 										style="float: left; line-height: 2em; width: 15%;">手机</label>
 									<input type="text" id="cellphone" name="cellphone" placeholder="请填写负责人手机号码"
 										class="" maxlength="11" style="width: 80%;">
 								</div>
+								<div style="margin-bottom: 1px;">
+                                    <label style="float: left; line-height: 2em; width: 15%;">所在城市</label>
+                                    <input type="text" id="city" name="city" placeholder="请填写店铺所在城市"  style="width: 80%;">
+                                </div>
 
 							</div>
 							<!--右上  -->
@@ -214,7 +218,7 @@
 	/*======表单校验 */
 	var isFirstload=true;
 		jQuery(function($){
-			
+			var map = new BMap.Map("container"); //在container容器中创建一个地图,参数container为div的id属性;
 			loadStoreinfo();
 			/*======表单校验 */
 		    $.validator.setDefaults({
@@ -276,7 +280,7 @@
 	                $("#submit").val("确认更新");
 	                /* $("#subTitle").text("更新门店"); */
 	                $("#id").val(storeid);
-	                $("#storeForm").attr("action", "${ctx}/store/update");
+	                $("#storeForm").attr("action", "${ctx}/store/edit");
 	                $.ajax({
 	                    url:"${ctx}/store/query?id="+storeid,
 	                    type: 'GET',
@@ -294,6 +298,7 @@
 	                        $("#telephone").val(store.telephone);
 	                        $("#cityName").val(store.location);
 	                        $("#description").val(store.description);
+	                        $("#city").val(store.city);
 	                        if(store.pic){
 		                        $("#storeimg").attr("src","${ctx}/upload"+store.pic);
 	                        }
@@ -437,9 +442,8 @@
 
 		    /*==================百度地图  */
             var myValue;
-            var map = null; //在container容器中创建一个地图,参数container为div的id属性;
+            
 			function loadMap(lng,lat) {
-				map = new BMap.Map("container");
 				var mapType1 = new BMap.MapTypeControl({mapTypes: [BMAP_NORMAL_MAP,BMAP_HYBRID_MAP]});
 	            var mapType2 = new BMap.MapTypeControl({anchor: BMAP_ANCHOR_TOP_RIGHT});
 	            var point = new BMap.Point(116.404, 39.915); //创建点坐标

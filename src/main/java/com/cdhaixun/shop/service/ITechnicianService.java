@@ -15,4 +15,6 @@ public interface ITechnicianService extends BaseService<Technician>{
 
     Result save(Technician technician,Map<String, Object> parMap);
     Technician selectByPrimaryKey(Integer technicianId);
+
+    void deleteByTechnicianId(int technicianId);
 }
