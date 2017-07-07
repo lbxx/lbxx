@@ -18,4 +18,8 @@ public interface CategoryMapper {
     int updateByPrimaryKey(Category record);
 
     List<Category> selectByCategory(Category category);
+
+    List<Category> listCategory();
+
+    void deleteByCategory(int categoryId);
 }
