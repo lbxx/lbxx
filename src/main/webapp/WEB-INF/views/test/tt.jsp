@@ -5852,7 +5852,7 @@
 
                     /**
 
-                     //this will override the default before_change that only accepts image files
+                     //this will override the default before_change that only accepts Image files
 
                      before_change: function(files, dropped) {
 
@@ -5878,9 +5878,9 @@
 
                             last_gritter = $.gritter.add({
 
-                                title: 'File is not an image!',
+                                title: 'File is not an Image!',
 
-                                text: 'Please choose a jpg|gif|png image!',
+                                text: 'Please choose a jpg|gif|png Image!',
 
                                 class_name: 'gritter-error gritter-center'
 
@@ -5954,7 +5954,7 @@
 
                         if("FileReader" in window) {
 
-                            //for browsers that have a thumbnail of selected image
+                            //for browsers that have a thumbnail of selected Image
 
                             var thumb = $('#avatar').next().find('img').data('thumb');
 

@@ -1,68 +1,61 @@
 
 package com.cdhaixun.shop.web;
 
-import com.cdhaixun.domain.Store;
-import com.cdhaixun.domain.User;
-import com.cdhaixun.domain.UserType;
-import com.cdhaixun.shop.service.IUserService;
-import com.cdhaixun.util.ConfigContentUtils;
+import com.cdhaixun.domain.Knowledge;
+import com.cdhaixun.domain.KnowledgeType;
+import com.cdhaixun.shop.service.IKnowledgeService;
+import com.cdhaixun.shop.service.IKnowledgeTypeService;
 import com.cdhaixun.util.JsonMsgUtil;
 import com.cdhaixun.util.MapUtils;
-import com.cdhaixun.util.Pager;
+import com.cdhaixun.vo.KnowledgeVo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 /**
- * 会员管理
+ * 知识库类型管理
  * @Author tanggm
  * @Date 2017/6/14 23:10
  */
 @Controller
-@RequestMapping(value = "/user")
-public class AppointmentController {
-    private static final String PATH = "user/";
+@RequestMapping(value = "/knowledge")
+public class KnowledgeController {
+    private static final String PATH = "knowledge/";
     @Autowired
-    IUserService userService;
+    private IKnowledgeService knowledgeService;
+    @Autowired
+    private IKnowledgeTypeService knowledgeTypeService;
     /**
-     * 会员首页
+     * 首页
      */
     @RequestMapping(value = "list", method = RequestMethod.GET)
-    public String list(Model model){
-        // 查询店铺列表
-        List<Store> storeList = userService.selectStoreList();
-        model.addAttribute("storeList", storeList);
-        return PATH + "user_list";
+    public String list(){
+        return PATH + "knowledge_list";
     }
 
     /**
-     * 查询用户列表
-     * @param pager
+     * 查询列表
      * @param request
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/userList", method = RequestMethod.POST)
-    public PageInfo<User> userList(Pager pager, HttpServletRequest request){
+    @RequestMapping(value = "/queryList", method = RequestMethod.GET)
+    public PageInfo<KnowledgeVo> queryList(HttpServletRequest request){
         try{
             Map<String, Object> parMap = MapUtils.getParamMapObj(request);
-            Page<User> page = PageHelper.startPage(Integer.valueOf(request.getParameter("pageNum")), Integer.valueOf(request.getParameter("pageSize")), true);
-            List<User> list = userService.getUserListBy(parMap);
-            PageInfo<User> pageInfo = page.toPageInfo();
+            Page<KnowledgeVo> page = PageHelper.startPage(Integer.valueOf(parMap.get("pageNum").toString()), Integer.valueOf(parMap.get("pageSize").toString()), true);
+            List<KnowledgeVo> list = knowledgeService.getList(parMap);
+            PageInfo<KnowledgeVo> pageInfo = page.toPageInfo();
             return pageInfo;
-
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -70,55 +63,50 @@ public class AppointmentController {
     }
 
     /**
-     * 添加会员
-     * @param request
+     * 添加
      * @return
      */
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String add(HttpServletRequest request){
-        List<UserType> typeList = userService.selectTypeList();
-        request.setAttribute("typeList", typeList);
-        return PATH + "user_input";
+        List<KnowledgeType> list = knowledgeTypeService.findList();
+        request.setAttribute("typeList", list);
+        return PATH + "knowledge_input";
     }
     /**
-     * 编辑会员
+     * 编辑
      * @param request
      * @return
      */
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
     public String edit(HttpServletRequest request){
-        User user = null;
+        Knowledge knowledge = null;
         try{
             Integer id = Integer.valueOf(request.getParameter("id"));
-            user = userService.findById(id);
+            knowledge = knowledgeService.findById(id);
         }catch(Exception e){
             e.printStackTrace();
         }
-        List<UserType> typeList = userService.selectTypeList();
-        request.setAttribute("dto", user);
-        request.setAttribute("typeList", typeList);
-        return PATH + "user_input";
+        List<KnowledgeType> list = knowledgeTypeService.findList();
+        request.setAttribute("typeList", list);
+        request.setAttribute("dto", knowledge);
+        return PATH + "knowledge_input";
     }
 
     /**
-     * 提交
+     * 保存
      * @param
      * @return
      */
     @ResponseBody
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public Object save(User user, HttpServletRequest request){
+    public Object save(Knowledge knowledge){
         try {
-            Integer id = user.getId();
+            Integer id = knowledge.getId();
             if(id == null ){
-                user.setPassword(DigestUtils.md5(ConfigContentUtils.getString("upassword", "system.properties")).toString());
-                user.setNickname(user.getName());
-                user.setState(1);
-                user.setIsdelete(0);
-                user.setRegistertime(new Date());
-                userService.save(user);
+                knowledge.setIsdelete(false);
+                knowledgeService.save(knowledge);
             }else{
-                userService.update(user);
+                knowledgeService.update(knowledge);
             }
             return JsonMsgUtil.getSuccessJsonMsg("操作成功");
         }catch (Exception e){
@@ -133,9 +121,9 @@ public class AppointmentController {
      */
     @ResponseBody
     @RequestMapping(value = "/remove", method = RequestMethod.GET)
-    public Object remove(User user){
+    public Object remove(Knowledge knowledge){
         try{
-           userService.delete(user);
+            knowledgeService.delete(knowledge);
         }catch(Exception e){
             e.printStackTrace();
             return JsonMsgUtil.getFailJsonMsg("删除失败!");
