@@ -22,6 +22,12 @@
     delete from business
     where id = #{id,jdbcType=INTEGER}
   </delete>
+  <!-- 假删除 将某条记录的isdelete置为1 -->
+  <delete id="deleteByBusinessId" parameterType="java.lang.Integer" >
+    update business
+    set isdelete = 1
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
   <insert id="insert" parameterType="com.cdhaixun.domain.Business" >
     insert into business (id, name, createtime, 
       isdelete,categoryid)
@@ -43,6 +49,9 @@
       <if test="isdelete != null" >
         isdelete,
       </if>
+      <if test="categoryid != null" >
+        categoryid,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -56,6 +65,9 @@
       </if>
       <if test="isdelete != null" >
         #{isdelete,jdbcType=BIT},
+      </if>
+      <if test="categoryid != null" >
+        #{categoryid,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -89,6 +101,7 @@
     select
     <include refid="Base_Column_List" />
     from business
+    where isdelete = 0
   </select>
 
   <select id="selectByBusiness" parameterType="com.cdhaixun.domain.Business" resultMap="BaseResultMap">
@@ -120,4 +133,11 @@
         AND isopen = 1
         AND isdelete = 0 )
   </select>
+  <select id="selectBusinessList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from business
+    where isdelete = 0
+  </select>
+  
 </mapper>

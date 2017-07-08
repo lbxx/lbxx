@@ -10,8 +10,8 @@
     <result column="closinghours" property="closinghours" jdbcType="TIME" />
     <result column="pic" property="pic" jdbcType="VARCHAR" />
     <result column="location" property="location" jdbcType="VARCHAR" />
-    <result column="description" property="description" jdbcType="VARCHAR" />
     <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
     <result column="chainstoreid" property="chainstoreid" jdbcType="INTEGER" />
     <result column="longitude" property="longitude" jdbcType="DECIMAL" />
     <result column="latitude" property="latitude" jdbcType="DECIMAL" />
@@ -19,8 +19,8 @@
     <result column="isdelete" property="isdelete" jdbcType="BIT" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, name, telephone, cellphone, openinghours, closinghours, pic, location, description, 
-    chainstoreid, longitude, latitude, createtime, isdelete,city
+    id, name, telephone, cellphone, openinghours, closinghours, pic, location, city, description, 
+    chainstoreid, longitude, latitude, createtime, isdelete
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -35,12 +35,12 @@
   <insert id="insert" parameterType="com.cdhaixun.domain.Store" >
     insert into store (id, name, telephone, 
       cellphone, openinghours, closinghours, 
-      pic, location, description, 
+      pic, location, city, description, 
       chainstoreid, longitude, latitude, 
       createtime, isdelete)
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}, 
       #{cellphone,jdbcType=VARCHAR}, #{openinghours,jdbcType=TIME}, #{closinghours,jdbcType=TIME}, 
-      #{pic,jdbcType=VARCHAR}, #{location,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{pic,jdbcType=VARCHAR}, #{location,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
       #{chainstoreid,jdbcType=INTEGER}, #{longitude,jdbcType=DECIMAL}, #{latitude,jdbcType=DECIMAL}, 
       #{createtime,jdbcType=TIMESTAMP}, #{isdelete,jdbcType=BIT})
   </insert>
@@ -121,6 +121,9 @@
       <if test="location != null" >
         #{location,jdbcType=VARCHAR},
       </if>
+      <if test="city != null" >
+        #{city,jdbcType=VARCHAR},
+      </if>
       <if test="description != null" >
         #{description,jdbcType=VARCHAR},
       </if>
@@ -165,6 +168,9 @@
       <if test="location != null" >
         location = #{location,jdbcType=VARCHAR},
       </if>
+       <if test="city != null" >
+        city = #{city,jdbcType=VARCHAR},
+      </if>
       <if test="description != null" >
         description = #{description,jdbcType=VARCHAR},
       </if>
@@ -196,6 +202,7 @@
       closinghours = #{closinghours,jdbcType=TIME},
       pic = #{pic,jdbcType=VARCHAR},
       location = #{location,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
       description = #{description,jdbcType=VARCHAR},
       chainstoreid = #{chainstoreid,jdbcType=INTEGER},
       longitude = #{longitude,jdbcType=DECIMAL},

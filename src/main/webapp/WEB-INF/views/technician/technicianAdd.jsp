@@ -74,7 +74,7 @@
 						style="width: 1100px; height: 768px; overflow: hidden;">
 						<!-- ================= -->
 						<form id="technicianForm" name="technicianForm"
-							class="form-horizontal" role="form" enctype="multipart/form-data"
+							class="form-horizontal" role="form" 
 							action="${ctx}/technician/save" method="POST">
 							<input type="hidden" name="id" id="id" value="" />
 							<!-- -->
@@ -105,7 +105,7 @@
 									<select style="display: inline-block; width: 130px;"
 										id="gender" name="gender">
 										<option value="1" selected="selected">男</option>
-										<option value="2">女</option>
+										<option value="0">女</option>
 									</select>
 								</div>
 								<div style="display: inline-block; width: 50%; margin: 3px;">
@@ -139,7 +139,7 @@
 								</div>
 								<div style="display: inline-block; width: 40%; margin: 3px;">
 									<label style="line-height: 2em; width: 20%; font-weight: bold;">技师说明:</label>
-									<textarea rows="10" name="description" cols="150"
+									<textarea rows="10" id="description" name="description" cols="150"
 										placeholder="请输入技师说明..." style="overflow: hidden;"></textarea>
 								</div>
 							</div>
@@ -183,14 +183,15 @@
 		jQuery(function($) {
 
 			loadTechnicianinfo();
-			/*======表单校验 */
-			$.validator.setDefaults({
-				debug : false,
-				submitHandler : function() {
-					submitForm();
-				}
-			});
+			
 		});
+		/*======表单校验 */
+        $.validator.setDefaults({
+            debug : false,
+            submitHandler : function() {
+                submitForm();
+            }
+        });
 		// 手机号码验证
 		jQuery.validator
 				.addMethod(
@@ -260,22 +261,26 @@
 	                        }
 	                        if(store){
 	                            $("#chainstoreselect").val(store.chainstoreid);
-	                            loadStoreList();
-	                            $("#storeselect").val(store.id);
+	                            loadStoreList(function () {
+	                            	  $("#storeselect").val(store.id);                             
+	                                  loadStoreBusiness(store.id,function(){
+	                                       if(technicianBusiness){
+	                                           for(i in technicianBusiness){
+	                                               $("#businessTime_"+technicianBusiness[i].businessid).val(technicianBusiness[i].spend);
+	                                           }
+	                                       }
+	                                  });
+								});
+	                          
 	                            }
-	                        if(technicianBusiness){
-	                        	for(i in technicianBusiness){
-	                        		$("#businessTime_"+technicianBusiness[i].technicianid).val(technicianBusiness[i].spend);
-	                        	}
-	                        }
-	                        return;
-
+	                        $("#id").val(technician.id);
+	                        $("#gender").val(technician.gender == true ? 1:0);
 	                        $("#name").val(technician.name);
 	                        $("#cellphone").val(technician.cellphone);
 	                        $("#cityName").val(store.location);
 	                        $("#description").val(technician.description);
 	                        
-	                        getStoreBusiness(storeid);
+	                       // getStoreBusiness(storeid);
 
 	                    },
 	                    error : function(data, textStatus, errorThrown) {
@@ -293,6 +298,7 @@
 			var url = $("#technicianForm").attr('action');
 			var ajax_option = {
 				url : url,
+				dataType:'json',
 				success : function(data) {
 					if (data.result) {
 						location.href = "${ctx}/technician/listIndex";
@@ -349,7 +355,7 @@
 					}
 					selection2 = objOfPropertyToArr(data[1]);
 					loadStoreList();
-					$('#chainstoreselect').change(loadStoreList);
+					$('#chainstoreselect').change(loadStoreList());
 
 				},
 				error : function(data, textStatus, errorThrown) {
@@ -357,7 +363,7 @@
 			});
 		}
 
-		function loadStoreList() {
+		function loadStoreList(completion) {
 			$('#storeselect').html("");
 			var id = $('#chainstoreselect').val();
 			for (var i = 0; i < selection2.length; i++) {
@@ -368,6 +374,10 @@
 										+ selection2[i][j].name + "</option>")
 					}
 				}
+			}
+			if(null!=completion){
+				completion();
+				return;
 			}
 			var storeId = $("#storeselect").val();
             if (storeId == null || storeId == '') {
@@ -385,7 +395,7 @@
             }
             loadStoreBusiness(storeId);
 		});
-		function loadStoreBusiness(storeId) {
+		function loadStoreBusiness(storeId,completion) {
 			$.ajax({
 				url : "${ctx}/technician/businessInfo?storeId="+ storeId,
 				type : 'GET',
@@ -397,13 +407,17 @@
 					if(data == null || data.length == 0){
 						$("#storeBusiness").html("该店铺暂未开启任何业务!");
 					}else{
+						$("#storeBusiness").html("");
 						for(var i=0;i<data.length;i++){
 							console.log(data[i].id);
 							$("#storeBusiness").append(
 									'<div style="display: inline-block;width: 30%;padding-top:10px;padding-left:5px;">'+data[i].name
-									+'时间:<input type="text" id="" name="businessTime_'+data[i].id+'"' 
+									+'时间:<input type="text" id="businessTime_'+data[i].id+'" name="businessTime_'+data[i].id+'"' 
 								    +'style="height: 32px;"></div>'		
 							);
+						}
+						if(null != completion){
+							completion();
 						}
 					}
 				},
@@ -441,7 +455,7 @@
 
 		/*========获取业务  */
 		$("#cancelBtn").click(function() {
-			location.href = "${ctx}/store/listIndex";
+			location.href = "${ctx}/technician/listIndex";
 		});
 
 		function queryValueByKey(name) {

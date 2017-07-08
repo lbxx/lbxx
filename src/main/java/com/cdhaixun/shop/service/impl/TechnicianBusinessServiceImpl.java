@@ -34,4 +34,9 @@ public class TechnicianBusinessServiceImpl implements ITechnicianBusinessService
     public List<TechnicianBusiness> findByTechnicianId(Integer technicianId) {
       return  technicianBusinessMapper.selectByTechnicianId(technicianId);
     }
+
+    @Override
+    public void deleteByTechnicianId(int technicianId) {
+        technicianBusinessMapper.deleteByTechnicianId(technicianId);
+    }
 }

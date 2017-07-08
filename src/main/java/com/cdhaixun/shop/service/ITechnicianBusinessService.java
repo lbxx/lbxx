@@ -13,4 +13,6 @@ public interface ITechnicianBusinessService {
 
     TechnicianBusiness findByBusinessIdAndTechnicianId(Integer id, Integer technicianid);
    List<TechnicianBusiness> findByTechnicianId(Integer technicianid);
+
+void deleteByTechnicianId(int technicianId);
 }

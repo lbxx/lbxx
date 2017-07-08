@@ -116,7 +116,7 @@
                 // 下面是列表页其它数据，name属性与java属性的set匹配
                 {name:'id',index:'id', width:150,editable: true,editoptions:{size:"20",maxlength:"30"}},
                 {name:'name',index:'name', width:150,editable: true,editoptions:{size:"20",maxlength:"30"}},
-                {name:'gender',index:'gender', width:150,editable: true,editoptions:{size:"20",maxlength:"30"}},
+                {name:'gender',index:'gender', width:150,editable: true,editoptions:{size:"20",maxlength:"30"},formatter:formatGender},
                 {name:'mon',index:'mon', width:150,align:'center',editable: true,editoptions:{size:"20",maxlength:"30"},formatter:formatCellvalue},
                 {name:'tue',index:'tue', width:150,align:'center',editable: true,editoptions:{size:"20",maxlength:"30"},formatter:formatCellvalue},
                 {name:'wed',index:'wed', width:150,align:'center',editable: true,editoptions:{size:"20",maxlength:"30"},formatter:formatCellvalue},
@@ -144,12 +144,20 @@
             },
             autowidth: true
         });
-        //格式化表格中的值
+        //格式化星期
         function formatCellvalue(cellvalue,options,rowdata){
             if(cellvalue == '1'){
                 return '<i class="ace-icon glyphicon glyphicon-ok"></i>';
             }else{
                 return '';
+            }
+        }
+      //格式化性别
+        function formatGender(cellvalue,options,rowdata){
+            if(cellvalue == true){
+                return '男';
+            }else{
+                return '女';
             }
         }
         // 配置jqGrid列表下面的分页页数table参数
@@ -235,7 +243,101 @@
                     }
                 }
             });
+    
+  //自定义删除按钮方法
+    $('#removeButton').removeAttr('onclick');//移除元素上原有的click事件
+    $('#removeButton').bind(
+            'click',
+            function() {
+                var grid_selector = "#grid-table";
+                var selectedIds = $(grid_selector).jqGrid('getGridParam',
+                        'selarrrow');
+                if (selectedIds == undefined || selectedIds.length == 0) {
+                    mydialog("", '对不起，请选择一个选项!');
+                } else {
+                    if (selectedIds.length <= 0) {
+                        return;
+                    } else {
+                        //var id = $idsCheckedCheck.parent().parent().attr("id");
+                        var url = '${ctx}/technician/remove' + "?id="
+                                + selectedIds[0];
+                        mydialog(url, '您确定要删除吗?');
+                    }
+                }
+                return false;
 
+            });
+ // 下面是dialog弹窗的
+    function mydialog(url, msg) {
+        var grid_selector = "#grid-table";
+        // 动态生成弹窗内容
+        $("#dialog-message p").html(msg);
+        // 下面这个方法是dialog样式文件，勿删
+        $.widget("ui.dialog", $.extend({}, $.ui.dialog.prototype, {
+            _title : function(title) {
+                var $title = this.options.title || '&nbsp;'
+                if (("title_html" in this.options)
+                        && this.options.title_html == true)
+                    title.html($title);
+                else
+                    title.text($title);
+            }
+        }));
+        var dialog = $("#dialog-message")
+                .removeClass('hide')
+                .dialog(
+                        {
+                            modal : true,
+                            title : "<div class='widget-header widget-header-small'><h4 class='smaller'><i class='icon-ok'></i>提示信息</h4></div>",
+                            title_html : true,
+                            buttons : [
+                                    {
+                                        text : "Cancel",
+                                        "class" : "btn btn-xs",
+                                        click : function() {
+                                            // 取消关闭弹窗
+                                            $(this).dialog("close");
+                                        }
+                                    },
+                                    {
+                                        text : "OK",
+                                        "class" : "btn btn-primary btn-xs",
+                                        click : function() {
+                                            // 确定关闭弹窗，然后执行操作
+                                            $(this).dialog("close");
+                                            // 判断url是否为空
+                                            if (url != "" && url != null) {
+                                                $
+                                                        .ajax({
+                                                            url : url,
+                                                            type : 'GET',
+                                                            headers : {
+                                                                Accept : "application/json",
+                                                            },
+                                                            success : function(
+                                                                    data) {
+                                                                if (data.result) {
+
+                                                                    $(
+                                                                            grid_selector)
+                                                                            .setGridParam(
+                                                                                    {
+                                                                                        datatype : 'json',
+                                                                                        page : 1
+                                                                                    })
+                                                                            .trigger(
+                                                                                    'reloadGrid');
+                                                                }
+                                                            },
+                                                            error : function() {
+
+                                                            }
+                                                        });
+                                            }
+                                        }
+                                    } ]
+                        });
+        }
 </script>
 </body>
 </html>

@@ -23,7 +23,7 @@ public class TechnicianServiceImpl implements ITechnicianService {
     @Autowired
     TechnicianMapper technicianMapper;
     @Autowired
-    TechnicianBusinessMapper TechnicianBusinessMapper;
+    TechnicianBusinessMapper technicianBusinessMapper;
     
     @Override
     public Technician selectByPrimaryKey(Integer technicianId) {
@@ -77,7 +77,6 @@ public class TechnicianServiceImpl implements ITechnicianService {
                 }
             }
         }
-        
         pager.setTotal(dbpage.getTotal());
         pager.setResult(list);
         pager.setPages(dbpage.getPages());
@@ -111,7 +110,7 @@ public class TechnicianServiceImpl implements ITechnicianService {
             try {
                 technicianMapper.updateByPrimaryKeySelective(technician);
                 //删除technician_business中原有的记录
-                technicianMapper.deleteByTechnicianId(technician.getId());
+                technicianBusinessMapper.deleteByTechnicianId(technician.getId());
                 insertTechnicianBusiness(technician,businessTimeMap, date);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -152,7 +151,7 @@ public class TechnicianServiceImpl implements ITechnicianService {
             technicianBusiness.setTechnicianid(technician.getId());
             technicianBusiness.setSpend(Integer.parseInt(businessTimeMap.get(id).toString()));
             technicianBusiness.setCreatetime(date);
-            TechnicianBusinessMapper.insertSelective(technicianBusiness);
+            technicianBusinessMapper.insertSelective(technicianBusiness);
         }
     }
 
@@ -166,6 +165,11 @@ public class TechnicianServiceImpl implements ITechnicianService {
     public Technician findById(Integer id) {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    @Override
+    public void deleteByTechnicianId(int technicianId) {
+        technicianMapper.deleteByTechnicianId(technicianId);
     }
 
 

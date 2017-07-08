@@ -23,4 +23,6 @@ public interface TechnicianBusinessMapper {
 
     List<TechnicianBusiness> selectByTechnicianId(Integer technicianId);
 
+    int deleteByTechnicianId(Integer id);
+
 }
