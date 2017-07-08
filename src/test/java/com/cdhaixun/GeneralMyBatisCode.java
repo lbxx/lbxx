@@ -1,17 +1,17 @@
 package com.cdhaixun;
 
-import java.io.File;
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.mybatis.generator.api.MyBatisGenerator;
 import org.mybatis.generator.config.Configuration;
 import org.mybatis.generator.config.xml.ConfigurationParser;
 import org.mybatis.generator.exception.InvalidConfigurationException;
 import org.mybatis.generator.exception.XMLParserException;
 import org.mybatis.generator.internal.DefaultShellCallback;
+
+import java.io.File;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 public class GeneralMyBatisCode {
 
     public static void main(String[] args) {
@@ -40,7 +40,7 @@ public class GeneralMyBatisCode {
         List<String> warnings = new ArrayList<String>();
         boolean overwrite = true;
         //File configFile = new File("D:\\sts-bundle\\workspace\\AAv1\\src\\test\\resources\\generatorConfig.xml");
-        File configFile = new File("D:\\Workspace\\lbxx\\src\\test\\resource\\generator.xml");
+        File configFile = new File("E:\\git\\lbxx\\src\\test\\resource\\generator.xml");
         ConfigurationParser cp = new ConfigurationParser(warnings);
         Configuration config = cp.parseConfiguration(configFile);
         DefaultShellCallback callback = new DefaultShellCallback(overwrite);

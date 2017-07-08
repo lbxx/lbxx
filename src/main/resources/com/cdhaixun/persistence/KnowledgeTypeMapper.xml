@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cdhaixun.persistence.KnowledgeTypeMapper" >
+  <resultMap id="BaseResultMap" type="com.cdhaixun.domain.KnowledgeType" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="state" property="state" jdbcType="BIT" />
+    <result column="isdelete" property="isdelete" jdbcType="BIT" />
+    <result column="typename" property="typename" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, state, isdelete, typename
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from knowledge_type
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="getTypeList" resultMap="BaseResultMap" parameterType="map" >
+    select
+    <include refid="Base_Column_List" />
+    from knowledge_type
+    where isdelete = 0
+  </select>
+  <select id="findList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from knowledge_type
+    where isdelete = 0
+    AND state = 1
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from knowledge_type
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cdhaixun.domain.KnowledgeType" >
+    insert into knowledge_type (id, state, isdelete, 
+      typename)
+    values (#{id,jdbcType=INTEGER}, #{state,jdbcType=BIT}, #{isdelete,jdbcType=BIT}, 
+      #{typename,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.cdhaixun.domain.KnowledgeType" >
+    update knowledge_type
+    <set >
+      <if test="state != null" >
+        state = #{state,jdbcType=BIT},
+      </if>
+      <if test="isdelete != null" >
+        isdelete = #{isdelete,jdbcType=BIT},
+      </if>
+      <if test="typename != null" >
+        typename = #{typename,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
