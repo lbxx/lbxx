@@ -10,6 +10,8 @@ import com.cdhaixun.shop.service.IManagerService;
 import com.cdhaixun.shop.service.IMenuService;
 import com.cdhaixun.shop.service.IOperateService;
 import com.cdhaixun.shop.service.IRoleOperateService;
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -42,6 +44,7 @@ public class MyRealm extends AuthorizingRealm {
         List<RoleOperate> roleOperateList=roleOperateService.findByRole(currentUsername);
         for (RoleOperate roleOperate:roleOperateList) {
             Operate operate=operateService.findById(roleOperate.getOperateid());
+            if(operate!=null&&StringUtils.isNotEmpty(operate.getMenucode()))
             permissionList.add(operate.getMenucode()+":"+operate.getPermission());
         }
             simpleAuthorInfo.addStringPermissions(permissionList);
