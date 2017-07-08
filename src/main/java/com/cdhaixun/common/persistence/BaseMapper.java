@@ -17,7 +17,8 @@ public interface BaseMapper<T> {
 	 * @param record
 	 * @return
 	 */
-    int insert(T record);
+    int
+	insert(T record);
     /**
      * 通过id获取数据
      * @param id

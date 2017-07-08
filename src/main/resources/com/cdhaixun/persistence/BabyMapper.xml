@@ -132,25 +132,25 @@
         from baby
         <where>
             <if test="name != null">
-                and name = #{name,jdbcType=VARCHAR},
+                and name = #{name,jdbcType=VARCHAR}
             </if>
             <if test="birthday != null">
-                and birthday = #{birthday,jdbcType=TIMESTAMP},
+                and birthday = #{birthday,jdbcType=TIMESTAMP}
             </if>
             <if test="gender != null">
-                and gender = #{gender,jdbcType=BIT},
+                and gender = #{gender,jdbcType=BIT}
             </if>
             <if test="remark != null">
-                and remark = #{remark ,jdbcType=VARCHAR},
+                and remark = #{remark ,jdbcType=VARCHAR}
             </if>
             <if test="createtime != null">
-                and createtime = #{createtime,jdbcType=TIMESTAMP},
+                and createtime = #{createtime,jdbcType=TIMESTAMP}
             </if>
             <if test="userid != null">
-                and userid = #{userid,jdbcType=INTEGER},
+                and userid = #{userid,jdbcType=INTEGER}
             </if>
             <if test="isdelete != null">
-                and isdelete = #{isdelete,jdbcType=BIT},
+                and isdelete = #{isdelete,jdbcType=BIT}
             </if>
         </where>
     </select>

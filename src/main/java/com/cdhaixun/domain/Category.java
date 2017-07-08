@@ -11,10 +11,19 @@ public class Category {
     private Date createtime;
 
     private Boolean isdelete;
+    private String  pic;
     private List<Business> businessList;
 
     private Integer enterStoreCount=0;//入驻商家
     private Integer nearbyStoreCount=0;//附近商家
+
+    public String getPic() {
+        return pic;
+    }
+
+    public void setPic(String pic) {
+        this.pic = pic;
+    }
 
     public Integer getEnterStoreCount() {
         return enterStoreCount;

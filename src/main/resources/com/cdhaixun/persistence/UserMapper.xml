@@ -79,7 +79,7 @@
     delete from user
     where id = #{id,jdbcType=INTEGER}
   </delete>
-    <insert id="insert" parameterType="com.cdhaixun.domain.User">
+    <insert id="insert" parameterType="com.cdhaixun.domain.User" useGeneratedKeys="true">
     insert into user (id, storeid, password, 
       mobile, sex, email, 
       nickname, name, registertime, 
@@ -187,79 +187,79 @@
         from user
         <where>
             <if test="storeid != null">
-                and storeid = #{storeid,jdbcType=INTEGER},
+                and storeid = #{storeid,jdbcType=INTEGER}
             </if>
             <if test="password != null">
-                and password = #{password,jdbcType=VARCHAR},
+                and password = #{password,jdbcType=VARCHAR}
             </if>
             <if test="mobile != null">
-                and mobile = #{mobile,jdbcType=VARCHAR},
+                and mobile = #{mobile,jdbcType=VARCHAR}
             </if>
             <if test="signature != null">
-                signature = #{signature,jdbcType=VARCHAR},
+                signature = #{signature,jdbcType=VARCHAR}
             </if>
             <if test="sex != null">
-                and sex = #{sex,jdbcType=INTEGER},
+                and sex = #{sex,jdbcType=INTEGER}
             </if>
             <if test="email != null">
-                and email = #{email,jdbcType=VARCHAR},
+                and email = #{email,jdbcType=VARCHAR}
             </if>
             <if test="nickname != null">
-                and nickname = #{nickname,jdbcType=VARCHAR},
+                and nickname = #{nickname,jdbcType=VARCHAR}
             </if>
             <if test="name != null">
-                and name = #{name,jdbcType=VARCHAR},
+                and name = #{name,jdbcType=VARCHAR}
             </if>
             <if test="registertime != null">
-                and registertime = #{registertime,jdbcType=DATE},
+                and registertime = #{registertime,jdbcType=DATE}
             </if>
             <if test="lastlogintime != null">
-                and lastlogintime = #{lastlogintime,jdbcType=DATE},
+                and lastlogintime = #{lastlogintime,jdbcType=DATE}
             </if>
             <if test="remark != null">
-                and remark = #{remark,jdbcType=VARCHAR},
+                and remark = #{remark,jdbcType=VARCHAR}
             </if>
             <if test="registtype != null">
-                and registtype = #{registtype,jdbcType=INTEGER},
+                and registtype = #{registtype,jdbcType=INTEGER}
             </if>
             <if test="blance != null">
-                and blance = #{blance,jdbcType=DECIMAL},
+                and blance = #{blance,jdbcType=DECIMAL}
             </if>
             <if test="birthday != null">
-                and birthday = #{birthday,jdbcType=DATE},
+                and birthday = #{birthday,jdbcType=DATE}
             </if>
             <if test="province != null">
-                and province = #{province,jdbcType=VARCHAR},
+                and province = #{province,jdbcType=VARCHAR}
             </if>
             <if test="city != null">
-                and city = #{city,jdbcType=VARCHAR},
+                and city = #{city,jdbcType=VARCHAR}
             </if>
             <if test="area != null">
-                and area = #{area,jdbcType=VARCHAR},
+                and area = #{area,jdbcType=VARCHAR}
             </if>
             <if test="address != null">
-                and address = #{address,jdbcType=VARCHAR},
+                and address = #{address,jdbcType=VARCHAR}
             </if>
             <if test="idcard != null">
-                and idcard = #{idcard,jdbcType=VARCHAR},
+                and idcard = #{idcard,jdbcType=VARCHAR}
             </if>
             <if test="img != null">
-                and img = #{img,jdbcType=VARCHAR},
+                and img = #{img,jdbcType=VARCHAR}
             </if>
             <if test="qrcode != null">
-                and qrcode = #{qrcode,jdbcType=VARCHAR},
+                and qrcode = #{qrcode,jdbcType=VARCHAR}
             </if>
             <if test="state != null">
-                and state = #{state,jdbcType=INTEGER},
+                and state = #{state,jdbcType=INTEGER}
             </if>
             <if test="isdelete != null">
-                and isdelete = #{isdelete,jdbcType=INTEGER},
+                and isdelete = #{isdelete,jdbcType=INTEGER}
             </if>
             <if test="points != null">
-                and points = #{points,jdbcType=INTEGER},
+                and points = #{points,jdbcType=INTEGER}
             </if>
             <if test="usercard != null">
-                and usercard = #{usercard,jdbcType=VARCHAR},
+                and usercard = #{usercard,jdbcType=VARCHAR}
             </if>
         </where>
 

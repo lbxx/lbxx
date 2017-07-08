@@ -28,10 +28,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by tangxinmao on 2017/5/30.
@@ -65,7 +62,7 @@ public class LoginController extends BaseController {
             Captcha captcha = new Captcha();
             captcha.setCaptcha(randomNumeric);
             captcha.setCreateTime(new Date());
-            redisTemplate.boundHashOps("captcha").put(mobile, captcha);//发送成功后将验证码放入redis
+            redisTemplate.boundHashOps("captcha").put(mobile.getMobile(), captcha);//发送成功后将验证码放入redis
             //正常返回输出data包体信息（map）
             HashMap<String, Object> data = (HashMap<String, Object>) re.get("data");
             Set<String> keySet = data.keySet();
@@ -86,13 +83,15 @@ public class LoginController extends BaseController {
     @ResponseBody
     public com.cdhaixun.common.appVo.Result appLogin(@RequestBody Mobile mobile, HttpSession httpSession) throws Exception {
         com.cdhaixun.common.appVo.Result result = new com.cdhaixun.common.appVo.Result();
-        Captcha captcha = (Captcha) redisTemplate.boundHashOps("captcha").entries().remove(mobile.getMobile());
-        if(captcha!=null&&captcha.getCaptcha().equals(mobile.getCaptcha())&&(new Date().getTime()-captcha.getCreateTime().getTime())<3*60*1000){
+        Captcha captcha = (Captcha) redisTemplate.opsForHash().entries("captcha").remove(mobile.getMobile());
+        if(captcha!=null&&captcha.getCaptcha().equals(mobile.getCaptcha())/*&&(new Date().getTime()-captcha.getCreateTime().getTime())<3*60*1000*/){
             User user= userService.findByMobile(mobile.getMobile());
             if(user==null){
+                user=new User();
+                user.setMobile(mobile.getMobile());
                 userService.save(user);
             }else{
-               List<Baby> babyList= babyService.findByUserId(user.getId());
+                List<Baby> babyList= babyService.findByUserId(user.getId());
                 user.setBabyList(babyList);
             }
             result.setData(user);

@@ -2,6 +2,7 @@ package com.cdhaixun.domain;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 public class Store {
     private Integer id;
@@ -32,8 +33,18 @@ public class Store {
 
     private Date createtime;
 
+
     private Boolean isdelete;
+    private List<Business> businessList;
     private String orderBy;
+
+    public List<Business> getBusinessList() {
+        return businessList;
+    }
+
+    public void setBusinessList(List<Business> businessList) {
+        this.businessList = businessList;
+    }
 
     public String getCity() {
         return city;

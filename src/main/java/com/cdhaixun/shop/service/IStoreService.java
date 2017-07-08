@@ -1,5 +1,6 @@
 package com.cdhaixun.shop.service;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +22,7 @@ public interface IStoreService {
     int updateByPrimaryKeySelective(Store store,String[] businessArr);
     List<Store> selectByPrimaryKey(int id);
     List<Business> listBusiness();
-    int insertSelective(Store store,MultipartFile file,HttpServletRequest request);
+    int insertSelective(Store store,MultipartFile file,HttpServletRequest request) throws IOException;
     void insertStoreBusiness(int storeid, String[] businessArr);      
     List<Integer> getStoreBusinessByStoreId(int storeId);
     int updateIsDeleteById(int id);

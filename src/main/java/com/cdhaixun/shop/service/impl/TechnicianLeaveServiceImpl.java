@@ -16,9 +16,10 @@ public class TechnicianLeaveServiceImpl implements ITechnicianLeaveService {
     @Autowired
     private TechnicianLeaveMapper technicianLeaveMapper;
     @Override
-    public TechnicianLeave findOneByLeaveDay(Date createtime) {
+    public TechnicianLeave findOneByLeaveDay(Date createtime, Integer technicianid) {
         TechnicianLeave technicianLeave=new TechnicianLeave();
         technicianLeave.setLeaveday(createtime);
+        technicianLeave.setTechnicianid(technicianid);
         return technicianLeaveMapper.selectOneByTechnicianLeave(technicianLeave);
     }
 }

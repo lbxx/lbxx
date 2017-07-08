@@ -8,5 +8,6 @@ public interface SessionConstant {
     String KAPTCHA_SESSION_DATE ="KAPTCHA_SESSION_DATE";
     String MANAGER="manager";
     String MENU_LIST="menuList";
+    String PERMISSION_LIST="permissionList";
 
 }

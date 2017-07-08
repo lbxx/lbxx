@@ -4,11 +4,12 @@
   <resultMap id="BaseResultMap" type="com.cdhaixun.domain.Category">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="pic" jdbcType="VARCHAR" property="pic" />
     <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
     <result column="isdelete" jdbcType="BIT" property="isdelete" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, name, createtime, isdelete
+    id, name, createtime, isdelete,pic
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -34,9 +35,9 @@
   </delete>
   <insert id="insert" parameterType="com.cdhaixun.domain.Category">
     insert into category (id, name, createtime, 
-      isdelete)
+      isdelete,pic)
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, 
-      #{isdelete,jdbcType=BIT})
+      #{isdelete,jdbcType=BIT},#{pic})
   </insert>
   <insert id="insertSelective" parameterType="com.cdhaixun.domain.Category">
     insert into category
@@ -46,6 +47,9 @@
       </if>
       <if test="name != null">
         name,
+      </if>
+      <if test="pic != null">
+        pic,
       </if>
       <if test="createtime != null">
         createtime,
@@ -61,6 +65,9 @@
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
       </if>
+      <if test="pic != null">
+        #{pic,jdbcType=VARCHAR},
+      </if>
       <if test="createtime != null">
         #{createtime,jdbcType=TIMESTAMP},
       </if>
@@ -75,6 +82,9 @@
       <if test="name != null">
         name = #{name,jdbcType=VARCHAR},
       </if>
+      <if test="pic != null">
+        pic = #{pic,jdbcType=VARCHAR},
+      </if>
       <if test="createtime != null">
         createtime = #{createtime,jdbcType=TIMESTAMP},
       </if>
@@ -87,6 +97,7 @@
   <update id="updateByPrimaryKey" parameterType="com.cdhaixun.domain.Category">
     update category
     set name = #{name,jdbcType=VARCHAR},
+    pic = #{pic,jdbcType=VARCHAR},
       createtime = #{createtime,jdbcType=TIMESTAMP},
       isdelete = #{isdelete,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
@@ -98,13 +109,16 @@
     from category
     <where>
       <if test="name != null">
-      and   name = #{name,jdbcType=VARCHAR},
+      and   name = #{name,jdbcType=VARCHAR}
+      </if>
+      <if test="pic != null">
+        and   pic = #{pic,jdbcType=VARCHAR}
       </if>
       <if test="createtime != null">
-      and  createtime = #{createtime,jdbcType=TIMESTAMP},
+      and  createtime = #{createtime,jdbcType=TIMESTAMP}
       </if>
       <if test="isdelete != null">
-      and   isdelete = #{isdelete,jdbcType=BIT},
+      and   isdelete = #{isdelete,jdbcType=BIT}
       </if>
     </where>
   </select>

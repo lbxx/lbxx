@@ -228,46 +228,46 @@
     from store
   <where>
     <if test="name != null" >
-     and name = #{name,jdbcType=VARCHAR},
+     and name = #{name,jdbcType=VARCHAR}
     </if>
     <if test="telephone != null" >
-      and telephone = #{telephone,jdbcType=VARCHAR},
+      and telephone = #{telephone,jdbcType=VARCHAR}
     </if>
     <if test="cellphone != null" >
-      and cellphone = #{cellphone,jdbcType=VARCHAR},
+      and cellphone = #{cellphone,jdbcType=VARCHAR}
     </if>
     <if test="openinghours != null" >
-      and openinghours = #{openinghours,jdbcType=TIME},
+      and openinghours = #{openinghours,jdbcType=TIME}
     </if>
     <if test="closinghours != null" >
-      and  closinghours = #{closinghours,jdbcType=TIME},
+      and  closinghours = #{closinghours,jdbcType=TIME}
     </if>
     <if test="pic != null" >
-      and  pic = #{pic,jdbcType=VARCHAR},
+      and  pic = #{pic,jdbcType=VARCHAR}
     </if>
     <if test="city != null" >
-      and  city = #{city,jdbcType=VARCHAR},
+      and  city = #{city,jdbcType=VARCHAR}
     </if>
     <if test="location != null" >
-      and   location = #{location,jdbcType=VARCHAR},
+      and   location = #{location,jdbcType=VARCHAR}
     </if>
     <if test="description != null" >
-      and  description = #{description,jdbcType=VARCHAR},
+      and  description = #{description,jdbcType=VARCHAR}
     </if>
     <if test="chainstoreid != null" >
-      and chainstoreid = #{chainstoreid,jdbcType=INTEGER},
+      and chainstoreid = #{chainstoreid,jdbcType=INTEGER}
     </if>
     <if test="longitude != null" >
-      and longitude = #{longitude,jdbcType=DECIMAL},
+      and longitude = #{longitude,jdbcType=DECIMAL}
     </if>
     <if test="latitude != null" >
-      and  latitude = #{latitude,jdbcType=DECIMAL},
+      and  latitude = #{latitude,jdbcType=DECIMAL}
     </if>
     <if test="createtime != null" >
-      and  createtime = #{createtime,jdbcType=TIMESTAMP},
+      and  createtime = #{createtime,jdbcType=TIMESTAMP}
     </if>
     <if test="isdelete != null" >
-      and  isdelete = #{isdelete,jdbcType=BIT},
+      and  isdelete = #{isdelete,jdbcType=BIT}
     </if>
   </where>
     <if test="orderBy != null" >

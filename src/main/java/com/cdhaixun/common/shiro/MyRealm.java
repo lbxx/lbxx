@@ -23,6 +23,7 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class MyRealm extends AuthorizingRealm {
@@ -39,15 +40,10 @@ public class MyRealm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 
         String currentUsername = (String) super.getAvailablePrincipal(principals);
-       SimpleAuthorizationInfo simpleAuthorInfo = new SimpleAuthorizationInfo();
-        List<String> permissionList = new ArrayList<String>();
-        List<RoleOperate> roleOperateList=roleOperateService.findByRole(currentUsername);
-        for (RoleOperate roleOperate:roleOperateList) {
-            Operate operate=operateService.findById(roleOperate.getOperateid());
-            if(operate!=null&&StringUtils.isNotEmpty(operate.getMenucode()))
-            permissionList.add(operate.getMenucode()+":"+operate.getPermission());
-        }
-            simpleAuthorInfo.addStringPermissions(permissionList);
+          SimpleAuthorizationInfo simpleAuthorInfo = new SimpleAuthorizationInfo();
+             Subject currentUser = SecurityUtils.getSubject();
+             Session session = currentUser.getSession();
+            simpleAuthorInfo.addStringPermissions((Collection<String>) session.getAttribute(SessionConstant.PERMISSION_LIST));
             return simpleAuthorInfo;
 
     }
@@ -62,9 +58,19 @@ public class MyRealm extends AuthorizingRealm {
         if (manager != null) {
             AuthenticationInfo authcInfo = new SimpleAuthenticationInfo(manager.getAccount(), manager.getPassword(), this.getName());
             this.setSession(SessionConstant.MANAGER, manager);
+
             String role = manager.getRole();
             List<Menu> menuList = menuService.getMenus(role);
             this.setSession(SessionConstant.MENU_LIST, menuList);
+
+            List<String> permissionList = new ArrayList<String>();
+            List<RoleOperate> roleOperateList=roleOperateService.findByRole(role);
+            for (RoleOperate roleOperate:roleOperateList) {
+                Operate operate=operateService.findById(roleOperate.getOperateid());
+                if(operate!=null&&StringUtils.isNotEmpty(operate.getMenucode()))
+                    permissionList.add(operate.getMenucode()+":"+operate.getPermission());
+            }
+            this.setSession(SessionConstant.PERMISSION_LIST, permissionList);
             return authcInfo;
         }
         return null;

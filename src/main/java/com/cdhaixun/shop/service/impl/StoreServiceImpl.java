@@ -11,6 +11,7 @@ import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.cdhaixun.shop.service.IUploadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -40,6 +41,8 @@ public class StoreServiceImpl implements IStoreService {
     private BusinessMapper businessMapper;
     @Autowired
     private StoreBusinessMapper storeBusinessMapper;
+    @Autowired
+    private IUploadService uploadService;
 
     @Value("#{configProperties['imgStore']}")
     private String imgStore;
@@ -127,9 +130,9 @@ public class StoreServiceImpl implements IStoreService {
         return businessMapper.listBusiness();
     }
     @Override
-    public int insertSelective(Store store, MultipartFile file, HttpServletRequest request) {
+    public int insertSelective(Store store, MultipartFile file, HttpServletRequest request) throws IOException {
         if(file != null){
-            String picPath = uploadPic(request,file);
+            String picPath =uploadService.upload(request,file).getData().toString();
             store.setPic(picPath);
         }
         Date date = new Date();
