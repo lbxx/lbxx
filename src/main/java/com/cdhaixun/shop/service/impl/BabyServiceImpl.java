@@ -6,6 +6,7 @@ import com.cdhaixun.shop.service.IBabyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -18,10 +19,14 @@ public class BabyServiceImpl implements IBabyService {
 
     @Override
     public void save(Baby babyDo) {
-        if (babyDo.getId() != null) {
+        if (babyDo.getId() != null&&babyDo.getId()!=0) {
+
             babyMapper.updateByPrimaryKeySelective(babyDo);
         } else {
+            babyDo.setCreatetime(new Date());
+            babyDo.setIsdelete(false);
             babyMapper.insert(babyDo);
+
         }
     }
 

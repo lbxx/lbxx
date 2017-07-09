@@ -3,14 +3,15 @@ package com.cdhaixun.shop.web;
 import com.cdhaixun.common.appVo.City;
 import com.cdhaixun.common.appVo.LonAndLat;
 import com.cdhaixun.common.appVo.Result;
-import com.cdhaixun.domain.*;
+import com.cdhaixun.domain.Business;
+import com.cdhaixun.domain.Category;
+import com.cdhaixun.domain.Store;
+import com.cdhaixun.domain.StoreBusiness;
 import com.cdhaixun.shop.service.IBusinessService;
 import com.cdhaixun.shop.service.ICategoryService;
 import com.cdhaixun.shop.service.IStoreBusinessService;
 import com.cdhaixun.shop.service.IStoreService;
 import com.cdhaixun.util.MathUtil;
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -99,7 +100,7 @@ public class CategoryAppController {
                     storeidList.add(storeBusiness.getStoreid());
                 }
             }
-            category.setEnterStoreCount(storeidList.size());
+            category.setEnterStoreCount(storeidList.size()) ;
             //查询附近商家
             Store store = new Store();
             store.setCity(city.getCity());
