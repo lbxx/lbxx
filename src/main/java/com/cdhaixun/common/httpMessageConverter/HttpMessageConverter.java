@@ -59,9 +59,8 @@ public class HttpMessageConverter extends AbstractHttpMessageConverter<Object> {
             String temp = StreamUtils.copyToString(httpInputMessage.getBody(), Charset.forName("UTF-8"));
 
             byte[] result = cipher.doFinal(Base64.decodeBase64(temp));
-
+            objectMapper=  new ObjectMapper();
             System.out.printf(new String(result,"UTF-8"));
-            objectMapper.setDateFormat(new SimpleDateFormat("yyyy.MM.dd"));
             Object object = objectMapper.readValue(result, aClass);
             return object;
 
@@ -78,6 +77,7 @@ public class HttpMessageConverter extends AbstractHttpMessageConverter<Object> {
 
     @Override
     protected void writeInternal(Object o, HttpOutputMessage httpOutputMessage) throws IOException, HttpMessageNotWritableException {
+        objectMapper=  new ObjectMapper();
         objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
         objectMapper.setSerializationInclusion(JsonSerialize.Inclusion.NON_NULL);
         String s = objectMapper.writeValueAsString(o);
