@@ -1,13 +1,14 @@
 package com.cdhaixun.shop.web;
 
 import com.cdhaixun.common.appVo.Appointment;
-import com.cdhaixun.common.appVo.Baby;
 import com.cdhaixun.common.appVo.Result;
 import com.cdhaixun.domain.AppointmentDetail;
 import com.cdhaixun.domain.Business;
 import com.cdhaixun.domain.TechnicianBusiness;
-import com.cdhaixun.domain.TimeBucket;
-import com.cdhaixun.shop.service.*;
+import com.cdhaixun.shop.service.IAppointmentDetailService;
+import com.cdhaixun.shop.service.IAppointmentService;
+import com.cdhaixun.shop.service.ITechnicianBusinessService;
+import com.cdhaixun.shop.service.ITimeBucketService;
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -41,6 +42,7 @@ public class AppointmentAppController {
     @ResponseBody
     public Result addAppointment(@RequestBody Appointment appointment, HttpServletRequest httpServletRequest) throws InvocationTargetException, IllegalAccessException {
         Result result = new Result();
+
         //获取预约起始时间
         List<com.cdhaixun.domain.Appointment> appointmentList = appointmentService.findByStartTimeAndTechnicianId(appointment.getStarttime(), appointment.getEndtime(), appointment.getTechnicianid());
         Date starttime = appointment.getStarttime();
