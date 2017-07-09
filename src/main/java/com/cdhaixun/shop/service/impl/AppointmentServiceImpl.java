@@ -31,8 +31,8 @@ public class AppointmentServiceImpl implements IAppointmentService {
     public List<Appointment> findByStartTimeAndTechnicianId(Date starttime, Date endtime, Integer technicianid) {
         Appointment appointment=new Appointment();
         appointment.setTechnicianid(technicianid);
-        appointment.setStarttime(starttime);
-        appointment.setEndtime(endtime);
+        appointment.setStarttimeFrom(starttime);
+        appointment.setStarttimeTo(endtime);
         return appointmentMapper.selectByAppointment(appointment);
     }
 

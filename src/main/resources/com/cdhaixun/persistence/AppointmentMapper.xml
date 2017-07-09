@@ -177,34 +177,34 @@
         from appointment
         <where>
             <if test="createtime != null">
-                and createtime = #{createtime,jdbcType=TIMESTAMP},
+                and createtime = #{createtime,jdbcType=TIMESTAMP}
             </if>
             <if test="starttime != null">
-                and starttime = #{starttime,jdbcType=TIMESTAMP},
+                and starttime = #{starttime,jdbcType=TIMESTAMP}
             </if>
             <if test="starttimeFrom != null">
-                and starttimeFrom &gt;= #{starttimeFrom,jdbcType=TIMESTAMP},
+                and starttime &gt;= #{starttimeFrom,jdbcType=TIMESTAMP}
             </if>
             <if test="starttimeTo != null">
-                and starttimeTo &lt;#{starttimeTo,jdbcType=TIMESTAMP},
+                and starttime &lt;#{starttimeTo,jdbcType=TIMESTAMP}
             </if>
             <if test="userid != null">
-                and userid = #{userid,jdbcType=INTEGER},
+                and userid = #{userid,jdbcType=INTEGER}
             </if>
             <if test="storeid != null">
-                and storeid = #{storeid,jdbcType=INTEGER},
+                and storeid = #{storeid,jdbcType=INTEGER}
             </if>
             <if test="technicianid != null">
-                and technicianid=#{technicianid},
+                and technicianid=#{technicianid}
             </if>
             <if test="state != null">
-                and state = #{state,jdbcType=CHAR},
+                and state = #{state,jdbcType=CHAR}
             </if>
             <if test="isdelete != null">
-                and isdelete = #{isdelete,jdbcType=BIT},
+                and isdelete = #{isdelete,jdbcType=BIT}
             </if>
             <if test="remark != null">
-                and remark = #{remark},
+                and remark = #{remark}
             </if>
         </where>
     </select>

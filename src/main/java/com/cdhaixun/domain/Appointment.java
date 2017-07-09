@@ -13,6 +13,8 @@ public class Appointment {
 
     private String state;
     private  Date starttime; //预约开始时间
+    private Date starttimeFrom;
+    private Date starttimeTo;
     private  Date endtime;//结束时间
     private  Date createtimeFrom ;
     private  Date createtimeTo ;
@@ -24,6 +26,22 @@ public class Appointment {
 
     public void setAppointnumber(Integer appointnumber) {
         this.appointnumber = appointnumber;
+    }
+
+    public Date getStarttimeFrom() {
+        return starttimeFrom;
+    }
+
+    public void setStarttimeFrom(Date starttimeFrom) {
+        this.starttimeFrom = starttimeFrom;
+    }
+
+    public Date getStarttimeTo() {
+        return starttimeTo;
+    }
+
+    public void setStarttimeTo(Date starttimeTo) {
+        this.starttimeTo = starttimeTo;
     }
 
     public Date getCreatetimeFrom() {
