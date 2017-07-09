@@ -1,14 +1,5 @@
 package com.cdhaixun.shop.service.impl;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.cdhaixun.common.exception.HxException;
 import com.cdhaixun.common.vo.Result;
 import com.cdhaixun.domain.TechnicianLeave;
@@ -18,6 +9,14 @@ import com.cdhaixun.util.DateUtil;
 import com.cdhaixun.util.Pager;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by tangxinmao on 2017/7/2.
@@ -27,12 +26,12 @@ public class TechnicianLeaveServiceImpl implements ITechnicianLeaveService {
     @Autowired
     private TechnicianLeaveMapper technicianLeaveMapper;
     @Override
-    public TechnicianLeave findOneByLeaveDay(Date createtime, Integer technicianid) {
+    public List<TechnicianLeave> findOneByLeaveDay(Date createtime, Integer technicianid) {
         TechnicianLeave technicianLeave=new TechnicianLeave();
-//        technicianLeave.setLeaveday(createtime);
+         technicianLeave.setDatetime(createtime);
         technicianLeave.setTechnicianid(technicianid);
-//        return technicianLeaveMapper.selectOneByTechnicianLeave(technicianLeave);
-        return null;
+       return technicianLeaveMapper.selectOneByTechnicianLeave(technicianLeave);
+
     }
     @Override
     public Pager selectTechnicianLeaveList(Pager pager, Map<String, Object> parMap) {

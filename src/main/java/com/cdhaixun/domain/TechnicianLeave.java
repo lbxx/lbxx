@@ -14,9 +14,18 @@ public class TechnicianLeave {
     private Date createtime;
 
     private Boolean isdelete;
+    private Date datetime;//查询时间
 
     public Integer getId() {
         return id;
+    }
+
+    public Date getDatetime() {
+        return datetime;
+    }
+
+    public void setDatetime(Date datetime) {
+        this.datetime = datetime;
     }
 
     public void setId(Integer id) {

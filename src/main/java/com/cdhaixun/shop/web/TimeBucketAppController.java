@@ -40,9 +40,8 @@ public class TimeBucketAppController {
         Result result = new Result();
         result.setResult(true);
         //判断员工是否请假
-        TechnicianLeave technicianLeave = technicianLeaveService.findOneByLeaveDay(appointment.getCreatetime(), appointment.getTechnicianid());
-        if (technicianLeave != null)
-            return result;
+        List<TechnicianLeave> technicianLeaveList = technicianLeaveService.findOneByLeaveDay(appointment.getCreatetime(), appointment.getTechnicianid());
+
         //判断员工是否上班
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(appointment.getCreatetime());
@@ -50,11 +49,21 @@ public class TimeBucketAppController {
         if (!technician.getWorkday().contains((calendar.get(Calendar.DAY_OF_WEEK) + 1) + "")) {
             return result;
         }
-
         List<TimeBucket> timeBucketList = timeBucketService.findAll();
         Iterator<TimeBucket> timeBucketIterator = timeBucketList.iterator();
         while (timeBucketIterator.hasNext()) {
             TimeBucket timeBucket = timeBucketIterator.next();
+            //过滤请假时间
+            for (TechnicianLeave technicianLeave : technicianLeaveList) {
+                if (technicianLeave.getStarttime().compareTo(timeBucket.getStarttime()) <= 0
+                        && technicianLeave.getEndtime().compareTo(timeBucket.getStarttime()) >= 0 ||
+                        technicianLeave.getStarttime().compareTo(timeBucket.getEndtime()) <= 0
+                                && technicianLeave.getEndtime().compareTo(timeBucket.getEndtime()) >= 0
+                        ) {
+                    continue;
+                }
+            }
+
             Date createtimeFrom = new Date(appointment.getCreatetime().getTime() + timeBucket.getStarttime().getTime());
             Date createtimeTo = new Date(appointment.getCreatetime().getTime() + timeBucket.getEndtime().getTime());
             List<com.cdhaixun.domain.Appointment> appointmentList = appointmentService.findByStartTimeAndTechnicianId(createtimeFrom, createtimeTo, appointment.getTechnicianid());

@@ -164,7 +164,7 @@ public class TechnicianServiceImpl implements ITechnicianService {
     @Override
     public Technician findById(Integer id) {
         // TODO Auto-generated method stub
-        return null;
+        return technicianMapper.selectByPrimaryKey(id);
     }
 
     @Override

@@ -1,18 +1,19 @@
 package com.cdhaixun.shop.service;
 
-import java.util.Date;
-import java.util.Map;
-
 import com.cdhaixun.common.exception.HxException;
 import com.cdhaixun.common.vo.Result;
 import com.cdhaixun.domain.TechnicianLeave;
 import com.cdhaixun.util.Pager;
 
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Created by tangxinmao on 2017/7/2.
  */
 public interface ITechnicianLeaveService {
-    TechnicianLeave findOneByLeaveDay(Date createtime, Integer technicianid);
+    List<TechnicianLeave> findOneByLeaveDay(Date createtime, Integer technicianid);
 
     Pager selectTechnicianLeaveList(Pager pager, Map<String, Object> parMap);
 

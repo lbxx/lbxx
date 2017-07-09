@@ -13,13 +13,13 @@
     id, technicianid, starttime, endtime, createtime, isdelete
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from technician_leave
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="selectTechnicianLeaveList" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from technician_leave
     where isdelete = 0
@@ -30,15 +30,15 @@
   </delete>
   <!--假删除  -->
   <delete id="deleteByTechnicianLeaveId" parameterType="java.lang.Integer">
-    update technician_leave  
+    update technician_leave
     set isdelete = 1
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.cdhaixun.domain.TechnicianLeave">
-    insert into technician_leave (id, technicianid, starttime, 
+    insert into technician_leave (id, technicianid, starttime,
       endtime, createtime, isdelete
       )
-    values (#{id,jdbcType=INTEGER}, #{technicianid,jdbcType=INTEGER}, #{starttime,jdbcType=TIMESTAMP}, 
+    values (#{id,jdbcType=INTEGER}, #{technicianid,jdbcType=INTEGER}, #{starttime,jdbcType=TIMESTAMP},
       #{endtime,jdbcType=TIMESTAMP}, #{createtime,jdbcType=TIMESTAMP}, #{isdelete,jdbcType=BIT}
       )
   </insert>
@@ -115,4 +115,31 @@
       isdelete = #{isdelete,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
+    <select id="selectOneByTechnicianLeave" resultMap="BaseResultMap"
+            parameterType="com.cdhaixun.domain.TechnicianLeave">
+        select
+        <include refid="Base_Column_List"/>
+        from technician_leave
+        <where>
+          <if test="technicianid != null">
+          and  technicianid = #{technicianid,jdbcType=INTEGER}
+          </if>
+          <if test="starttime != null">
+           and starttime = #{starttime,jdbcType=TIMESTAMP}
+          </if>
+          <if test="endtime != null">
+           and endtime = #{endtime,jdbcType=TIMESTAMP}
+          </if>
+          <if test="createtime != null">
+         and   createtime = #{createtime,jdbcType=TIMESTAMP}
+          </if>
+          <if test="isdelete != null">
+          and  isdelete = #{isdelete,jdbcType=BIT}
+          </if>
+          <if test="datetime != null">
+            and ( DATE_FORMAT(starttime, '%Y-%m-%d') = DATE_FORMAT(#{datetime}, '%Y-%m-%d')
+            or  DATE_FORMAT(endtime, '%Y-%m-%d') = DATE_FORMAT(#{datetime}, '%Y-%m-%d'))
+          </if>
+        </where>
+    </select>
 </mapper>
