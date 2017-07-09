@@ -1,5 +1,7 @@
 package com.cdhaixun.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class Baby {
@@ -7,6 +9,7 @@ public class Baby {
 
     private String name;
 
+    @JsonFormat(pattern="yyyy.MM.dd")
     private Date birthday;
 
     private Boolean gender;

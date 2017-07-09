@@ -31,6 +31,7 @@ public class BabyAppController extends BaseController {
         com.cdhaixun.domain.Baby babyDo=new com.cdhaixun.domain.Baby();
         BeanUtils.copyProperties(babyDo,baby);
         babyService.save(babyDo);
+        result.setData(babyDo);
         result.setResult(true);
         return result;
     }

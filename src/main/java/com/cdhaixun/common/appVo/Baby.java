@@ -1,5 +1,7 @@
 package com.cdhaixun.common.appVo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class Baby {
@@ -7,7 +9,12 @@ public class Baby {
 
     private String name;
 
+    @JsonFormat(pattern="yyyy.MM.dd")
     private Date birthday;
+    private Integer birthDate;
+    private Integer birthMonth;
+    private Integer birthYear;
+    private Integer year;
 
     private Boolean gender;
 
@@ -29,6 +36,38 @@ public class Baby {
 
     public String getRemark() {
         return remark;
+    }
+
+    public Integer getBirthYear() {
+        return birthYear;
+    }
+
+    public void setBirthYear(Integer birthYear) {
+        this.birthYear = birthYear;
+    }
+
+    public Integer getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(Integer birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public Integer getBirthMonth() {
+        return birthMonth;
+    }
+
+    public void setBirthMonth(Integer birthMonth) {
+        this.birthMonth = birthMonth;
+    }
+
+    public Integer getYear() {
+        return year;
+    }
+
+    public void setYear(Integer year) {
+        this.year = year;
     }
 
     public void setRemark(String remark) {

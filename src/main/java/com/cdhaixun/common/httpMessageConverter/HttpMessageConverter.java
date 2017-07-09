@@ -1,10 +1,7 @@
 package com.cdhaixun.common.httpMessageConverter;
 
 
-import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.codec.binary.Hex;
-import org.apache.log4j.helpers.DateTimeDateFormat;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +20,12 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.IOException;
-import java.io.Serializable;
 import java.nio.charset.Charset;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.regex.Pattern;
 
 public class HttpMessageConverter extends AbstractHttpMessageConverter<Object> {
     @Value("#{configProperties['aes']}")
@@ -66,6 +61,7 @@ public class HttpMessageConverter extends AbstractHttpMessageConverter<Object> {
             byte[] result = cipher.doFinal(Base64.decodeBase64(temp));
 
             System.out.printf(new String(result,"UTF-8"));
+            objectMapper.setDateFormat(new SimpleDateFormat("yyyy.MM.dd"));
             Object object = objectMapper.readValue(result, aClass);
             return object;
 

@@ -24,7 +24,7 @@
     delete from baby
     where id = #{id,jdbcType=INTEGER}
   </delete>
-    <insert id="insert" parameterType="com.cdhaixun.domain.Baby">
+    <insert id="insert" parameterType="com.cdhaixun.domain.Baby" useGeneratedKeys="true" keyProperty="id">
     insert into baby (id, name, birthday, 
       gender, createtime, userid, 
       isdelete,remark)
@@ -32,62 +32,7 @@
       #{gender,jdbcType=BIT}, #{createtime,jdbcType=TIMESTAMP}, #{userid,jdbcType=INTEGER}, 
       #{isdelete,jdbcType=BIT},#{remark})
   </insert>
-    <insert id="insertSelective" parameterType="com.cdhaixun.domain.Baby">
-        insert into baby
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                id,
-            </if>
-            <if test="name != null">
-                name,
-            </if>
-            <if test="remark != null">
-                remark,
-            </if>
-            <if test="birthday != null">
-                birthday,
-            </if>
-            <if test="gender != null">
-                gender,
-            </if>
-            <if test="createtime != null">
-                createtime,
-            </if>
-            <if test="userid != null">
-                userid,
-            </if>
-            <if test="isdelete != null">
-                isdelete,
-            </if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                #{id,jdbcType=INTEGER},
-            </if>
-            <if test="name != null">
-                #{name,jdbcType=VARCHAR},
-            </if>
-            <if test="remark != null">
-                #{remark,jdbcType=VARCHAR},
-            </if>
 
-            <if test="birthday != null">
-                #{birthday,jdbcType=TIMESTAMP},
-            </if>
-            <if test="gender != null">
-                #{gender,jdbcType=BIT},
-            </if>
-            <if test="createtime != null">
-                #{createtime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="userid != null">
-                #{userid,jdbcType=INTEGER},
-            </if>
-            <if test="isdelete != null">
-                #{isdelete,jdbcType=BIT},
-            </if>
-        </trim>
-    </insert>
     <update id="updateByPrimaryKeySelective" parameterType="com.cdhaixun.domain.Baby">
         update baby
         <set>
