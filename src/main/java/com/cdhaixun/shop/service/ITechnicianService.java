@@ -17,4 +17,6 @@ public interface ITechnicianService extends BaseService<Technician>{
     Technician selectByPrimaryKey(Integer technicianId);
 
     void deleteByTechnicianId(int technicianId);
+
+    List<Technician> selectTechnicians();
 }

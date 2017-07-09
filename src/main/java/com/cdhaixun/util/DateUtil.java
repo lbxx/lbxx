@@ -7,6 +7,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import com.cdhaixun.common.exception.HxException;
+
 public class DateUtil {
 
     /**
@@ -1102,5 +1104,22 @@ public class DateUtil {
         return (cal1.get(Calendar.ERA) == cal2.get(Calendar.ERA) &&
                 cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
                 cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR));
+    }
+    
+    //用于校验传入的开始和结束时间是否合法
+    public static boolean checkTimeLegal(Date startTime,Date endTime) throws HxException{
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        try {
+//            Date startTime = sdf.parse(startTimeStr);
+//            Date endTime = sdf.parse(endTimeStr);
+            if(!startTime.before(endTime)){
+                throw new HxException("结束时间不能早于开始时间!");
+            }else if(startTime.before(new Date())){
+                throw new HxException("开始时间不能早于当前时间!");
+            }
+//        } catch (Exception e) {
+//            throw new HxException("解析时间出错!");
+//        }
+        return true;
     }
 }

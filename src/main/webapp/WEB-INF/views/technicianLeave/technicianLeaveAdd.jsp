@@ -5,6 +5,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<link rel="stylesheet"
+	href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
 <!-- 引入公共js css -->
 <jsp:include page="../jscss.jsp" />
 <style>
@@ -51,7 +53,7 @@
 					<jsp:include page="../location.jsp" />
 					<ul class="breadcrumb"
 						style="padding-left: 10px;; line-height: 40px;">
-						<li id="subTitle">业务设置</li>
+						<li id="subTitle">技师请假</li>
 					</ul>
 					<!-- .breadcrumb -->
 				</div>
@@ -61,24 +63,39 @@
 					<div class="row"
 						style="width: 1100px; height: 768px; overflow: hidden;">
 						<!-- ================= -->
-						<form id="businessForm" name="businessForm"
-							class="form-horizontal" role="form" 
-							action="${ctx}/business/save" method="POST">
+						<form id="technicianLeaveForm" name="technicianLeaveForm"
+							class="form-horizontal" role="form" action="${ctx}/technicianLeave/save" method="POST">
 							<input type="hidden" name="id" id="id" value="" />
 							<!-- -->
 							<div style="border: 1px solid #797979; padding: 10px;">
-								<div style="display: inline-block; width: 40%; margin: 3px;">
-									<label style="line-height: 2em; width: 20%; font-weight: bold;">业务名称:</label>
-									<input type="text" id="name" name="name" placeholder="请输入业务名称 "
-										class="required" style="height: 32px; width: 70%;">
-								</div>
 
-								<div style="display: inline-block; width: 40%; margin: 3px;">
-									<label style="line-height: 2em; width: 20%; font-weight: bold;">所属分类:</label>
-									</select> <select id="categoryselect" style="width: 200px;" name="categoryid">
+								<div style="width: 40%; margin: 3px;">
+									<label style="line-height: 2em; width: 20%; font-weight: bold;">技师名称:</label>
+									<select id="technicianselect" style="width: 200px;"
+										name="technicianid">
 									</select>
 								</div>
+								<div style="display: inline-block; width: 35%; margin: 3px;">
+									<label style="line-height: 2em; width: 25%; font-weight: bold;">请假开始时间:</label>
+									<div class="input-group" style="display: inline-block;">
+										<input id="starttime" name="starttime" type="text" readonly="readonly"
+                                            style="width: 200px;" 
+                                            onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
+									</div>
+								</div>
+								<div style="display: inline-block; width: 35%; margin: 3px;">
+									<label style="line-height: 2em; width: 25%; font-weight: bold;">请假结束时间:</label>
+									<div class="input-group "
+										style="display: inline-block;">
+										<input id="endtime" name="endtime" type="text" readonly="readonly"
+											style="width: 200px;" 
+											onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
+									</div>
+								</div>
+
 							</div>
+
+
 							<div
 								style="margin: 50px auto 0 auto; padding-top: 10px; text-align: center; clear: both;">
 								<input type="submit" id="submit" class="btn btn-info" value="提交" />
@@ -111,6 +128,9 @@
 	<!-- 分页自定义js -->
 
 	<script src="${ctx}/resources/js/jquery.validate.min.js"></script>
+	<script src="${ctx}/resources/js/date-time/moment.min.js"></script>
+	<%-- <script src="${ctx}/resources/js/date-time/bootstrap-datetimepicker.min.js"></script> --%>
+	<script src="${ctx}/resources/DatePicker/WdatePicker.js"></script>
 	<script src="${ctx}/resources/js/messages_zh.js"></script>
 	<script src="${ctx}/resources/js/jquery.form.min.js"></script>
 	<script type="text/javascript">
@@ -118,17 +138,17 @@
 		var isFirstload = true;
 		jQuery(function($) {
 
-			loadCategorySelect();
-			loadBusinessInfo();
-			
+			loadTechnicianSelect();
+			loadTechnicianLeaveInfo();
+
 		});
 		/*======表单校验 */
-        $.validator.setDefaults({
-            debug : false,
-            submitHandler : function() {
-                submitForm();
-            }
-        });
+		$.validator.setDefaults({
+			debug : false,
+			submitHandler : function() {
+				submitForm();
+			}
+		});
 		// 手机号码验证
 		jQuery.validator
 				.addMethod(
@@ -146,17 +166,23 @@
 			return this.optional(element) || (tel.test(value));
 		}, "座机号码格式错误:021-10101010!");
 
-		$("#businessForm").validate({
+		$("#technicianLeaveForm").validate({
 			errorClass : "noInput",
 			rules : {
-				name : {
+				starttime : {
 					required : true
-				}
+				},
+				endtime : {
+                    required : true
+                }
 			},
 			messages : {
-				name : {
+				starttime : {
 					required : "这是一个必填字段"
-				}
+				},
+				endtime : {
+                    required : "这是一个必填字段"
+                }
 			}
 		/* ,
 		                 errorPlacement : function(error, element) {  
@@ -164,73 +190,74 @@
 		                    } */
 		});
 
-		function loadBusinessInfo() {
-				var businessid = queryValueByKey("businessid");
-	            if (businessid) {
-	                $("#id").val(businessid);
-	                $.ajax({
-	                    url : "${ctx}/business/businessInfo?businessid=" + businessid,
-	                    type : 'GET',
-	                    headers : {
-	                        Accept : "application/json",
-	                    },
-	                    success : function(data, textStatus) {
-	                        $("#name").val(data.name);
-	                        $("#categoryselect").val(data.categoryid);
-	                    },
-	                    error : function(data, textStatus, errorThrown) {
-	                    },
-	                });
-	            } else {
-	            }
-			
-		}
-		function loadCategorySelect(){
-		     $.ajax({
-	                url : "${ctx}/business/category",
-	                type : 'GET',
-	                headers : {
-	                    /* Accept: "application/xml", */
-	                    Accept : "application/json",
-	                },
-	                success : function(data, textStatus) {
-	                    $('#categoryselect').html("");
-	                    for (var i = 0; i < data.length; i++) {
-	                        $('#categoryselect').append(
-	                                "<option value='"+data[i].id+"'>"
-	                                        + data[i].name + "</option>");
-	                    }
+		function loadTechnicianSelect() {
+			$.ajax({
+				url : "${ctx}/technician/technicians",
+				type : 'GET',
+				headers : {
+					/* Accept: "application/xml", */
+					Accept : "application/json",
+				},
+				success : function(data, textStatus) {
+					$('#technicianselect').html("");
+					for (var i = 0; i < data.length; i++) {
+						$('#technicianselect').append(
+								"<option value='"+data[i].id+"'>"
+										+ data[i].name + "</option>");
+					}
 
-	                },
-	                error : function(data, textStatus, errorThrown) {
-	                },
-	            });
+				},
+				error : function(data, textStatus, errorThrown) {
+				},
+			});
 		}
+		
+		function loadTechnicianLeaveInfo() {
+            var technicianleaveid = queryValueByKey("technicianleaveid");
+            if (technicianleaveid) {
+                $("#id").val(technicianleaveid);
+                $.ajax({
+                    url : "${ctx}/technicianLeave/technicianLeaveInfo?technicianleaveid=" + technicianleaveid,
+                    type : 'GET',
+                    headers : {
+                        Accept : "application/json",
+                    },
+                    success : function(data, textStatus) {
+                        $("#technicianselect").val(data.technicianid);
+                        $("#starttime").val(formateTimeStamp(data.starttime));
+                        $("#endtime").val(formateTimeStamp(data.endtime));
+                    },
+                    error : function(data, textStatus, errorThrown) {
+                    },
+                });
+            } else {
+            }
+        
+    }
 		function submitForm() {
-			var url = $("#businessForm").attr('action');
+			var url = $("#technicianLeaveForm").attr('action');
 			var ajax_option = {
 				url : url,
-				dataType:'json',
+				dataType : 'json',
 				success : function(data) {
 					if (data.result) {
-						location.href = "${ctx}/business/listIndex";
+						location.href = "${ctx}/technicianLeave/listIndex";
 					}else{
-						alert(data.msg);
-						return false;
-					}
+                        alert(data.msg);
+                        return false;
+                    }
 				},
 				error : function() {
 					alert('操作失败!');
 					return false;
 				}
 			};
-			$('#businessForm').ajaxSubmit(ajax_option);
+			$('#technicianLeaveForm').ajaxSubmit(ajax_option);
 		}
-
 
 		/*========获取业务  */
 		$("#cancelBtn").click(function() {
-			location.href = "${ctx}/business/listIndex";
+			location.href = "${ctx}/technicianLeave/listIndex";
 		});
 
 		function queryValueByKey(name) {
@@ -256,6 +283,25 @@
 			}
 			return arr;
 		}
+	    //时间戳转格式化时间
+		function formateTimeStamp(inputTime) {    
+	        var date = new Date(inputTime);  
+	        var y = date.getFullYear();    
+	        var m = date.getMonth() + 1;    
+	        m = m < 10 ? ('0' + m) : m;    
+	        var d = date.getDate();    
+	        d = d < 10 ? ('0' + d) : d;    
+	        var h = date.getHours();  
+	        h = h < 10 ? ('0' + h) : h;  
+	        var minute = date.getMinutes();  
+	        var second = date.getSeconds();  
+	        minute = minute < 10 ? ('0' + minute) : minute;    
+	        second = second < 10 ? ('0' + second) : second;   
+	        return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;    
+	    }    
+		//上班时间选择
+
+		//下班时间选择
 	</script>
 
 </body>

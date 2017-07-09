@@ -1,5 +1,7 @@
 package com.cdhaixun.persistence;
 
+import java.util.List;
+
 import com.cdhaixun.domain.TechnicianLeave;
 
 public interface TechnicianLeaveMapper {
@@ -15,5 +17,7 @@ public interface TechnicianLeaveMapper {
 
     int updateByPrimaryKey(TechnicianLeave record);
 
-    TechnicianLeave selectOneByTechnicianLeave(TechnicianLeave technicianLeave);
+    List<TechnicianLeave> selectTechnicianLeaveList();
+
+    void deleteByTechnicianLeaveId(int technicianId);
 }

@@ -1,100 +1,118 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cdhaixun.persistence.TechnicianLeaveMapper">
-    <resultMap id="BaseResultMap" type="com.cdhaixun.domain.TechnicianLeave">
-        <id column="id" property="id" jdbcType="INTEGER"/>
-        <result column="technicianid" property="technicianid" jdbcType="INTEGER"/>
-        <result column="leaveday" property="leaveday" jdbcType="DATE"/>
-        <result column="createtime" property="createtime" jdbcType="TIMESTAMP"/>
-    </resultMap>
-    <sql id="Base_Column_List">
-    id, technicianid, leaveday, createtime
+  <resultMap id="BaseResultMap" type="com.cdhaixun.domain.TechnicianLeave">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="technicianid" jdbcType="INTEGER" property="technicianid" />
+    <result column="starttime" jdbcType="TIMESTAMP" property="starttime" />
+    <result column="endtime" jdbcType="TIMESTAMP" property="endtime" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="isdelete" jdbcType="BIT" property="isdelete" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, technicianid, starttime, endtime, createtime, isdelete
   </sql>
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-        select
-        <include refid="Base_Column_List"/>
-        from technician_leave
-        where id = #{id,jdbcType=INTEGER}
-    </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from technician_leave
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectTechnicianLeaveList" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from technician_leave
+    where isdelete = 0
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from technician_leave
     where id = #{id,jdbcType=INTEGER}
   </delete>
-    <insert id="insert" parameterType="com.cdhaixun.domain.TechnicianLeave">
-    insert into technician_leave (id, technicianid, leaveday, 
-      createtime)
-    values (#{id,jdbcType=INTEGER}, #{technicianid,jdbcType=INTEGER}, #{leaveday,jdbcType=DATE}, 
-      #{createtime,jdbcType=TIMESTAMP})
+  <!--假删除  -->
+  <delete id="deleteByTechnicianLeaveId" parameterType="java.lang.Integer">
+    update technician_leave  
+    set isdelete = 1
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cdhaixun.domain.TechnicianLeave">
+    insert into technician_leave (id, technicianid, starttime, 
+      endtime, createtime, isdelete
+      )
+    values (#{id,jdbcType=INTEGER}, #{technicianid,jdbcType=INTEGER}, #{starttime,jdbcType=TIMESTAMP}, 
+      #{endtime,jdbcType=TIMESTAMP}, #{createtime,jdbcType=TIMESTAMP}, #{isdelete,jdbcType=BIT}
+      )
   </insert>
-    <insert id="insertSelective" parameterType="com.cdhaixun.domain.TechnicianLeave">
-        insert into technician_leave
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                id,
-            </if>
-            <if test="technicianid != null">
-                technicianid,
-            </if>
-            <if test="leaveday != null">
-                leaveday,
-            </if>
-            <if test="createtime != null">
-                createtime,
-            </if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                #{id,jdbcType=INTEGER},
-            </if>
-            <if test="technicianid != null">
-                #{technicianid,jdbcType=INTEGER},
-            </if>
-            <if test="leaveday != null">
-                #{leaveday,jdbcType=DATE},
-            </if>
-            <if test="createtime != null">
-                #{createtime,jdbcType=TIMESTAMP},
-            </if>
-        </trim>
-    </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.cdhaixun.domain.TechnicianLeave">
-        update technician_leave
-        <set>
-            <if test="technicianid != null">
-                technicianid = #{technicianid,jdbcType=INTEGER},
-            </if>
-            <if test="leaveday != null">
-                leaveday = #{leaveday,jdbcType=DATE},
-            </if>
-            <if test="createtime != null">
-                createtime = #{createtime,jdbcType=TIMESTAMP},
-            </if>
-        </set>
-        where id = #{id,jdbcType=INTEGER}
-    </update>
-    <update id="updateByPrimaryKey" parameterType="com.cdhaixun.domain.TechnicianLeave">
+  <insert id="insertSelective" parameterType="com.cdhaixun.domain.TechnicianLeave">
+    insert into technician_leave
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="technicianid != null">
+        technicianid,
+      </if>
+      <if test="starttime != null">
+        starttime,
+      </if>
+      <if test="endtime != null">
+        endtime,
+      </if>
+      <if test="createtime != null">
+        createtime,
+      </if>
+      <if test="isdelete != null">
+        isdelete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="technicianid != null">
+        #{technicianid,jdbcType=INTEGER},
+      </if>
+      <if test="starttime != null">
+        #{starttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endtime != null">
+        #{endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isdelete != null">
+        #{isdelete,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cdhaixun.domain.TechnicianLeave">
     update technician_leave
-    set technicianid = #{technicianid,jdbcType=INTEGER},
-      leaveday = #{leaveday,jdbcType=DATE},
-      createtime = #{createtime,jdbcType=TIMESTAMP}
+    <set>
+      <if test="technicianid != null">
+        technicianid = #{technicianid,jdbcType=INTEGER},
+      </if>
+      <if test="starttime != null">
+        starttime = #{starttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endtime != null">
+        endtime = #{endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createtime != null">
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isdelete != null">
+        isdelete = #{isdelete,jdbcType=BIT},
+      </if>
+    </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-    <select id="selectOneByTechnicianLeave" resultMap="BaseResultMap"
-            parameterType="com.cdhaixun.domain.TechnicianLeave">
-        select
-        <include refid="Base_Column_List"/>
-        from technician_leave
-        <where>
-            <if test="technicianid != null">
-                and technicianid = #{technicianid,jdbcType=INTEGER},
-            </if>
-            <if test="leaveday != null">
-                and leaveday = #{leaveday,jdbcType=DATE},
-            </if>
-            <if test="createtime != null">
-                and createtime = #{createtime,jdbcType=TIMESTAMP},
-            </if>
-
-        </where>
-    </select>
+  <update id="updateByPrimaryKey" parameterType="com.cdhaixun.domain.TechnicianLeave">
+    update technician_leave
+    set technicianid = #{technicianid,jdbcType=INTEGER},
+      starttime = #{starttime,jdbcType=TIMESTAMP},
+      endtime = #{endtime,jdbcType=TIMESTAMP},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      isdelete = #{isdelete,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
 </mapper>

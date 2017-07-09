@@ -172,5 +172,10 @@ public class TechnicianServiceImpl implements ITechnicianService {
         technicianMapper.deleteByTechnicianId(technicianId);
     }
 
+    @Override
+    public List<Technician> selectTechnicians() {
+        return technicianMapper.selectTechnicianList();
+    }
+
 
 }

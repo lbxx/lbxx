@@ -7,9 +7,13 @@ public class TechnicianLeave {
 
     private Integer technicianid;
 
-    private Date leaveday;
+    private Date starttime;
+
+    private Date endtime;
 
     private Date createtime;
+
+    private Boolean isdelete;
 
     public Integer getId() {
         return id;
@@ -27,12 +31,20 @@ public class TechnicianLeave {
         this.technicianid = technicianid;
     }
 
-    public Date getLeaveday() {
-        return leaveday;
+    public Date getStarttime() {
+        return starttime;
     }
 
-    public void setLeaveday(Date leaveday) {
-        this.leaveday = leaveday;
+    public void setStarttime(Date starttime) {
+        this.starttime = starttime;
+    }
+
+    public Date getEndtime() {
+        return endtime;
+    }
+
+    public void setEndtime(Date endtime) {
+        this.endtime = endtime;
     }
 
     public Date getCreatetime() {
@@ -41,5 +53,13 @@ public class TechnicianLeave {
 
     public void setCreatetime(Date createtime) {
         this.createtime = createtime;
+    }
+
+    public Boolean getIsdelete() {
+        return isdelete;
+    }
+
+    public void setIsdelete(Boolean isdelete) {
+        this.isdelete = isdelete;
     }
 }

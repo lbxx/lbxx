@@ -29,7 +29,7 @@ public class TechnicianController extends BaseController {
     private static final String PATH = "technician/";
     
     @Autowired
-    ITechnicianService techinicianService;
+    ITechnicianService technicianService;
     @Autowired
     IBusinessService businessService;
     @Autowired
@@ -59,7 +59,7 @@ public class TechnicianController extends BaseController {
     public Pager listgrid(Pager pager, HttpServletRequest request){
         try{
             Map<String, Object> parMap = MapUtils.getParamMapObj(request);
-            Pager resPager =  techinicianService.selectTechnicianList(pager, parMap);
+            Pager resPager =  technicianService.selectTechnicianList(pager, parMap);
             return resPager;
         }catch(Exception e){
             e.printStackTrace();
@@ -97,7 +97,7 @@ public class TechnicianController extends BaseController {
     public Result save( Technician technician,HttpServletRequest request){
         @SuppressWarnings("unused")
         Map<String, Object> parMap = MapUtils.getParamMap(request);
-        return techinicianService.save(technician,parMap);
+        return technicianService.save(technician,parMap);
     }
 
     /**
@@ -110,7 +110,7 @@ public class TechnicianController extends BaseController {
         Result result = new Result();
         try{
             int technicianId = Integer.valueOf(request.getParameter("id"));
-            techinicianService.deleteByTechnicianId(technicianId);//删除技师
+            technicianService.deleteByTechnicianId(technicianId);//删除技师
             technicianBusinessService.deleteByTechnicianId(technicianId);//删除技师相关业务
         }catch(Exception e){
             e.printStackTrace();
@@ -135,12 +135,17 @@ public class TechnicianController extends BaseController {
     public List<Object> selectByPrimaryKey(HttpServletRequest request){
         List<Object> technicianInfo = new ArrayList<Object>();
         int technicianid = Integer.parseInt(request.getParameter("id"));
-        Technician technician = techinicianService.selectByPrimaryKey(technicianid);
+        Technician technician = technicianService.selectByPrimaryKey(technicianid);
          technicianInfo.add(technician);
          technicianInfo.add(technicianBusinessService.findByTechnicianId(technicianid));
          Store store = storeService.findById(technician.getStoreid());
          technicianInfo.add(store);
          return technicianInfo;
+    }
+    @RequestMapping(value="technicians",method=RequestMethod.GET)
+    @ResponseBody
+    public List<Technician> selectTechnicians(){
+        return technicianService.selectTechnicians();
     }
     
 }
