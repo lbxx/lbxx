@@ -57,7 +57,7 @@
 
     <!--配置redis-->
     <bean id="jedisConnFactory"
-          class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory" p:usePool="true"
+          class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"     p:host-name="127.0.0.1" p:port="6379" p:password="cdhaixun"  p:usePool="true"
     />
 
     <!-- redis template definition -->
