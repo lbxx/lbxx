@@ -109,19 +109,19 @@
     from technician_business
 <where>
   <if test="technicianid != null" >
-   and  technicianid = #{technicianid,jdbcType=INTEGER},
+   and  technicianid = #{technicianid,jdbcType=INTEGER}
   </if>
   <if test="businessid != null" >
-   and  businessid = #{businessid,jdbcType=INTEGER},
+   and  businessid = #{businessid,jdbcType=INTEGER}
   </if>
   <if test="spend != null" >
-  and   spend = #{spend,jdbcType=INTEGER},
+  and   spend = #{spend,jdbcType=INTEGER}
   </if>
   <if test="createtime != null" >
-    createtime = #{createtime,jdbcType=TIMESTAMP},
+    createtime = #{createtime,jdbcType=TIMESTAMP}
   </if>
   <if test="isdelete != null" >
-   and  isdelete = #{isdelete,jdbcType=BIT},
+   and  isdelete = #{isdelete,jdbcType=BIT}
   </if>
   <if test="businessidList !=null and businessidList.size >0">
    and businessid  in

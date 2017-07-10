@@ -55,7 +55,7 @@
     delete from appointment_detail
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.cdhaixun.domain.AppointmentDetail" >
+  <insert id="insert" parameterType="com.cdhaixun.domain.AppointmentDetail" useGeneratedKeys="true" keyProperty="id" >
     insert into appointment_detail (id, userid, babyid, 
       technicianid, bussinessid, starttime, 
       endtime, appointmentid, solution, 

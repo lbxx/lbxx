@@ -7,9 +7,7 @@ import com.cdhaixun.domain.Technician;
 import com.cdhaixun.domain.TechnicianBusiness;
 import com.cdhaixun.shop.service.ITechnicianBusinessService;
 import com.cdhaixun.shop.service.ITechnicianService;
-import com.cdhaixun.util.Pager;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -45,9 +44,15 @@ public class TechnicianAppController {
     @ResponseBody
     public Result listByBusinessIdList(@RequestBody Business business, HttpServletRequest request){
         Result result = new Result();
-        List<TechnicianBusiness> technicianList=technicianBusinessService.findByBusinessIdList(business.getBusinessidList());
-        CollectionUtils.isNotEmpty(business.getBusinessidList());
-        result.setData(technicianList);
+        List<TechnicianBusiness> technicianBusinessList=technicianBusinessService.findByBusinessIdList(business.getBusinessidList());
+        if(CollectionUtils.isNotEmpty(technicianBusinessList))
+        {
+          List<Technician> technicianList=new ArrayList<Technician>();
+            for (TechnicianBusiness technicianBusiness:technicianBusinessList) {
+                technicianList.add(techinicianService.findById(technicianBusiness.getTechnicianid()));
+            }
+            result.setData(technicianList);
+        }
         result.setResult(true);
         return result;
     }

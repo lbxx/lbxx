@@ -1,15 +1,15 @@
 package com.cdhaixun.common.appVo;
 
-import com.cdhaixun.domain.*;
 import com.cdhaixun.domain.Baby;
 import com.cdhaixun.domain.Business;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
 import java.util.List;
 
 public class Appointment {
     private Integer id;
-
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date createtime;
 
     private Integer userid;
