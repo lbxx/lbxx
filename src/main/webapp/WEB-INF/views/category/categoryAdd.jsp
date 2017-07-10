@@ -73,16 +73,38 @@
 					<div class="row"
 						style="width: 1100px; height: 768px; overflow: hidden;">
 						<!-- ================= -->
-						<form id="categoryForm" name="categoryForm"
+						<form id="categoryForm" name="categoryForm" enctype="multipart/form-data"
 							class="form-horizontal" role="form" 
 							action="${ctx}/category/save" method="POST">
 							<input type="hidden" name="id" id="id" value="" />
 							<!-- -->
 							<div style="border: 1px solid #797979; padding: 10px;">
-								<div style="display: inline-block; width: 40%; margin: 3px;">
+								<div style="display: block; width: 40%; margin: 3px;">
 									<label style="line-height: 2em; width: 20%; font-weight: bold;">分类名称:</label>
 									<input type="text" id="name" name="name" placeholder="请输入分类名称"
 										class="required" style="height: 32px; width: 70%;">
+								</div>
+								<div style="display: inline-block; width: 60%; margin: 3px;">
+									<div
+                                    style="width: 40%; height: inherit; float: left; margin: 10px 0px;">
+                                    <label 
+                                        style="line-height: 2em; font-size: 20px; padding-left: 30px;">分类图</label>
+
+                                    <div style="margin: 30px 0px;">
+                                        <label 
+                                            style="font-size: 14px; padding-left: 30px;">支持jpg、jpeg、jpe、png、pns等格式</label>
+                                    </div>
+                                    <!-- <input type="file" id="file"
+                                        style="margin: 15px 30px; width: 100%;" /> -->
+                                    <input type="file" onchange="previewImage(this)" name="file" accept="image/*" style="margin: 60px 30px;"/>
+
+                                </div>
+                                <div id="preview"
+                                    style="width: 60%; float: right; height: 100%;">
+                                    <img alt="分类图" id="categoryimg"
+                                        src="${ctx}/resources/images/default.jpg" width="100%"
+                                        height="300px;" >
+                                </div>
 								</div>
 
 							</div>
@@ -184,7 +206,9 @@
 	                    success : function(data, textStatus) {
 	                        $("#id").val(data.id);
 	                        $("#name").val(data.name);
-	                        
+	                        if(data.pic){
+                                $("#categoryimg").attr("src","http://www.cdhaixun.com:81"+data.pic);
+                            }
 
 	                    },
 	                    error : function(data, textStatus, errorThrown) {
@@ -240,6 +264,65 @@
 			}
 			return arr;
 		}
+		
+		//页面图上上传预览//
+        //图片上传预览    IE是用了滤镜。
+        function previewImage(file)
+        {
+          var MAXWIDTH  = 382; 
+          var MAXHEIGHT = 350;
+          var div = document.getElementById('preview');
+          if (file.files && file.files[0])
+          {
+              div.innerHTML ='<img id=categoryimg>';
+              var img = document.getElementById('categoryimg');
+              img.onload = function(){
+                var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+                img.width  =  rect.width;
+                img.height =  rect.height;
+//                 img.style.marginLeft = rect.left+'px';
+                //img.style.marginTop = rect.top+'px';
+              }
+              var reader = new FileReader();
+              reader.onload = function(evt){img.src = evt.target.result;}
+              reader.readAsDataURL(file.files[0]);
+          }
+          else //兼容IE
+          {
+            var sFilter='filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale,src="';
+            file.select();
+            var src = document.selection.createRange().text;
+            div.innerHTML = '<img id=categoryimg>';
+            var img = document.getElementById('categoryimg');
+            img.filters.item('DXImageTransform.Microsoft.AlphaImageLoader').src = src;
+            var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+            status =('rect:'+rect.top+','+rect.left+','+rect.width+','+rect.height);
+            div.innerHTML = "<div id=divhead style='width:"+rect.width+"px;height:"+rect.height+"px;margin-top:"+rect.top+"px;"+sFilter+src+"\"'></div>";
+          }
+        }
+        function clacImgZoomParam( maxWidth, maxHeight, width, height ){
+            var param = {top:0, left:0, width:width, height:height};
+            if( width>maxWidth || height>maxHeight )
+            {
+                rateWidth = width / maxWidth;
+                rateHeight = height / maxHeight;
+                 
+                if( rateWidth > rateHeight )
+                {
+                    param.width =  maxWidth;
+                    param.height = Math.round(height / rateWidth);
+                }else
+                {
+                    param.width = Math.round(width / rateHeight);
+                    param.height = maxHeight;
+                }
+            }
+             
+            param.left = Math.round((maxWidth - param.width) / 2);
+            param.top = Math.round((maxHeight - param.height) / 2);
+            return param;
+        }
+      //页面图上上传预览//
 	</script>
 
 </body>

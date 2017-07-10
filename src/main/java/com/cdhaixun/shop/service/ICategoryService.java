@@ -3,6 +3,8 @@ package com.cdhaixun.shop.service;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.cdhaixun.common.vo.Result;
 import com.cdhaixun.domain.Category;
 import com.cdhaixun.util.Pager;

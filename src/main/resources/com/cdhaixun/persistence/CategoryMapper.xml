@@ -37,7 +37,7 @@
     insert into category (id, name, createtime, 
       isdelete,pic)
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, 
-      #{isdelete,jdbcType=BIT},#{pic})
+      #{isdelete,jdbcType=BIT},#{pic,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.cdhaixun.domain.Category">
     insert into category

@@ -1,5 +1,6 @@
 package com.cdhaixun.shop.web;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -10,11 +11,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.cdhaixun.common.vo.Result;
 import com.cdhaixun.common.web.BaseController;
 import com.cdhaixun.domain.Category;
 import com.cdhaixun.shop.service.ICategoryService;
+import com.cdhaixun.shop.service.IUploadService;
 import com.cdhaixun.util.MapUtils;
 import com.cdhaixun.util.Pager;
 
@@ -30,6 +33,8 @@ public class CategoryController extends BaseController{
     
     @Autowired
     ICategoryService categoryService;
+    @Autowired
+    IUploadService uploadService;
     
     @RequestMapping(value="/listIndex")
     public String Index(){
@@ -64,12 +69,18 @@ public class CategoryController extends BaseController{
      * 提交
      * @param
      * @return
+     * @throws IOException 
      */
     @SuppressWarnings("unused")
     @RequestMapping(value = "/save",method = RequestMethod.POST)
     @ResponseBody
-    public Result save( Category category,HttpServletRequest request){
-        @SuppressWarnings("unused")
+    public Result save( Category category,HttpServletRequest request,MultipartFile file) throws IOException{
+        if(file != null){
+            Result result = uploadService.upload(request, file);
+            if(result.isResult()){
+                category.setPic(result.getData().toString());
+            }
+        }
         Map<String, Object> parMap = MapUtils.getParamMap(request);
         return categoryService.save(category,parMap);
     }
