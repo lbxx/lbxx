@@ -62,7 +62,11 @@ public class LoginController extends BaseController {
             Captcha captcha = new Captcha();
             captcha.setCaptcha(randomNumeric);
             captcha.setCreateTime(new Date());
-            redisTemplate.boundHashOps("captcha").put(mobile.getMobile(), captcha);//发送成功后将验证码放入redis
+            try {
+                redisTemplate.boundHashOps("captcha").put(mobile.getMobile(), captcha);//发送成功后将验证码放入redis
+            }catch (Exception e){
+                logger.error("发送验证码存入redis",e);
+            }
             //正常返回输出data包体信息（map）
             HashMap<String, Object> data = (HashMap<String, Object>) re.get("data");
             Set<String> keySet = data.keySet();
@@ -150,11 +154,7 @@ public class LoginController extends BaseController {
     @RequestMapping(value = "checkKaptcha", method = RequestMethod.POST)
     @ResponseBody
     public boolean checkKaptcha(String kaptcha, HttpSession httpSession) {
-        if (kaptcha.equals(httpSession.getAttribute(SessionConstant.KAPTCHA_SESSION_KEY))) {
-            return true;
-        } else {
-            return false;
-        }
+        return kaptcha.equals(httpSession.getAttribute(SessionConstant.KAPTCHA_SESSION_KEY));
 
     }   
 
