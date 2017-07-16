@@ -1,0 +1,7 @@
+1、文件上传，百度编辑器的文件全部放在资源文件resources/ueditor文件中
+2、上传采用的是百度编辑器压缩包的形式，使用的ueditor下的jsp中的lib里面的jar包。
+3、配置上传，需要注意的是两个文件，ueditor.config.js 和 config.json。
+4、ueditor.config.js中注意 serverUrl: "/resources/ueditor/jsp/controller.jsp"   这个是内置的jsp配置写法
+config.json中注意 "imageUrlPrefix": "", // 这个如果不是跨域的话，可以为空，
+                   "imagePathFormat": "/ueditor/jsp/upload/image/{yyyy}{mm}{dd}/{time}{rand:6}",
+                   注意：/ueditor  需要配置成虚拟路径，这个虚拟路径的真实路径指向图片上传的真实目录

@@ -72,8 +72,7 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right"> 内容 </label>
                                 <div class="col-sm-8">
-                                    <%--<input type="text" id="content" name="content" value="${dto.content}" required class="col-xs-4 col-sm-4" />--%>
-                                        <script id="editor" type="text/plain" style="width:924px;height:500px;" name="content"></script>
+                                        <script id="content" type="text/plain" style="width:924px;height:500px;" name="content"></script>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -123,9 +122,10 @@
 <!-- 自定义js -->
 <script src="${ctx}/resources/js/jquery.validate.min.js"></script>
 <script src="${ctx}/resources/js/messages_zh.js"></script>
-<script src="${ctx}/resources/ueditor1.4.3.3/ueditor.config.js"></script>
-<script src="${ctx}/resources/ueditor1.4.3.3/ueditor.all.min.js"></script>
-<script src="${ctx}/resources/ueditor1.4.3.3/lang/zh-cn/zh-cn.js"></script>
+<script src="${ctx}/resources/ueditor/ueditor.config.js"></script>
+<script src="${ctx}/resources/ueditor/ueditor.all.min.js"></script>
+<script src="${ctx}/resources/ueditor/lang/zh-cn/zh-cn.js"></script>
+<link rel="stylesheet" href="${ctx}/resources/ueditor/themes/default/css/ueditor.css">
 <script>
     $(function(){
         $('#validation-form').validate({
@@ -176,10 +176,13 @@
     })
 </script>
 <script type="text/javascript">
- var content = "${dto.content}";
+ var content = '${dto.content}';
 //实例化编辑器
-var ue = UE.getEditor('editor');
-ue.setContent(content);
+var ue = UE.getEditor('content');
+ ue.ready(function() {
+     //设置编辑器的内容
+     ue.setContent(content);
+ });
 </script>
 </body>
 </html>
