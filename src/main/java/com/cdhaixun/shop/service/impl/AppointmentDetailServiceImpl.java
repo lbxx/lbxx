@@ -40,4 +40,11 @@ public class AppointmentDetailServiceImpl implements IAppointmentDetailService {
     public List<AppointmentDetailVo> getAppointmentDetailList(Map<String, Object> parMap) {
         return appointmentDetailMapper.getAppointmentDetailList(parMap);
     }
+
+    @Override
+    public List<AppointmentDetail> findByAppointmentId(Integer id) {
+        AppointmentDetail appointmentDetail=new AppointmentDetail();
+        appointmentDetail.setAppointmentid(id);
+        return appointmentDetailMapper.selectByAppointmentDetail(appointmentDetail);
+    }
 }

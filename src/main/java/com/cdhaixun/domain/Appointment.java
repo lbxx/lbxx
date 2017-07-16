@@ -1,6 +1,7 @@
 package com.cdhaixun.domain;
 
 import java.util.Date;
+import java.util.List;
 
 public class Appointment {
     private Integer id;
@@ -19,6 +20,42 @@ public class Appointment {
     private  Date createtimeFrom ;
     private  Date createtimeTo ;
     private  Integer appointnumber;//预约人数
+    private List<Business> businessList;
+    private List<Baby> babyList;
+    private Technician technician;
+    private  Store store;
+
+    public Store getStore() {
+        return store;
+    }
+
+    public void setStore(Store store) {
+        this.store = store;
+    }
+
+    public List<Business> getBusinessList() {
+        return businessList;
+    }
+
+    public Technician getTechnician() {
+        return technician;
+    }
+
+    public void setTechnician(Technician technician) {
+        this.technician = technician;
+    }
+
+    public void setBusinessList(List<Business> businessList) {
+        this.businessList = businessList;
+    }
+
+    public List<Baby> getBabyList() {
+        return babyList;
+    }
+
+    public void setBabyList(List<Baby> babyList) {
+        this.babyList = babyList;
+    }
 
     public Integer getAppointnumber() {
         return appointnumber;

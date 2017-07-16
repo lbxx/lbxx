@@ -42,4 +42,9 @@ public class BabyServiceImpl implements IBabyService {
         babyDo.setIsdelete(true);
         babyMapper.updateByPrimaryKeySelective(babyDo);
     }
+
+    @Override
+    public Baby findById(Integer id) {
+        return babyMapper.selectByPrimaryKey(id);
+    }
 }

@@ -13,4 +13,6 @@ public interface IBabyService {
     List<Baby> findByUserId(Integer id);
 
     void delete(Baby babyDo);
+
+    Baby findById(Integer id);
 }

@@ -13,6 +13,7 @@ public class Appointment {
     private Date createtime;
 
     private Integer userid;
+    private String remark;
 
     private Integer storeid;
 
@@ -21,24 +22,34 @@ public class Appointment {
     private Boolean isdelete;
     private Integer badyCount;//宝宝数量
     private Integer technicianid;//技师
-    private  Date starttime; //预约时间段
-    private  Date endtime;
+    private  String starttime; //预约时间段
+
+    private  String endtime;
+
     List<Baby> babyList;//宝宝
     List<Business> businessList;//所选业务
 
-    public Date getStarttime() {
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public String getStarttime() {
         return starttime;
     }
 
-    public void setStarttime(Date starttime) {
+    public void setStarttime(String starttime) {
         this.starttime = starttime;
     }
 
-    public Date getEndtime() {
+    public String getEndtime() {
         return endtime;
     }
 
-    public void setEndtime(Date endtime) {
+    public void setEndtime(String endtime) {
         this.endtime = endtime;
     }
 
