@@ -77,6 +77,7 @@ public class StoreAppController extends BaseController {
                 storetemp.getBusinessList().add(businessService.findById(storeBusiness.getBusinessid()));
             }
         }
+        result.setData(storeList);
         result.setResult(true);
         return result;
     }

@@ -13,6 +13,7 @@ import com.cdhaixun.shop.service.IStoreBusinessService;
 import com.cdhaixun.shop.service.IStoreService;
 import com.cdhaixun.util.MathUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,6 +34,8 @@ public class CategoryAppController {
     private IStoreService storeService;
     @Autowired
     private IStoreBusinessService storeBusinessService;
+    @Value("#{configProperties['domainName']}")
+    private String domainName;
 
     @RequestMapping(value = "listByLatAntLon", method = RequestMethod.POST)
     @ResponseBody
@@ -41,6 +44,7 @@ public class CategoryAppController {
         Result result = new Result();
         List<Category> categoryList = categoryService.findAll();
         for (Category category : categoryList) {
+            category.setPic(domainName+category.getPic());
             List<Business> businessList = businessService.findByCategoryId(category.getId());
             Map<Integer, Business> businessMap = new HashMap<Integer, Business>();
             for (Business business : businessList) {
@@ -83,6 +87,7 @@ public class CategoryAppController {
 
         List<Category> categoryList = categoryService.findAll();
         for (Category category : categoryList) {
+            category.setPic(domainName+category.getPic());
             List<Business> businessList = businessService.findByCategoryId(category.getId());
             Map<Integer, Business> businessMap = new HashMap<Integer, Business>();
             for (Business business : businessList) {
