@@ -22,4 +22,6 @@ public interface IAppointmentDetailService {
      * @return
      */
     List<AppointmentDetailVo> getAppointmentDetailList(Map<String, Object> parMap);
+
+    List<AppointmentDetail> findByAppointmentId(Integer id);
 }

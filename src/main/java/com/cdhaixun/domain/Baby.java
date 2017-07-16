@@ -9,10 +9,38 @@ public class Baby {
 
     private String name;
 
-    @JsonFormat(pattern="yyyy.MM.dd")
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date birthday;
 
     private Boolean gender;
+    private  Integer birthDate;
+    private Integer birthMonth;
+    private Integer birthYear;
+    private  Integer year;
+
+    public Integer getYear() {
+        return year;
+    }
+
+    public void setYear(Integer year) {
+        this.year = year;
+    }
+
+    public Integer getBirthMonth() {
+        return birthMonth;
+    }
+
+    public Integer getBirthYear() {
+        return birthYear;
+    }
+
+    public void setBirthYear(Integer birthYear) {
+        this.birthYear = birthYear;
+    }
+
+    public void setBirthMonth(Integer birthMonth) {
+        this.birthMonth = birthMonth;
+    }
 
     private Date createtime;
 
@@ -43,6 +71,14 @@ public class Baby {
 
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
+    }
+
+    public Integer getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(Integer birthDate) {
+        this.birthDate = birthDate;
     }
 
     public Date getBirthday() {

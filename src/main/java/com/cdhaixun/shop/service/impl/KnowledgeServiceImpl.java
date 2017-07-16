@@ -1,5 +1,6 @@
 package com.cdhaixun.shop.service.impl;
 
+import com.cdhaixun.domain.Image;
 import com.cdhaixun.domain.Knowledge;
 import com.cdhaixun.persistence.KnowledgeMapper;
 import com.cdhaixun.shop.service.IKnowledgeService;
@@ -7,6 +8,7 @@ import com.cdhaixun.vo.KnowledgeVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +20,7 @@ import java.util.Map;
 public class KnowledgeServiceImpl implements IKnowledgeService {
     @Autowired
     private KnowledgeMapper knowledgeMapper;
+
     @Override
     public Knowledge findById(Integer id) {
         return knowledgeMapper.selectByPrimaryKey(id);
@@ -46,5 +49,14 @@ public class KnowledgeServiceImpl implements IKnowledgeService {
     @Override
     public List<Knowledge> findList() {
         return knowledgeMapper.findList();
+    }
+
+    @Override
+    public List<Knowledge> findByTypeId(Integer typeid) {
+        Knowledge knowledge = new Knowledge();
+        knowledge.setTypeid(typeid);
+        List<Knowledge> knowledgeList = knowledgeMapper.findByKnowledge(knowledge);
+
+        return knowledgeList;
     }
 }

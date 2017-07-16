@@ -42,4 +42,11 @@ public class ImageServiceImpl implements IImageService {
     public List<ImageVo> getList(Map<String, Object> parMap) {
         return imageMapper.getList(parMap);
     }
+
+    @Override
+    public List<Image> findByKnowledgeId(Integer id) {
+        Image image=new Image();
+        image.setKnowledgeid(id);
+        return imageMapper.findByImage(image);
+    }
 }

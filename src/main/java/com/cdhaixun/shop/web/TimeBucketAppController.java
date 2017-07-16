@@ -53,6 +53,10 @@ public class TimeBucketAppController {
         Iterator<TimeBucket> timeBucketIterator = timeBucketList.iterator();
         while (timeBucketIterator.hasNext()) {
             TimeBucket timeBucket = timeBucketIterator.next();
+            timeBucket.setStarttime(new Date(appointment.getCreatetime().getTime()+timeBucket.getStarttime().getTime()));
+            timeBucket.setEndtime(new Date(appointment.getCreatetime().getTime()+timeBucket.getEndtime().getTime()));
+            Date createtimeFrom = new Date(appointment.getCreatetime().getTime() + timeBucket.getStarttime().getTime());
+            Date createtimeTo = new Date(appointment.getCreatetime().getTime() + timeBucket.getEndtime().getTime());
             //过滤请假时间
             for (TechnicianLeave technicianLeave : technicianLeaveList) {
                 if (technicianLeave.getStarttime().compareTo(timeBucket.getStarttime()) <= 0
@@ -64,8 +68,7 @@ public class TimeBucketAppController {
                 }
             }
 
-            Date createtimeFrom = new Date(appointment.getCreatetime().getTime() + timeBucket.getStarttime().getTime());
-            Date createtimeTo = new Date(appointment.getCreatetime().getTime() + timeBucket.getEndtime().getTime());
+
             List<com.cdhaixun.domain.Appointment> appointmentList = appointmentService.findByStartTimeAndTechnicianId(createtimeFrom, createtimeTo, appointment.getTechnicianid());
             if (CollectionUtils.isNotEmpty(appointmentList)) {
                 for (com.cdhaixun.domain.Appointment appointmentTemp : appointmentList) {

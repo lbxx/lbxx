@@ -40,6 +40,7 @@ public class AppointmentServiceImpl implements IAppointmentService {
     public List<Appointment> findByUserId(Integer userid) {
         Appointment appointment=new Appointment();
         appointment.setTechnicianid(userid);
+        appointment.setOrderBy("createtime desc");
         return appointmentMapper.selectByAppointment(appointment);
     }
 

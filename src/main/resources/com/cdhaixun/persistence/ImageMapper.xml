@@ -63,4 +63,26 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="findByImage" resultMap="BaseResultMap" parameterType="com.cdhaixun.domain.Image" >
+    select
+    <include refid="Base_Column_List" />
+    from image
+<where>
+  <if test="knowledgeid != null" >
+   and  knowledgeid = #{knowledgeid,jdbcType=INTEGER}
+  </if>
+  <if test="name != null" >
+  and  name = #{name,jdbcType=VARCHAR}
+  </if>
+  <if test="isdelete != null" >
+   and  isdelete = #{isdelete,jdbcType=BIT}
+  </if>
+  <if test="source != null" >
+   and  source = #{source,jdbcType=VARCHAR}
+  </if>
+  <if test="sort != null" >
+  and   sort = #{sort,jdbcType=TINYINT}
+  </if>
+</where>
+  </select>
 </mapper>

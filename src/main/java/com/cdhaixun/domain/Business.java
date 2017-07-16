@@ -1,5 +1,8 @@
 package com.cdhaixun.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.Date;
 
 public class Business {
@@ -12,6 +15,25 @@ public class Business {
     private Boolean isdelete;
     private Integer categoryid;
     private Integer spend;//
+    private Integer number;
+
+    private String isSelect;
+
+    public Integer getNumber() {
+        return number;
+    }
+
+    public void setNumber(Integer number) {
+        this.number = number;
+    }
+
+    public String getIsSelect() {
+        return isSelect;
+    }
+
+    public void setIsSelect(String isSelect) {
+        this.isSelect = isSelect;
+    }
 
     public Integer getSpend() {
         return spend;

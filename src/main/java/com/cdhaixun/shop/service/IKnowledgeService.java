@@ -16,4 +16,6 @@ public interface IKnowledgeService extends BaseService<Knowledge> {
     List<KnowledgeVo> getList(Map<String, Object> parMap);
 
     List<Knowledge> findList();
+
+    List<Knowledge> findByTypeId(Integer typeid);
 }

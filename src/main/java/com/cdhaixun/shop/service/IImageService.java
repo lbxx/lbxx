@@ -14,4 +14,6 @@ import java.util.Map;
 public interface IImageService extends BaseService<Image> {
 
     List<ImageVo> getList(Map<String, Object> parMap);
+
+    List<Image> findByKnowledgeId(Integer id);
 }

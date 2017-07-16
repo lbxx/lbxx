@@ -3,13 +3,12 @@ package com.cdhaixun.shop.web;
 import com.cdhaixun.common.appVo.Appointment;
 import com.cdhaixun.common.appVo.Result;
 import com.cdhaixun.domain.AppointmentDetail;
+import com.cdhaixun.domain.Baby;
 import com.cdhaixun.domain.Business;
 import com.cdhaixun.domain.TechnicianBusiness;
-import com.cdhaixun.shop.service.IAppointmentDetailService;
-import com.cdhaixun.shop.service.IAppointmentService;
-import com.cdhaixun.shop.service.ITechnicianBusinessService;
-import com.cdhaixun.shop.service.ITimeBucketService;
+import com.cdhaixun.shop.service.*;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.beanutils.ConversionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,9 +18,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Created by Administrator on 2017-07-01.
@@ -36,28 +35,50 @@ public class AppointmentAppController {
     @Autowired
     private IAppointmentDetailService appointmentDetailService;
     @Autowired
+    private ITechnicianService technicianService;
+    @Autowired
     private ITechnicianBusinessService technicianBusinessService;
+    @Autowired
+    private IBusinessService businessService;
+    @Autowired
+    private IStoreService storeService;
+    @Autowired
+    private IBabyService babyService;
 
     @RequestMapping(value = "addAppointment", method = RequestMethod.POST)
     @ResponseBody
-    public Result addAppointment(@RequestBody Appointment appointment, HttpServletRequest httpServletRequest) throws InvocationTargetException, IllegalAccessException {
+    public Result addAppointment(@RequestBody Appointment appointment, HttpServletRequest httpServletRequest) throws InvocationTargetException, IllegalAccessException, ParseException {
         Result result = new Result();
-
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         //获取预约起始时间
-        List<com.cdhaixun.domain.Appointment> appointmentList = appointmentService.findByStartTimeAndTechnicianId(appointment.getStarttime(), appointment.getEndtime(), appointment.getTechnicianid());
-        Date starttime = appointment.getStarttime();
+        List<com.cdhaixun.domain.Appointment> appointmentList = appointmentService.findByStartTimeAndTechnicianId(simpleDateFormat.parse(appointment.getStarttime()), simpleDateFormat.parse(appointment.getEndtime()), appointment.getTechnicianid());
+        Date starttime = simpleDateFormat.parse(appointment.getStarttime());
         for (com.cdhaixun.domain.Appointment appointmentTemp : appointmentList) {
             if (appointmentTemp.getEndtime().compareTo(starttime) > 0) {
                 starttime = appointmentTemp.getEndtime();
             }
         }
-        com.cdhaixun.domain.Appointment appointment1Db=new com.cdhaixun.domain.Appointment();
-        BeanUtils.copyProperties(appointment1Db,appointment);
+        com.cdhaixun.domain.Appointment appointment1Db = new com.cdhaixun.domain.Appointment();
+        appointment1Db.setCreatetime(appointment.getCreatetime());
+        appointment1Db.setTechnicianid(appointment.getTechnicianid());
+        appointment1Db.setStoreid(appointment.getStoreid());
+        appointment1Db.setEndtime(simpleDateFormat.parse(appointment.getEndtime()));
+        appointment1Db.setStarttime(simpleDateFormat.parse(appointment.getStarttime()));
+        appointment1Db.setRemark(appointment.getRemark());
+        appointment1Db.setUserid(appointment.getUserid());
         appointment1Db.setStarttime(starttime);
         appointment1Db.setCreatetime(new Date());
         appointmentService.save(appointment1Db);
+        appointment1Db.setBusinessList(new ArrayList<Business>());
+        appointment1Db.setBabyList(new ArrayList<Baby>());
+        appointment1Db.setTechnician(technicianService.findById(appointment.getTechnicianid()));
+        appointment1Db.setStore(storeService.findById(appointment.getStoreid()));
+        for (com.cdhaixun.domain.Baby baby : appointment.getBabyList()) {
+            appointment1Db.getBabyList().add(babyService.findById(baby.getId()));
+        }
         for (Business business : appointment.getBusinessList()) {
-            TechnicianBusiness technicianBusiness=technicianBusinessService.findByBusinessIdAndTechnicianId(business.getId(),appointment.getTechnicianid());
+            TechnicianBusiness technicianBusiness = technicianBusinessService.findByBusinessIdAndTechnicianId(business.getId(), appointment.getTechnicianid());
+            appointment1Db.getBusinessList().add(businessService.findById(business.getId()));
             for (com.cdhaixun.domain.Baby baby : appointment.getBabyList()) {
                 AppointmentDetail appointmentDetail = new AppointmentDetail();
                 appointmentDetail.setTechnicianid(appointment.getTechnicianid());
@@ -65,17 +86,21 @@ public class AppointmentAppController {
                 appointmentDetail.setUserid(appointment.getUserid());
                 appointmentDetail.setBabyid(baby.getId());
                 appointmentDetail.setStarttime(starttime);
-                Calendar calendar=Calendar.getInstance();
+                Calendar calendar = Calendar.getInstance();
                 calendar.setTime(starttime);
-                calendar.roll(Calendar.MINUTE,technicianBusiness.getSpend());
-                starttime=calendar.getTime();
+                calendar.roll(Calendar.MINUTE, technicianBusiness.getSpend());
+                starttime = calendar.getTime();
                 appointmentDetail.setEndtime(calendar.getTime());
+                appointmentDetail.setBussinessid(technicianBusiness.getBusinessid());
                 appointment1Db.setEndtime(appointmentDetail.getEndtime());
                 appointmentDetailService.save(appointmentDetail);
             }
         }
+        appointmentService.save(appointment1Db);
         List<com.cdhaixun.domain.Appointment> appointmentList1 = appointmentService.findByStartTimeAndTechnicianId(new Date(), appointment1Db.getEndtime(), appointment.getTechnicianid());
         appointment1Db.setAppointnumber(appointmentList1.size());
+
+
         result.setData(appointment1Db);
         result.setResult(true);
         return result;
@@ -83,9 +108,31 @@ public class AppointmentAppController {
 
     @RequestMapping(value = "listByUserId", method = RequestMethod.POST)
     @ResponseBody
-    public Result listByUserId(@RequestBody Appointment appointment){
+    public Result listByUserId(@RequestBody Appointment appointment) {
         Result result = new Result();
-       List<com.cdhaixun.domain.Appointment> appointmentList= appointmentService.findByUserId(appointment.getUserid());
+        List<com.cdhaixun.domain.Appointment> appointmentList = appointmentService.findByUserId(appointment.getUserid());
+        for (com.cdhaixun.domain.Appointment appointment1 : appointmentList) {
+            appointment1.setTechnician(technicianService.findById(appointment.getTechnicianid()));
+            appointment1.setStore(storeService.findById(appointment.getStoreid()));
+            List<AppointmentDetail> appointmentDetailList = appointmentDetailService.findByAppointmentId(appointment1.getId());
+            Map<Integer, Business> map = new HashMap();
+            for (AppointmentDetail appointmentDetail : appointmentDetailList) {
+                Business business = businessService.findById(appointmentDetail.getBussinessid());
+                if (map.keySet().contains(business.getId())) {
+                    map.get(business.getId()).setNumber(map.get(business.getId()).getNumber() + 1);
+                } else {
+                    business.setNumber(1);
+                    map.put(business.getId(), business);
+                }
+
+                appointmentDetail.setBusiness(business);
+                appointmentDetail.setBaby(babyService.findById(appointmentDetail.getBabyid()));
+            }
+            appointment.setBusinessList(new ArrayList<Business>());
+            for (Business business : map.values()) {
+                appointment.getBusinessList().add(business);
+            }
+        }
         result.setData(appointmentList);
         result.setResult(true);
         return result;

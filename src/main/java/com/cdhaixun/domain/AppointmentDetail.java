@@ -26,6 +26,24 @@ public class AppointmentDetail {
     private Boolean isdelete;
     private  Date createtimeFrom ;
     private  Date createtimeTo ;
+    private  Business business;
+    private  Baby baby;
+
+    public Baby getBaby() {
+        return baby;
+    }
+
+    public void setBaby(Baby baby) {
+        this.baby = baby;
+    }
+
+    public Business getBusiness() {
+        return business;
+    }
+
+    public void setBusiness(Business business) {
+        this.business = business;
+    }
 
     public Date getCreatetimeFrom() {
         return createtimeFrom;

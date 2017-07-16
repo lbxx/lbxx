@@ -206,6 +206,9 @@
             <if test="remark != null">
                 and remark = #{remark}
             </if>
+            <if test="orderBy != null" >
+                order by  ${orderBy}
+            </if>
         </where>
     </select>
 </mapper>

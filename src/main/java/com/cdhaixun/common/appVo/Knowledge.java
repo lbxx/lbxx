@@ -1,6 +1,4 @@
-package com.cdhaixun.domain;
-
-import java.util.List;
+package com.cdhaixun.common.appVo;
 
 public class Knowledge {
     private Integer id;
@@ -16,15 +14,6 @@ public class Knowledge {
     private Boolean state;
 
     private String content;
-    private List<Image> imageList;
-
-    public List<Image> getImageList() {
-        return imageList;
-    }
-
-    public void setImageList(List<Image> imageList) {
-        this.imageList = imageList;
-    }
 
     public Integer getId() {
         return id;

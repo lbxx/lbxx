@@ -11,4 +11,6 @@ public interface KnowledgeMapper extends BaseMapper<Knowledge>{
     List<KnowledgeVo> getList(Map<String, Object> parMap);
 
     List<Knowledge> findList();
+
+    List<Knowledge> findByKnowledge(Knowledge knowledge);
 }
