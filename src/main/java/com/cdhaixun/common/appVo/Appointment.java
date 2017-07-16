@@ -4,6 +4,7 @@ import com.cdhaixun.domain.Baby;
 import com.cdhaixun.domain.Business;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -28,6 +29,10 @@ public class Appointment {
 
     List<Baby> babyList;//宝宝
     List<Business> businessList;//所选业务
+
+    public void setBabyList(List<Baby> babyList) {
+        this.babyList = babyList;
+    }
 
     public String getRemark() {
         return remark;
@@ -65,9 +70,7 @@ public class Appointment {
         return babyList;
     }
 
-    public void setBabyList(List<Baby> babyList) {
-        this.babyList = babyList;
-    }
+
 
     public Integer getTechnicianid() {
         return technicianid;

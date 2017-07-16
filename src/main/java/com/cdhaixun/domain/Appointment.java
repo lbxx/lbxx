@@ -24,6 +24,15 @@ public class Appointment {
     private List<Baby> babyList;
     private Technician technician;
     private  Store store;
+    private String orderBy;
+
+    public String getOrderBy() {
+        return orderBy;
+    }
+
+    public void setOrderBy(String orderBy) {
+        this.orderBy = orderBy;
+    }
 
     public Store getStore() {
         return store;

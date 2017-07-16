@@ -20,10 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Administrator on 2017-07-01.
@@ -52,16 +49,16 @@ public class AppointmentAppController {
     @ResponseBody
     public Result addAppointment(@RequestBody Appointment appointment, HttpServletRequest httpServletRequest) throws InvocationTargetException, IllegalAccessException, ParseException {
         Result result = new Result();
-        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         //获取预约起始时间
-        List<com.cdhaixun.domain.Appointment> appointmentList = appointmentService.findByStartTimeAndTechnicianId(simpleDateFormat.parse(appointment.getStarttime()),simpleDateFormat.parse( appointment.getEndtime()), appointment.getTechnicianid());
+        List<com.cdhaixun.domain.Appointment> appointmentList = appointmentService.findByStartTimeAndTechnicianId(simpleDateFormat.parse(appointment.getStarttime()), simpleDateFormat.parse(appointment.getEndtime()), appointment.getTechnicianid());
         Date starttime = simpleDateFormat.parse(appointment.getStarttime());
         for (com.cdhaixun.domain.Appointment appointmentTemp : appointmentList) {
             if (appointmentTemp.getEndtime().compareTo(starttime) > 0) {
                 starttime = appointmentTemp.getEndtime();
             }
         }
-        com.cdhaixun.domain.Appointment appointment1Db=new com.cdhaixun.domain.Appointment();
+        com.cdhaixun.domain.Appointment appointment1Db = new com.cdhaixun.domain.Appointment();
         appointment1Db.setCreatetime(appointment.getCreatetime());
         appointment1Db.setTechnicianid(appointment.getTechnicianid());
         appointment1Db.setStoreid(appointment.getStoreid());
@@ -80,7 +77,7 @@ public class AppointmentAppController {
             appointment1Db.getBabyList().add(babyService.findById(baby.getId()));
         }
         for (Business business : appointment.getBusinessList()) {
-            TechnicianBusiness technicianBusiness=technicianBusinessService.findByBusinessIdAndTechnicianId(business.getId(),appointment.getTechnicianid());
+            TechnicianBusiness technicianBusiness = technicianBusinessService.findByBusinessIdAndTechnicianId(business.getId(), appointment.getTechnicianid());
             appointment1Db.getBusinessList().add(businessService.findById(business.getId()));
             for (com.cdhaixun.domain.Baby baby : appointment.getBabyList()) {
                 AppointmentDetail appointmentDetail = new AppointmentDetail();
@@ -89,10 +86,10 @@ public class AppointmentAppController {
                 appointmentDetail.setUserid(appointment.getUserid());
                 appointmentDetail.setBabyid(baby.getId());
                 appointmentDetail.setStarttime(starttime);
-                Calendar calendar=Calendar.getInstance();
+                Calendar calendar = Calendar.getInstance();
                 calendar.setTime(starttime);
-                calendar.roll(Calendar.MINUTE,technicianBusiness.getSpend());
-                starttime=calendar.getTime();
+                calendar.roll(Calendar.MINUTE, technicianBusiness.getSpend());
+                starttime = calendar.getTime();
                 appointmentDetail.setEndtime(calendar.getTime());
                 appointmentDetail.setBussinessid(technicianBusiness.getBusinessid());
                 appointment1Db.setEndtime(appointmentDetail.getEndtime());
@@ -111,16 +108,29 @@ public class AppointmentAppController {
 
     @RequestMapping(value = "listByUserId", method = RequestMethod.POST)
     @ResponseBody
-    public Result listByUserId(@RequestBody Appointment appointment){
+    public Result listByUserId(@RequestBody Appointment appointment) {
         Result result = new Result();
-       List<com.cdhaixun.domain.Appointment> appointmentList= appointmentService.findByUserId(appointment.getUserid());
-        for (com.cdhaixun.domain.Appointment appointment1:appointmentList){
+        List<com.cdhaixun.domain.Appointment> appointmentList = appointmentService.findByUserId(appointment.getUserid());
+        for (com.cdhaixun.domain.Appointment appointment1 : appointmentList) {
             appointment1.setTechnician(technicianService.findById(appointment.getTechnicianid()));
             appointment1.setStore(storeService.findById(appointment.getStoreid()));
-            List<AppointmentDetail> appointmentDetailList=  appointmentDetailService.findByAppointmentId(appointment1.getId());
-             for (AppointmentDetail appointmentDetail: appointmentDetailList){
-                 appointmentDetail.setBusiness(businessService.findById(appointmentDetail.getBussinessid()));
-                 appointmentDetail.setBaby(babyService.findById(appointmentDetail.getBabyid()));
+            List<AppointmentDetail> appointmentDetailList = appointmentDetailService.findByAppointmentId(appointment1.getId());
+            Map<Integer, Business> map = new HashMap();
+            for (AppointmentDetail appointmentDetail : appointmentDetailList) {
+                Business business = businessService.findById(appointmentDetail.getBussinessid());
+                if (map.keySet().contains(business.getId())) {
+                    map.get(business.getId()).setNumber(map.get(business.getId()).getNumber() + 1);
+                } else {
+                    business.setNumber(1);
+                    map.put(business.getId(), business);
+                }
+
+                appointmentDetail.setBusiness(business);
+                appointmentDetail.setBaby(babyService.findById(appointmentDetail.getBabyid()));
+            }
+            appointment.setBusinessList(new ArrayList<Business>());
+            for (Business business : map.values()) {
+                appointment.getBusinessList().add(business);
             }
         }
         result.setData(appointmentList);
