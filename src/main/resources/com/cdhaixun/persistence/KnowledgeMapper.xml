@@ -86,4 +86,31 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="findByKnowledge" resultMap="ResultMapWithBLOBs" parameterType="com.cdhaixun.domain.Knowledge">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from knowledge
+   <where>
+     <if test="typeid != null" >
+     and  typeid = #{typeid,jdbcType=INTEGER}
+     </if>
+     <if test="title != null" >
+       and title = #{title,jdbcType=VARCHAR}
+     </if>
+     <if test="isdelete != null" >
+       and   isdelete = #{isdelete,jdbcType=BIT}
+     </if>
+     <if test="sort != null" >
+       and sort = #{sort,jdbcType=TINYINT}
+     </if>
+     <if test="state != null" >
+       and state = #{state,jdbcType=BIT}
+     </if>
+     <if test="content != null" >
+       and content = #{content,jdbcType=LONGVARCHAR}
+     </if>
+   </where>
+  </select>
 </mapper>
