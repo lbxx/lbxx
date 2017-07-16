@@ -9,6 +9,7 @@ import com.cdhaixun.shop.service.IKnowledgeService;
 import com.cdhaixun.shop.service.IKnowledgeTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,8 +26,6 @@ import java.util.List;
 @RequestMapping("knowledgeApp")
 public class KnowledgeAppController {
     @Autowired
-    private IKnowledgeTypeService knowledgeTypeService;
-    @Autowired
     private IKnowledgeService knowledgeService;
     @Autowired
     private IImageService imageService;
@@ -35,14 +34,21 @@ public class KnowledgeAppController {
     @ResponseBody
     public Result listByType(@RequestBody Knowledge knowledge, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         Result result = new Result();
-      List<com.cdhaixun.domain.Knowledge> knowledgeList=  knowledgeService.findByTypeId(knowledge.getTypeid());
-        for (com.cdhaixun.domain.Knowledge knowledge1:knowledgeList) {
-          List<Image> imageList = imageService.findByKnowledgeId(knowledge1.getId());
+        List<com.cdhaixun.domain.Knowledge> knowledgeList = knowledgeService.findByTypeId(knowledge.getTypeid());
+        for (com.cdhaixun.domain.Knowledge knowledge1 : knowledgeList) {
+            List<Image> imageList = imageService.findByKnowledgeId(knowledge1.getId());
             knowledge1.setImageList(imageList);
         }
         result.setData(knowledgeList);
         result.setResult(true);
         return result;
+    }
+
+    @RequestMapping(value = "knowledgeDetail", method = {RequestMethod.POST,RequestMethod.GET})
+    public String knowledgeDetail(Knowledge knowledge, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Model model) {
+        com.cdhaixun.domain.Knowledge knowledge1 = knowledgeService.findById(knowledge.getId());
+        model.addAttribute("knowledge", knowledge1);
+        return "app/knowledgeDetail";
     }
 
 }
