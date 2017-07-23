@@ -133,9 +133,9 @@ public class AppointmentAppController {
                 appointmentDetail.setBusiness(business);
                 appointmentDetail.setBaby(babyService.findById(appointmentDetail.getBabyid()));
             }
-            appointment.setBusinessList(new ArrayList<Business>());
+            appointment1.setBusinessList(new ArrayList<Business>());
             for (Business business : map.values()) {
-                appointment.getBusinessList().add(business);
+                appointment1.getBusinessList().add(business);
             }
         }
         result.setData(appointmentList);

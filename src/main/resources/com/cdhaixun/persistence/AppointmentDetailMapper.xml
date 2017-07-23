@@ -194,40 +194,40 @@
     from appointment_detail
 <where>
   <if test="userid != null" >
-    and userid = #{userid,jdbcType=INTEGER},
+    and userid = #{userid,jdbcType=INTEGER}
   </if>
   <if test="babyid != null" >
-   and  babyid = #{babyid,jdbcType=INTEGER},
+   and  babyid = #{babyid,jdbcType=INTEGER}
   </if>
   <if test="technicianid != null" >
-   and  technicianid = #{technicianid,jdbcType=INTEGER},
+   and  technicianid = #{technicianid,jdbcType=INTEGER}
   </if>
   <if test="bussinessid != null" >
-   and  bussinessid = #{bussinessid,jdbcType=INTEGER},
+   and  bussinessid = #{bussinessid,jdbcType=INTEGER}
   </if>
   <if test="starttime != null" >
-   and  starttime = #{starttime,jdbcType=TIMESTAMP},
+   and  starttime = #{starttime,jdbcType=TIMESTAMP}
   </if>
   <if test="starttimeFrom != null" >
-    and  starttimeFrom  &gt;= #{starttimeFrom,jdbcType=TIMESTAMP},
+    and  starttimeFrom  &gt;= #{starttimeFrom,jdbcType=TIMESTAMP}
   </if>
   <if test="starttimeTo != null" >
-    and  starttimeTo  &lt;#{starttimeTo,jdbcType=TIMESTAMP},
+    and  starttimeTo  &lt;#{starttimeTo,jdbcType=TIMESTAMP}
   </if>
   <if test="endtime != null" >
-  and  endtime = #{endtime,jdbcType=TIMESTAMP},
+  and  endtime = #{endtime,jdbcType=TIMESTAMP}
   </if>
   <if test="appointmentid != null" >
-   and  appointmentid = #{appointmentid,jdbcType=INTEGER},
+   and  appointmentid = #{appointmentid,jdbcType=INTEGER}
   </if>
   <if test="solution != null" >
-   and  solution = #{solution,jdbcType=VARCHAR},
+   and  solution = #{solution,jdbcType=VARCHAR}
   </if>
   <if test="timebucketid != null" >
-    and timebucketid = #{timebucketid,jdbcType=INTEGER},
+    and timebucketid = #{timebucketid,jdbcType=INTEGER}
   </if>
   <if test="isdelete != null" >
-   and  isdelete = #{isdelete,jdbcType=BIT},
+   and  isdelete = #{isdelete,jdbcType=BIT}
   </if>
 </where>
   </select>
