@@ -112,8 +112,14 @@ public class AppointmentAppController {
         Result result = new Result();
         List<com.cdhaixun.domain.Appointment> appointmentList = appointmentService.findByUserId(appointment.getUserid());
         for (com.cdhaixun.domain.Appointment appointment1 : appointmentList) {
+            if (appointment1.getEndtime().compareTo(new Date())<0){
+                appointment1.setState("已结束");
+            }else{
+                appointment1.setState("预约中");
+            }
             appointment1.setTechnician(technicianService.findById(appointment.getTechnicianid()));
             appointment1.setStore(storeService.findById(appointment.getStoreid()));
+
             List<AppointmentDetail> appointmentDetailList = appointmentDetailService.findByAppointmentId(appointment1.getId());
             Map<Integer, Business> map = new HashMap();
             for (AppointmentDetail appointmentDetail : appointmentDetailList) {
@@ -124,7 +130,6 @@ public class AppointmentAppController {
                     business.setNumber(1);
                     map.put(business.getId(), business);
                 }
-
                 appointmentDetail.setBusiness(business);
                 appointmentDetail.setBaby(babyService.findById(appointmentDetail.getBabyid()));
             }
