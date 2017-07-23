@@ -17,6 +17,24 @@ public class Knowledge {
 
     private String content;
     private List<Image> imageList;
+    private List<String> images;
+    private String url;
+
+    public List<String> getImages() {
+        return images;
+    }
+
+    public void setImages(List<String> images) {
+        this.images = images;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
     public List<Image> getImageList() {
         return imageList;
