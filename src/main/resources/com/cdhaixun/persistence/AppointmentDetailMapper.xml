@@ -184,8 +184,8 @@
       endtime = #{endtime,jdbcType=TIMESTAMP},
       appointmentid = #{appointmentid,jdbcType=INTEGER},
       solution = #{solution,jdbcType=VARCHAR},
-      timebucketid = #{timebucketid,jdbcType=INTEGER},
-      isdelete = #{isdelete,jdbcType=BIT}
+      timebucketid = #{timebucketid,jdbcType=INTEGER}
+      <!-- isdelete = #{isdelete,jdbcType=BIT} 更新时,使用此字段会导致 isdelete 值为 null 导致查询(加入 isdelete=0) 不到满足条件的记录-->
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectByAppointmentDetail" resultMap="BaseResultMap" parameterType="com.cdhaixun.domain.AppointmentDetail" >

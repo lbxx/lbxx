@@ -83,11 +83,11 @@
                 repeatitems : false
             },
             // 用于显示列表页table的列头
-            colNames:[' ', '名称','状态'],
+            colNames:['ID','名称','状态'],
             // 列表页数据绑定
             colModel:[
-                {name:'id',index:'', width:80, fixed:true, sortable:false, resize:false,
-                    formatter:'actions'
+                {name:'id',index:'', width:80, fixed:true, sortable:false, resize:false
+                	/* ,formatter:'actions' */
                 },
                 // 下面是列表页其它数据，name属性与java属性的set匹配
                 {name:'typename',index:'typename', width:150,editable: true,editoptions:{size:"20",maxlength:"30"}},
@@ -118,8 +118,10 @@
             {
                 refresh: true,
                 refreshicon : 'icon-refresh green',
-                view: true,
+                view: false,
                 viewicon : 'icon-zoom-in grey',
+                edit:false,
+                del:false,
             },
             {
                 recreateForm: true,

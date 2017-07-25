@@ -1,0 +1,1 @@
+var img_server='http://www.cdhaixun.com:81/';

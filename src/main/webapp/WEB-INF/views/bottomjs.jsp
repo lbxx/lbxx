@@ -44,6 +44,9 @@ window.jQuery || document.write("<script src='${ctx}/resources/js/jquery-1.10.2.
 <script src="${ctx}/resources/js/jquery.ui.touch-punch.min.js"></script>
 <!-- 公共跳转的js,依赖上面js -->
 <script src="${ctx}/resources/js/admin.js"></script>
+<!-- 公共配置的js-->
+<script src="${ctx}/resources/js/common.js"></script>
+
 
 <!-- 弹窗dialog公共DIV-->
 <div id="dialog-message" class="hide">

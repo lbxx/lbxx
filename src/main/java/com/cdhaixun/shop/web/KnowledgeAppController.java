@@ -33,6 +33,8 @@ public class KnowledgeAppController {
     private IImageService imageService;
     @Value("#{configProperties['domain']}")
     private String domain;
+    @Value("#{configProperties['domainName']}")
+    private String domainName;
 
     @RequestMapping(value = "listByType", method = RequestMethod.POST)
     @ResponseBody
@@ -43,7 +45,7 @@ public class KnowledgeAppController {
             List<Image> imageList = imageService.findByKnowledgeId(knowledge1.getId());
             knowledge1.setImages(new ArrayList<String>());
             for (Image image :imageList) {
-                knowledge1.getImages().add(image.getSource());
+                knowledge1.getImages().add(domainName+image.getSource());
             }
          //  knowledge1.setImageList(imageList);
             knowledge1.setUrl(domain+"knowledgeApp/knowledgeDetail?id="+knowledge1.getId());
