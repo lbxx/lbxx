@@ -1,8 +1,6 @@
 package com.cdhaixun.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class Business {
@@ -18,6 +16,7 @@ public class Business {
     private Integer number;
 
     private String isSelect;
+    private BigDecimal price;
 
     public Integer getNumber() {
         return number;
@@ -81,5 +80,13 @@ public class Business {
 
     public void setIsdelete(Boolean isdelete) {
         this.isdelete = isdelete;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 }

@@ -60,23 +60,30 @@
 				<div class="page-content">
 					<div class="row"
 						style="width: 1100px; height: 768px; overflow: hidden;">
-						<!-- ================= -->
 						<form id="businessForm" name="businessForm"
 							class="form-horizontal" role="form" 
 							action="${ctx}/business/save" method="POST">
 							<input type="hidden" name="id" id="id" value="" />
-							<!-- -->
-							<div style="border: 1px solid #797979; padding: 10px;">
-								<div style="display: inline-block; width: 40%; margin: 3px;">
-									<label style="line-height: 2em; width: 20%; font-weight: bold;">业务名称:</label>
+							<div class="form-group">
+								<label class="col-sm-3 control-label no-padding-right" for="name"> 业务名称 </label>
+								<div class="col-sm-8">
 									<input type="text" id="name" name="name" placeholder="请输入业务名称 "
-										class="required" style="height: 32px; width: 70%;">
+										   class="required">
 								</div>
-
-								<div style="display: inline-block; width: 40%; margin: 3px;">
-									<label style="line-height: 2em; width: 20%; font-weight: bold;">所属分类:</label>
-									</select> <select id="categoryselect" style="width: 200px;" name="categoryid">
-									</select>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label no-padding-right" for="name"> 所属分类 </label>
+								<div class="col-sm-8">
+									 <select id="categoryselect" name="categoryid">
+									 </select>
+								</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label no-padding-right" for="price"> 价格 </label>
+								<div class="col-sm-8">
+									<input type="text" id="price" name="price" value="${dto.price}" placeholder="请输入价格 " maxlength="8"
+										   class="required">
 								</div>
 							</div>
 							<div
@@ -145,18 +152,30 @@
 			var tel = /^(^(\d{3,4}-)?\d{7,8})$|(13[0-9]{9}) $/g;
 			return this.optional(element) || (tel.test(value));
 		}, "座机号码格式错误:021-10101010!");
-
+        // 价格验证
+        jQuery.validator.addMethod("priceReg", function(value, element) {
+            var price =  /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/;
+            return this.optional(element) || (price.test(value));
+        }, "请正确填写价格");
 		$("#businessForm").validate({
 			errorClass : "noInput",
 			rules : {
 				name : {
 					required : true
+				},
+				price:{
+				    required : true,
+                    priceReg:true
 				}
 			},
 			messages : {
 				name : {
 					required : "这是一个必填字段"
-				}
+				},
+                price: {
+                    required: "请输入价格",
+                    priceReg:"金额格式错误"
+                }
 			}
 		/* ,
 		                 errorPlacement : function(error, element) {  
@@ -176,6 +195,7 @@
 	                    },
 	                    success : function(data, textStatus) {
 	                        $("#name").val(data.name);
+	                        $("#price").val(data.price);
 	                        $("#categoryselect").val(data.categoryid);
 	                    },
 	                    error : function(data, textStatus, errorThrown) {

@@ -30,6 +30,13 @@
         from manager
         where id = #{id,jdbcType=INTEGER}
     </select>
+    <select id="getPermissionList" resultType="com.cdhaixun.vo.PermissionVo" parameterType="string">
+        select id,parentid as pId,name from menu where state = 1 AND id in
+        (select menuid from role_menu where role = #{role})
+        UNION ALL
+        select CONCAT(id,'000') as id,menuid as pId,name from operate where id in
+        (select operateid from role_operate where role = #{role})
+    </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from manager
     where id = #{id,jdbcType=INTEGER}

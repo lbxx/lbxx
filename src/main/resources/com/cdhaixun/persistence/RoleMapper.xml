@@ -9,15 +9,15 @@
   <sql id="Base_Column_List" >
     code, id, name
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from role
-    where code = #{code,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from role
-    where code = #{code,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.cdhaixun.domain.Role" >
     insert into role (code, id, name
@@ -35,11 +35,19 @@
         name = #{name,jdbcType=VARCHAR},
       </if>
     </set>
-    where code = #{code,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectAll" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from role
   </select>
+  <delete id="removeMenuByCode" parameterType="java.lang.String" >
+    delete from role_menu
+    where role = #{code,jdbcType=VARCHAR}
+  </delete>
+  <delete id="removePermissionByCode" parameterType="java.lang.String" >
+    delete from role_operate
+    where role = #{code,jdbcType=VARCHAR}
+  </delete>
 </mapper>

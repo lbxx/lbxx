@@ -3,6 +3,7 @@ package com.cdhaixun.shop.service.impl;
 import com.cdhaixun.domain.Manager;
 import com.cdhaixun.persistence.ManagerMapper;
 import com.cdhaixun.shop.service.IManagerService;
+import com.cdhaixun.vo.PermissionVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,5 +48,10 @@ public class ManagerServiceImpl implements IManagerService {
         Manager manager = new Manager();
         manager.setAccount(username);
         return managerMapper.selectOneByManager(manager);
+    }
+
+    @Override
+    public List<PermissionVo> getPermissionList(String role) {
+        return managerMapper.getPermissionList(role);
     }
 }

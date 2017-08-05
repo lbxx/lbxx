@@ -1,6 +1,7 @@
 package com.cdhaixun.shop.service;
 
 import com.cdhaixun.domain.Manager;
+import com.cdhaixun.vo.PermissionVo;
 
 import java.util.List;
 
@@ -17,4 +18,6 @@ public interface IManagerService {
     Manager findByMobile(String mobile);
 
     Manager findOneByAccount(String username);
+
+    List<PermissionVo> getPermissionList(String role);
 }

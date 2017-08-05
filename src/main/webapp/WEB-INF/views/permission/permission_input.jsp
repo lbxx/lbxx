@@ -8,6 +8,65 @@
     <!-- 引入公共js css -->
     <jsp:include page="../jscss.jsp" />
     <link href="http://www.jq22.com/jquery/bootstrap-3.3.4.css" rel="stylesheet">
+    <script type="text/javascript">
+        var setting = {
+            check: {
+                enable: true,
+                chkboxType:{
+                    "Y" : "ps",
+                    "N" : "ps"
+                }
+            },
+            data: {
+                simpleData: {
+                    enable: true
+                }
+            }
+        };
+
+        var zNodes =[
+            { id:1, pId:0, name:"随意勾选 1", open:true},
+            { id:11, pId:1, name:"随意勾选 1-1", open:true},
+            { id:111, pId:11, name:"随意勾选 1-1-1"},
+            { id:112, pId:11, name:"随意勾选 1-1-2"},
+            { id:12, pId:1, name:"随意勾选 1-2", open:true},
+            { id:121, pId:12, name:"随意勾选 1-2-1"},
+            { id:122, pId:12, name:"随意勾选 1-2-2"},
+            { id:2, pId:0, name:"随意勾选 2", checked:true, open:true},
+            { id:21, pId:2, name:"随意勾选 2-1"},
+            { id:22, pId:2, name:"随意勾选 2-2", open:true},
+            { id:221, pId:22, name:"随意勾选 2-2-1", checked:true},
+            { id:222, pId:22, name:"随意勾选 2-2-2"},
+            { id:23, pId:2, name:"随意勾选 2-3"}
+        ];
+
+        var code;
+
+        function setCheck() {
+            var zTree = $.fn.zTree.getZTreeObj("treeDemo"),
+                py = $("#py").attr("checked")? "p":"",
+                sy = $("#sy").attr("checked")? "s":"",
+                pn = $("#pn").attr("checked")? "p":"",
+                sn = $("#sn").attr("checked")? "s":"",
+                type = { "Y":py + sy, "N":pn + sn};
+            zTree.setting.check.chkboxType = type;
+            showCode('setting.check.chkboxType = { "Y" : "' + type.Y + '", "N" : "' + type.N + '" };');
+        }
+        function showCode(str) {
+            if (!code) code = $("#code");
+            code.empty();
+            code.append("<li>"+str+"</li>");
+        }
+
+        $(document).ready(function(){
+            $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+            setCheck();
+            $("#py").bind("change", setCheck);
+            $("#sy").bind("change", setCheck);
+            $("#pn").bind("change", setCheck);
+            $("#sn").bind("change", setCheck);
+        });
+    </script>
 </head>
 <body>
 
@@ -39,9 +98,9 @@
                         <a href="#">Home</a>
                     </li>
                     <li>
-                        <a href="#">用户管理</a>
+                        <a href="#">权限管理</a>
                     </li>
-                    <li class="active">用户列表</li>
+                    <li class="active">权限操作</li>
                 </ul><!-- .breadcrumb -->
             </div>
             <!-- 当前页定位结束 -->
@@ -54,98 +113,14 @@
                         <form class="form-horizontal" id="validation-form" role="form" method="post" action="${ctx}/user/save">
                             <input type="hidden" name="id" value="${dto.id}"/>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right" for="idcard"> 会员卡号 </label>
-                                <div class="col-sm-9">
+                                <%--<div class="col-sm-9">
                                     <input type="text" id="usercard" name="usercard" maxlength="30" value="${dto.usercard}" class="col-xs-10 col-sm-5" />
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right" for="name"> 会员姓名 </label>
-                                <div class="col-sm-8">
-                                    <input type="text" id="name" name="name" value="${dto.name}" maxlength="30" required class="col-xs-4 col-sm-4" />
-                                    <span class="col-xs-3 col-sm-3">
-                                        <label class="middle">
-                                            <input class="ace" type="checkbox" id="id-disable-check" />
-                                            <span class="lbl"> 手机号做会员卡号!</span>
-                                        </label>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right" for="mobile"> 联系电话 </label>
-                                <div class="col-sm-9">
-                                    <input type="text" id="mobile" name="mobile" value="${dto.mobile}" maxlength="11" class="col-xs-10 col-sm-5" />
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right" required for="sex"> 会员性别 </label>
-                                <div class="col-sm-9">
-                                    <select id="sex" name="sex">
-                                        <option value="1" <c:if test="${dto.sex == 1}">checked</c:if>>男</option>
-                                        <option value="0" <c:if test="${dto.sex == 0}">checked</c:if>>女</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right" required for="storeid"> 会员分类 </label>
-                                <div class="col-sm-9">
-                                    <select id="storeid" name="storeid">
-                                        <c:forEach items="${typeList}" var="item">
-                                            <option value="${item.id}" <c:if test="${dto.storeid == item.id}">selected</c:if>>${item.typename}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right" for="blance"> 余额 </label>
-                                <div class="col-sm-9">
-                                    <input type="text" id="blance" name="blance" value="${dto.blance}" maxlength="8" class="col-xs-10 col-sm-5" />
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right" for="points"> 积分 </label>
-                                <div class="col-sm-9">
-                                    <input type="text" id="points" name="points" value="${dto.points}" maxlength="8" class="col-xs-10 col-sm-5" />
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right" required for="birthday"> 生日 </label>
-                                <div class="col-sm-9">
-                                    <input type="text" id="birthday" class="confS_input pg_input" value="${dto.birthday}" name="birthday" readonly onClick="WdatePicker({dateFmt:'yyyy-MM-dd'})">
-                                </div>
-                            </div>
-                            <div data-toggle="distpicker">
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label no-padding-right" for="province"> 省 </label>
-                                    <div class="col-sm-5">
-                                        <select class="form-control" id="province" data-province="${dto.province}" name="province" required></select>
+                                </div>--%>
+                                    <div class="zTreeDemoBackground left">
+                                        <ul id="treeDemo" class="ztree"></ul>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label no-padding-right" for="city"> 市 </label>
-                                    <div class="col-sm-5">
-                                        <select class="form-control" id="city"  data-city="${dto.city}" value="${dto.city}" name="city" required></select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label no-padding-right" for="district"> 区 </label>
-                                    <div class="col-sm-5">
-                                        <select class="form-control" id="district" data-district="${dto.area}"  name="area" required></select>
-                                    </div>
-                                </div>
                             </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right" for="address"> 详细地址 </label>
-                                <div class="col-sm-9">
-                                    <input type="text" id="address" name="address" value="${dto.address}" maxlength="100" required class="col-xs-10 col-sm-5" autocomplete="off"/>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right" for="idcard">身份证 </label>
-                                <div class="col-sm-9">
-                                    <input type="text" id="idcard" name="idcard" maxlength="30" value="${dto.idcard}" required class="col-xs-10 col-sm-5" />
-                                </div>
-                            </div>
+
                             <div class="clearfix form-actions">
                                 <div class="col-md-offset-3 col-md-9">
                                     <button class="btn btn-info" type="submit">
@@ -189,11 +164,12 @@
             var mobile = /^(13[0-9]{9})|(18[0-9]{9})|(14[0-9]{9})|(17[0-9]{9})|(15[0-9]{9})$/;
             return this.optional(element) || (length == 11 && mobile.test(value));
         }, "请正确填写您的手机号码");
-        // 金额验证
+        // 积分验证
         jQuery.validator.addMethod("blanceReg", function(value, element) {
-            var blance =  /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/;
+            var length = value.length;
+            var blance =  /(\d{1,}\.\d{2}$)||(\d{1,}\.$)/;
             return this.optional(element) || (blance.test(value));
-        }, "请正确填写金额");
+        }, "请正确填写您的积分");
         $('#validation-form').validate({
             errorElement: 'div',
             errorClass: 'help-block',

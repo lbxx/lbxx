@@ -26,6 +26,24 @@
   </select>
   <select id="getMenus" resultMap="BaseResultMap" >   
     SELECT DISTINCT
+        mu.id id,
+        mu.`name` NAME,
+        mu.parentid parentid,
+        mu.sort sort,
+        mu.url url
+    FROM
+        menu mu
+    LEFT JOIN role_menu rm ON rm.menuid = mu.id
+    LEFT JOIN manager m ON m.role = rm.role
+    WHERE
+        mu.state = 1
+    AND m.role = #{role}
+    AND mu.parentid = #{parentid}
+    ORDER BY
+        mu.sort ASC
+  </select>
+  <select id="getMenusOld" resultMap="BaseResultMap" >
+    SELECT DISTINCT
 		mu.id id,
 		mu.`name` name,
 		mu.parentid parentid,
@@ -38,7 +56,7 @@
 	LEFT JOIN role r ON ro.role = r.`code`
 	LEFT JOIN manager m ON m.role = r.`code`
 	WHERE
-		m.state = 1
+		mu.state = 1
 	AND m.role = #{role}
 	AND mu.parentid = #{parentid}
 	ORDER BY

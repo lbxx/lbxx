@@ -120,7 +120,7 @@
 				},
 				// 用于显示列表页table的列头
 				//colNames:[' ', '会员卡','姓名','电话','性别','店铺名','用户类别','注册时间'],
-				colNames : [ '', 'ID', '业务名称', '所属分类', '创建时间' ],
+				colNames : [ '', 'ID', '业务名称', '所属分类', '价格',  '创建时间' ],
 				// 列表页数据绑定
 				colModel : [ {
 					name : 'myac',
@@ -167,7 +167,16 @@
 						maxlength : "30"
 					},
 					formatter : formatCategory
-				}, {
+				},{
+                        name : 'price',
+                        index : 'price',
+                        width : 150,
+                        editable : true,
+                        editoptions : {
+                            size : "20",
+                            maxlength : "30"
+                        }
+                }, {
 					name : 'createtime',
 					index : 'createtime',
 					width : 150,

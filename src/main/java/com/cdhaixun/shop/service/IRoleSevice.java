@@ -13,4 +13,8 @@ public interface IRoleSevice {
      * @return
      */
     List<Role> findAll();
+
+    Role findById(Integer id);
+
+    int savePermission(String permissions, String code);
 }

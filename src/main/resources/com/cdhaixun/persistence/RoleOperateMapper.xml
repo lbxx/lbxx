@@ -18,4 +18,8 @@
     SELECT  role,operateid from role_operate
     where role=#{role}
   </select>
+  <insert id="saveRoleMenu" parameterType="com.cdhaixun.domain.RoleMenu" >
+    insert into role_menu (role, menuid)
+    values (#{role,jdbcType=VARCHAR}, #{menuid,jdbcType=INTEGER})
+  </insert>
 </mapper>

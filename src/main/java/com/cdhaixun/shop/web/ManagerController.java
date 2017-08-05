@@ -26,7 +26,7 @@ import java.util.List;
  * create by tangxinmxo
  */
 @Controller
-@RequestMapping(value = "manage")
+@RequestMapping(value = "/manage")
 public class ManagerController {
     @Autowired
     IManagerService managerService;
@@ -62,7 +62,7 @@ public class ManagerController {
     /**
      * 添加账号页面
      */
-    @RequestMapping(value = {"add","edit"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/add","/edit"}, method = RequestMethod.GET)
     public String addIndex(Model model,Manager manager) {
         List<Role> roleList= roleSevice.findAll();
         if(manager.getId()!=null){
@@ -74,7 +74,7 @@ public class ManagerController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "add", method = RequestMethod.POST)
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
     public Result add(HttpServletRequest httpServletRequest, Manager manager,MultipartFile file) throws IOException {
         Result result = new Result();
         String img = uploadService.upload(httpServletRequest,file).getData().toString();
@@ -84,5 +84,4 @@ public class ManagerController {
         result.setResult(true);
         return result;
     }
-
 }
