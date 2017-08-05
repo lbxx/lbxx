@@ -20,6 +20,15 @@ public class PayResult {
     private String retcode;
     private String retmsg;
     private  String errmsg;
+    private  String payinfo;//支付成功
+
+    public String getPayinfo() {
+        return payinfo;
+    }
+
+    public void setPayinfo(String payinfo) {
+        this.payinfo = payinfo;
+    }
 
     public String getErrmsg() {
         return errmsg;

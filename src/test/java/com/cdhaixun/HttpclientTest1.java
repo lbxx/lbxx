@@ -19,21 +19,21 @@ import java.util.List;
 /**
  * Created by tangxinmao on 2017/6/23.
  */
-public class HttpclientTest {
+public class HttpclientTest1 {
     private static HttpClient hc = HttpClients.createDefault();
 
     public static void main(String[] args) throws IOException {
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("appid", "00000051"));
-    //    params.add(new BasicNameValuePair("authcode", "281175886193629630"));
-        params.add(new BasicNameValuePair("body", "123"));
+        //    params.add(new BasicNameValuePair("authcode", "281175886193629630"));
+
         params.add(new BasicNameValuePair("cusid", "990581007426001"));
         params.add(new BasicNameValuePair("key", "allinpay888"));
-        params.add(new BasicNameValuePair("paytype", "A01"));
+
         params.add(new BasicNameValuePair("randomstr", "1450432107647"));
-        params.add(new BasicNameValuePair("remark", "123"));
+
         params.add(new BasicNameValuePair("reqsn", "1450432kk1076478"));
-        params.add(new BasicNameValuePair("trxamt", "1"));
+
         URLCodec urlCodec = new URLCodec();
         String str = URLEncodedUtils.format(params, "utf-8");
         System.out.println(str);
@@ -45,7 +45,7 @@ public class HttpclientTest {
         params.add(new BasicNameValuePair("sign", sign));
         // params.add(new BasicNameValuePair("authcode", "234"));
         System.out.println(URLEncodedUtils.format(params, "utf-8"));
-        HttpPost httppost = new HttpPost("http://113.108.182.3:10080/apiweb/unitorder/pay?" + URLEncodedUtils.format(params, "utf-8"));
+        HttpPost httppost = new HttpPost("http://113.108.182.3:10080/apiweb/unitorder/query?" + URLEncodedUtils.format(params, "utf-8"));
         HttpResponse httpResponse = hc.execute(httppost);
         HttpEntity httpEntity = httpResponse.getEntity();
         String s = IOUtils.toString(httpEntity.getContent(), "utf-8");

@@ -24,4 +24,6 @@ public interface IAppointmentService {
      * @return
      */
     List<AppointmentVo> getAppointmentList(Map<String, Object> parMap);
+
+    Appointment findById(Integer id);
 }

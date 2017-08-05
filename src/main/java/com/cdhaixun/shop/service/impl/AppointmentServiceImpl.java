@@ -48,4 +48,9 @@ public class AppointmentServiceImpl implements IAppointmentService {
     public List<AppointmentVo> getAppointmentList(Map<String, Object> parMap) {
         return appointmentMapper.getAppointmentList(parMap);
     }
+
+    @Override
+    public Appointment findById(Integer id) {
+        return appointmentMapper.selectByPrimaryKey(id);
+    }
 }

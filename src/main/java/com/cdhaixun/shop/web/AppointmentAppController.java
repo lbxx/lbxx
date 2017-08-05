@@ -106,6 +106,17 @@ public class AppointmentAppController {
         return result;
     }
 
+    @RequestMapping(value = "modifyAppointmentState", method = RequestMethod.POST)
+    @ResponseBody
+    public Result modifyAppointmentState(@RequestBody Appointment appointment) throws InvocationTargetException, IllegalAccessException, ParseException {
+        Result result = new Result();
+        com.cdhaixun.domain. Appointment appointment1Db= appointmentService.findById(appointment.getId());
+
+        result.setData(appointment1Db);
+        result.setResult(true);
+        return result;
+    }
+
     @RequestMapping(value = "listByUserId", method = RequestMethod.POST)
     @ResponseBody
     public Result listByUserId(@RequestBody Appointment appointment) {
@@ -142,4 +153,6 @@ public class AppointmentAppController {
         result.setResult(true);
         return result;
     }
+
+
 }
