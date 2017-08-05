@@ -58,7 +58,7 @@
 <script type="text/javascript">
     jQuery(function($) {
         function formatState(cellvalue,options,rowdata){
-            return '<img src="http://pic51.nipic.com/file/20141023/2531170_115622554000_2.jpg" style="width: 60px;"/>';
+            return '<img src="'+img_server+cellvalue+'" style="width: 60px;"/>';
         }
         // 数据列表table
         var grid_selector = "#grid-table";
@@ -79,11 +79,11 @@
                 repeatitems : false
             },
             // 用于显示列表页table的列头
-            colNames:[' ', '标题名','名称','图片'],
+            colNames:['ID', '标题名','名称','图片'],
             // 列表页数据绑定
             colModel:[
-                {name:'id',index:'', width:80, fixed:true, sortable:false, resize:false,
-                    formatter:'actions'
+                {name:'id',index:'', width:80, fixed:true, sortable:false, resize:false
+                    /* formatter:'actions' */
                 },
                 // 下面是列表页其它数据，name属性与java属性的set匹配
                 {name:'knowledgeName',index:'knowledgeName', width:150},
@@ -115,8 +115,10 @@
             {
                 refresh: true,
                 refreshicon : 'icon-refresh green',
-                view: true,
+                view: false,
                 viewicon : 'icon-zoom-in grey',
+                edit:false,
+                del:false,
             },
             {
                 recreateForm: true,

@@ -39,7 +39,7 @@ public class AppointmentServiceImpl implements IAppointmentService {
     @Override
     public List<Appointment> findByUserId(Integer userid) {
         Appointment appointment=new Appointment();
-        appointment.setTechnicianid(userid);
+        appointment.setUserid(userid);
         appointment.setOrderBy("createtime desc");
         return appointmentMapper.selectByAppointment(appointment);
     }
@@ -47,5 +47,10 @@ public class AppointmentServiceImpl implements IAppointmentService {
     @Override
     public List<AppointmentVo> getAppointmentList(Map<String, Object> parMap) {
         return appointmentMapper.getAppointmentList(parMap);
+    }
+
+    @Override
+    public Appointment findById(Integer id) {
+        return appointmentMapper.selectByPrimaryKey(id);
     }
 }

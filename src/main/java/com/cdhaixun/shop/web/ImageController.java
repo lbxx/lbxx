@@ -1,10 +1,12 @@
 
 package com.cdhaixun.shop.web;
 
+import com.cdhaixun.common.vo.Result;
 import com.cdhaixun.domain.Image;
 import com.cdhaixun.domain.Knowledge;
 import com.cdhaixun.shop.service.IImageService;
 import com.cdhaixun.shop.service.IKnowledgeService;
+import com.cdhaixun.shop.service.IUploadService;
 import com.cdhaixun.util.JsonMsgUtil;
 import com.cdhaixun.util.MapUtils;
 import com.cdhaixun.vo.ImageVo;
@@ -16,8 +18,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -34,6 +39,8 @@ public class ImageController {
     private IImageService imageService;
     @Autowired
     private IKnowledgeService knowledgeService;
+    @Autowired
+    IUploadService uploadService;
     /**
      * 首页
      */
@@ -96,10 +103,18 @@ public class ImageController {
      * 保存
      * @param
      * @return
+     * @throws IOException 
      */
     @ResponseBody
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public Object save(Image image){
+    public Object save(Image image,HttpServletRequest request,MultipartFile file) throws IOException{
+        if(file != null){
+            @SuppressWarnings("rawtypes")
+            Result result = uploadService.upload(request, file);
+            if(result.isResult()){
+                image.setSource(result.getData().toString());
+            }
+        }
         try {
             Integer id = image.getId();
             if(id == null ){

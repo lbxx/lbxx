@@ -266,9 +266,10 @@
     <if test="createtime != null" >
       and  createtime = #{createtime,jdbcType=TIMESTAMP}
     </if>
-    <if test="isdelete != null" >
-      and  isdelete = #{isdelete,jdbcType=BIT}
-    </if>
+    <!-- <if test="isdelete != null" > -->
+      <!-- and  isdelete = #{isdelete,jdbcType=BIT} -->
+      and  isdelete = 0
+    <!-- </if> -->
   </where>
     <if test="orderBy != null" >
     order by  ${orderBy}

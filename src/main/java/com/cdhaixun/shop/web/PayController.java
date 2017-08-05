@@ -39,6 +39,10 @@ public class PayController extends BaseController{
 
     @Value("#{configProperties['scanpay']}")
     private String scanpay;
+
+    @Value("#{configProperties['notify_urla")
+    private String notify_url;
+
     @Autowired
     private ObjectMapper objectMapper;
     /**
@@ -48,7 +52,7 @@ public class PayController extends BaseController{
      */
     @RequestMapping(value = "scanpay", method = RequestMethod.POST)
     @ResponseBody
-    public PayResult pay(@RequestBody  Pay pay) throws IOException {
+    public PayResult scanpay(@RequestBody  Pay pay) throws IOException {
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("appid", pay.getAppid()));
         params.add(new BasicNameValuePair("authcode", pay.getAuthcode()));
@@ -62,11 +66,74 @@ public class PayController extends BaseController{
         String url = URLEncodedUtils.format(params, "utf-8");
         String sign = DigestUtils.md5Hex(url).toUpperCase();
         params.add(new BasicNameValuePair("sign", sign));
-        HttpPost httppost = new HttpPost(scanpay+"?" +URLEncodedUtils.format(params, Charset.forName("UTF-8")));
+        HttpPost httppost = new HttpPost(scanpay+"scanpay?" +URLEncodedUtils.format(params, Charset.forName("UTF-8")));
         HttpResponse httpResponse = hc.execute(httppost);
         HttpEntity httpEntity = httpResponse.getEntity();
         String json = IOUtils.toString(httpEntity.getContent(),"utf-8");
         PayResult payResult= objectMapper.readValue(json, PayResult.class);
         return  payResult;
     }
+
+    /**
+     * 生成订单
+     * @param pay
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value = "pay", method = RequestMethod.POST)
+    @ResponseBody
+    public PayResult pay(@RequestBody  com.cdhaixun.common.appVo.Pay pay) throws IOException {
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("appid", pay.getAppid()));
+      // params.add(new BasicNameValuePair("authcode", pay.getAuthcode()));
+        params.add(new BasicNameValuePair("body", pay.getBody()));
+        params.add(new BasicNameValuePair("cusid", pay.getCusid()));
+        params.add(new BasicNameValuePair("key", pay.getKey()));
+       // params.add(new BasicNameValuePair("notify_url", notify_url));
+        params.add(new BasicNameValuePair("paytype", pay.getPaytype()));
+        params.add(new BasicNameValuePair("randomstr", pay.getRandomstr()));
+        params.add(new BasicNameValuePair("remark", pay.getRemark()));
+        params.add(new BasicNameValuePair("reqsn", pay.getReqsn()));
+        params.add(new BasicNameValuePair("trxamt",pay.getTrxamt()+""));
+        String url = URLEncodedUtils.format(params, "utf-8");
+        String sign = DigestUtils.md5Hex(url).toUpperCase();
+        params.add(new BasicNameValuePair("sign", sign));
+        HttpPost httppost = new HttpPost(scanpay+"pay?" +URLEncodedUtils.format(params, Charset.forName("UTF-8")));
+        HttpResponse httpResponse = hc.execute(httppost);
+        HttpEntity httpEntity = httpResponse.getEntity();
+        String json = IOUtils.toString(httpEntity.getContent(),"utf-8");
+        PayResult payResult= objectMapper.readValue(json, PayResult.class);
+        return  payResult;
+    }
+
+    /**
+     * 查询订单支付状态
+     * @param pay
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value = "verifyPayState", method = RequestMethod.POST)
+    @ResponseBody
+    public PayResult verifyPayState(@RequestBody  com.cdhaixun.common.appVo.Pay pay) throws IOException {
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("appid", pay.getAppid()));
+        params.add(new BasicNameValuePair("cusid", pay.getCusid()));
+        params.add(new BasicNameValuePair("key", pay.getKey()));
+        params.add(new BasicNameValuePair("randomstr", pay.getRandomstr()));
+        params.add(new BasicNameValuePair("reqsn", pay.getReqsn()));
+        String url = URLEncodedUtils.format(params, "utf-8");
+        String sign = DigestUtils.md5Hex(url).toUpperCase();
+        params.add(new BasicNameValuePair("sign", sign));
+        HttpPost httppost = new HttpPost(scanpay+"pay?" +URLEncodedUtils.format(params, Charset.forName("UTF-8")));
+        HttpResponse httpResponse = hc.execute(httppost);
+        HttpEntity httpEntity = httpResponse.getEntity();
+        String json = IOUtils.toString(httpEntity.getContent(),"utf-8");
+        PayResult payResult= objectMapper.readValue(json, PayResult.class);
+        return  payResult;
+    }
+
+
+
+
+
 }

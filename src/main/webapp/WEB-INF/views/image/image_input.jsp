@@ -51,7 +51,8 @@
                 <div class="row">
                     <div class="col-xs-12">
                         <!-- PAGE CONTENT BEGINS -->
-                        <form class="form-horizontal" id="validation-form" role="form" method="post" action="${ctx}/image/save">
+                        <form class="form-horizontal" id="validation-form" role="form" 
+                        method="post" action="${ctx}/image/save" enctype="multipart/form-data">
                             <input type="hidden" name="id" value="${dto.id}"/>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right" required for="knowledgeid"> 标题 </label>
@@ -72,7 +73,12 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right" for="source"> 图片 </label>
                                 <div class="col-sm-8">
-                                    <input type="text" id="source" name="source" value="${dto.source}" maxlength="30" required class="col-xs-4 col-sm-4" />
+                                    <%-- <input type="text" id="source" name="source" value="${dto.source}" maxlength="30" required class="col-xs-4 col-sm-4" /> --%>
+                                    <input type="file" onchange="previewImage(this)" name="file" accept="image/*" style=""/>
+                                </div>
+                                <div id="preview" class="col-sm-3 control-label no-padding-right">
+                                    <img alt="知识库图片" id="knowledgeimg" src="${ctx}/resources/images/default.jpg" width="100%"
+                                        height="300px;" >
                                 </div>
                             </div>
                             <div class="form-group">
@@ -155,8 +161,88 @@
                 // 验证通过，它会自己提交form的action
             }
         });
+        
+        //页面加载渲染图片
+        loadImageInfo();
 
     })
+    
+    function loadImageInfo(){
+    	var id = queryValueByKey("id");
+    	if(id){
+    		$('#knowledgeimg').attr('src',img_server+'${dto.source}');
+    	}
+    }
+    //页面图上上传预览//
+        //图片上传预览    IE是用了滤镜。
+        function previewImage(file)
+        {
+          var MAXWIDTH  = 382; 
+          var MAXHEIGHT = 350;
+          var div = document.getElementById('preview');
+          if (file.files && file.files[0])
+          {
+              div.innerHTML ='<img id=knowledgeimg>';
+              var img = document.getElementById('knowledgeimg');
+              img.onload = function(){
+                var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+                img.width  =  rect.width;
+                img.height =  rect.height;
+//                 img.style.marginLeft = rect.left+'px';
+                //img.style.marginTop = rect.top+'px';
+              }
+              var reader = new FileReader();
+              reader.onload = function(evt){img.src = evt.target.result;}
+              reader.readAsDataURL(file.files[0]);
+          }
+          else //兼容IE
+          {
+            var sFilter='filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale,src="';
+            file.select();
+            var src = document.selection.createRange().text;
+            div.innerHTML = '<img id=knowledgeimg>';
+            var img = document.getElementById('knowledgeimg');
+            img.filters.item('DXImageTransform.Microsoft.AlphaImageLoader').src = src;
+            var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+            status =('rect:'+rect.top+','+rect.left+','+rect.width+','+rect.height);
+            div.innerHTML = "<div id=divhead style='width:"+rect.width+"px;height:"+rect.height+"px;margin-top:"+rect.top+"px;"+sFilter+src+"\"'></div>";
+          }
+        }
+        function clacImgZoomParam( maxWidth, maxHeight, width, height ){
+            var param = {top:0, left:0, width:width, height:height};
+            if( width>maxWidth || height>maxHeight )
+            {
+                rateWidth = width / maxWidth;
+                rateHeight = height / maxHeight;
+                 
+                if( rateWidth > rateHeight )
+                {
+                    param.width =  maxWidth;
+                    param.height = Math.round(height / rateWidth);
+                }else
+                {
+                    param.width = Math.round(width / rateHeight);
+                    param.height = maxHeight;
+                }
+            }
+             
+            param.left = Math.round((maxWidth - param.width) / 2);
+            param.top = Math.round((maxHeight - param.height) / 2);
+            return param;
+        }
+      //页面图上上传预览//
+      
+      function queryValueByKey(name) {
+            var result = window.location.search.match(new RegExp("[\?\&]" + name + "=([^\&]+)", "i"));
+            if (result == null || result.length < 1) {
+                return null;
+            }
+            var value = decodeURIComponent(result[1]);
+            if ("null" == value) {
+                value = null;
+            }
+            return value;
+        }
 </script>
 </body>
 </html>

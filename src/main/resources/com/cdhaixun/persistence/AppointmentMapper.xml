@@ -53,9 +53,9 @@
   </delete>
     <insert id="insert" parameterType="com.cdhaixun.domain.Appointment" useGeneratedKeys="true" keyProperty="id">
     insert into appointment (id, createtime, userid, 
-      storeid, state, isdelete,remark,technicianid,starttime,endtime)
+      storeid, state,remark,technicianid,starttime,endtime)
     values (#{id,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}, #{userid,jdbcType=INTEGER}, 
-      #{storeid,jdbcType=INTEGER}, #{state,jdbcType=CHAR}, #{isdelete,jdbcType=BIT},#{remark},#{technicianid},#{starttime},endtime)
+      #{storeid,jdbcType=INTEGER}, #{state,jdbcType=CHAR},#{remark},#{technicianid},#{starttime},endtime)
   </insert>
     <insert id="insertSelective" parameterType="com.cdhaixun.domain.Appointment">
         insert into appointment
@@ -200,9 +200,12 @@
             <if test="state != null">
                 and state = #{state,jdbcType=CHAR}
             </if>
-            <if test="isdelete != null">
+            <!-- <if test="isdelete != null">
                 and isdelete = #{isdelete,jdbcType=BIT}
-            </if>
+            </if> -->
+            <!-- <if test="isdelete != null"> -->
+                and isdelete = 0
+            <!-- </if> -->
             <if test="remark != null">
                 and remark = #{remark}
             </if>

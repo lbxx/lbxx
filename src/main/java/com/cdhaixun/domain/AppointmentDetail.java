@@ -14,6 +14,9 @@ public class AppointmentDetail {
     private Integer bussinessid;
 
     private Date starttime;
+    private Date starttimeFrom;
+    private Date starttimeTo;
+
 
     private Date endtime;
 
@@ -28,6 +31,22 @@ public class AppointmentDetail {
     private  Date createtimeTo ;
     private  Business business;
     private  Baby baby;
+
+    public Date getStarttimeFrom() {
+        return starttimeFrom;
+    }
+
+    public void setStarttimeFrom(Date starttimeFrom) {
+        this.starttimeFrom = starttimeFrom;
+    }
+
+    public Date getStarttimeTo() {
+        return starttimeTo;
+    }
+
+    public void setStarttimeTo(Date starttimeTo) {
+        this.starttimeTo = starttimeTo;
+    }
 
     public Baby getBaby() {
         return baby;

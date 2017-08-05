@@ -8,6 +8,7 @@ import com.cdhaixun.shop.service.IImageService;
 import com.cdhaixun.shop.service.IKnowledgeService;
 import com.cdhaixun.shop.service.IKnowledgeTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,6 +31,10 @@ public class KnowledgeAppController {
     private IKnowledgeService knowledgeService;
     @Autowired
     private IImageService imageService;
+    @Value("#{configProperties['domain']}")
+    private String domain;
+    @Value("#{configProperties['domainName']}")
+    private String domainName;
 
     @RequestMapping(value = "listByType", method = RequestMethod.POST)
     @ResponseBody
@@ -37,18 +43,24 @@ public class KnowledgeAppController {
         List<com.cdhaixun.domain.Knowledge> knowledgeList = knowledgeService.findByTypeId(knowledge.getTypeid());
         for (com.cdhaixun.domain.Knowledge knowledge1 : knowledgeList) {
             List<Image> imageList = imageService.findByKnowledgeId(knowledge1.getId());
-            knowledge1.setImageList(imageList);
+            knowledge1.setImages(new ArrayList<String>());
+            for (Image image :imageList) {
+                knowledge1.getImages().add(domainName+image.getSource());
+            }
+         //  knowledge1.setImageList(imageList);
+            knowledge1.setUrl(domain+"knowledgeApp/knowledgeDetail?id="+knowledge1.getId());
         }
         result.setData(knowledgeList);
         result.setResult(true);
         return result;
     }
 
-    @RequestMapping(value = "knowledgeDetail", method = {RequestMethod.POST,RequestMethod.GET})
+    @RequestMapping(value = "knowledgeDetail", method = {RequestMethod.GET})
     public String knowledgeDetail(Knowledge knowledge, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Model model) {
         com.cdhaixun.domain.Knowledge knowledge1 = knowledgeService.findById(knowledge.getId());
         model.addAttribute("knowledge", knowledge1);
         return "app/knowledgeDetail";
     }
+
 
 }
