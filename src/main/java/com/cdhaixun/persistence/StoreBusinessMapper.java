@@ -23,4 +23,6 @@ public interface StoreBusinessMapper {
     void deleteByStoreId(@Param("storeId") Integer storeId);
 
     List<StoreBusiness> selectByStoreBusiness(StoreBusiness storeBusiness);
+
+    StoreBusiness selectOneByStoreBusiness(StoreBusiness storeBusiness);
 }

@@ -12,9 +12,15 @@
         <result column="starttime" property="starttime" jdbcType="TIMESTAMP"/>
         <result column="endtime" property="endtime" jdbcType="TIMESTAMP"/>
         <result column="technicianid" property="technicianid" jdbcType="INTEGER"/>
+        <result column="potionid" property="potionid" jdbcType="INTEGER"/>
+        <result column="paystate" property="paystate" jdbcType="INTEGER"/>
+        <result column="paytime" property="paytime" jdbcType="TIMESTAMP"/>
+        <result column="potionprice" property="paytime" jdbcType="DECIMAL"/>
+        <result column="totalprice" property="totalprice" jdbcType="DECIMAL"/>
+
     </resultMap>
     <sql id="Base_Column_List">
-    id, createtime, userid, storeid, state, isdelete,remark,technicianid,endtime,starttime
+    id, createtime, userid, storeid, state, isdelete,remark,technicianid,endtime,starttime,potionid,paystate,paytime,potionprice,totalprice
   </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select

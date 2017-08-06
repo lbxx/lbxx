@@ -1,5 +1,6 @@
 package com.cdhaixun.domain;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class StoreBusiness {
@@ -12,8 +13,17 @@ public class StoreBusiness {
     private Boolean isopen;
 
     private Boolean isdelete;
-
+    private BigDecimal price;
     private Date createtime;
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+
 
     public Integer getId() {
         return id;

@@ -79,4 +79,37 @@
       createtime = #{createtime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectByStorePotion" parameterType="com.cdhaixun.domain.StorePotion"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from store_potion
+    <where>
+      <if test="storeid != null">
+       and  storeid = #{storeid,jdbcType=INTEGER}
+      </if>
+      <if test="potionid != null">
+        and potionid = #{potionid,jdbcType=INTEGER}
+      </if>
+      <if test="createtime != null">
+       and  createtime = #{createtime,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
+  <select id="selectOneByStorePotion" parameterType="com.cdhaixun.domain.StorePotion"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from store_potion
+    <where>
+      <if test="storeid != null">
+        and  storeid = #{storeid,jdbcType=INTEGER}
+      </if>
+      <if test="potionid != null">
+        and potionid = #{potionid,jdbcType=INTEGER}
+      </if>
+      <if test="createtime != null">
+        and  createtime = #{createtime,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
+
 </mapper>

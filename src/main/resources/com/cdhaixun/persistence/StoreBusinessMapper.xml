@@ -146,4 +146,27 @@
             </if>
         </where>
     </select>
+    <select id="selectOneByStoreBusiness" resultMap="BaseResultMap" parameterType="com.cdhaixun.domain.StoreBusiness">
+        select
+        <include refid="Base_Column_List"/>
+        from store_business
+        <where>
+            <if test="storeid != null">
+                and storeid = #{storeid,jdbcType=INTEGER}
+            </if>
+            <if test="businessid != null">
+                and businessid = #{businessid,jdbcType=INTEGER}
+            </if>
+            <if test="isopen != null">
+                and isopen = #{isopen,jdbcType=BIT}
+            </if>
+            <if test="isdelete != null">
+                and isdelete = #{isdelete,jdbcType=BIT}
+            </if>
+            <if test="createtime != null">
+                and createtime = #{createtime,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+    </select>
+
 </mapper>

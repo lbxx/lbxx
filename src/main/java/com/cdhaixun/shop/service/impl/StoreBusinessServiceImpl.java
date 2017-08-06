@@ -25,6 +25,15 @@ public class StoreBusinessServiceImpl implements IStoreBusinessService{
     }
 
     @Override
+    public StoreBusiness findOneByStoreIdAndBusinessId(Integer storeid, Integer id) {
+
+        StoreBusiness storeBusiness=new StoreBusiness();
+        storeBusiness.setBusinessid(id);
+        storeBusiness.setStoreid(storeid);
+        return storeBusinessMapper.selectOneByStoreBusiness(storeBusiness);
+    }
+
+    @Override
     public List<StoreBusiness> findByStoreId(Integer storeid) {
         StoreBusiness storeBusiness=new StoreBusiness();
         storeBusiness.setStoreid(storeid);

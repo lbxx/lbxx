@@ -2,6 +2,8 @@ package com.cdhaixun.persistence;
 
 import com.cdhaixun.domain.StorePotion;
 
+import java.util.List;
+
 public interface StorePotionMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -14,4 +16,7 @@ public interface StorePotionMapper {
     int updateByPrimaryKeySelective(StorePotion record);
 
     int updateByPrimaryKey(StorePotion record);
+
+    List<StorePotion> selectByStorePotion(StorePotion storePotion);
+    StorePotion selectOneByStorePotion(StorePotion storePotion);
 }

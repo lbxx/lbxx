@@ -16,4 +16,6 @@ public interface IStoreBusinessService {
     List<StoreBusiness> findByBusinessId(Integer id);
 
     List<StoreBusiness> findByStoreId(Integer storeid);
+
+    StoreBusiness findOneByStoreIdAndBusinessId(Integer storeid, Integer id);
 }

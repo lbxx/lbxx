@@ -1,6 +1,7 @@
 package com.cdhaixun.domain;
 
 import java.util.Date;
+import java.util.List;
 
 public class PotionCategory {
     private Integer id;
@@ -10,6 +11,16 @@ public class PotionCategory {
     private Date createtime;
 
     private Boolean isdelete;
+
+    private List<Potion> potionList;
+
+    public List<Potion> getPotionList() {
+        return potionList;
+    }
+
+    public void setPotionList(List<Potion> potionList) {
+        this.potionList = potionList;
+    }
 
     public Integer getId() {
         return id;

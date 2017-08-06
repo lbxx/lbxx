@@ -1,5 +1,6 @@
 package com.cdhaixun.domain;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -25,6 +26,60 @@ public class Appointment {
     private Technician technician;
     private  Store store;
     private String orderBy;
+    private Integer potionamount;
+    private BigDecimal potionprice;
+    private Integer  paystate;
+    private Integer potionid;
+    private BigDecimal totalprice;
+    private Date paytime;
+
+    public Integer getPotionamount() {
+        return potionamount;
+    }
+
+    public void setPotionamount(Integer potionamount) {
+        this.potionamount = potionamount;
+    }
+
+    public BigDecimal getPotionprice() {
+        return potionprice;
+    }
+
+    public void setPotionprice(BigDecimal potionprice) {
+        this.potionprice = potionprice;
+    }
+
+    public Integer getPaystate() {
+        return paystate;
+    }
+
+    public void setPaystate(Integer paystate) {
+        this.paystate = paystate;
+    }
+
+    public Integer getPotionid() {
+        return potionid;
+    }
+
+    public void setPotionid(Integer potionid) {
+        this.potionid = potionid;
+    }
+
+    public BigDecimal getTotalprice() {
+        return totalprice;
+    }
+
+    public void setTotalprice(BigDecimal totalprice) {
+        this.totalprice = totalprice;
+    }
+
+    public Date getPaytime() {
+        return paytime;
+    }
+
+    public void setPaytime(Date paytime) {
+        this.paytime = paytime;
+    }
 
     public String getOrderBy() {
         return orderBy;

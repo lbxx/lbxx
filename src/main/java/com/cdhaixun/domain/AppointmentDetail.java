@@ -1,5 +1,6 @@
 package com.cdhaixun.domain;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class AppointmentDetail {
@@ -31,6 +32,15 @@ public class AppointmentDetail {
     private  Date createtimeTo ;
     private  Business business;
     private  Baby baby;
+    private BigDecimal price;//预约单价
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
 
     public Date getStarttimeFrom() {
         return starttimeFrom;

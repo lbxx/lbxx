@@ -2,10 +2,7 @@ package com.cdhaixun.shop.web;
 
 import com.cdhaixun.common.appVo.Appointment;
 import com.cdhaixun.common.appVo.Result;
-import com.cdhaixun.domain.AppointmentDetail;
-import com.cdhaixun.domain.Baby;
-import com.cdhaixun.domain.Business;
-import com.cdhaixun.domain.TechnicianBusiness;
+import com.cdhaixun.domain.*;
 import com.cdhaixun.shop.service.*;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.ConversionException;
@@ -18,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -37,6 +35,8 @@ public class AppointmentAppController {
     @Autowired
     private ITechnicianService technicianService;
     @Autowired
+    private IStoreBusinessService storeBusinessService;
+    @Autowired
     private ITechnicianBusinessService technicianBusinessService;
     @Autowired
     private IBusinessService businessService;
@@ -44,6 +44,12 @@ public class AppointmentAppController {
     private IStoreService storeService;
     @Autowired
     private IBabyService babyService;
+    @Autowired
+    private IPotionCategoryService potionCategoryService;
+    @Autowired
+    private IStorePotionService storePotionService;
+    @Autowired
+    private IPotionService potionService;
 
     @RequestMapping(value = "addAppointment", method = RequestMethod.POST)
     @ResponseBody
@@ -59,6 +65,14 @@ public class AppointmentAppController {
             }
         }
         com.cdhaixun.domain.Appointment appointment1Db = new com.cdhaixun.domain.Appointment();
+        // StorePotion storePotion=   storePotionService.findOneByStoreIdAndPotionId(appointment.getStoreid(),appointment.getPotionid());
+        if(appointment.getPotionid()!=null){
+        Potion potion = potionService.findById(appointment.getPotionid());
+            appointment1Db.setTotalprice(potion.getPrice().multiply(new BigDecimal(appointment.getPotionamount())));
+            appointment1Db.setPotionprice(appointment1Db.getTotalprice());
+        }else{
+            appointment1Db.setTotalprice(new BigDecimal(0));
+        }
         appointment1Db.setCreatetime(appointment.getCreatetime());
         appointment1Db.setTechnicianid(appointment.getTechnicianid());
         appointment1Db.setStoreid(appointment.getStoreid());
@@ -79,6 +93,7 @@ public class AppointmentAppController {
         for (Business business : appointment.getBusinessList()) {
             TechnicianBusiness technicianBusiness = technicianBusinessService.findByBusinessIdAndTechnicianId(business.getId(), appointment.getTechnicianid());
             appointment1Db.getBusinessList().add(businessService.findById(business.getId()));
+          StoreBusiness storeBusiness= storeBusinessService.findOneByStoreIdAndBusinessId(appointment.getStoreid(),business.getId());
             for (com.cdhaixun.domain.Baby baby : appointment.getBabyList()) {
                 AppointmentDetail appointmentDetail = new AppointmentDetail();
                 appointmentDetail.setTechnicianid(appointment.getTechnicianid());
@@ -86,6 +101,8 @@ public class AppointmentAppController {
                 appointmentDetail.setUserid(appointment.getUserid());
                 appointmentDetail.setBabyid(baby.getId());
                 appointmentDetail.setStarttime(starttime);
+                appointmentDetail.setPrice(storeBusiness.getPrice());
+                appointment1Db.getTotalprice().add(storeBusiness.getPrice());
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(starttime);
                 calendar.roll(Calendar.MINUTE, technicianBusiness.getSpend());

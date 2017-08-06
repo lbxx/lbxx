@@ -1,5 +1,8 @@
 package com.cdhaixun.domain;
 
+import com.mysql.jdbc.PacketTooBigException;
+
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class StorePotion {
@@ -10,6 +13,7 @@ public class StorePotion {
     private Integer potionid;
 
     private Date createtime;
+
 
     public Integer getId() {
         return id;

@@ -13,10 +13,12 @@
     <result column="solution" property="solution" jdbcType="VARCHAR" />
     <result column="timebucketid" property="timebucketid" jdbcType="INTEGER" />
     <result column="isdelete" property="isdelete" jdbcType="BIT" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+
   </resultMap>
   <sql id="Base_Column_List" >
     id, userid, babyid, technicianid, bussinessid, starttime, endtime, appointmentid, 
-    solution, timebucketid, isdelete
+    solution, timebucketid, isdelete,price
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
