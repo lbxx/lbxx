@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdhaixun.persistence.PayInfoMapper">
+  <resultMap id="BaseResultMap" type="com.cdhaixun.domain.PayInfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="appid" jdbcType="VARCHAR" property="appid" />
+    <result column="chnltrxid" jdbcType="VARCHAR" property="chnltrxid" />
+    <result column="cusid" jdbcType="VARCHAR" property="cusid" />
+    <result column="fintime" jdbcType="VARCHAR" property="fintime" />
+    <result column="reqsn" jdbcType="VARCHAR" property="reqsn" />
+    <result column="sign" jdbcType="VARCHAR" property="sign" />
+    <result column="trxid" jdbcType="VARCHAR" property="trxid" />
+    <result column="trxstatus" jdbcType="VARCHAR" property="trxstatus" />
+    <result column="retmsg" jdbcType="VARCHAR" property="retmsg" />
+    <result column="errmsg" jdbcType="VARCHAR" property="errmsg" />
+    <result column="payinfo" jdbcType="VARCHAR" property="payinfo" />
+    <result column="retcode" jdbcType="VARCHAR" property="retcode" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, appid, chnltrxid, cusid, fintime, reqsn, sign, trxid, trxstatus, retmsg, errmsg, 
+    payinfo, retcode, createtime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from pay_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from pay_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cdhaixun.domain.PayInfo">
+    insert into pay_info (id, appid, chnltrxid, 
+      cusid, fintime, reqsn, 
+      sign, trxid, trxstatus, 
+      retmsg, errmsg, payinfo, 
+      retcode, createtime)
+    values (#{id,jdbcType=INTEGER}, #{appid,jdbcType=VARCHAR}, #{chnltrxid,jdbcType=VARCHAR}, 
+      #{cusid,jdbcType=VARCHAR}, #{fintime,jdbcType=VARCHAR}, #{reqsn,jdbcType=VARCHAR}, 
+      #{sign,jdbcType=VARCHAR}, #{trxid,jdbcType=VARCHAR}, #{trxstatus,jdbcType=VARCHAR}, 
+      #{retmsg,jdbcType=VARCHAR}, #{errmsg,jdbcType=VARCHAR}, #{payinfo,jdbcType=VARCHAR}, 
+      #{retcode,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cdhaixun.domain.PayInfo">
+    insert into pay_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="appid != null">
+        appid,
+      </if>
+      <if test="chnltrxid != null">
+        chnltrxid,
+      </if>
+      <if test="cusid != null">
+        cusid,
+      </if>
+      <if test="fintime != null">
+        fintime,
+      </if>
+      <if test="reqsn != null">
+        reqsn,
+      </if>
+      <if test="sign != null">
+        sign,
+      </if>
+      <if test="trxid != null">
+        trxid,
+      </if>
+      <if test="trxstatus != null">
+        trxstatus,
+      </if>
+      <if test="retmsg != null">
+        retmsg,
+      </if>
+      <if test="errmsg != null">
+        errmsg,
+      </if>
+      <if test="payinfo != null">
+        payinfo,
+      </if>
+      <if test="retcode != null">
+        retcode,
+      </if>
+      <if test="createtime != null">
+        createtime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="appid != null">
+        #{appid,jdbcType=VARCHAR},
+      </if>
+      <if test="chnltrxid != null">
+        #{chnltrxid,jdbcType=VARCHAR},
+      </if>
+      <if test="cusid != null">
+        #{cusid,jdbcType=VARCHAR},
+      </if>
+      <if test="fintime != null">
+        #{fintime,jdbcType=VARCHAR},
+      </if>
+      <if test="reqsn != null">
+        #{reqsn,jdbcType=VARCHAR},
+      </if>
+      <if test="sign != null">
+        #{sign,jdbcType=VARCHAR},
+      </if>
+      <if test="trxid != null">
+        #{trxid,jdbcType=VARCHAR},
+      </if>
+      <if test="trxstatus != null">
+        #{trxstatus,jdbcType=VARCHAR},
+      </if>
+      <if test="retmsg != null">
+        #{retmsg,jdbcType=VARCHAR},
+      </if>
+      <if test="errmsg != null">
+        #{errmsg,jdbcType=VARCHAR},
+      </if>
+      <if test="payinfo != null">
+        #{payinfo,jdbcType=VARCHAR},
+      </if>
+      <if test="retcode != null">
+        #{retcode,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cdhaixun.domain.PayInfo">
+    update pay_info
+    <set>
+      <if test="appid != null">
+        appid = #{appid,jdbcType=VARCHAR},
+      </if>
+      <if test="chnltrxid != null">
+        chnltrxid = #{chnltrxid,jdbcType=VARCHAR},
+      </if>
+      <if test="cusid != null">
+        cusid = #{cusid,jdbcType=VARCHAR},
+      </if>
+      <if test="fintime != null">
+        fintime = #{fintime,jdbcType=VARCHAR},
+      </if>
+      <if test="reqsn != null">
+        reqsn = #{reqsn,jdbcType=VARCHAR},
+      </if>
+      <if test="sign != null">
+        sign = #{sign,jdbcType=VARCHAR},
+      </if>
+      <if test="trxid != null">
+        trxid = #{trxid,jdbcType=VARCHAR},
+      </if>
+      <if test="trxstatus != null">
+        trxstatus = #{trxstatus,jdbcType=VARCHAR},
+      </if>
+      <if test="retmsg != null">
+        retmsg = #{retmsg,jdbcType=VARCHAR},
+      </if>
+      <if test="errmsg != null">
+        errmsg = #{errmsg,jdbcType=VARCHAR},
+      </if>
+      <if test="payinfo != null">
+        payinfo = #{payinfo,jdbcType=VARCHAR},
+      </if>
+      <if test="retcode != null">
+        retcode = #{retcode,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cdhaixun.domain.PayInfo">
+    update pay_info
+    set appid = #{appid,jdbcType=VARCHAR},
+      chnltrxid = #{chnltrxid,jdbcType=VARCHAR},
+      cusid = #{cusid,jdbcType=VARCHAR},
+      fintime = #{fintime,jdbcType=VARCHAR},
+      reqsn = #{reqsn,jdbcType=VARCHAR},
+      sign = #{sign,jdbcType=VARCHAR},
+      trxid = #{trxid,jdbcType=VARCHAR},
+      trxstatus = #{trxstatus,jdbcType=VARCHAR},
+      retmsg = #{retmsg,jdbcType=VARCHAR},
+      errmsg = #{errmsg,jdbcType=VARCHAR},
+      payinfo = #{payinfo,jdbcType=VARCHAR},
+      retcode = #{retcode,jdbcType=VARCHAR},
+      createtime = #{createtime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
