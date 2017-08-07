@@ -4,7 +4,9 @@ import com.cdhaixun.domain.Potion;
 import com.cdhaixun.persistence.PotionMapper;
 import com.cdhaixun.shop.service.IPotionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class PotionServiceImpl implements IPotionService
 {
     @Autowired

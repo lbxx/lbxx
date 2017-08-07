@@ -40,8 +40,8 @@ public class PayController extends BaseController{
     @Value("#{configProperties['scanpay']}")
     private String scanpay;
 
-    @Value("#{configProperties['notify_urla")
-    private String notify_url;
+    @Value("#{configProperties['notifyUrl']}")
+    private String notifyUrl;
 
     @Autowired
     private ObjectMapper objectMapper;
