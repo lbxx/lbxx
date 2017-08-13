@@ -18,7 +18,10 @@ public class Knowledge {
     private String content;
     private List<Image> imageList;
     private List<String> images;
+    
     private String url;
+    
+    private String navpic;
 
     public List<String> getImages() {
         return images;
@@ -99,4 +102,6 @@ public class Knowledge {
     public void setContent(String content) {
         this.content = content == null ? null : content.trim();
     }
+
+    
 }

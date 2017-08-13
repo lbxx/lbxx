@@ -51,7 +51,7 @@
                 <div class="row">
                     <div class="col-xs-12">
                         <!-- PAGE CONTENT BEGINS -->
-                        <form class="form-horizontal" id="validation-form" role="form" method="post" action="${ctx}/knowledge/save">
+                        <form class="form-horizontal" id="validation-form" role="form" method="post" enctype="multipart/form-data" action="${ctx}/knowledge/save">
                             <input type="hidden" name="id" value="${dto.id}"/>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right" for="title"> 标题 </label>
@@ -71,12 +71,13 @@
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right">导航图片</label>
-                                <input type="file" onchange="previewImage(this)" name="file" accept="image/*" style="margin: 60px 30px;"/>                             
+                                <input type="file" onchange="previewImage(this)" name="file" accept="image/*" style="margin: 0 0 0 228px;"/>                             
                             </div>
                             <div id="preview"
-                                    style="width: 40%; height: 100%;">
+                                    style="width: 40%; height: 100%;margin:0 0 0 228px;">
                                     <img alt="导航图片" id="storeimg"
-                                        src="${ctx}/resources/images/default.jpg" width="100%"
+                                        <%-- src="${ctx}/resources/images/default.jpg" width="100%" --%>
+                                        src="<ex:imageTag key='${imgUrl}'/>" width="100%"
                                         height="300px;" >
                                 </div>
                             <div class="form-group">
