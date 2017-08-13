@@ -103,7 +103,7 @@ public class KnowledgeController {
         List<KnowledgeType> list = knowledgeTypeService.findList();
         request.setAttribute("typeList", list);
         request.setAttribute("dto", knowledge);
-        request.setAttribute("imgUrl", imgList.isEmpty()?null:imgList.get(0));
+        request.setAttribute("imgUrl", imgList.isEmpty()?null:imgList.get(0).getSource());
         return PATH + "knowledge_input";
     }
 
@@ -131,9 +131,16 @@ public class KnowledgeController {
                 imageService.save(image);
                 
             }else{
+                List<Image> imgList = imageService.findByKnowledgeId(id);
                 knowledgeService.update(knowledge);
-                image.setKnowledgeid(id);
-                imageService.save(image);
+                if(!imgList.isEmpty()){
+                    image = imgList.get(0);
+                    image.setKnowledgeid(id);
+                    imageService.update(image);
+                }else{
+                    image.setKnowledgeid(id);
+                    imageService.save(image);
+                }
             }
             return JsonMsgUtil.getSuccessJsonMsg("操作成功");
         }catch (Exception e){
