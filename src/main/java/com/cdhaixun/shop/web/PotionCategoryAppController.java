@@ -36,12 +36,13 @@ public class PotionCategoryAppController {
         for (StorePotion storePotion:storePotionList) {
           Potion potion=  potionService.findById(storePotion.getPotionid());
             if(map.keySet().contains(potion.getPotioncategoryid())){
-                PotionCategory potionCategory = map.get(potion.getPotioncategoryid());
+                PotionCategory potionCategory = map. get(potion.getPotioncategoryid());
                 potionCategory.getPotionList().add(potion);
             }
             else{
           PotionCategory potionCategory=  potionCategoryService.findById(potion.getPotioncategoryid());
           map.put(potionCategory.getId(),potionCategory);
+                potionCategory.setPotionList(new ArrayList<Potion>());
           potionCategory.getPotionList().add(potion);
             }
 

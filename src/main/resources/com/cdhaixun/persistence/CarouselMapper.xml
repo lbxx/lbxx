@@ -90,4 +90,24 @@
       isdelete = #{isdelete,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectByCarousel" parameterType="com.cdhaixun.domain.Carousel"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from carousel
+    <where>
+      <if test="name != null">
+       and  name = #{name,jdbcType=VARCHAR}
+      </if>
+      <if test="pic != null">
+      and   pic = #{pic,jdbcType=VARCHAR}
+      </if>
+      <if test="createtime != null">
+       and  createtime = #{createtime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="isdelete != null">
+       and  isdelete = #{isdelete,jdbcType=BIT}
+      </if>
+    </where>
+  </select>
+
 </mapper>

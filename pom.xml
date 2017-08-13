@@ -255,6 +255,12 @@
             <artifactId>pagehelper</artifactId>
             <version>5.0.2-beta</version>
         </dependency>
+        <!--支持自定义jsp标签-->
+        <dependency>
+            <groupId>javax.servlet.jsp</groupId>
+            <artifactId>jsp-api</artifactId>
+            <version>2.2.1-b03</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>shop</finalName>
