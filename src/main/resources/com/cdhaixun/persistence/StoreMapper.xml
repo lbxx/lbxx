@@ -25,7 +25,7 @@
   </resultMap>
   <sql id="Base_Column_List" >
     id, name, telephone, cellphone, openinghours, closinghours, pic, location, city, description, 
-    chainstoreid, longitude, latitude, createtime, isdelete, appid, cusid, key, subappid, submchid
+    chainstoreid, longitude, latitude, createtime, isdelete, appid, cusid, `key`, subappid, submchid
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -43,7 +43,7 @@
       pic, location, city, description, 
       chainstoreid, longitude, latitude, 
       createtime, isdelete, appid, cusid, 
-      key, subappid, submchid )
+      `key`, subappid, submchid )
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}, 
       #{cellphone,jdbcType=VARCHAR}, #{openinghours,jdbcType=TIME}, #{closinghours,jdbcType=TIME}, 
       #{pic,jdbcType=VARCHAR}, #{location,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
@@ -109,7 +109,7 @@
         cusid,
       </if>
       <if test="key != null" >
-        key,
+        `key`,
       </if>
       <if test="subappid != null" >
         subappid,
@@ -263,7 +263,7 @@
       isdelete = #{isdelete,jdbcType=BIT},
       appid = #{appid,jdbcType=VARCHAR},
       cusid = #{cusid,jdbcType=VARCHAR},
-      key = #{key,jdbcType=VARCHAR},
+      `key` = #{key,jdbcType=VARCHAR},
       subappid = #{subappid,jdbcType=VARCHAR},
       submchid = #{submchid,jdbcType=VARCHAR},
     where id = #{id,jdbcType=INTEGER}

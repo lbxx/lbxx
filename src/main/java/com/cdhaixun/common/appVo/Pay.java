@@ -16,6 +16,33 @@ public class Pay {
     private String  sign;//签名
     private String paytype;//支付方式
     private String notify_url;//微信回调url
+    private String sub_appid;//子商户appId
+    private String sub_mchid;//子商户id
+    private Integer storeid;
+
+    public Integer getStoreid() {
+        return storeid;
+    }
+
+    public void setStoreid(Integer storeid) {
+        this.storeid = storeid;
+    }
+
+    public String getSub_appid() {
+        return sub_appid;
+    }
+
+    public void setSub_appid(String sub_appid) {
+        this.sub_appid = sub_appid;
+    }
+
+    public String getSub_mchid() {
+        return sub_mchid;
+    }
+
+    public void setSub_mchid(String sub_mchid) {
+        this.sub_mchid = sub_mchid;
+    }
 
     public String getNotify_url() {
         return notify_url;

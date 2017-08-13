@@ -15,6 +15,7 @@ import org.apache.http.message.BasicNameValuePair;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by tangxinmao on 2017/6/23.
@@ -32,9 +33,9 @@ public class HttpclientWeixinTest {
         params.add(new BasicNameValuePair("paytype", "2"));
         params.add(new BasicNameValuePair("randomstr", "1450432107647"));
 /*        params.add(new BasicNameValuePair("remark", "123"));*/
-        params.add(new BasicNameValuePair("reqsn", "1450432kk1076478"));
-        params.add(new BasicNameValuePair("sub_appid", "12323"));
-        params.add(new BasicNameValuePair("sub_mchid", "12323"));
+        params.add(new BasicNameValuePair("reqsn", UUID.randomUUID().toString()));
+        params.add(new BasicNameValuePair("sub_appid", "wxd211818e35c66f0c"));
+        params.add(new BasicNameValuePair("sub_mchid", "1485189052"));
         params.add(new BasicNameValuePair("trxamt", "1"));
         URLCodec urlCodec = new URLCodec();
         String str = URLEncodedUtils.format(params, "utf-8");

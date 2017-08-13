@@ -196,4 +196,50 @@
       createtime = #{createtime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectOneByPayInfo" parameterType="com.cdhaixun.domain.PayInfo" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from pay_info
+    <where>
+      <if test="appid != null">
+        and  appid = #{appid,jdbcType=VARCHAR}
+      </if>
+      <if test="chnltrxid != null">
+        and  chnltrxid = #{chnltrxid,jdbcType=VARCHAR}
+      </if>
+      <if test="cusid != null">
+        and cusid = #{cusid,jdbcType=VARCHAR}
+      </if>
+      <if test="fintime != null">
+        and  fintime = #{fintime,jdbcType=VARCHAR}
+      </if>
+      <if test="reqsn != null">
+        and   reqsn = #{reqsn,jdbcType=VARCHAR}
+      </if>
+      <if test="sign != null">
+        and  sign = #{sign,jdbcType=VARCHAR}
+      </if>
+      <if test="trxid != null">
+        and  trxid = #{trxid,jdbcType=VARCHAR}
+      </if>
+      <if test="trxstatus != null">
+        and trxstatus = #{trxstatus,jdbcType=VARCHAR}
+      </if>
+      <if test="retmsg != null">
+        and  retmsg = #{retmsg,jdbcType=VARCHAR}
+      </if>
+      <if test="errmsg != null">
+        and errmsg = #{errmsg,jdbcType=VARCHAR}
+      </if>
+      <if test="payinfo != null">
+        and payinfo = #{payinfo,jdbcType=VARCHAR}
+      </if>
+      <if test="retcode != null">
+        and retcode = #{retcode,jdbcType=VARCHAR}
+      </if>
+      <if test="createtime != null">
+     and   createtime = #{createtime,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
 </mapper>
