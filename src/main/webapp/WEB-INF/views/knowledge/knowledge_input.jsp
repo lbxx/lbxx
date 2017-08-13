@@ -70,6 +70,16 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-right">导航图片</label>
+                                <input type="file" onchange="previewImage(this)" name="file" accept="image/*" style="margin: 60px 30px;"/>                             
+                            </div>
+                            <div id="preview"
+                                    style="width: 40%; height: 100%;">
+                                    <img alt="导航图片" id="storeimg"
+                                        src="${ctx}/resources/images/default.jpg" width="100%"
+                                        height="300px;" >
+                                </div>
+                            <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right"> 内容 </label>
                                 <div class="col-sm-8">
                                         <script id="content" type="text/plain" style="width:924px;height:500px;" name="content"></script>
@@ -174,6 +184,65 @@
         });
 
     })
+    
+        //页面图上上传预览//
+        //图片上传预览    IE是用了滤镜。
+        function previewImage(file)
+        {
+          var MAXWIDTH  = 382; 
+          var MAXHEIGHT = 350;
+          var div = document.getElementById('preview');
+          if (file.files && file.files[0])
+          {
+              div.innerHTML ='<img id=storeimg>';
+              var img = document.getElementById('storeimg');
+              img.onload = function(){
+                var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+                img.width  =  rect.width;
+                img.height =  rect.height;
+//                 img.style.marginLeft = rect.left+'px';
+                //img.style.marginTop = rect.top+'px';
+              }
+              var reader = new FileReader();
+              reader.onload = function(evt){img.src = evt.target.result;}
+              reader.readAsDataURL(file.files[0]);
+          }
+          else //兼容IE
+          {
+            var sFilter='filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale,src="';
+            file.select();
+            var src = document.selection.createRange().text;
+            div.innerHTML = '<img id=storeimg>';
+            var img = document.getElementById('storeimg');
+            img.filters.item('DXImageTransform.Microsoft.AlphaImageLoader').src = src;
+            var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+            status =('rect:'+rect.top+','+rect.left+','+rect.width+','+rect.height);
+            div.innerHTML = "<div id=divhead style='width:"+rect.width+"px;height:"+rect.height+"px;margin-top:"+rect.top+"px;"+sFilter+src+"\"'></div>";
+          }
+        }
+        function clacImgZoomParam( maxWidth, maxHeight, width, height ){
+            var param = {top:0, left:0, width:width, height:height};
+            if( width>maxWidth || height>maxHeight )
+            {
+                rateWidth = width / maxWidth;
+                rateHeight = height / maxHeight;
+                 
+                if( rateWidth > rateHeight )
+                {
+                    param.width =  maxWidth;
+                    param.height = Math.round(height / rateWidth);
+                }else
+                {
+                    param.width = Math.round(width / rateHeight);
+                    param.height = maxHeight;
+                }
+            }
+             
+            param.left = Math.round((maxWidth - param.width) / 2);
+            param.top = Math.round((maxHeight - param.height) / 2);
+            return param;
+        }
+      //页面图上上传预览//
 </script>
 <script type="text/javascript">
  var content = '${dto.content}';

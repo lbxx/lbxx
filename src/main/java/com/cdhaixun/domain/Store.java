@@ -32,6 +32,10 @@ public class Store {
     private BigDecimal latitude;
 
     private Date createtime;
+    
+    private String subappid;
+    
+    private String submchid;
 
 
     private Boolean isdelete;
@@ -173,4 +177,22 @@ public class Store {
     public void setIsdelete(Boolean isdelete) {
         this.isdelete = isdelete;
     }
+
+    public String getSubappid() {
+        return subappid;
+    }
+
+    public void setSubappid(String subappid) {
+        this.subappid = subappid;
+    }
+
+    public String getSubmchid() {
+        return submchid;
+    }
+
+    public void setSubmchid(String submchid) {
+        this.submchid = submchid;
+    }
+    
+    
 }

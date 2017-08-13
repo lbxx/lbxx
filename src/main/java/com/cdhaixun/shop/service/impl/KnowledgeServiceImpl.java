@@ -1,16 +1,15 @@
 package com.cdhaixun.shop.service.impl;
 
-import com.cdhaixun.domain.Image;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.cdhaixun.domain.Knowledge;
 import com.cdhaixun.persistence.KnowledgeMapper;
 import com.cdhaixun.shop.service.IKnowledgeService;
 import com.cdhaixun.vo.KnowledgeVo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @Author tanggm

@@ -16,6 +16,10 @@ public class Potion {
 
     private Boolean isdelete;
 
+    private String pic;
+
+    private String detail;
+
     public Integer getId() {
         return id;
     }
@@ -62,5 +66,21 @@ public class Potion {
 
     public void setIsdelete(Boolean isdelete) {
         this.isdelete = isdelete;
+    }
+
+    public String getPic() {
+        return pic;
+    }
+
+    public void setPic(String pic) {
+        this.pic = pic == null ? null : pic.trim();
+    }
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail == null ? null : detail.trim();
     }
 }
