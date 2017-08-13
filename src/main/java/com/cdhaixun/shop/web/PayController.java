@@ -4,6 +4,12 @@ import com.cdhaixun.common.yyyVo.Pay;
 import com.cdhaixun.common.yyyVo.PayResult;
 import com.cdhaixun.common.appVo.Result;
 import com.cdhaixun.common.web.BaseController;
+import com.cdhaixun.domain.Appointment;
+import com.cdhaixun.domain.PayInfo;
+import com.cdhaixun.domain.Store;
+import com.cdhaixun.shop.service.IAppointmentService;
+import com.cdhaixun.shop.service.IPayInfoService;
+import com.cdhaixun.shop.service.IStoreService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
@@ -19,15 +25,14 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by tangxinmao on 2017/6/23.
@@ -40,8 +45,17 @@ public class PayController extends BaseController{
     @Value("#{configProperties['scanpay']}")
     private String scanpay;
 
+    @Value("#{configProperties['domain']}")
+    private String domain;
+
     @Value("#{configProperties['notifyUrl']}")
     private String notifyUrl;
+    @Autowired
+    private IStoreService storeService;
+    @Autowired
+    private IPayInfoService payInfoService;
+    @Autowired
+    private IAppointmentService appointmentService;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -82,19 +96,21 @@ public class PayController extends BaseController{
      */
     @RequestMapping(value = "pay", method = RequestMethod.POST)
     @ResponseBody
-    public PayResult pay(@RequestBody  com.cdhaixun.common.appVo.Pay pay) throws IOException {
+    public PayResult pay(@RequestBody  com.cdhaixun.common.appVo.Pay pay, HttpServletRequest httpServletRequest) throws IOException {
         List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("appid", pay.getAppid()));
-      // params.add(new BasicNameValuePair("authcode", pay.getAuthcode()));
-        params.add(new BasicNameValuePair("body", pay.getBody()));
-        params.add(new BasicNameValuePair("cusid", pay.getCusid()));
-        params.add(new BasicNameValuePair("key", pay.getKey()));
-       // params.add(new BasicNameValuePair("notify_url", notify_url));
+       Store store= storeService.findById(pay.getStoreid());
+        params.add(new BasicNameValuePair("appid", store.getAppid()));
+        params.add(new BasicNameValuePair("cusid", store.getCusid()));
+        params.add(new BasicNameValuePair("key", store.getKey()));
+        params.add(new BasicNameValuePair("notify_url", domain+"pay/callback"));
         params.add(new BasicNameValuePair("paytype", pay.getPaytype()));
-        params.add(new BasicNameValuePair("randomstr", pay.getRandomstr()));
-        params.add(new BasicNameValuePair("remark", pay.getRemark()));
-        params.add(new BasicNameValuePair("reqsn", pay.getReqsn()));
-        params.add(new BasicNameValuePair("trxamt",pay.getTrxamt()+""));
+        params.add(new BasicNameValuePair("randomstr", UUID.randomUUID().toString()));
+
+        params.add(new BasicNameValuePair("reqsn", UUID.randomUUID().toString()));
+        params.add(new BasicNameValuePair("sub_appid", store.getSubappid()));
+        params.add(new BasicNameValuePair("sub_mchid", store.getSubmchid()));
+        params.add(new BasicNameValuePair("trxamt", pay.getTrxamt().toString()));
+
         String url = URLEncodedUtils.format(params, "utf-8");
         String sign = DigestUtils.md5Hex(url).toUpperCase();
         params.add(new BasicNameValuePair("sign", sign));
@@ -103,6 +119,35 @@ public class PayController extends BaseController{
         HttpEntity httpEntity = httpResponse.getEntity();
         String json = IOUtils.toString(httpEntity.getContent(),"utf-8");
         PayResult payResult= objectMapper.readValue(json, PayResult.class);
+        return  payResult;
+    }
+    @RequestMapping(value = "callback", method = RequestMethod.POST)
+    @ResponseBody
+    public PayResult callback(@RequestParam String appid,
+                              @RequestParam String outtrxid,
+                              @RequestParam String trxcode,
+                              @RequestParam String trxid,
+                              @RequestParam String trxamt,
+                              @RequestParam String trxdate,
+                              @RequestParam String paytime,
+                              @RequestParam String chnltrxid,
+                              @RequestParam String trxstatus,
+                              @RequestParam String cusid,
+                              @RequestParam String termno,
+                              @RequestParam String termbatchid,
+                              @RequestParam String termtraceno,
+                              @RequestParam String termauthno,
+                              @RequestParam String termrefnum,
+                              @RequestParam String trxreserved,
+                              @RequestParam String srctrxid,
+                              @RequestParam String cusorderid,
+                              @RequestParam String acct,
+                              @RequestParam String sign)  {
+        PayResult payResult= new PayResult();
+        PayInfo payInfo= payInfoService.findByTrxid(trxid);
+       Appointment appointment= appointmentService.findById(Integer.parseInt(payInfo.getReqsn()));
+         appointment.setPaystate(1);
+         appointmentService.save(appointment);
         return  payResult;
     }
 
