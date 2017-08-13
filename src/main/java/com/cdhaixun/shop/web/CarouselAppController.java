@@ -6,6 +6,7 @@ import com.cdhaixun.common.web.BaseController;
 import com.cdhaixun.domain.Carousel;
 import com.cdhaixun.domain.Image;
 import com.cdhaixun.shop.service.ICarouselService;
+import com.cdhaixun.shop.service.IKnowledgeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,16 +24,21 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("carouselApp")
-public class CarouselAppController  extends BaseController{
-
+public class CarouselAppController extends BaseController {
+    @Autowired
+    private IKnowledgeService knowledgeService;
     @Autowired
     private ICarouselService carouselService;
 
     @RequestMapping(value = "list", method = RequestMethod.POST)
     @ResponseBody
-    public Result listByType( HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+    public Result listByType(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         Result result = new Result();
-       List<Carousel> carouselList= carouselService.findAll();
+        List<Carousel> carouselList = carouselService.findAll();
+        for (Carousel carousel : carouselList
+                ) {
+            carousel.setKnowledge(knowledgeService.findById(carousel.getKnowledgeid()));
+        }
         result.setData(carouselList);
         result.setResult(true);
         return result;

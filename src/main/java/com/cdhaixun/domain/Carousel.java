@@ -12,6 +12,24 @@ public class Carousel {
     private Date createtime;
 
     private Boolean isdelete;
+    private Integer  knowledgeid;
+    private Knowledge knowledge;
+
+    public Integer getKnowledgeid() {
+        return knowledgeid;
+    }
+
+    public void setKnowledgeid(Integer knowledgeid) {
+        this.knowledgeid = knowledgeid;
+    }
+
+    public Knowledge getKnowledge() {
+        return knowledge;
+    }
+
+    public void setKnowledge(Knowledge knowledge) {
+        this.knowledge = knowledge;
+    }
 
     public Integer getId() {
         return id;
