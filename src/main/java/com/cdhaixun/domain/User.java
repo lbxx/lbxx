@@ -3,6 +3,7 @@ package com.cdhaixun.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -31,7 +32,7 @@ public class User implements Serializable{
 
     private Integer registtype;
 
-    private Long blance;
+    private BigDecimal blance;
     @JsonFormat(pattern="yyyy-MM-dd")
     private Date birthday;
 
@@ -171,11 +172,11 @@ public class User implements Serializable{
         this.registtype = registtype;
     }
 
-    public Long getBlance() {
+    public BigDecimal getBlance() {
         return blance;
     }
 
-    public void setBlance(Long blance) {
+    public void setBlance(BigDecimal blance) {
         this.blance = blance;
     }
 

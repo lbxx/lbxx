@@ -1,5 +1,7 @@
 package com.cdhaixun.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 import java.util.List;
 
@@ -8,6 +10,7 @@ public class PotionCategory {
 
     private String name;
 
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date createtime;
 
     private Boolean isdelete;

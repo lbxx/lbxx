@@ -194,6 +194,11 @@
             var blance =  /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/;
             return this.optional(element) || (blance.test(value));
         }, "请正确填写金额");
+        // 积分验证
+        jQuery.validator.addMethod("pointReg", function(value, element) {
+            var point =  /^([1-9]\d*|[0]{1,1})$/;
+            return this.optional(element) || (point.test(value));
+        }, "请正确填写积分");
         $('#validation-form').validate({
             errorElement: 'div',
             errorClass: 'help-block',
@@ -213,7 +218,7 @@
                 },
                 points: {
                     required: true,
-                    number:true
+                    pointReg:true
                 }
             },
             messages: {
@@ -231,7 +236,7 @@
                 },
                 points: {
                     required: "请输入积分",
-                    number:"格式错误"
+                    pointReg:"格式错误"
                 }
             },
             submitHandler: function (form) {

@@ -1,10 +1,15 @@
 package com.cdhaixun.shop.service;
 
+import com.cdhaixun.common.service.BaseService;
 import com.cdhaixun.domain.PotionCategory;
+import com.cdhaixun.util.Pager;
 
-public interface IPotionCategoryService {
+import java.util.Map;
+
+public interface IPotionCategoryService extends BaseService<PotionCategory>{
 
 
     PotionCategory findById(Integer potioncategoryid);
 
+    Pager getPotionCategoryList(Pager pager, Map<String, Object> parMap);
 }

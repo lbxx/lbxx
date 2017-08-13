@@ -1,5 +1,7 @@
 package com.cdhaixun.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -12,6 +14,7 @@ public class Potion {
 
     private BigDecimal price;
 
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date createtime;
 
     private Boolean isdelete;

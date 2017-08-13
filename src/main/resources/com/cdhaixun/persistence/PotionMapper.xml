@@ -20,6 +20,26 @@
     from potion
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="findPotionList" parameterType="map" resultType="com.cdhaixun.vo.PotionVo">
+    SELECT
+      p.id,
+      p.`name`,
+      p.price,
+      p.createtime,
+      p.pic,
+      p.detail,
+      pc.`name` AS categoryName
+  FROM
+      potion p,
+      potion_category pc
+  WHERE
+      p.potioncategoryid = pc.id
+    AND p.isdelete = 0
+    AND pc.isdelete = 0
+    <if test="name != null and '' != name">
+      AND p.`name` LIKE '%${name}%'
+    </if>
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from potion
     where id = #{id,jdbcType=INTEGER}
@@ -32,62 +52,7 @@
       #{price,jdbcType=DECIMAL}, #{createtime,jdbcType=TIMESTAMP}, #{isdelete,jdbcType=BIT}, 
       #{pic,jdbcType=VARCHAR}, #{detail,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.cdhaixun.domain.Potion">
-    insert into potion
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="potioncategoryid != null">
-        potioncategoryid,
-      </if>
-      <if test="name != null">
-        name,
-      </if>
-      <if test="price != null">
-        price,
-      </if>
-      <if test="createtime != null">
-        createtime,
-      </if>
-      <if test="isdelete != null">
-        isdelete,
-      </if>
-      <if test="pic != null">
-        pic,
-      </if>
-      <if test="detail != null">
-        detail,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="potioncategoryid != null">
-        #{potioncategoryid,jdbcType=INTEGER},
-      </if>
-      <if test="name != null">
-        #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="price != null">
-        #{price,jdbcType=DECIMAL},
-      </if>
-      <if test="createtime != null">
-        #{createtime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="isdelete != null">
-        #{isdelete,jdbcType=BIT},
-      </if>
-      <if test="pic != null">
-        #{pic,jdbcType=VARCHAR},
-      </if>
-      <if test="detail != null">
-        #{detail,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.cdhaixun.domain.Potion">
+  <update id="updateByPrimaryKey" parameterType="com.cdhaixun.domain.Potion">
     update potion
     <set>
       <if test="potioncategoryid != null">
@@ -112,17 +77,6 @@
         detail = #{detail,jdbcType=VARCHAR},
       </if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.cdhaixun.domain.Potion">
-    update potion
-    set potioncategoryid = #{potioncategoryid,jdbcType=INTEGER},
-      name = #{name,jdbcType=VARCHAR},
-      price = #{price,jdbcType=DECIMAL},
-      createtime = #{createtime,jdbcType=TIMESTAMP},
-      isdelete = #{isdelete,jdbcType=BIT},
-      pic = #{pic,jdbcType=VARCHAR},
-      detail = #{detail,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
