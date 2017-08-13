@@ -103,7 +103,7 @@ public class KnowledgeController {
         List<KnowledgeType> list = knowledgeTypeService.findList();
         request.setAttribute("typeList", list);
         request.setAttribute("dto", knowledge);
-        request.setAttribute("imgUrl", imgList.isEmpty()?null:imgList.get(0));
+        request.setAttribute("imgUrl", imgList.isEmpty()?null:imgList.get(0).getSource());
         return PATH + "knowledge_input";
     }
 

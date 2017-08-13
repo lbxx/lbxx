@@ -1,24 +1,28 @@
 package com.cdhaixun.common;
 
-import java.io.IOException;
-import java.io.StringWriter;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
-
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.util.Properties;
 
 /**
  * Created by tangxinmao on 2016/11/30.
  */
-public class ImageTag extends SimpleTagSupport implements ApplicationContextAware {
-//    private static RedisTemplate<String, String> redisTemplate;
-    @Value("#{configProperties['domainName']}")
-    private String domainName;
+@Component
+public class ImageTag extends SimpleTagSupport   implements ApplicationContextAware{
+
+    private static  String domainName;
+
     StringWriter sw = new StringWriter();
     private String key;
 
@@ -44,7 +48,13 @@ public class ImageTag extends SimpleTagSupport implements ApplicationContextAwar
         }
     }
 
+    @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-//        redisTemplate = (RedisTemplate<String, String>) applicationContext.getBean("redisTemplate");
+        try {
+            Properties properties = PropertiesLoaderUtils.loadAllProperties("system.properties");
+            domainName=properties.get("domainName").toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
