@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="ex" uri="tag" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html lang="en">
@@ -74,11 +75,24 @@
                                 <label class="col-sm-3 control-label no-padding-right" for="source"> 图片 </label>
                                 <div class="col-sm-8">
                                     <%-- <input type="text" id="source" name="source" value="${dto.source}" maxlength="30" required class="col-xs-4 col-sm-4" /> --%>
-                                    <input type="file" onchange="previewImage(this)" name="file" accept="image/*" style=""/>
+                                    <input type="file" onchange="previewImage(this)" name="file" accept="image/*" style=""
+                                        <c:if test='${dto.id == null}'>
+                                            required
+                                        </c:if>
+                                    />
                                 </div>
                                 <div id="preview" class="col-sm-3 control-label no-padding-right">
-                                    <img alt="知识库图片" id="knowledgeimg" src="${ctx}/resources/images/default.jpg" width="100%"
-                                        height="300px;" >
+                                    <img alt="知识库图片" id="knowledgeimg" 
+                                    <%-- src="${ctx}/resources/images/default.jpg"  --%>
+                                    <c:choose>
+                                            <c:when test='${imgUrl == null}'>
+                                                      src="${ctx}/resources/images/default.jpg"
+                                               </c:when>
+                                               <c:otherwise>
+                                                src="<ex:imageTag key='${imgUrl}'/>"      
+                                               </c:otherwise>
+                                        </c:choose>
+                                    width="100%" height="300px;" >
                                 </div>
                             </div>
                             <div class="form-group">

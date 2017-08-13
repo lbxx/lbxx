@@ -36,7 +36,7 @@
     delete from image
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.cdhaixun.domain.Image" >
+  <insert id="insert" parameterType="com.cdhaixun.domain.Image" useGeneratedKeys="true" keyProperty="id">
     insert into image (id, knowledgeid, name, 
       isdelete, source, sort)
     values (#{id,jdbcType=INTEGER}, #{knowledgeid,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 

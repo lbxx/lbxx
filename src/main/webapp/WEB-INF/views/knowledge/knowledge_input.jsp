@@ -82,11 +82,11 @@
                                         <%-- src="${ctx}/resources/images/default.jpg"  --%>
                                         <%-- src="<ex:imageTag key='${imgUrl}'/>" width="100%" --%>
                                         <c:choose>
-                                            <c:when test="${imgUrl == null}">
+                                            <c:when test='${imgUrl == null}'>
 										              src="${ctx}/resources/images/default.jpg"
 										       </c:when>
 										       <c:otherwise>
-										        src="http://www.cdhaixun.com:81/${imgUrl}"      
+										        src="<ex:imageTag key='${imgUrl}'/>"      
 										       </c:otherwise>
                                         </c:choose>
                                         width="100%" height="300px;" >
