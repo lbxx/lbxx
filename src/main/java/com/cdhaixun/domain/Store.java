@@ -33,6 +33,12 @@ public class Store {
 
     private Date createtime;
     
+    private String appid;
+    
+    private String cusid;
+    
+    private String key;
+    
     private String subappid;
     
     private String submchid;
@@ -176,6 +182,30 @@ public class Store {
 
     public void setIsdelete(Boolean isdelete) {
         this.isdelete = isdelete;
+    }
+
+    public String getAppid() {
+        return appid;
+    }
+
+    public void setAppid(String appid) {
+        this.appid = appid;
+    }
+
+    public String getCusid() {
+        return cusid;
+    }
+
+    public void setCusid(String cusid) {
+        this.cusid = cusid;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public String getSubappid() {
