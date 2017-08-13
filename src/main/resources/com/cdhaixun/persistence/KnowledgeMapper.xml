@@ -54,7 +54,7 @@
     delete from knowledge
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.cdhaixun.domain.Knowledge" >
+  <insert id="insert" parameterType="com.cdhaixun.domain.Knowledge" useGeneratedKeys="true" keyProperty="id">
     insert into knowledge (id, typeid, title, 
       isdelete, sort, state, content
       )

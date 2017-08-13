@@ -2,8 +2,10 @@ package com.cdhaixun.shop.web;
 
 import com.cdhaixun.common.appVo.Knowledge;
 import com.cdhaixun.common.appVo.Result;
+import com.cdhaixun.domain.Carousel;
 import com.cdhaixun.domain.Image;
 import com.cdhaixun.domain.KnowledgeType;
+import com.cdhaixun.shop.service.ICarouselService;
 import com.cdhaixun.shop.service.IImageService;
 import com.cdhaixun.shop.service.IKnowledgeService;
 import com.cdhaixun.shop.service.IKnowledgeTypeService;
@@ -36,6 +38,7 @@ public class KnowledgeAppController {
     @Value("#{configProperties['domainName']}")
     private String domainName;
 
+
     @RequestMapping(value = "listByType", method = RequestMethod.POST)
     @ResponseBody
     public Result listByType(@RequestBody Knowledge knowledge, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
@@ -44,11 +47,11 @@ public class KnowledgeAppController {
         for (com.cdhaixun.domain.Knowledge knowledge1 : knowledgeList) {
             List<Image> imageList = imageService.findByKnowledgeId(knowledge1.getId());
             knowledge1.setImages(new ArrayList<String>());
-            for (Image image :imageList) {
-                knowledge1.getImages().add(domainName+image.getSource());
+            for (Image image : imageList) {
+                knowledge1.getImages().add(domainName + image.getSource());
             }
-         //  knowledge1.setImageList(imageList);
-            knowledge1.setUrl(domain+"knowledgeApp/knowledgeDetail?id="+knowledge1.getId());
+            //  knowledge1.setImageList(imageList);
+            knowledge1.setUrl(domain + "knowledgeApp/knowledgeDetail?id=" + knowledge1.getId());
         }
         result.setData(knowledgeList);
         result.setResult(true);
@@ -61,6 +64,7 @@ public class KnowledgeAppController {
         model.addAttribute("knowledge", knowledge1);
         return "app/knowledgeDetail";
     }
+
 
 
 }
