@@ -118,9 +118,10 @@ public class KnowledgeController {
     public Object save(Knowledge knowledge,HttpServletRequest request,MultipartFile file) throws IOException{
         try {
             Integer id = knowledge.getId();
+            Result result = null;
             Image image = new Image();
             if(file != null){
-                Result result = uploadService.upload(request, file);
+                result = uploadService.upload(request, file);
                 image.setSource(result.getData().toString());
                 image.setIsdelete(false);
             }
@@ -131,9 +132,17 @@ public class KnowledgeController {
                 imageService.save(image);
                 
             }else{
+                List<Image> imgList = imageService.findByKnowledgeId(id);
                 knowledgeService.update(knowledge);
-                image.setKnowledgeid(id);
-                imageService.save(image);
+                if(!imgList.isEmpty()){
+                    image = imgList.get(0);
+                    image.setKnowledgeid(id);
+                    image.setSource(result.getData().toString());
+                    imageService.update(image);
+                }else{
+                    image.setKnowledgeid(id);
+                    imageService.save(image);
+                }
             }
             return JsonMsgUtil.getSuccessJsonMsg("操作成功");
         }catch (Exception e){

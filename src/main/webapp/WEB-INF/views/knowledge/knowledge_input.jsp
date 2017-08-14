@@ -72,14 +72,24 @@
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right">导航图片</label>
-                                <input type="file" onchange="previewImage(this)" name="file" accept="image/*" style="margin: 0 0 0 228px;"/>                             
+                                <input type="file" onchange="previewImage(this)" name="file" accept="image/*" style="margin: 0 0 0 228px;" 
+                                <c:if test='${dto.id == null}'>required</c:if>
+                                />                             
                             </div>
                             <div id="preview"
                                     style="width: 40%; height: 100%;margin:0 0 0 228px;">
                                     <img alt="导航图片" id="storeimg"
-                                        <%-- src="${ctx}/resources/images/default.jpg" width="100%" --%>
-                                        src="<ex:imageTag key='${imgUrl}'/>" width="100%"
-                                        height="300px;" >
+                                        <%-- src="${ctx}/resources/images/default.jpg"  --%>
+                                        <%-- src="<ex:imageTag key='${imgUrl}'/>" width="100%" --%>
+                                        <c:choose>
+                                            <c:when test='${imgUrl == null}'>
+										              src="${ctx}/resources/images/default.jpg"
+										       </c:when>
+										       <c:otherwise>
+										        src="<ex:imageTag key='${imgUrl}'/>"      
+										       </c:otherwise>
+                                        </c:choose>
+                                        width="100%" height="300px;" >
                                 </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right"> 内容 </label>

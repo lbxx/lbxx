@@ -7,9 +7,10 @@
     <result column="pic" jdbcType="VARCHAR" property="pic" />
     <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
     <result column="isdelete" jdbcType="BIT" property="isdelete" />
+    <result column="imageid" jdbcType="INTEGER" property="imageid" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, name, pic, createtime, isdelete
+    id, name, pic, createtime, isdelete, imageid
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -21,13 +22,15 @@
     delete from carousel
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.cdhaixun.domain.Carousel">
+  <insert id="insert" parameterType="com.cdhaixun.domain.Carousel" useGeneratedKeys="true" keyProperty="id">
     insert into carousel (id, name, pic, 
-      createtime, isdelete)
+      createtime, isdelete, imageid
+      )
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{pic,jdbcType=VARCHAR}, 
-      #{createtime,jdbcType=TIMESTAMP}, #{isdelete,jdbcType=BIT})
+      #{createtime,jdbcType=TIMESTAMP}, #{isdelete,jdbcType=BIT}, #{imageid,jdbcType=INTEGER}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.cdhaixun.domain.Carousel">
+  <insert id="insertSelective" parameterType="com.cdhaixun.domain.Carousel" useGeneratedKeys="true" keyProperty="id">
     insert into carousel
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -44,6 +47,9 @@
       </if>
       <if test="isdelete != null">
         isdelete,
+      </if>
+      <if test="imageid != null">
+        imageid,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -62,6 +68,9 @@
       <if test="isdelete != null">
         #{isdelete,jdbcType=BIT},
       </if>
+      <if test="imageid != null">
+        #{imageid,jdbcType=INTEGER},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.cdhaixun.domain.Carousel">
@@ -79,6 +88,9 @@
       <if test="isdelete != null">
         isdelete = #{isdelete,jdbcType=BIT},
       </if>
+      <if test="imageid != null">
+        imageid = #{imageid,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -87,10 +99,11 @@
     set name = #{name,jdbcType=VARCHAR},
       pic = #{pic,jdbcType=VARCHAR},
       createtime = #{createtime,jdbcType=TIMESTAMP},
-      isdelete = #{isdelete,jdbcType=BIT}
+      isdelete = #{isdelete,jdbcType=BIT},
+      imageid = #{imageid,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="selectByCarousel" parameterType="com.cdhaixun.domain.Carousel"  resultMap="BaseResultMap">
+    <select id="selectByCarousel" parameterType="com.cdhaixun.domain.Carousel"  resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from carousel
@@ -109,5 +122,11 @@
       </if>
     </where>
   </select>
-
+  <select id="findByImageId" parameterType="com.cdhaixun.domain.Carousel" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from carousel
+    where imageid = #{imageid,jdbcType=INTEGER}
+    and isdelete = 0
+  </select>
 </mapper>

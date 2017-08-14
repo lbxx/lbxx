@@ -1,8 +1,8 @@
 package com.cdhaixun.persistence;
 
-import com.cdhaixun.domain.Carousel;
-
 import java.util.List;
+
+import com.cdhaixun.domain.Carousel;
 
 public interface CarouselMapper {
     int deleteByPrimaryKey(Integer id);
@@ -18,4 +18,6 @@ public interface CarouselMapper {
     int updateByPrimaryKey(Carousel record);
 
     List<Carousel> selectByCarousel(Carousel carousel);
+
+    List<Carousel> findByImageId(Integer id);
 }

@@ -12,4 +12,5 @@ public interface ImageMapper extends BaseMapper<Image> {
     List<ImageVo> getList(Map<String, Object> parMap);
 
     List<Image> findByImage(Image image);
+
 }

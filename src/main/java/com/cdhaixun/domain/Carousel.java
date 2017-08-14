@@ -31,6 +31,8 @@ public class Carousel {
         this.knowledge = knowledge;
     }
 
+    private Integer imageid;
+
     public Integer getId() {
         return id;
     }
@@ -69,5 +71,13 @@ public class Carousel {
 
     public void setIsdelete(Boolean isdelete) {
         this.isdelete = isdelete;
+    }
+
+    public Integer getImageid() {
+        return imageid;
+    }
+
+    public void setImageid(Integer imageid) {
+        this.imageid = imageid;
     }
 }
