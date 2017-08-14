@@ -72,7 +72,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right" for="source"> 图片 </label>
+                                <label class="col-sm-3 control-label no-padding-right" for=""> 图片 </label>
                                 <div class="col-sm-8">
                                     <%-- <input type="text" id="source" name="source" value="${dto.source}" maxlength="30" required class="col-xs-4 col-sm-4" /> --%>
                                     <input type="file" onchange="previewImage(this)" name="file" accept="image/*" style=""
@@ -82,17 +82,12 @@
                                     />
                                 </div>
                                 <div id="preview" class="col-sm-3 control-label no-padding-right">
-                                    <img alt="知识库图片" id="knowledgeimg" 
-                                    <%-- src="${ctx}/resources/images/default.jpg"  --%>
-                                    <c:choose>
-                                            <c:when test='${imgUrl == null}'>
-                                                      src="${ctx}/resources/images/default.jpg"
-                                               </c:when>
-                                               <c:otherwise>
-                                                src="<ex:imageTag key='${imgUrl}'/>"      
-                                               </c:otherwise>
-                                        </c:choose>
-                                    width="100%" height="300px;" >
+                                    <c:if test="${imgUrl == null}">
+                                        <img alt="知识库图片" id="knowledgeimg" src="${ctx}/resources/images/default.jpg" width="100%" height="300px;"/>
+                                    </c:if>
+                                    <c:if test="${imgUrl != null}">
+                                        <img id="knowledgeimg" src="${imgUrl}" width="100%" height="300px;"/>
+                                    </c:if>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -177,16 +172,16 @@
         });
         
         //页面加载渲染图片
-        loadImageInfo();
+        //loadImageInfo();
 
     })
     
-    function loadImageInfo(){
+    /*function loadImageInfo(){
     	var id = queryValueByKey("id");
     	if(id){
     		$('#knowledgeimg').attr('src',img_server+'${dto.source}');
     	}
-    }
+    }*/
     //页面图上上传预览//
         //图片上传预览    IE是用了滤镜。
         function previewImage(file)

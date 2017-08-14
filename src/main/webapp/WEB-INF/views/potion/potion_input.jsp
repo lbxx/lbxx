@@ -80,12 +80,12 @@
                                 <div class="col-sm-4">
                                     <input type="file" onchange="previewImage(this)" name="file" value="${dto.pic}"/>
                                 </div>
-                                <div class="col-sm-5">
+                                <div class="col-sm-5" >
                                     <c:if test="${dto.pic == null}">
-                                        <img src="${ctx}/resources/images/default.jpg" id="picimg">
+                                        <img src="${ctx}/resources/images/default.jpg" style="width: 100px;height: 100%;" id="picimg">
                                     </c:if>
                                     <c:if test="${dto.pic != null}">
-                                        <img src="${ctx}/${dto.pic}" id="picimg">
+                                        <img src="${imgPath}/${dto.pic}"  style="width: 100px;height: 100%;" id="picimg">
                                     </c:if>
                                 </div>
                             </div>

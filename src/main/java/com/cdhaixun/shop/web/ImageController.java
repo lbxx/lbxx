@@ -1,19 +1,6 @@
 
 package com.cdhaixun.shop.web;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.cdhaixun.common.vo.Result;
 import com.cdhaixun.domain.Carousel;
 import com.cdhaixun.domain.Image;
@@ -28,6 +15,18 @@ import com.cdhaixun.vo.ImageVo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 知识库类型管理
@@ -46,6 +45,8 @@ public class ImageController {
     IUploadService uploadService;
     @Autowired
     ICarouselService carouselService;
+    @Value("#{configProperties['imgServer']}")
+    private String imgRoot;
     /**
      * 首页
      */
@@ -109,7 +110,9 @@ public class ImageController {
         List<Knowledge> list = knowledgeService.findList();
         request.setAttribute("knowledgeList", list);
         request.setAttribute("dto", image);
-        request.setAttribute("imgUrl", carouselList.isEmpty()?null:carouselList.get(0).getPic());
+        // 获取图片nginx地址 + 真实地址
+        String pic = carouselList.isEmpty()?null:carouselList.get(0).getPic();
+        request.setAttribute("imgUrl", imgRoot + pic);
         return PATH + "image_input";
     }
 

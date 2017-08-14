@@ -9,6 +9,7 @@ import com.cdhaixun.util.JsonMsgUtil;
 import com.cdhaixun.util.MapUtils;
 import com.cdhaixun.util.Pager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -34,6 +35,8 @@ public class PotionController {
     IPotionService potionService;
     @Autowired
     IUploadService uploadService;
+    @Value("#{configProperties['imgServer']}")
+    private String imgRoot;
     /**
      * 会员首页
      */
@@ -87,8 +90,12 @@ public class PotionController {
             e.printStackTrace();
         }
         List<PotionCategory> potionCategoryList = potionService.selectPotionCategoryList();
+        // 获取图片nginx配置路径
+        String imgPath = imgRoot;
+        request.setAttribute("imgPath", imgPath);
         request.setAttribute("potionCategoryList", potionCategoryList);
         request.setAttribute("dto", potion);
+
         return PATH + "potion_input";
     }
 
