@@ -5,7 +5,6 @@ import com.cdhaixun.common.vo.Result;
 import com.cdhaixun.domain.Image;
 import com.cdhaixun.domain.Knowledge;
 import com.cdhaixun.domain.KnowledgeType;
-import com.cdhaixun.shop.service.ICarouselService;
 import com.cdhaixun.shop.service.IImageService;
 import com.cdhaixun.shop.service.IKnowledgeService;
 import com.cdhaixun.shop.service.IKnowledgeTypeService;
@@ -24,7 +23,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -137,7 +135,11 @@ public class KnowledgeController {
                 if(!imgList.isEmpty()){
                     image = imgList.get(0);
                     image.setKnowledgeid(id);
-                    image.setSource(result.getData().toString());
+                    if(result != null){
+                        image.setSource(result.getData().toString());
+                    }else{
+                        image.setSource(imgList.get(0).getSource());
+                    }
                     imageService.update(image);
                 }else{
                     image.setKnowledgeid(id);

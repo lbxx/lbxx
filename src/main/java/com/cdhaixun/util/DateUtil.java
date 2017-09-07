@@ -1,13 +1,13 @@
 package com.cdhaixun.util;
 
+import com.cdhaixun.common.exception.HxException;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-
-import com.cdhaixun.common.exception.HxException;
 
 public class DateUtil {
 
@@ -25,6 +25,10 @@ public class DateUtil {
      * 日期格式 yyyy-MM-dd HH:mm:ss
      */
     public static final String LONG_DATE_FORMAT_STR = "yyyy-MM-dd HH:mm:ss";
+    /**
+     * 日期格式 yyyyMMddHHmmss
+     */
+    public static final String LONG_DATE_FORMAT_STRYS = "yyyyMMddHHmmss";
 
     /**
      * 24小时格式

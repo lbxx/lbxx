@@ -22,9 +22,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -42,11 +47,13 @@ public class ImageController {
     @Autowired
     private IKnowledgeService knowledgeService;
     @Autowired
-    IUploadService uploadService;
-    @Autowired
     ICarouselService carouselService;
     @Value("#{configProperties['imgServer']}")
     private String imgRoot;
+    @Value("#{configProperties['domainName']}")
+    private String domainName;
+    @Autowired
+    private IUploadService uploadService;
     /**
      * 首页
      */
@@ -175,5 +182,47 @@ public class ImageController {
             return JsonMsgUtil.getFailJsonMsg("删除失败!");
         }
         return JsonMsgUtil.getSuccessJsonMsg("删除成功!");
+    }
+
+    /**
+     * 知识库编辑器图片上传
+     * @param request
+     * @param response
+     */
+    @RequestMapping("imageUpload")
+    public void imageUpload(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(request.getSession()
+                    .getServletContext());
+            // 判断 request 是否有文件上传,即多部分请求
+            if (multipartResolver.isMultipart(request)) {
+                // 转换成多部分request
+                MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+                // 取得request中的所有文件名
+                Iterator<String> iter = multiRequest.getFileNames();
+                while (iter.hasNext()) {
+                    // 记录上传过程起始时的时间，用来计算上传时间
+                    // int pre = (int) System.currentTimeMillis();
+                    // 取得上传文件
+                    MultipartFile file = multiRequest.getFile(iter.next());
+                    if (file != null) {
+                        String picPath = uploadService.upload(request, file).getData().toString();
+                        String imageContextPath = domainName + "/" + picPath;
+                        response.setContentType("text/html;charset=UTF-8");
+                        String callback = request.getParameter("CKEditorFuncNum");
+                        PrintWriter out = response.getWriter();
+                        out.println("<script type=\"text/javascript\">");
+                        out.println("window.parent.CKEDITOR.tools.callFunction(" + callback + ",'" + imageContextPath + "',''" + ")");
+                        out.println("</script>");
+                        out.flush();
+                        out.close();
+                    }
+                }
+            }
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

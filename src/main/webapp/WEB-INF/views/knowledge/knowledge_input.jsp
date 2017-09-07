@@ -52,7 +52,7 @@
                 <div class="row">
                     <div class="col-xs-12">
                         <!-- PAGE CONTENT BEGINS -->
-                        <form class="form-horizontal" id="validation-form" role="form" method="post" enctype="multipart/form-data" action="${ctx}/knowledge/save">
+                        <form class="form-horizontal" id="validation-form" role="form" method="post" onsubmit="return check()" enctype="multipart/form-data" action="${ctx}/knowledge/save">
                             <input type="hidden" name="id" value="${dto.id}"/>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right" for="title"> 标题 </label>
@@ -94,7 +94,8 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right"> 内容 </label>
                                 <div class="col-sm-8">
-                                        <script id="content" type="text/plain" style="width:924px;height:500px;" name="content"></script>
+                                    <textarea rows="10" cols="30" class="ckeditor" id="editor1">${dto.content}</textarea>
+                                    <input type="hidden" name="content" id="content" value="${cto.content}"/>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -144,10 +145,7 @@
 <!-- 自定义js -->
 <script src="${ctx}/resources/js/jquery.validate.min.js"></script>
 <script src="${ctx}/resources/js/messages_zh.js"></script>
-<script src="${ctx}/resources/ueditor/ueditor.config.js"></script>
-<script src="${ctx}/resources/ueditor/ueditor.all.min.js"></script>
-<script src="${ctx}/resources/ueditor/lang/zh-cn/zh-cn.js"></script>
-<link rel="stylesheet" href="${ctx}/resources/ueditor/themes/default/css/ueditor.css">
+<script src="${ctx}/resources/ckeditor/ckeditor.js"></script>
 <script>
     $(function(){
         $('#validation-form').validate({
@@ -257,13 +255,16 @@
       //页面图上上传预览//
 </script>
 <script type="text/javascript">
- var content = '${dto.content}';
-//实例化编辑器
-var ue = UE.getEditor('content');
- ue.ready(function() {
-     //设置编辑器的内容
-     ue.setContent(content);
- });
+    // 设置数据
+   // CKEDITOR.instances['editor1'].setData(${dto.content});
+
+    // 提交表单
+    function check(){
+        var data_tc = CKEDITOR.instances['editor1'].getData();
+        $("#content").val(data_tc);
+        return true;
+    }
+
 </script>
 </body>
 </html>
