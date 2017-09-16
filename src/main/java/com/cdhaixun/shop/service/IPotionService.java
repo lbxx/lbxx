@@ -14,4 +14,6 @@ public interface IPotionService extends BaseService<Potion>{
     Pager getPotionList(Pager pager, Map<String, Object> parMap);
 
     List<PotionCategory> selectPotionCategoryList();
+
+    List<Potion> findByPotionCategoryId(Integer id);
 }

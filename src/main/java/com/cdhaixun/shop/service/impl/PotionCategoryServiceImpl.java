@@ -46,4 +46,11 @@ public class PotionCategoryServiceImpl implements IPotionCategoryService {
     public void delete(PotionCategory domain) throws Exception {
         potionCategoryMapper.deleteByPrimaryKey(domain.getId());
     }
+
+    @Override
+    public List<PotionCategory> findAll() {
+        PotionCategory potionCategory=new PotionCategory();
+        potionCategory.setIsdelete(false);
+        return potionCategoryMapper.selectByPotionCategory(potionCategory);
+    }
 }

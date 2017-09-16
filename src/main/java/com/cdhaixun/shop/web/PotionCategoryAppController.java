@@ -31,7 +31,12 @@ public class PotionCategoryAppController {
     public Result listByStoreId(@RequestBody com.cdhaixun.common.appVo.Store store, HttpServletRequest httpServletRequest ) {
         // Page<Manager> page = PageHelper.startPage(pageNum, pageSize ,true);
         Result result = new Result();
-        List<StorePotion> storePotionList=  storePotionService.findByStoreId( store.getStoreid());
+      List<PotionCategory> potionCategories=  potionCategoryService.findAll();
+        for (PotionCategory potionCategory:potionCategories) {
+          List<Potion> potions=  potionService.findByPotionCategoryId(potionCategory.getId());
+            potionCategory.setPotionList(potions);
+        }
+       /* List<StorePotion> storePotionList=  storePotionService.findByStoreId( store.getStoreid());
      Map<Integer,PotionCategory> map=new HashMap<>();
         for (StorePotion storePotion:storePotionList) {
           Potion potion=  potionService.findById(storePotion.getPotionid());
@@ -47,7 +52,8 @@ public class PotionCategoryAppController {
             }
 
         }
-        result.setData(map.values());
+        result.setData(map.values());*/
+       result.setData(potionCategories);
         result.setResult(true);
         return result;
     }

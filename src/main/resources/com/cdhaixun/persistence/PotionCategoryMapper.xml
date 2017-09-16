@@ -50,4 +50,21 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectByPotionCategory" parameterType="com.cdhaixun.domain.PotionCategory" resultType="com.cdhaixun.domain.PotionCategory">
+    select
+    <include refid="Base_Column_List" />
+    from potion_category
+    <where>
+      <if test="name != null">
+      and  name = #{name,jdbcType=VARCHAR}
+      </if>
+      <if test="createtime != null">
+        and  createtime = #{createtime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="isdelete != null">
+        and  isdelete = #{isdelete,jdbcType=BIT}
+      </if>
+    </where>
+
+  </select>
 </mapper>

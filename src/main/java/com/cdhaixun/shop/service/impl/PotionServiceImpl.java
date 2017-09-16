@@ -16,12 +16,12 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class PotionServiceImpl implements IPotionService
-{
+public class PotionServiceImpl implements IPotionService {
     @Autowired
     private PotionMapper potionMapper;
     @Autowired
     private PotionCategoryMapper potionCategoryMapper;
+
     @Override
     public Potion findById(Integer potionid) {
         return potionMapper.selectByPrimaryKey(potionid);
@@ -55,5 +55,13 @@ public class PotionServiceImpl implements IPotionService
     @Override
     public void delete(Potion domain) throws Exception {
         potionMapper.deleteByPrimaryKey(domain.getId());
+    }
+
+    @Override
+    public List<Potion> findByPotionCategoryId(Integer id) {
+        Potion potion = new Potion();
+        potion.setPotioncategoryid(id);
+        potion.setIsdelete(false);
+        return potionMapper.selectByPotionCategory(potion);
     }
 }

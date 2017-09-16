@@ -55,8 +55,8 @@ public class TimeBucketAppController {
             TimeBucket timeBucket = timeBucketIterator.next();
             timeBucket.setStarttime(new Date(appointment.getCreatetime().getTime()+timeBucket.getStarttime().getTime()));
             timeBucket.setEndtime(new Date(appointment.getCreatetime().getTime()+timeBucket.getEndtime().getTime()));
-            Date createtimeFrom = new Date(appointment.getCreatetime().getTime() + timeBucket.getStarttime().getTime());
-            Date createtimeTo = new Date(appointment.getCreatetime().getTime() + timeBucket.getEndtime().getTime());
+            Date createtimeFrom = timeBucket.getStarttime();
+            Date createtimeTo = timeBucket.getEndtime();
             //过滤请假时间
             for (TechnicianLeave technicianLeave : technicianLeaveList) {
                 if (technicianLeave.getStarttime().compareTo(timeBucket.getStarttime()) <= 0

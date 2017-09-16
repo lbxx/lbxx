@@ -79,4 +79,32 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectByPotionCategory" parameterType="com.cdhaixun.domain.Potion"  resultType="com.cdhaixun.domain.Potion">
+    select
+    <include refid="Base_Column_List" />
+    from potion
+<where>
+  <if test="potioncategoryid != null">
+    and potioncategoryid = #{potioncategoryid,jdbcType=INTEGER}
+  </if>
+  <if test="name != null">
+    and  name = #{name,jdbcType=VARCHAR}
+  </if>
+  <if test="price != null">
+    and  price = #{price,jdbcType=DECIMAL}
+  </if>
+  <if test="createtime != null">
+    and  createtime = #{createtime,jdbcType=TIMESTAMP}
+  </if>
+  <if test="isdelete != null">
+    and isdelete = #{isdelete,jdbcType=BIT}
+  </if>
+  <if test="pic != null">
+    and  pic = #{pic,jdbcType=VARCHAR}
+  </if>
+  <if test="detail != null">
+    and detail = #{detail,jdbcType=VARCHAR}
+  </if>
+</where>
+  </select>
 </mapper>

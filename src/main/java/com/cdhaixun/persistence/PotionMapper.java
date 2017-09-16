@@ -16,4 +16,6 @@ public interface PotionMapper {
     int updateByPrimaryKey(Potion record);
 
     List<PotionVo> findPotionList(Map<String, Object> parMap);
+
+    List<Potion> selectByPotionCategory(Potion potion);
 }

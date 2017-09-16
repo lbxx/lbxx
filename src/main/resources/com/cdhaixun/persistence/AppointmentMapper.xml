@@ -61,7 +61,7 @@
     insert into appointment (id, createtime, userid, 
       storeid, state,remark,technicianid,starttime,endtime)
     values (#{id,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}, #{userid,jdbcType=INTEGER}, 
-      #{storeid,jdbcType=INTEGER}, #{state,jdbcType=CHAR},#{remark},#{technicianid},#{starttime},endtime)
+      #{storeid,jdbcType=INTEGER}, #{state,jdbcType=CHAR},#{remark},#{technicianid},#{starttime},#{endtime})
   </insert>
     <insert id="insertSelective" parameterType="com.cdhaixun.domain.Appointment">
         insert into appointment

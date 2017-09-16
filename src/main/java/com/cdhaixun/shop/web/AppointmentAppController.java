@@ -105,7 +105,7 @@ public class AppointmentAppController {
                 appointment1Db.getTotalprice().add(storeBusiness.getPrice());
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(starttime);
-                calendar.roll(Calendar.MINUTE, technicianBusiness.getSpend());
+                calendar.add(Calendar.MINUTE, technicianBusiness.getSpend());
                 starttime = calendar.getTime();
                 appointmentDetail.setEndtime(calendar.getTime());
                 appointmentDetail.setBussinessid(technicianBusiness.getBusinessid());

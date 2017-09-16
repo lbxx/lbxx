@@ -17,4 +17,6 @@ public interface PotionCategoryMapper {
     List<PotionCategory> findPotionCategoryList(Map<String, Object> parMap);
 
     List<PotionCategory> selectPotionCategoryAllList();
+
+    List<PotionCategory> selectByPotionCategory(PotionCategory potionCategory);
 }

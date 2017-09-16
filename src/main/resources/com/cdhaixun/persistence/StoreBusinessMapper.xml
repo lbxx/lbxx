@@ -8,9 +8,10 @@
         <result column="isopen" property="isopen" jdbcType="BIT"/>
         <result column="isdelete" property="isdelete" jdbcType="BIT"/>
         <result column="createtime" property="createtime" jdbcType="TIMESTAMP"/>
+        <result column="price" property="price" jdbcType="DECIMAL"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, storeid, businessid, isopen, isdelete, createtime
+    id, storeid, businessid, isopen, isdelete, createtime,price
   </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
