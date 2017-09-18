@@ -27,6 +27,7 @@ public class TechnicianBusinessServiceImpl implements ITechnicianBusinessService
         TechnicianBusiness technicianBusiness=new TechnicianBusiness();
         technicianBusiness.setBusinessid(id);
         technicianBusiness.setTechnicianid(technicianid);
+        technicianBusiness.setIsdelete(false);
         return technicianBusinessMapper.selectOneByTechnicianBusiness(technicianBusiness);
     }
 

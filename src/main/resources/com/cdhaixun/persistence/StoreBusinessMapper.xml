@@ -42,10 +42,10 @@
   </delete>
     <insert id="insert" parameterType="com.cdhaixun.domain.StoreBusiness">
     insert into store_business (id, storeid, businessid, 
-      isopen, isdelete, createtime
+      isopen, isdelete, createtime,price
       )
     values (#{id,jdbcType=INTEGER}, #{storeid,jdbcType=INTEGER}, #{businessid,jdbcType=INTEGER}, 
-      #{isopen,jdbcType=BIT}, #{isdelete,jdbcType=BIT}, #{createtime,jdbcType=TIMESTAMP}
+      #{isopen,jdbcType=BIT}, #{isdelete,jdbcType=BIT}, #{createtime,jdbcType=TIMESTAMP},#{price,jdbcType=DECIMAL}
       )
   </insert>
     <insert id="insertStoreBusinessSelective" parameterType="com.cdhaixun.domain.StoreBusiness">
@@ -69,6 +69,9 @@
             <if test="createtime != null">
                 createtime,
             </if>
+            <if test="price != null">
+                price,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -88,6 +91,9 @@
             </if>
             <if test="createtime != null">
                 #{createtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="price != null">
+                #{price,jdbcType=DECIMAL},
             </if>
         </trim>
     </insert>
@@ -109,6 +115,9 @@
             <if test="createtime != null">
                 createtime = #{createtime,jdbcType=TIMESTAMP},
             </if>
+            <if test="price != null">
+                price = #{price,jdbcType=DECIMAL},
+            </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
@@ -118,7 +127,8 @@
       businessid = #{businessid,jdbcType=INTEGER},
       isopen = #{isopen,jdbcType=BIT},
       isdelete = #{isdelete,jdbcType=BIT},
-      createtime = #{createtime,jdbcType=TIMESTAMP}
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      price = #{price,jdbcType=DECIMAL}
     where id = #{id,jdbcType=INTEGER}
   </update>
     <delete id="deleteByStoreId" parameterType="java.lang.Integer">
