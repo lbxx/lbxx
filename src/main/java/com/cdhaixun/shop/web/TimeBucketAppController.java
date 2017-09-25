@@ -46,7 +46,8 @@ public class TimeBucketAppController {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(appointment.getCreatetime());
         Technician technician = technicianService.findById(appointment.getTechnicianid());
-        if (!technician.getWorkday().contains((calendar.get(Calendar.DAY_OF_WEEK) + 1) + "")) {
+//        if (!technician.getWorkday().contains((calendar.get(Calendar.DAY_OF_WEEK) + 1) + "")) {   原始代码
+            if (!technician.getWorkday().contains((calendar.get(Calendar.DAY_OF_WEEK) - 1) + "")) { //此处应为减 1
             return result;
         }
         List<TimeBucket> timeBucketList = timeBucketService.findAll();
