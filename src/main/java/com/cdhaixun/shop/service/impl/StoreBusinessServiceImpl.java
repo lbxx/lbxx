@@ -37,6 +37,7 @@ public class StoreBusinessServiceImpl implements IStoreBusinessService{
     public List<StoreBusiness> findByStoreId(Integer storeid) {
         StoreBusiness storeBusiness=new StoreBusiness();
         storeBusiness.setStoreid(storeid);
+        storeBusiness.setIsdelete(false);
         return storeBusinessMapper.selectByStoreBusiness(storeBusiness);
     }
 }

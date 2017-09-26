@@ -54,6 +54,7 @@ public class KnowledgeServiceImpl implements IKnowledgeService {
     public List<Knowledge> findByTypeId(Integer typeid) {
         Knowledge knowledge = new Knowledge();
         knowledge.setTypeid(typeid);
+        knowledge.setIsdelete(false);
         List<Knowledge> knowledgeList = knowledgeMapper.findByKnowledge(knowledge);
 
         return knowledgeList;
