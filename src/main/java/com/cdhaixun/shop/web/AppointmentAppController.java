@@ -171,5 +171,29 @@ public class AppointmentAppController {
         return result;
     }
 
+    @RequestMapping(value = "appointmentDetail", method = RequestMethod.POST)
+    @ResponseBody
+    public Result appointmentDetail(@RequestBody Appointment appointment) throws InvocationTargetException, IllegalAccessException, ParseException {
+        Result result = new Result();
+        com.cdhaixun.domain. Appointment appointment1Db= appointmentService.findById(appointment.getId());
+        List<AppointmentDetail> appointmentDetailList = appointmentDetailService.findByAppointmentId(appointment1Db.getId());
+        Map<Integer, Business> map = new HashMap();
+        for (AppointmentDetail appointmentDetail : appointmentDetailList) {
+            Business business = businessService.findById(appointmentDetail.getBussinessid());
+            if (map.keySet().contains(business.getId())) {
+                map.get(business.getId()).setNumber(map.get(business.getId()).getNumber() + 1);
+            } else {
+                business.setNumber(1);
+                map.put(business.getId(), business);
+            }
+            appointmentDetail.setBusiness(business);
+            appointmentDetail.setBaby(babyService.findById(appointmentDetail.getBabyid()));
+        }
+        appointment1Db.setAppointmentDetail(appointmentDetailList.get(0));
+        result.setData(appointment1Db);
+        result.setResult(true);
+        return result;
+    }
+
 
 }

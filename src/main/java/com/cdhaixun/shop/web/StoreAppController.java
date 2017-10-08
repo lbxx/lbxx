@@ -60,6 +60,24 @@ public class StoreAppController extends BaseController {
         result.setResult(true);
         return result;
     }
+    @RequestMapping(value = "searchByName", method = RequestMethod.POST)
+    @ResponseBody
+    public Result searchByName(@RequestBody Store store, HttpServletRequest httpServletRequest, @RequestHeader Integer pageNum,@RequestHeader Integer pageSize ) {
+        Page<Manager> page = PageHelper.startPage(pageNum, pageSize ,true);
+        Result result = new Result();
+        List<Store> storeList = storeService.find(store);
+        for (Store storetemp : storeList) {
+            storetemp.setPic(domainName+storetemp.getPic());
+            storetemp.setBusinessList(new ArrayList<Business>());
+            List<StoreBusiness> storeBusinessList = storeBusinessService.findByStoreId(storetemp.getId());
+            for (StoreBusiness storeBusiness : storeBusinessList) {
+                storetemp.getBusinessList().add(businessService.findById(storeBusiness.getBusinessid()));
+            }
+        }
+        result.setData(storeList);
+        result.setResult(true);
+        return result;
+    }
 
     @RequestMapping(value = "listByCity", method = RequestMethod.POST)
     @ResponseBody

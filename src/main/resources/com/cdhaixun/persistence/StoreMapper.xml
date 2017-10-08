@@ -285,7 +285,7 @@
     from store
   <where>
     <if test="name != null" >
-     and name = #{name,jdbcType=VARCHAR}
+      and name like '%' || #{name} || '%'
     </if>
     <if test="telephone != null" >
       and telephone = #{telephone,jdbcType=VARCHAR}
