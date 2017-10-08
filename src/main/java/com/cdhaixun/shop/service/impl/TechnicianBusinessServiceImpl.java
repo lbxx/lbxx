@@ -19,6 +19,7 @@ public class TechnicianBusinessServiceImpl implements ITechnicianBusinessService
     public List<TechnicianBusiness> findByBusinessIdList(List<Integer> businessidList) {
         TechnicianBusiness technicianBusiness=new TechnicianBusiness();
         technicianBusiness.setBusinessidList(businessidList);
+        technicianBusiness.setIsdelete(false);
         return technicianBusinessMapper.selectByTechnicianBusiness(technicianBusiness);
     }
 
@@ -27,6 +28,7 @@ public class TechnicianBusinessServiceImpl implements ITechnicianBusinessService
         TechnicianBusiness technicianBusiness=new TechnicianBusiness();
         technicianBusiness.setBusinessid(id);
         technicianBusiness.setTechnicianid(technicianid);
+        technicianBusiness.setIsdelete(false);
         return technicianBusinessMapper.selectOneByTechnicianBusiness(technicianBusiness);
     }
 

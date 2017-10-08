@@ -30,6 +30,7 @@ public class TechnicianLeaveServiceImpl implements ITechnicianLeaveService {
         TechnicianLeave technicianLeave=new TechnicianLeave();
          technicianLeave.setDatetime(createtime);
         technicianLeave.setTechnicianid(technicianid);
+        technicianLeave.setIsdelete(false);
        return technicianLeaveMapper.selectOneByTechnicianLeave(technicianLeave);
 
     }
