@@ -14,10 +14,10 @@ public class DateConverter implements Converter<String, Date> {
         SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat sdfDateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
-            return sdfDate.parse(source);
+            return sdfDateTime.parse(source);
         } catch (ParseException e) {
             try {
-                return sdfDateTime.parse(source);
+                return sdfDate.parse(source);
             } catch (ParseException e1) {
                 return null;
             }
