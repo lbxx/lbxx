@@ -6,6 +6,8 @@ import com.cdhaixun.common.appVo.User;
 import com.cdhaixun.common.emun.Code;
 import com.cdhaixun.common.redisVo.Captcha;
 import com.cdhaixun.common.web.BaseController;
+import com.cdhaixun.domain.Baby;
+import com.cdhaixun.shop.service.IBabyService;
 import com.cdhaixun.shop.service.IUserService;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.ConvertUtils;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Administrator on 2017-07-01.
@@ -32,6 +35,8 @@ public class UserAppController extends BaseController {
     private IUserService userService;
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
+    @Autowired
+    private IBabyService babyService;
 
     @RequestMapping(value = "modifyUser", method = RequestMethod.POST)
     @ResponseBody
@@ -62,6 +67,17 @@ public class UserAppController extends BaseController {
         return result;
     }
 
+    @RequestMapping(value = "getUser", method = RequestMethod.POST)
+    @ResponseBody
+    public Result getUser(@RequestBody User user) throws Exception {
+        Result result = new Result();
+        com.cdhaixun.domain.User byMobile = userService.findById(user.getId());
+        List<Baby> babyList = babyService.findByUserId(user.getId());
+        byMobile.setBabyList(babyList);
+        result.setResult(true);
+        result.setData(byMobile);
+        return result;
+    }
 
 
 }
