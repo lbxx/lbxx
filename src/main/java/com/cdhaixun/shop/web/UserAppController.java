@@ -8,6 +8,9 @@ import com.cdhaixun.common.redisVo.Captcha;
 import com.cdhaixun.common.web.BaseController;
 import com.cdhaixun.shop.service.IUserService;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.beanutils.ConvertUtils;
+import org.apache.commons.beanutils.converters.BigDecimalConverter;
+import org.apache.commons.beanutils.converters.DateConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -34,6 +38,8 @@ public class UserAppController extends BaseController {
     public Result modifyUser(@RequestBody User user) throws Exception {
         Result result = new Result();
         com.cdhaixun.domain.User userDb=new  com.cdhaixun.domain.User();
+        ConvertUtils.register(new DateConverter(null), java.util.Date.class);
+        ConvertUtils.register(new BigDecimalConverter(null), BigDecimal.class);
         BeanUtils.copyProperties(userDb,user);
         userService.update(userDb);
         result.setResult(true);
