@@ -8,6 +8,7 @@ import com.cdhaixun.common.redisVo.Captcha;
 import com.cdhaixun.common.web.BaseController;
 import com.cdhaixun.domain.Baby;
 import com.cdhaixun.shop.service.IBabyService;
+import com.cdhaixun.shop.service.IUploadService;
 import com.cdhaixun.shop.service.IUserService;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.ConvertUtils;
@@ -20,7 +21,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -36,8 +39,22 @@ public class UserAppController extends BaseController {
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
     @Autowired
+    private IUploadService uploadService;
+    @Autowired
     private IBabyService babyService;
 
+    @RequestMapping(value = "modifyAvatar", method = RequestMethod.POST)
+    @ResponseBody
+    public Result modifyAvatar(@RequestBody User user, MultipartFile img, HttpServletRequest httpServletRequest) throws Exception {
+        Result result = new Result();
+        com.cdhaixun.common.vo.Result upload = uploadService.upload(httpServletRequest, img);
+        com.cdhaixun.domain.User userDb=new  com.cdhaixun.domain.User();
+        userDb.setImg(upload.getData().toString());
+        userDb.setId(user.getId());
+        userService.update(userDb);
+        result.setResult(true);
+        return result;
+    }
     @RequestMapping(value = "modifyUser", method = RequestMethod.POST)
     @ResponseBody
     public Result modifyUser(@RequestBody User user) throws Exception {
