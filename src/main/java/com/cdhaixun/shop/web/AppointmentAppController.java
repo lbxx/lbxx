@@ -50,6 +50,8 @@ public class AppointmentAppController {
     private IStorePotionService storePotionService;
     @Autowired
     private IPotionService potionService;
+    @Autowired
+    private IUserService userService;
 
     @RequestMapping(value = "addAppointment", method = RequestMethod.POST)
     @ResponseBody
@@ -66,8 +68,9 @@ public class AppointmentAppController {
         }
         com.cdhaixun.domain.Appointment appointment1Db = new com.cdhaixun.domain.Appointment();
         // StorePotion storePotion=   storePotionService.findOneByStoreIdAndPotionId(appointment.getStoreid(),appointment.getPotionid());
+        Potion potion=null;
         if(appointment.getPotionid()!=null){
-        Potion potion = potionService.findById(appointment.getPotionid());
+            potion = potionService.findById(appointment.getPotionid());
             appointment1Db.setTotalprice(potion.getPrice().multiply(new BigDecimal(appointment.getPotionamount())));
             appointment1Db.setPotionprice(appointment1Db.getTotalprice());
         }else{
@@ -113,11 +116,30 @@ public class AppointmentAppController {
                 appointmentDetailService.save(appointmentDetail);
             }
         }
+        //打印预约信息
+        User user = userService.findById(appointment.getUserid());
+        String content;
+        content = "<CB>订单号："+appointment1Db.getId()+"</CB><BR>";
+        content += "--------------------------------<BR>";
+        content += "会员名称："+user.getName()+"<BR>";
+        content += "会员电话："+user.getMobile()+"<BR>";
+        content += "--------------------------------<BR>";
+        content += "宝宝名称："+appointment1Db.getBabyList().get(0).getName()+"  宝宝性别："+(!appointment1Db.getBabyList().get(0).getGender()?"男":"女")+"<BR>";
+        Date birthday = appointment1Db.getBabyList().get(0).getBirthday();
+        long year= (new Date().getTime()-birthday.getTime())/(1000*60*60*24*365);
+        long mi=(new Date().getTime()-birthday.getTime())%(1000*60*60*24*365)/(1000*60*60*24*30);
+        content += "宝宝年龄："+(year==0?"":year+"年")+(mi==0?"":mi+"个月")+"<BR>";
+        content += "--------------------------------<BR>";
+        content += "预约日期："+new SimpleDateFormat("yyyy年MM月dd日").format(appointment1Db.getCreatetime())+"<BR>";
+        content += "预约时间段："+appointment.getStarttime()+"--"+appointment.getEndtime()+"点<BR>";
+        content += "预约技师："+appointment1Db.getTechnician().getName()+"<BR>";
+
+        content += "预约药水："+potion.getName()+"<BR>";
+        content += "备注："+appointment.getRemark()+"<BR>";
+        content += "支付金额："+appointment1Db.getTotalprice()+"元<BR>";
         appointmentService.save(appointment1Db);
         List<com.cdhaixun.domain.Appointment> appointmentList1 = appointmentService.findByStartTimeAndTechnicianId(new Date(), appointment1Db.getEndtime(), appointment.getTechnicianid());
         appointment1Db.setAppointnumber(appointmentList1.size());
-
-
         result.setData(appointment1Db);
         result.setResult(true);
         return result;
