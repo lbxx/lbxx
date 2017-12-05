@@ -81,7 +81,7 @@ public class CategoryAppController {
 
     @RequestMapping(value = "listByCity", method = RequestMethod.POST)
     @ResponseBody
-    public Result listByCity(@RequestBody City city, HttpServletRequest httpServletRequest, @RequestHeader Integer pageNum,@RequestHeader Integer pageSize ) {
+    public Result listByCity(@RequestBody City city, HttpServletRequest httpServletRequest, @RequestHeader(required = false) Integer pageNum,@RequestHeader(required = false) Integer pageSize ) {
        // Page<Manager> page = PageHelper.startPage(pageNum, pageSize ,true);
         Result result = new Result();
 

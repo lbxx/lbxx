@@ -35,8 +35,7 @@ public class CarouselAppController extends BaseController {
     public Result listByType(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         Result result = new Result();
         List<Carousel> carouselList = carouselService.findAll();
-        for (Carousel carousel : carouselList
-                ) {
+        for (Carousel carousel : carouselList ) {
             carousel.setKnowledge(knowledgeService.findById(carousel.getKnowledgeid()));
         }
         result.setData(carouselList);

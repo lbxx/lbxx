@@ -32,6 +32,15 @@ public class Appointment {
     private Integer potionid;
     private BigDecimal totalprice;
     private Date paytime;
+    private AppointmentDetail appointmentDetail;
+
+    public AppointmentDetail getAppointmentDetail() {
+        return appointmentDetail;
+    }
+
+    public void setAppointmentDetail(AppointmentDetail appointmentDetail) {
+        this.appointmentDetail = appointmentDetail;
+    }
 
     public Integer getPotionamount() {
         return potionamount;
