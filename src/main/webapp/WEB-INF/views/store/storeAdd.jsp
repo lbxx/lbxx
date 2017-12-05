@@ -105,9 +105,13 @@
 									<input type="text" id="cellphone" name="cellphone" placeholder="请填写负责人手机号码"
 										class="" maxlength="11" style="width: 80%;">
 								</div>
-								<div style="margin-bottom: 1px;">
+								<div style="margin-bottom: 15px;">
                                     <label style="float: left; line-height: 2em; width: 15%;">所在城市</label>
                                     <input type="text" id="city" name="city" placeholder="请填写店铺所在城市"  style="width: 80%;">
+                                </div>
+								<div style="margin-bottom: 1px;">
+                                    <label style="float: left; line-height: 2em; width: 15%;">打印机编号</label>
+                                    <input type="text" id="printersn" name="printersn" placeholder="请填写打印机编号(SN)"  style="width: 80%;">
                                 </div>
 
 							</div>
@@ -299,6 +303,7 @@
 	                        $("#cityName").val(store.location);
 	                        $("#description").val(store.description);
 	                        $("#city").val(store.city);
+	                        $("#printersn").val(store.printersn);
 	                        if(store.pic){
 		                        $("#storeimg").attr("src","${ctx}/upload"+store.pic);
 	                        }

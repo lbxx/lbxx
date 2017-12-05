@@ -16,6 +16,8 @@ public class Store {
     private Date openinghours;
 
     private Date closinghours;
+    
+    private String printersn; //打印机编号(SN)
 
     private String pic;
 
@@ -118,6 +120,14 @@ public class Store {
 
     public void setClosinghours(Date closinghours) {
         this.closinghours = closinghours;
+    }
+        
+    public String getPrintersn() {
+        return printersn;
+    }
+
+    public void setPrintersn(String printersn) {
+        this.printersn = printersn;
     }
 
     public String getPic() {
