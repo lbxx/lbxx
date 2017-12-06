@@ -57,6 +57,8 @@
     </bean>
 
     <!-- 静态资源处理， css， js， imgs -->
+    <mvc:resources mapping="swagger-ui.html" location="classpath:/META-INF/resources/"/>
+    <mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/"/>
     <mvc:resources mapping="/resources/**" location="/resources/"/>
     <mvc:resources mapping="/temp/**" location="/temp/"/>
     
@@ -103,6 +105,9 @@
             <mvc:exclude-mapping path="/login.jsp" />
             <mvc:exclude-mapping path="/resources/**" />
             <mvc:exclude-mapping path="/temp/**" />
+            <mvc:exclude-mapping path="/swagger*/**"></mvc:exclude-mapping>
+            <mvc:exclude-mapping path="/v2/**"></mvc:exclude-mapping>
+            <mvc:exclude-mapping path="/webjars/**"></mvc:exclude-mapping>
             <bean class="com.cdhaixun.common.interceptor.Interceptor"></bean>
         </mvc:interceptor>
     </mvc:interceptors>
@@ -120,4 +125,5 @@
         <aop:advisor pointcut-ref="transactionPointcut"
                      advice-ref="transactionAdvice" />
     </aop:config>
+    <bean class="springfox.documentation.swagger2.configuration.Swagger2DocumentationConfiguration" id="swagger2Config"/>
 </beans>

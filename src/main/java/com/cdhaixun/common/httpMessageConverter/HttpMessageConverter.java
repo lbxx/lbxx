@@ -1,11 +1,16 @@
 package com.cdhaixun.common.httpMessageConverter;
 
 
+import com.cdhaixun.common.web.BaseController;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.MediaType;
@@ -31,9 +36,10 @@ public class HttpMessageConverter extends AbstractHttpMessageConverter<Object> {
     @Value("#{configProperties['aes']}")
     private String aes;
 
+    public static Logger logger = LogManager.getLogger(HttpMessageConverter.class.getName());
+
 
     private Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
-
 
 
     public HttpMessageConverter() throws NoSuchPaddingException, NoSuchAlgorithmException {
@@ -49,17 +55,24 @@ public class HttpMessageConverter extends AbstractHttpMessageConverter<Object> {
         super.setSupportedMediaTypes(supportedMediaTypes);
     }
 
+
     @Override
     protected Object readInternal(Class<?> aClass, HttpInputMessage httpInputMessage) throws IOException, HttpMessageNotReadableException {
 
+
         try {
-             ObjectMapper objectMapper=new ObjectMapper();
+            ObjectMapper objectMapper = new ObjectMapper();
+            //或略不知道的属性
+            objectMapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            String temp = StreamUtils.copyToString(httpInputMessage.getBody(), Charset.forName("UTF-8"));
+            logger.info("host" + httpInputMessage.getHeaders().get("host"));
+            if (httpInputMessage.getHeaders().get("host").get(0).equals("localhost")) {
+                return objectMapper.readValue(temp, aClass);
+            }
             Key key = new SecretKeySpec(Base64.decodeBase64(aes), "AES");
             cipher.init(Cipher.DECRYPT_MODE, key);
-            String temp = StreamUtils.copyToString(httpInputMessage.getBody(), Charset.forName("UTF-8"));
-
             byte[] result = cipher.doFinal(Base64.decodeBase64(temp));
-            System.out.printf(new String(result,"UTF-8"));
+            System.out.printf(new String(result, "UTF-8"));
             Object object = objectMapper.readValue(result, aClass);
             return object;
 
@@ -75,17 +88,22 @@ public class HttpMessageConverter extends AbstractHttpMessageConverter<Object> {
     }
 
     @Override
+    protected void addDefaultHeaders(HttpHeaders headers, Object o, MediaType contentType) throws IOException {
+        super.addDefaultHeaders(headers, o, contentType);
+    }
+
+    @Override
     protected void writeInternal(Object o, HttpOutputMessage httpOutputMessage) throws IOException, HttpMessageNotWritableException {
-        ObjectMapper objectMapper=new ObjectMapper();
+        ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
         objectMapper.setSerializationInclusion(JsonSerialize.Inclusion.NON_NULL);
         String s = objectMapper.writeValueAsString(o);
-        try {
-
+        httpOutputMessage.getBody().write(s.getBytes("UTF-8"));
+      /*  try {
             Key key = new SecretKeySpec(Base64.decodeBase64(aes), "AES");
             cipher.init(Cipher.ENCRYPT_MODE, key);
             byte[] result = cipher.doFinal(s.getBytes("UTF-8"));
-            httpOutputMessage.getBody().write(Base64.encodeBase64(result,true));
+            httpOutputMessage.getBody().write(Base64.encodeBase64(result, true));
 
         } catch (InvalidKeyException e) {
             e.printStackTrace();
@@ -93,7 +111,7 @@ public class HttpMessageConverter extends AbstractHttpMessageConverter<Object> {
             e.printStackTrace();
         } catch (IllegalBlockSizeException e) {
             e.printStackTrace();
-        }
+        }*/
 
 
     }

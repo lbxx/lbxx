@@ -10,6 +10,9 @@ import com.cdhaixun.domain.Baby;
 import com.cdhaixun.shop.service.IBabyService;
 import com.cdhaixun.shop.service.IUploadService;
 import com.cdhaixun.shop.service.IUserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.converters.BigDecimalConverter;
@@ -17,10 +20,7 @@ import org.apache.commons.beanutils.converters.DateConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -45,9 +45,10 @@ public class UserAppController extends BaseController {
 
     @RequestMapping(value = "modifyAvatar", method = RequestMethod.POST)
     @ResponseBody
-    public Result modifyAvatar(@RequestBody User user, MultipartFile img, HttpServletRequest httpServletRequest) throws Exception {
+    @ApiOperation(value = "上传头像", httpMethod = "POST", notes = "")
+    public Result modifyAvatar(User user,  @ApiParam(required = true, name = "file")  MultipartFile file, HttpServletRequest httpServletRequest) throws Exception {
         Result result = new Result();
-        com.cdhaixun.common.vo.Result upload = uploadService.upload(httpServletRequest, img);
+        com.cdhaixun.common.vo.Result upload = uploadService.upload(httpServletRequest, file);
         com.cdhaixun.domain.User userDb=new  com.cdhaixun.domain.User();
         userDb.setImg(upload.getData().toString());
         userDb.setId(user.getId());
