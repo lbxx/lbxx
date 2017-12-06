@@ -133,10 +133,10 @@ public class AppointmentAppController {
         content += "预约日期："+new SimpleDateFormat("yyyy年MM月dd日").format(appointment1Db.getCreatetime())+"<BR>";
         content += "预约时间段："+appointment.getStarttime()+"--"+appointment.getEndtime()+"点<BR>";
         content += "预约技师："+appointment1Db.getTechnician().getName()+"<BR>";
-
         content += "预约药水："+potion.getName()+"<BR>";
         content += "备注："+appointment.getRemark()+"<BR>";
         content += "支付金额："+appointment1Db.getTotalprice()+"元<BR>";
+        //查看打印的printUtils  调用printOrder(String content,String sn)
         appointmentService.save(appointment1Db);
         List<com.cdhaixun.domain.Appointment> appointmentList1 = appointmentService.findByStartTimeAndTechnicianId(new Date(), appointment1Db.getEndtime(), appointment.getTechnicianid());
         appointment1Db.setAppointnumber(appointmentList1.size());

@@ -76,6 +76,86 @@ public class PrintUtil {
 
 	//=====================以下是函数实现部分================================================
 	//方法1
+
+	/**
+	 * 打印预约的订单的方法
+	 * @param content
+	 * @param sn
+	 * @return
+	 */
+	private static String printOrder(String content,String sn){
+		//标签说明：
+		//单标签:
+		//"<BR>"为换行,"<CUT>"为切刀指令(主动切纸,仅限切刀打印机使用才有效果)
+		//"<LOGO>"为打印LOGO指令(前提是预先在机器内置LOGO图片),"<PLUGIN>"为钱箱或者外置音响指令
+		//成对标签：
+		//"<CB></CB>"为居中放大一倍,"<B></B>"为放大一倍,"<C></C>"为居中,<L></L>字体变高一倍
+		//<W></W>字体变宽一倍,"<QR></QR>"为二维码,"<BOLD></BOLD>"为字体加粗,"<RIGHT></RIGHT>"为右对齐
+
+
+		//通过POST请求，发送打印信息到服务器
+		RequestConfig requestConfig = RequestConfig.custom()
+				.setSocketTimeout(30000)//读取超时
+				.setConnectTimeout(30000)//连接超时
+				.build();
+
+		CloseableHttpClient httpClient = HttpClients.custom()
+				.setDefaultRequestConfig(requestConfig)
+				.build();
+
+		HttpPost post = new HttpPost(URL);
+		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+		nvps.add(new BasicNameValuePair("user",USER));
+		String STIME = String.valueOf(System.currentTimeMillis()/1000);
+		nvps.add(new BasicNameValuePair("stime",STIME));
+		nvps.add(new BasicNameValuePair("sig",signature(USER,UKEY,STIME)));
+		nvps.add(new BasicNameValuePair("apiname","Open_printMsg"));//固定值,不需要修改
+		nvps.add(new BasicNameValuePair("sn",sn));
+		nvps.add(new BasicNameValuePair("content",content));
+		nvps.add(new BasicNameValuePair("times","1"));//打印联数
+
+		CloseableHttpResponse response = null;
+		String result = null;
+		try
+		{
+			post.setEntity(new UrlEncodedFormEntity(nvps,"utf-8"));
+			response = httpClient.execute(post);
+			int statecode = response.getStatusLine().getStatusCode();
+			if(statecode == 200){
+				HttpEntity httpentity = response.getEntity();
+				if (httpentity != null){
+					//服务器返回
+					result = EntityUtils.toString(httpentity);
+				}
+			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		finally{
+			try {
+				if(response!=null){
+					response.close();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			try {
+				post.abort();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				httpClient.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return result;
+
+	}
+
 	private static String print(){
 		//标签说明：
 		//单标签:
@@ -87,17 +167,17 @@ public class PrintUtil {
 
 		String content;
 		content = "<CB>订单号：0000001</CB><BR>";
-        content += "--------------------------------<BR>";
+		content += "--------------------------------<BR>";
 		content += "会员名称：唐斌<BR>";
-        content += "会员电话：12345678901<BR>";
-        content += "--------------------------------<BR>";
-        content += "宝宝名称：唐斌唐斌  宝宝性别：男<BR>";
-        content += "宝宝年龄：6个月<BR>";
-        content += "--------------------------------<BR>";
-        content += "预约日期：2017年12月05日<BR>";
-        content += "预约时间段：15--17点<BR>";
-        content += "预约技师：张三<BR>";
-        content += "预约药水：小儿是正要药<BR>";
+		content += "会员电话：12345678901<BR>";
+		content += "--------------------------------<BR>";
+		content += "宝宝名称：唐斌唐斌  宝宝性别：男<BR>";
+		content += "宝宝年龄：6个月<BR>";
+		content += "--------------------------------<BR>";
+		content += "预约日期：2017年12月05日<BR>";
+		content += "预约时间段：15--17点<BR>";
+		content += "预约技师：张三<BR>";
+		content += "预约药水：小儿是正要药<BR>";
 		content += "备注：加辣<BR>";
 		content += "支付金额：30.0元<BR>";
 	/*	content = "<CB>测试打印</CB><BR>";
@@ -180,8 +260,6 @@ public class PrintUtil {
 		return result;
 
 	}
-
-
 	//方法2
 	private static String queryOrderState(String orderid){
 
