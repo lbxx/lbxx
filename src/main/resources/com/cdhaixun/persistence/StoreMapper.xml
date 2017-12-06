@@ -8,6 +8,7 @@
     <result column="cellphone" property="cellphone" jdbcType="VARCHAR" />
     <result column="openinghours" property="openinghours" jdbcType="TIME" />
     <result column="closinghours" property="closinghours" jdbcType="TIME" />
+    <result column="printersn" property="printersn" jdbcType="VARCHAR" />
     <result column="pic" property="pic" jdbcType="VARCHAR" />
     <result column="location" property="location" jdbcType="VARCHAR" />
     <result column="city" property="city" jdbcType="VARCHAR" />
@@ -24,7 +25,7 @@
     <result column="submchid" property="submchid" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, name, telephone, cellphone, openinghours, closinghours, pic, location, city, description, 
+    id, name, telephone, cellphone, openinghours, closinghours, printersn, pic, location, city, description, 
     chainstoreid, longitude, latitude, createtime, isdelete, appid, cusid, `key`, subappid, submchid
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -40,13 +41,13 @@
   <insert id="insert" parameterType="com.cdhaixun.domain.Store" >
     insert into store (id, name, telephone, 
       cellphone, openinghours, closinghours, 
-      pic, location, city, description, 
+      printersn, pic, location, city, description, 
       chainstoreid, longitude, latitude, 
       createtime, isdelete, appid, cusid, 
       `key`, subappid, submchid )
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}, 
       #{cellphone,jdbcType=VARCHAR}, #{openinghours,jdbcType=TIME}, #{closinghours,jdbcType=TIME}, 
-      #{pic,jdbcType=VARCHAR}, #{location,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{printersn,jdbcType=VARCHAR}, #{pic,jdbcType=VARCHAR}, #{location,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
       #{chainstoreid,jdbcType=INTEGER}, #{longitude,jdbcType=DECIMAL}, #{latitude,jdbcType=DECIMAL}, 
       #{createtime,jdbcType=TIMESTAMP}, #{isdelete,jdbcType=BIT}, #{appid,jdbcType=VARCHAR}, #{cusid,jdbcType=VARCHAR},
       , #{key,jdbcType=VARCHAR}, #{subappid,jdbcType=VARCHAR}, #{submchid,jdbcType=VARCHAR})
@@ -74,6 +75,9 @@
       </if>
       <if test="closinghours != null" >
         closinghours,
+      </if>
+      <if test="printersn != null" >
+        printersn,
       </if>
       <if test="pic != null" >
         pic,
@@ -137,6 +141,9 @@
       <if test="closinghours != null" >
         #{closinghours,jdbcType=TIME},
       </if>
+      <if test="printersn != null" >
+        #{printersn,jdbcType=VARCHAR},
+      </if>
       <if test="pic != null" >
         #{pic,jdbcType=VARCHAR},
       </if>
@@ -199,6 +206,9 @@
       <if test="closinghours != null" >
         closinghours = #{closinghours,jdbcType=TIME},
       </if>
+      <if test="printersn != null" >
+        printersn = #{printersn,jdbcType=VARCHAR},
+      </if>
       <if test="pic != null" >
         pic = #{pic,jdbcType=VARCHAR},
       </if>
@@ -252,6 +262,7 @@
        city = #{city,jdbcType=VARCHAR},
       openinghours = #{openinghours,jdbcType=TIME},
       closinghours = #{closinghours,jdbcType=TIME},
+      printersn = #{printersn,jdbcType=VARCHAR},
       pic = #{pic,jdbcType=VARCHAR},
       location = #{location,jdbcType=VARCHAR},
       city = #{city,jdbcType=VARCHAR},
@@ -298,6 +309,9 @@
     </if>
     <if test="closinghours != null" >
       and  closinghours = #{closinghours,jdbcType=TIME}
+    </if>
+    <if test="printersn != null" >
+      and  printersn = #{printersn,jdbcType=VARCHAR}
     </if>
     <if test="pic != null" >
       and  pic = #{pic,jdbcType=VARCHAR}
