@@ -4,6 +4,9 @@ package com.cdhaixun.common.httpMessageConverter;
 import com.cdhaixun.common.web.BaseController;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.DeserializationConfig;
@@ -30,11 +33,16 @@ import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class HttpMessageConverter extends AbstractHttpMessageConverter<Object> {
     @Value("#{configProperties['aes']}")
     private String aes;
+    @Value("#{configProperties['allowHost']}")
+    private String allowHost;
+
 
     public static Logger logger = LogManager.getLogger(HttpMessageConverter.class.getName());
 
@@ -66,7 +74,10 @@ public class HttpMessageConverter extends AbstractHttpMessageConverter<Object> {
             objectMapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             String temp = StreamUtils.copyToString(httpInputMessage.getBody(), Charset.forName("UTF-8"));
             logger.info("host................................." + httpInputMessage.getHeaders().get("host"));
-            if (httpInputMessage.getHeaders().get("host").get(0).equals("localhost")) {
+            String[] split = StringUtils.split(allowHost, ",");
+            List<String> allowHosts=new ArrayList<>();
+            CollectionUtils.addAll(allowHosts,split);
+            if (allowHosts.contains(httpInputMessage.getHeaders().get("host").get(0))) {
                 return objectMapper.readValue(temp, aClass);
             }
             Key key = new SecretKeySpec(Base64.decodeBase64(aes), "AES");
