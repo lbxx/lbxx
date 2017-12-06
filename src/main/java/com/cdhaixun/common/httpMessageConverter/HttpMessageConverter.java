@@ -65,7 +65,7 @@ public class HttpMessageConverter extends AbstractHttpMessageConverter<Object> {
             //或略不知道的属性
             objectMapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             String temp = StreamUtils.copyToString(httpInputMessage.getBody(), Charset.forName("UTF-8"));
-            logger.info("host" + httpInputMessage.getHeaders().get("host"));
+            logger.info("host................................." + httpInputMessage.getHeaders().get("host"));
             if (httpInputMessage.getHeaders().get("host").get(0).equals("localhost")) {
                 return objectMapper.readValue(temp, aClass);
             }
