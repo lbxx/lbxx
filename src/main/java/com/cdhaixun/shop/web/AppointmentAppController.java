@@ -136,7 +136,13 @@ public class AppointmentAppController {
         content += "预约药水："+potion.getName()+"<BR>";
         content += "备注："+appointment.getRemark()+"<BR>";
         content += "支付金额："+appointment1Db.getTotalprice()+"元<BR>";
-        //查看打印的printUtils  调用printOrder(String content,String sn)
+        //调用打印接口
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //查看打印的printUtils  调用printOrder(String content,String sn)
+            }
+        }).run();
         appointmentService.save(appointment1Db);
         List<com.cdhaixun.domain.Appointment> appointmentList1 = appointmentService.findByStartTimeAndTechnicianId(new Date(), appointment1Db.getEndtime(), appointment.getTechnicianid());
         appointment1Db.setAppointnumber(appointmentList1.size());
