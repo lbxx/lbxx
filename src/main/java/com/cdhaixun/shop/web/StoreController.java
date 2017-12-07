@@ -22,6 +22,7 @@ import com.cdhaixun.domain.ChainStore;
 import com.cdhaixun.domain.Store;
 import com.cdhaixun.shop.service.IStoreService;
 import com.cdhaixun.util.Pager;
+import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * @author DengQi
@@ -29,6 +30,7 @@ import com.cdhaixun.util.Pager;
  */
 @Controller
 @RequestMapping("/store")
+@ApiIgnore
 public class StoreController extends BaseController {
     
 //    Logger logger = LoggerFactory.getLogger(StoreController.class); 

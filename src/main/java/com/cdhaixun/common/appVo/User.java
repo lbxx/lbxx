@@ -1,8 +1,14 @@
 package com.cdhaixun.common.appVo;
 
-import java.util.Date;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
-public class User {
+import java.io.Serializable;
+import java.util.Date;
+@ApiModel(value="user对象",description="用户对象user")
+public class User implements Serializable{
+
+    @ApiModelProperty(value="用户id",name="id",required=true)
     private Integer id;
 
     private Integer storeid;

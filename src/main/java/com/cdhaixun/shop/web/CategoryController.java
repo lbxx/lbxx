@@ -20,6 +20,7 @@ import com.cdhaixun.shop.service.ICategoryService;
 import com.cdhaixun.shop.service.IUploadService;
 import com.cdhaixun.util.MapUtils;
 import com.cdhaixun.util.Pager;
+import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * @author DengQi
@@ -28,6 +29,7 @@ import com.cdhaixun.util.Pager;
  */
 @Controller
 @RequestMapping("/category")
+@ApiIgnore
 public class CategoryController extends BaseController{
     private static final String PATH = "category/";
     

@@ -33,6 +33,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("userApp")
+@Api(value="用户controller")
 public class UserAppController extends BaseController {
     @Autowired
     private IUserService userService;
@@ -45,8 +46,8 @@ public class UserAppController extends BaseController {
 
     @RequestMapping(value = "modifyAvatar", method = RequestMethod.POST)
     @ResponseBody
-    @ApiOperation(value = "上传头像", httpMethod = "POST", notes = "")
-    public Result modifyAvatar(User user,  @ApiParam(required = true, name = "file")  MultipartFile file, HttpServletRequest httpServletRequest) throws Exception {
+    @ApiOperation(value="获取用户信息",notes="注意表单提交,传递用户id")
+    public Result modifyAvatar(@ApiParam(required = true, name = "user",value = "用户信息") User user,  @ApiParam(required = true, name = "file",value = "头像文件") @RequestParam(name = "file")  MultipartFile file, HttpServletRequest httpServletRequest) throws Exception {
         Result result = new Result();
         com.cdhaixun.common.vo.Result upload = uploadService.upload(httpServletRequest, file);
         com.cdhaixun.domain.User userDb=new  com.cdhaixun.domain.User();
