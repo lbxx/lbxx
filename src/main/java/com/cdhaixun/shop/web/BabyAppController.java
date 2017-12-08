@@ -44,6 +44,7 @@ public class BabyAppController extends BaseController {
     public Result deleteBady(@RequestBody Baby baby , HttpServletRequest httpServletRequest) throws InvocationTargetException, IllegalAccessException {
         Result result = new Result();
         com.cdhaixun.domain.Baby babyDo=new com.cdhaixun.domain.Baby();
+        //将APP端传入的参数设置给babyDo
         babyDo.setId(baby.getBabyid());
         babyService.delete(babyDo);
         result.setResult(true);
