@@ -76,6 +76,7 @@
         <include refid="Base_Column_List"/>
         from baby
         <where>
+            isdelete = 0
             <if test="name != null">
                 and name = #{name,jdbcType=VARCHAR}
             </if>
