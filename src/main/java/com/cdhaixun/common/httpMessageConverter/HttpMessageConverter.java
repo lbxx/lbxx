@@ -68,18 +68,18 @@ public class HttpMessageConverter extends AbstractHttpMessageConverter<Object> {
     protected Object readInternal(Class<?> aClass, HttpInputMessage httpInputMessage) throws IOException, HttpMessageNotReadableException {
 
 
-        try {
+      /*  try {*/
             ObjectMapper objectMapper = new ObjectMapper();
             //或略不知道的属性
             objectMapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             String temp = StreamUtils.copyToString(httpInputMessage.getBody(), Charset.forName("UTF-8"));
             logger.info("host................................." + httpInputMessage.getHeaders().get("host"));
-            String[] split = StringUtils.split(allowHost, ",");
+           /* String[] split = StringUtils.split(allowHost, ",");
             List<String> allowHosts=new ArrayList<>();
             CollectionUtils.addAll(allowHosts,split);
-            if (allowHosts.contains(httpInputMessage.getHeaders().get("host").get(0))) {
+            if (allowHosts.contains(httpInputMessage.getHeaders().get("host").get(0))) {*/
                 return objectMapper.readValue(temp, aClass);
-            }
+         /*   }
             Key key = new SecretKeySpec(Base64.decodeBase64(aes), "AES");
             cipher.init(Cipher.DECRYPT_MODE, key);
             byte[] result = cipher.doFinal(Base64.decodeBase64(temp));
@@ -95,7 +95,7 @@ public class HttpMessageConverter extends AbstractHttpMessageConverter<Object> {
             e.printStackTrace();
         }
 
-        return null;
+        return null;*/
     }
 
     @Override
