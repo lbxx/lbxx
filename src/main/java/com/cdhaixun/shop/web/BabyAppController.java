@@ -33,6 +33,7 @@ public class BabyAppController extends BaseController {
         babyDo.setName(baby.getName());
         babyDo.setBirthday(baby.getBirthday());
         babyDo.setRemark(baby.getRemark());
+        babyDo.setId(baby.getBabyid());
         babyService.save(babyDo);
         result.setData(babyDo);
         result.setResult(true);
