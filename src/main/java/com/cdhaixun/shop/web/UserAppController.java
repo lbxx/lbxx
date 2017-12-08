@@ -1,18 +1,11 @@
 package com.cdhaixun.shop.web;
 
-import com.cdhaixun.common.appVo.Mobile;
-import com.cdhaixun.common.appVo.Result;
-import com.cdhaixun.common.appVo.User;
-import com.cdhaixun.common.emun.Code;
-import com.cdhaixun.common.redisVo.Captcha;
-import com.cdhaixun.common.web.BaseController;
-import com.cdhaixun.domain.Baby;
-import com.cdhaixun.shop.service.IBabyService;
-import com.cdhaixun.shop.service.IUploadService;
-import com.cdhaixun.shop.service.IUserService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.converters.BigDecimalConverter;
@@ -20,13 +13,29 @@ import org.apache.commons.beanutils.converters.DateConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
+import com.cdhaixun.common.appVo.Mobile;
+import com.cdhaixun.common.appVo.Result;
+import com.cdhaixun.common.appVo.User;
+import com.cdhaixun.common.emun.Code;
+import com.cdhaixun.common.redisVo.Captcha;
+import com.cdhaixun.common.web.BaseController;
+import com.cdhaixun.domain.Baby;
+import com.cdhaixun.domain.Car;
+import com.cdhaixun.shop.service.IBabyService;
+import com.cdhaixun.shop.service.ICarService;
+import com.cdhaixun.shop.service.IUploadService;
+import com.cdhaixun.shop.service.IUserService;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 
 /**
  * Created by Administrator on 2017-07-01.
@@ -43,6 +52,8 @@ public class UserAppController extends BaseController {
     private IUploadService uploadService;
     @Autowired
     private IBabyService babyService;
+    @Autowired
+    private ICarService carService;
 
     @RequestMapping(value = "modifyAvatar", method = RequestMethod.POST)
     @ResponseBody
@@ -92,7 +103,9 @@ public class UserAppController extends BaseController {
         Result result = new Result();
         com.cdhaixun.domain.User byMobile = userService.findById(user.getId());
         List<Baby> babyList = babyService.findByUserId(user.getId());
+        List<Car> carList = carService.findByUserId(user.getId());
         byMobile.setBabyList(babyList);
+        byMobile.setCarList(carList);
         result.setResult(true);
         result.setData(byMobile);
         return result;

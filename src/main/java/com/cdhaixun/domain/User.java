@@ -59,6 +59,16 @@ public class User implements Serializable{
     private String usercard;
     private String signature;
     private List<Baby> babyList;
+    private List<Car> carList;
+    
+    
+    public List<Car> getCarList() {
+        return carList;
+    }
+
+    public void setCarList(List<Car> carList) {
+        this.carList = carList;
+    }
 
     public List<Baby> getBabyList() {
         return babyList;
