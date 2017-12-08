@@ -3,6 +3,7 @@
 <mapper namespace="com.cdhaixun.persistence.CarMapper">
 	<resultMap id="BaseResultMap" type="com.cdhaixun.domain.Car">
 		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="type" property="type" jdbcType="VARCHAR" />
 		<result column="name" property="name" jdbcType="VARCHAR" />
 		<result column="platenumber" property="platenumber" jdbcType="VARCHAR" />
 		<result column="mileage" property="mileage" jdbcType="INTEGER" />
@@ -12,7 +13,7 @@
 		<result column="userid" property="userid" jdbcType="INTEGER" />
 	</resultMap>
 	<sql id="Base_Column_List">
-		id, name, platenumber, mileage, remark, createtime, isdelete, userid
+		id, type, name, platenumber, mileage, remark, createtime, isdelete, userid
 	</sql>
 	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
 		parameterType="java.lang.Integer">
@@ -27,10 +28,10 @@
 		where id = #{id,jdbcType=INTEGER}
 	</delete>
 	<insert id="insert" parameterType="com.cdhaixun.domain.Car">
-		insert into car (id, name, platenumber,
+		insert into car (id, type, name, platenumber,
 		mileage, remark, createtime,
 		isdelete, userid)
-		values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR},
+		values (#{id,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
 		#{platenumber,jdbcType=VARCHAR},
 		#{mileage,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP},
 		#{isdelete,jdbcType=BIT}, #{userid,jdbcType=INTEGER})
@@ -40,6 +41,9 @@
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="id != null">
 				id,
+			</if>
+			<if test="type != null">
+				type,
 			</if>
 			<if test="name != null">
 				name,
@@ -67,6 +71,9 @@
 			<if test="id != null">
 				#{id,jdbcType=INTEGER},
 			</if>
+			<if test="type != null">
+				#{type,jdbcType=VARCHAR},
+			</if>
 			<if test="name != null">
 				#{name,jdbcType=VARCHAR},
 			</if>
@@ -93,6 +100,9 @@
 	<update id="updateByPrimaryKeySelective" parameterType="com.cdhaixun.domain.Car">
 		update car
 		<set>
+			<if test="type != null">
+				name = #{type,jdbcType=VARCHAR},
+			</if>
 			<if test="name != null">
 				name = #{name,jdbcType=VARCHAR},
 			</if>
@@ -119,7 +129,8 @@
 	</update>
 	<update id="updateByPrimaryKey" parameterType="com.cdhaixun.domain.Car">
 		update car
-		set name = #{name,jdbcType=VARCHAR},
+		set type = #{type,jdbcType=VARCHAR}, 
+		name = #{name,jdbcType=VARCHAR},
 		platenumber = #{platenumber,jdbcType=VARCHAR},
 		mileage = #{mileage,jdbcType=INTEGER},
 		remark = #{remark,jdbcType=VARCHAR},
@@ -135,26 +146,29 @@
 		from car
 		<where>
 			isdelete = 0
+			<if test="type != null">
+				and type = #{type,jdbcType=VARCHAR}
+			</if>
 			<if test="name != null">
-				name = #{name,jdbcType=VARCHAR},
+				and name = #{name,jdbcType=VARCHAR}
 			</if>
 			<if test="platenumber != null">
-				platenumber = #{platenumber,jdbcType=VARCHAR},
+				and platenumber = #{platenumber,jdbcType=VARCHAR}
 			</if>
 			<if test="mileage != null">
-				mileage = #{mileage,jdbcType=INTEGER},
+				and mileage = #{mileage,jdbcType=INTEGER}
 			</if>
 			<if test="remark != null">
-				remark = #{remark,jdbcType=VARCHAR},
+				and remark = #{remark,jdbcType=VARCHAR}
 			</if>
 			<if test="createtime != null">
-				createtime = #{createtime,jdbcType=TIMESTAMP},
+				and createtime = #{createtime,jdbcType=TIMESTAMP}
 			</if>
 			<if test="isdelete != null">
-				isdelete = #{isdelete,jdbcType=BIT},
+				and isdelete = #{isdelete,jdbcType=BIT}
 			</if>
 			<if test="userid != null">
-				userid = #{userid,jdbcType=INTEGER},
+				and userid = #{userid,jdbcType=INTEGER}
 			</if>
 		</where>
 	</select>

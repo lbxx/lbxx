@@ -4,6 +4,8 @@ import java.util.Date;
 
 public class Car {
     private Integer id;
+    
+    private String type;
 
     private String name;
 
@@ -25,6 +27,14 @@ public class Car {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getName() {
