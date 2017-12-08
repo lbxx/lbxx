@@ -79,6 +79,7 @@ public class StoreAppController extends BaseController {
         return result;
     }
 
+    @SuppressWarnings("unused")
     @RequestMapping(value = "listByCity", method = RequestMethod.POST)
     @ResponseBody
     public Result listByCity(@RequestBody City city, HttpServletRequest httpServletRequest, @RequestHeader Integer pageNum,@RequestHeader Integer pageSize ) {
