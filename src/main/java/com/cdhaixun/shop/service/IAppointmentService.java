@@ -17,6 +17,7 @@ public interface IAppointmentService {
     List<Appointment> findByStartTimeAndTechnicianId(Date starttime, Date endtime, Integer technicianid);
 
     List<Appointment> findByUserId(Integer userid);
+    List<Appointment> findByUserId(Integer userid,String state);
 
     /**
      * 预约列表

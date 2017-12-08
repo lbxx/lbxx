@@ -53,4 +53,14 @@ public class AppointmentServiceImpl implements IAppointmentService {
     public Appointment findById(Integer id) {
         return appointmentMapper.selectByPrimaryKey(id);
     }
+
+    @Override
+    public List<Appointment> findByUserId(Integer userid, String state) {
+        Appointment appointment=new Appointment();
+        appointment.setUserid(userid);
+        if (state != null && !"0".equals(state)) {
+            appointment.setState(state);
+        }
+        return appointmentMapper.selectByAppointment(appointment);
+    }
 }
