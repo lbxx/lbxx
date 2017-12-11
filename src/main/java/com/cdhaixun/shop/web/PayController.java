@@ -1,15 +1,15 @@
 package com.cdhaixun.shop.web;
 
+import com.cdhaixun.common.web.BaseController;
 import com.cdhaixun.common.yyyVo.Pay;
 import com.cdhaixun.common.yyyVo.PayResult;
-import com.cdhaixun.common.appVo.Result;
-import com.cdhaixun.common.web.BaseController;
 import com.cdhaixun.domain.Appointment;
 import com.cdhaixun.domain.PayInfo;
 import com.cdhaixun.domain.Store;
 import com.cdhaixun.shop.service.IAppointmentService;
 import com.cdhaixun.shop.service.IPayInfoService;
 import com.cdhaixun.shop.service.IStoreService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
@@ -20,8 +20,6 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;

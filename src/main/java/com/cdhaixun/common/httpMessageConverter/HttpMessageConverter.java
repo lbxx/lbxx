@@ -1,17 +1,12 @@
 package com.cdhaixun.common.httpMessageConverter;
 
 
-import com.cdhaixun.common.web.BaseController;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.DeserializationConfig;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpInputMessage;
@@ -22,19 +17,12 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.util.StreamUtils;
 
-import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import javax.crypto.spec.SecretKeySpec;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.security.InvalidKeyException;
-import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class HttpMessageConverter extends AbstractHttpMessageConverter<Object> {
@@ -69,16 +57,17 @@ public class HttpMessageConverter extends AbstractHttpMessageConverter<Object> {
 
 
       /*  try {*/
-            ObjectMapper objectMapper = new ObjectMapper();
-            //或略不知道的属性
-            objectMapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            String temp = StreamUtils.copyToString(httpInputMessage.getBody(), Charset.forName("UTF-8"));
-            logger.info("host................................." + httpInputMessage.getHeaders().get("host"));
+        ObjectMapper objectMapper = new ObjectMapper();
+        //或略不知道的属性
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        String temp = StreamUtils.copyToString(httpInputMessage.getBody(), Charset.forName("UTF-8"));
+        logger.info("host................................." + httpInputMessage.getHeaders().get("host"));
+           objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
            /* String[] split = StringUtils.split(allowHost, ",");
             List<String> allowHosts=new ArrayList<>();
             CollectionUtils.addAll(allowHosts,split);
             if (allowHosts.contains(httpInputMessage.getHeaders().get("host").get(0))) {*/
-                return objectMapper.readValue(temp, aClass);
+        return objectMapper.readValue(temp, aClass);
          /*   }
             Key key = new SecretKeySpec(Base64.decodeBase64(aes), "AES");
             cipher.init(Cipher.DECRYPT_MODE, key);
@@ -107,7 +96,7 @@ public class HttpMessageConverter extends AbstractHttpMessageConverter<Object> {
     protected void writeInternal(Object o, HttpOutputMessage httpOutputMessage) throws IOException, HttpMessageNotWritableException {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
-        objectMapper.setSerializationInclusion(JsonSerialize.Inclusion.NON_NULL);
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         String s = objectMapper.writeValueAsString(o);
         httpOutputMessage.getBody().write(s.getBytes("UTF-8"));
       /*  try {

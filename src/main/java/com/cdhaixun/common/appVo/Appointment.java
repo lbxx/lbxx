@@ -1,17 +1,21 @@
 package com.cdhaixun.common.appVo;
 
+import com.cdhaixun.deserializer.DateJsonDeserializer;
 import com.cdhaixun.domain.Baby;
 import com.cdhaixun.domain.Business;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-public class Appointment {
+public class Appointment implements Serializable{
+
     private Integer id;
-    @JsonFormat(pattern="yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonDeserialize(using = DateJsonDeserializer.class)
     private Date createtime;
 
     private Integer userid;
@@ -24,15 +28,15 @@ public class Appointment {
     private Boolean isdelete;
     private Integer badyCount;//宝宝数量
     private Integer technicianid;//技师
-    private  String starttime; //预约时间段
+    private String starttime; //预约时间段
 
-    private  String endtime;
+    private String endtime;
 
     List<Baby> babyList;//宝宝
     List<Business> businessList;//所选业务
     private Integer potionamount;
     private BigDecimal potionprice;
-    private Integer  paystate;
+    private Integer paystate;
     private Integer potionid;
     private BigDecimal totalprice;
     private Date paytime;
@@ -125,7 +129,6 @@ public class Appointment {
     public List<Baby> getBabyList() {
         return babyList;
     }
-
 
 
     public Integer getTechnicianid() {

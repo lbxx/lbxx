@@ -2,6 +2,7 @@ package com.cdhaixun.shop.service.impl;
 
 import com.cdhaixun.common.vo.Result;
 import com.cdhaixun.shop.service.IUploadService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -25,7 +26,7 @@ import java.util.UUID;
 @Service
 public class UploadServiceImpl implements IUploadService {
     @Autowired
-    private org.codehaus.jackson.map.ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
     @Value("#{configProperties['uploadDomainName']}")
     private String uploadDomainName;
     private static HttpClient hc = HttpClients.createDefault();
