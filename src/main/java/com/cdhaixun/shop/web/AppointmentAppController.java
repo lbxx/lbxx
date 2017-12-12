@@ -218,6 +218,8 @@ public class AppointmentAppController {
             appointmentDetail.setBaby(babyService.findById(appointmentDetail.getBabyid()));
         }
         appointment1Db.setAppointmentDetail(appointmentDetailList.get(0));
+        appointment1Db.setStore(storeService.findById(appointment1Db.getStoreid()));
+        appointment1Db.setTechnician(technicianService.findById(appointment1Db.getTechnicianid()));
         result.setData(appointment1Db);
         result.setResult(true);
         return result;
