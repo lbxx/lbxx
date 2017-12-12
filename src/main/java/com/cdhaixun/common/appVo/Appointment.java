@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+
 public class Appointment implements Serializable{
 
     private Integer id;
