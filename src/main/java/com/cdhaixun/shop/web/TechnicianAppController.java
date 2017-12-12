@@ -44,7 +44,7 @@ public class TechnicianAppController {
     @ResponseBody
     public Result listByBusinessIdList(@RequestBody Business business, HttpServletRequest request){
         Result result = new Result();
-        List<TechnicianBusiness> technicianBusinessList=technicianBusinessService.findByBusinessIdList(business.getBusinessidList());
+        List<TechnicianBusiness> technicianBusinessList=technicianBusinessService.findByBusinessIdList(business.getBusinessidList(),business.getStoreId());
         if(CollectionUtils.isNotEmpty(technicianBusinessList))
         {
           List<Technician> technicianList=new ArrayList<Technician>();

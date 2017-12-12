@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface ITechnicianBusinessService {
 
-    List<TechnicianBusiness> findByBusinessIdList(List<Integer> businessidList);
+    List<TechnicianBusiness> findByBusinessIdList(List<Integer> businessidList, Integer storeId);
 
     TechnicianBusiness findByBusinessIdAndTechnicianId(Integer id, Integer technicianid);
    List<TechnicianBusiness> findByTechnicianId(Integer technicianid);

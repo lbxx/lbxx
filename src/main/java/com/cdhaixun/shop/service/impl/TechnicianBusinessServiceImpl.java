@@ -6,7 +6,9 @@ import com.cdhaixun.shop.service.ITechnicianBusinessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by tangxinmao on 2017/7/2.
@@ -16,11 +18,14 @@ public class TechnicianBusinessServiceImpl implements ITechnicianBusinessService
     @Autowired
     private TechnicianBusinessMapper technicianBusinessMapper;
     @Override
-    public List<TechnicianBusiness> findByBusinessIdList(List<Integer> businessidList) {
-        TechnicianBusiness technicianBusiness=new TechnicianBusiness();
-        technicianBusiness.setBusinessidList(businessidList);
-        technicianBusiness.setIsdelete(false);
-        return technicianBusinessMapper.selectByTechnicianBusiness(technicianBusiness);
+    public List<TechnicianBusiness> findByBusinessIdList(List<Integer> businessidList,Integer storeId) {
+        Map<String,Object> params = new HashMap<>();
+//        TechnicianBusiness technicianBusiness=new TechnicianBusiness();
+//        technicianBusiness.setBusinessidList(businessidList);
+//        technicianBusiness.setIsdelete(false);
+        params.put("businessidList", businessidList);
+        params.put("storeId", storeId);
+        return technicianBusinessMapper.selectByTechnicianBusinessAndStoreId(params);
     }
 
     @Override
