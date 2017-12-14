@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 @RestControllerAdvice
 public class ControllerAdvice {
     private static Log logger = LogFactory.getLog(ControllerAdvice.class);
@@ -17,8 +20,9 @@ public class ControllerAdvice {
         Result result = new Result();
         result.setResult(false);
         logger.error("服务器发生异常！............................",e);
-        StackTraceElement stackTraceElement= e.getStackTrace()[0];
-        result.setMsg(e.toString()+"---"+stackTraceElement.getClassName()+"--"+stackTraceElement.getMethodName()+"--"+stackTraceElement.getLineNumber());
+        StringWriter stringWriter=new StringWriter();
+        e.printStackTrace(new PrintWriter(stringWriter));
+        result.setMsg(stringWriter.toString());
         result.setData("服务器发生异常！............");
         return result;
     }
