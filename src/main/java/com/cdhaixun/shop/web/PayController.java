@@ -183,7 +183,6 @@ public class PayController extends BaseController {
     }
 */
     @RequestMapping(value = "callback")
-    @ResponseBody
     @ApiOperation(value = "支付服务器回调地址")
     public void callback(
             @RequestParam String merchantId,
