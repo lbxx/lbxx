@@ -14,21 +14,21 @@ public class Appointment {
     private Integer storeid;
 
     private String state;
-    private  Date starttime; //预约开始时间
+    private Date starttime; //预约开始时间
     private Date starttimeFrom;
     private Date starttimeTo;
-    private  Date endtime;//结束时间
-    private  Date createtimeFrom ;
-    private  Date createtimeTo ;
-    private  Integer appointnumber;//预约人数
+    private Date endtime;//结束时间
+    private Date createtimeFrom;
+    private Date createtimeTo;
+    private Integer appointnumber;//预约人数
     private List<Business> businessList;
     private List<Baby> babyList;
     private Technician technician;
-    private  Store store;
+    private Store store;
     private String orderBy;
     private Integer potionamount;
     private BigDecimal potionprice;
-    private Integer  paystate;
+    private Integer paystate;
     private Integer potionid;
     private BigDecimal totalprice;
     private Date paytime;
@@ -189,7 +189,7 @@ public class Appointment {
 
     private Boolean isdelete;
     private String remark;
-    private  Integer technicianid;
+    private Integer technicianid;
 
     public Integer getTechnicianid() {
         return technicianid;
