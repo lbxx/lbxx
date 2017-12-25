@@ -1,5 +1,7 @@
 package com.cdhaixun.shop.web;
 
+import com.allinpay.ets.client.SecurityUtil;
+import com.allinpay.ets.client.util.Base64;
 import com.cdhaixun.common.emun.AppointmentState;
 import com.cdhaixun.common.web.BaseController;
 import com.cdhaixun.common.yyyVo.Pay;
@@ -182,7 +184,7 @@ public class PayController extends BaseController {
         return  payResult;
     }
 */
-    @RequestMapping(value = "callback")
+    @RequestMapping(value = "callback", method = RequestMethod.POST)
     @ApiOperation(value = "支付服务器回调地址")
     public void callback(
             @RequestParam String merchantId,
@@ -204,44 +206,50 @@ public class PayController extends BaseController {
             @RequestParam String returnDatetime,
             @RequestParam String signMsg
     ) {
-        if(signType.equals("0")){
-            List<NameValuePair> params = new ArrayList<NameValuePair>();
-            params.add(new BasicNameValuePair("merchantId", merchantId));
-            params.add(new BasicNameValuePair("version", version));
-            params.add(new BasicNameValuePair("language", language));
-            params.add(new BasicNameValuePair("signType", signType));
-            params.add(new BasicNameValuePair("payType", payType));
-            params.add(new BasicNameValuePair("issuerId", issuerId));
-            params.add(new BasicNameValuePair("paymentOrderId", paymentOrderId));
-            params.add(new BasicNameValuePair("orderNo", orderNo));
-            params.add(new BasicNameValuePair("orderDatetime", orderDatetime));
-            params.add(new BasicNameValuePair("orderAmount", orderAmount));
-            params.add(new BasicNameValuePair("payDatetime", payDatetime));
-            params.add(new BasicNameValuePair("payAmount", payAmount));
-            params.add(new BasicNameValuePair("ext1", ext1));
-            params.add(new BasicNameValuePair("ext2", ext2));
-            params.add(new BasicNameValuePair("payResult", payResult));
-            params.add(new BasicNameValuePair("errorCode", errorCode));
-            params.add(new BasicNameValuePair("returnDatetime", returnDatetime));
-            String url = URLEncodedUtils.format(params, "utf-8");
-            String sign = DigestUtils.md5Hex(url).toUpperCase();
-            if(sign.equals(signMsg)){
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("merchantId", merchantId));
+        params.add(new BasicNameValuePair("version", version));
+        params.add(new BasicNameValuePair("language", language));
+        params.add(new BasicNameValuePair("signType", signType));
+        params.add(new BasicNameValuePair("payType", payType));
+        params.add(new BasicNameValuePair("issuerId", issuerId));
+        params.add(new BasicNameValuePair("paymentOrderId", paymentOrderId));
+        params.add(new BasicNameValuePair("orderNo", orderNo));
+        params.add(new BasicNameValuePair("orderDatetime", orderDatetime));
+        params.add(new BasicNameValuePair("orderAmount", orderAmount));
+        params.add(new BasicNameValuePair("payDatetime", payDatetime));
+        params.add(new BasicNameValuePair("payAmount", payAmount));
+        params.add(new BasicNameValuePair("ext1", ext1));
+        params.add(new BasicNameValuePair("ext2", ext2));
+        params.add(new BasicNameValuePair("payResult", payResult));
+        params.add(new BasicNameValuePair("errorCode", errorCode));
+        params.add(new BasicNameValuePair("returnDatetime", returnDatetime));
+        StringBuffer signString = new StringBuffer();
+        for (NameValuePair param : params) {
+            if (param.getValue() != null)
+                signString.append("|" + param.getValue());
+        }
+        if (signType.equals("0")) {
+            String fileString = signString.substring(1) + "|" + DigestUtils.md5Hex(merchantId);
+            String fileMsg = SecurityUtil.MD5Encode(fileString);
+            if (signMsg.equals(fileMsg)) {
                 //修改订单状体
                 Appointment appointment = appointmentService.findById(Integer.parseInt(orderNo));
                 appointment.setState(AppointmentState.PAY.toString());
                 appointmentService.save(appointment);
             }
         }
-        if(signType.equals("1")){
-          /*  String fileMd5String = SecurityUtil.MD5Encode(signString);
-             boolean isVerified =
-                    SecurityUtil.verifyByRSA(certPath,fileMd5String.getByte(),Base64.
-                            decode(signMsg));*/
+        if (signType.equals("1")) {
+            String fileMd5String = SecurityUtil.MD5Encode(signString.substring(1));
+            boolean isVerified = SecurityUtil.verifyByRSA("", fileMd5String.getBytes(), Base64.
+                    decode(signMsg));
 
             //修改订单状体
-            Appointment appointment = appointmentService.findById(Integer.parseInt(orderNo));
-            appointment.setState(AppointmentState.PAY.toString());
-            appointmentService.save(appointment);
+            if (isVerified) {
+                Appointment appointment = appointmentService.findById(Integer.parseInt(orderNo));
+                appointment.setState(AppointmentState.PAY.toString());
+                appointmentService.save(appointment);
+            }
         }
     }
 

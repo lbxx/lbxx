@@ -226,6 +226,11 @@
             <artifactId>crssj</artifactId>
             <version>1.0</version>
         </dependency>
+        <!--sign签名校验-->
+        <dependency>
+            <groupId>com.allinpay</groupId>
+            <artifactId>allinpay-security</artifactId>
+        </dependency>
         <!--redis-->
         <dependency>
             <groupId>org.springframework.data</groupId>
