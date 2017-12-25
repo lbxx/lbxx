@@ -273,6 +273,12 @@
             <artifactId>jsp-api</artifactId>
             <version>2.2.1-b03</version>
         </dependency>
+        <!--通联验签jar包-->
+        <dependency>
+            <groupId>com.allinpay</groupId>
+            <artifactId>allinpay-security</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>shop</finalName>
