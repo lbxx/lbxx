@@ -282,6 +282,7 @@
         <dependency>
             <groupId>com.allinpay</groupId>
             <artifactId>allinpay-security</artifactId>
+            <version>1.0.0</version>
         </dependency>
     </dependencies>
     <build>
