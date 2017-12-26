@@ -15,7 +15,7 @@ import java.util.List;
 public class Appointment implements Serializable{
 
     private Integer id;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+
     @JsonDeserialize(using = DateJsonDeserializer.class)
     private Date createtime;
 

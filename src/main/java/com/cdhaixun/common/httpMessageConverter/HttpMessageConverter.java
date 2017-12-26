@@ -62,7 +62,7 @@ public class HttpMessageConverter extends AbstractHttpMessageConverter<Object> {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         String temp = StreamUtils.copyToString(httpInputMessage.getBody(), Charset.forName("UTF-8"));
         logger.info("host................................." + httpInputMessage.getHeaders().get("host"));
-           objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+           //objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
            /* String[] split = StringUtils.split(allowHost, ",");
             List<String> allowHosts=new ArrayList<>();
             CollectionUtils.addAll(allowHosts,split);

@@ -11,14 +11,18 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 public class DateJsonDeserializer extends JsonDeserializer<Date>
 {
-    public static final SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private static final SimpleDateFormat simpleDateFormatDateTime=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private static final SimpleDateFormat simpleDateFormatDate=new SimpleDateFormat("yyyy-MM-dd");
     @Override
     public Date deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
-        System.out.printf("");
         try {
-            return simpleDateFormat.parse(jsonParser.getText());
+            return simpleDateFormatDateTime.parse(jsonParser.getText());
         } catch (ParseException e) {
-            e.printStackTrace();
+            try {
+                return simpleDateFormatDate.parse(jsonParser.getText());
+            } catch (ParseException e1) {
+                e1.printStackTrace();
+            }
         }
         return null;
     }
