@@ -4,6 +4,7 @@ import com.allinpay.ets.client.SecurityUtil;
 import com.allinpay.ets.client.util.Base64;
 import com.cdhaixun.common.emun.AppointmentState;
 import com.cdhaixun.common.web.BaseController;
+import com.cdhaixun.common.wechatPay.*;
 import com.cdhaixun.common.yyyVo.Pay;
 import com.cdhaixun.common.yyyVo.PayResult;
 import com.cdhaixun.domain.Appointment;
@@ -21,19 +22,24 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.bind.Marshaller;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by tangxinmao on 2017/6/23.
@@ -51,6 +57,12 @@ public class PayController extends BaseController {
 
     @Value("#{configProperties['notifyUrl']}")
     private String notifyUrl;
+    @Value("#{configProperties['unifiedorder']}")
+    private String unifiedorder;
+    @Value("#{configProperties['orderquery']}")
+    private String orderquery;
+
+
     @Autowired
     private IStoreService storeService;
     @Autowired
@@ -92,7 +104,7 @@ public class PayController extends BaseController {
     }
 
     /**
-     * 生成订单
+     * 通联生成订单
      *
      * @param pay
      * @return
@@ -184,6 +196,29 @@ public class PayController extends BaseController {
         return  payResult;
     }
 */
+
+    /**
+     * 通联回调支付回调地址
+     *
+     * @param merchantId
+     * @param version
+     * @param language
+     * @param signType
+     * @param payType
+     * @param issuerId
+     * @param paymentOrderId
+     * @param orderNo
+     * @param orderDatetime
+     * @param orderAmount
+     * @param payDatetime
+     * @param payAmount
+     * @param ext1
+     * @param ext2
+     * @param payResult
+     * @param errorCode
+     * @param returnDatetime
+     * @param signMsg
+     */
     @RequestMapping(value = "callback", method = RequestMethod.POST)
     @ApiOperation(value = "支付服务器回调地址")
     public void callback(
@@ -253,5 +288,90 @@ public class PayController extends BaseController {
         }
     }
 
+    /**
+     * 微信支付同一下单
+     *
+     * @param unifiedOrder
+     * @return
+     */
+    @RequestMapping(value = "payunifiedorder", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    @ApiOperation(value = "微信支付同一下单")
+    public UnifiedOrderResult payunifiedorder(@RequestBody UnifiedOrder unifiedOrder) throws IOException {
+        Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
+        Map map = new Hashtable();
+        map.put(Marshaller.JAXB_ENCODING, "UTF-8");// 编码格式
+        map.put(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+        map.put(Marshaller.JAXB_FRAGMENT, true);
+        marshaller.setMarshallerProperties(map);
+        marshaller.setClassesToBeBound(UnifiedOrder.class);
+        StringWriter stringWriter = new StringWriter();
+        StreamResult streamResult = new StreamResult(stringWriter);
+        marshaller.marshal(unifiedOrder, streamResult);
+        HttpPost httppost = new HttpPost(unifiedorder);
+        httppost.setEntity(new StringEntity(stringWriter.toString()));
+        HttpResponse httpResponse = hc.execute(httppost);
+        int statusCode = httpResponse.getStatusLine().getStatusCode();
+        if (statusCode == org.apache.http.HttpStatus.SC_OK) {
+            HttpEntity httpEntity = httpResponse.getEntity();
+            String s = IOUtils.toString(httpEntity.getContent(), "utf-8");
+            Jaxb2Marshaller marshaller1 = new Jaxb2Marshaller();
+            marshaller1.setClassesToBeBound(UnifiedOrderResult.class);
+            UnifiedOrderResult unifiedOrderResult = (UnifiedOrderResult) marshaller1.unmarshal(new StreamSource(new StringReader(s)));
+            return unifiedOrderResult;
+        }
+        return null;
+    }
+
+    /**
+     * 微信支付结果通知
+     *
+     * @param payAction
+     */
+    @RequestMapping(value = "notify_url", method = RequestMethod.POST, consumes = "application/xml", produces = "application/xml")
+    @ApiOperation(value = "微信支付结果通知")
+    @ResponseBody
+    public PayReturn callback(@RequestBody PayAction payAction) {
+        PayReturn payReturn = new PayReturn();
+        //业务逻辑
+        payReturn.setReturn_code("sdfasdf");
+        return payReturn ;
+
+    }
+
+    /**
+     * 微信订单查询
+     * @param orderQuery
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value = "payorderquery", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    @ApiOperation(value = "微信订单查询")
+    public QueryReturn payorderquery(@RequestBody OrderQuery orderQuery) throws IOException {
+        Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
+        Map map = new Hashtable();
+        map.put(Marshaller.JAXB_ENCODING, "UTF-8");// 编码格式
+        map.put(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+        map.put(Marshaller.JAXB_FRAGMENT, true);
+        marshaller.setMarshallerProperties(map);
+        marshaller.setClassesToBeBound(OrderQuery.class);
+        StringWriter stringWriter = new StringWriter();
+        StreamResult streamResult = new StreamResult(stringWriter);
+        marshaller.marshal(orderQuery, streamResult);
+        HttpPost httppost = new HttpPost(orderquery);
+        httppost.setEntity(new StringEntity(stringWriter.toString()));
+        HttpResponse httpResponse = hc.execute(httppost);
+        int statusCode = httpResponse.getStatusLine().getStatusCode();
+        if (statusCode == org.apache.http.HttpStatus.SC_OK) {
+            HttpEntity httpEntity = httpResponse.getEntity();
+            String s = IOUtils.toString(httpEntity.getContent(), "utf-8");
+            Jaxb2Marshaller marshaller1 = new Jaxb2Marshaller();
+            marshaller1.setClassesToBeBound(QueryReturn.class);
+            QueryReturn queryReturn = (QueryReturn) marshaller1.unmarshal(new StreamSource(new StringReader(s)));
+            return queryReturn;
+        }
+        return null;
+    }
 
 }

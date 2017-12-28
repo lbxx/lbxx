@@ -14,10 +14,17 @@
     <context:component-scan base-package="com.cdhaixun" />
     <mvc:annotation-driven conversion-service="converter" >
     <mvc:message-converters  register-defaults="true">
-        <bean id="httpMessageConverter" class="com.cdhaixun.common.httpMessageConverter.HttpMessageConverter">
+        <bean  class="com.cdhaixun.common.httpMessageConverter.HttpMessageConverter">
           <property name="supportedMediaTypes">
                 <list>
                     <value>application/json;charset=UTF-8</value>
+                </list>
+            </property>
+        </bean>
+        <bean  class="com.cdhaixun.common.httpMessageConverter.XMLMessageConverter">
+            <property name="supportedMediaTypes">
+                <list>
+                    <value>application/xml;charset=UTF-8</value>
                 </list>
             </property>
         </bean>
