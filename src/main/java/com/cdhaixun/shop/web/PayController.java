@@ -14,8 +14,13 @@ import com.cdhaixun.shop.service.IPayInfoService;
 import com.cdhaixun.shop.service.IStoreService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.CharSet;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -31,6 +36,8 @@ import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.Marshaller;
 import javax.xml.transform.stream.StreamResult;
@@ -38,7 +45,10 @@ import javax.xml.transform.stream.StreamSource;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.Charset;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 /**
@@ -297,7 +307,33 @@ public class PayController extends BaseController {
     @RequestMapping(value = "payunifiedorder", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     @ApiOperation(value = "微信支付同一下单")
-    public UnifiedOrderResult payunifiedorder(@RequestBody UnifiedOrder unifiedOrder) throws IOException {
+    public UnifiedOrderResult payunifiedorder(@RequestBody UnifiedOrder unifiedOrder) throws IOException, IllegalAccessException, NoSuchMethodException, InvocationTargetException, NoSuchAlgorithmException, InvalidKeyException {
+        unifiedOrder.setSign_type("HMAC-SHA256");
+        //生成签名
+        Map describe = BeanUtils.describe(unifiedOrder);
+        describe.remove("class");
+        Iterator iterator = describe.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry next = (Map.Entry) iterator.next();
+            if (next.getValue() == null) {
+                iterator.remove();
+            }
+        }
+        TreeMap<Object, Object> treeMap = new TreeMap(describe);
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Map.Entry o : treeMap.entrySet()) {
+            stringBuilder.append("&" + o.getKey() + "=" + o.getValue());
+        }
+        String substring = stringBuilder.substring(1);
+        String key = "192006250b4c09247ec02edce69f6a2d";
+        String stringSignTemp = substring + "&key=" + key;//注：key为商户平台设置的密钥key
+        Mac sha256_HMAC = Mac.getInstance("HmacSHA256");
+        SecretKeySpec secret_key = new SecretKeySpec(key.getBytes(), "HmacSHA256");
+        sha256_HMAC.init(secret_key);
+        byte[] bytes = sha256_HMAC.doFinal(stringSignTemp.getBytes());
+        String sign = Hex.encodeHexString(bytes).toUpperCase();
+        unifiedOrder.setSign(sign);
+
         Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
         Map map = new Hashtable();
         map.put(Marshaller.JAXB_ENCODING, "UTF-8");// 编码格式
@@ -318,7 +354,32 @@ public class PayController extends BaseController {
             Jaxb2Marshaller marshaller1 = new Jaxb2Marshaller();
             marshaller1.setClassesToBeBound(UnifiedOrderResult.class);
             UnifiedOrderResult unifiedOrderResult = (UnifiedOrderResult) marshaller1.unmarshal(new StreamSource(new StringReader(s)));
-            return unifiedOrderResult;
+            if(unifiedOrderResult.getReturn_code().equals("SUCCESS")) {
+                //校验签名
+                String signReturn = unifiedOrderResult.getSign();
+                unifiedOrderResult.setSign(null);
+                Map describe1 = BeanUtils.describe(unifiedOrderResult);
+                describe1.remove("class");
+                Iterator iteratorRetrun = describe1.entrySet().iterator();
+                while (iteratorRetrun.hasNext()) {
+                    Map.Entry next = (Map.Entry) iteratorRetrun.next();
+                    if (next.getValue() == null) {
+                        iteratorRetrun.remove();
+                    }
+                }
+                TreeMap<Object, Object> treeMapReturn = new TreeMap(describe1);
+                StringBuilder stringBuilderReturn = new StringBuilder();
+                for (Map.Entry o : treeMap.entrySet()) {
+                    stringBuilderReturn.append("&" + o.getKey() + "=" + o.getValue());
+                }
+                String substringReturn = stringBuilderReturn.substring(1);
+                String stringSignTempReturn = substringReturn + "&key=" + key;
+                String s1 = DigestUtils.md5Hex(stringSignTempReturn).toUpperCase();
+                if (s1.equals(signReturn))
+                    return unifiedOrderResult;
+            }else{
+                return unifiedOrderResult;
+            }
         }
         return null;
     }
@@ -335,12 +396,13 @@ public class PayController extends BaseController {
         PayReturn payReturn = new PayReturn();
         //业务逻辑
         payReturn.setReturn_code("sdfasdf");
-        return payReturn ;
+        return payReturn;
 
     }
 
     /**
      * 微信订单查询
+     *
      * @param orderQuery
      * @return
      * @throws IOException
