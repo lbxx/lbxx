@@ -17,10 +17,8 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.MapUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.CharSet;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -309,6 +307,8 @@ public class PayController extends BaseController {
     @ApiOperation(value = "微信支付同一下单")
     public UnifiedOrderResult payunifiedorder(@RequestBody UnifiedOrder unifiedOrder) throws IOException, IllegalAccessException, NoSuchMethodException, InvocationTargetException, NoSuchAlgorithmException, InvalidKeyException {
         unifiedOrder.setSign_type("HMAC-SHA256");
+        //生成随机数
+        unifiedOrder.setNonce_str(RandomStringUtils.randomAlphabetic(32));
         //生成签名
         Map describe = BeanUtils.describe(unifiedOrder);
         describe.remove("class");
