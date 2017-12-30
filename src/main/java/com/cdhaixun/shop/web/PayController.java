@@ -1,5 +1,7 @@
 package com.cdhaixun.shop.web;
 
+import com.alipay.api.AlipayApiException;
+import com.alipay.api.internal.util.AlipaySignature;
 import com.allinpay.ets.client.SecurityUtil;
 import com.allinpay.ets.client.util.Base64;
 import com.cdhaixun.common.emun.AppointmentState;
@@ -19,6 +21,8 @@ import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -44,6 +48,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
 import java.nio.charset.Charset;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -354,7 +359,7 @@ public class PayController extends BaseController {
             Jaxb2Marshaller marshaller1 = new Jaxb2Marshaller();
             marshaller1.setClassesToBeBound(UnifiedOrderResult.class);
             UnifiedOrderResult unifiedOrderResult = (UnifiedOrderResult) marshaller1.unmarshal(new StreamSource(new StringReader(s)));
-            if(unifiedOrderResult.getReturn_code().equals("SUCCESS")) {
+            if (unifiedOrderResult.getReturn_code().equals("SUCCESS")) {
                 //校验签名
                 String signReturn = unifiedOrderResult.getSign();
                 unifiedOrderResult.setSign(null);
@@ -377,7 +382,7 @@ public class PayController extends BaseController {
                 String s1 = DigestUtils.md5Hex(stringSignTempReturn).toUpperCase();
                 if (s1.equals(signReturn))
                     return unifiedOrderResult;
-            }else{
+            } else {
                 return unifiedOrderResult;
             }
         }
@@ -389,10 +394,10 @@ public class PayController extends BaseController {
      *
      * @param payAction
      */
-    @RequestMapping(value = "notify_url", method = RequestMethod.POST, consumes = "application/xml", produces = "application/xml")
+    @RequestMapping(value = "wechat_notify_url", method = RequestMethod.POST, consumes = "application/xml", produces = "application/xml")
     @ApiOperation(value = "微信支付结果通知")
     @ResponseBody
-    public PayReturn callback(@RequestBody PayAction payAction) {
+    public PayReturn wechatNotifyUrl(@RequestBody PayAction payAction) {
         PayReturn payReturn = new PayReturn();
         //业务逻辑
         payReturn.setReturn_code("sdfasdf");
@@ -435,5 +440,95 @@ public class PayController extends BaseController {
         }
         return null;
     }
+
+    @RequestMapping(value = "alipay_notify_url", method = RequestMethod.POST)
+    @ApiOperation(value = "支付宝支付结果通知")
+    @ResponseBody
+    public String alipayNotifyUrl(@RequestParam Date notify_time,
+                                  @RequestParam String notify_type,
+                                  @RequestParam String notify_id,
+                                  @RequestParam String app_id,
+                                  @RequestParam String charset,
+                                  @RequestParam String version,
+                                  @RequestParam String sign_type,
+                                  @RequestParam String sign,
+                                  @RequestParam String trade_no,
+                                  @RequestParam String out_trade_no,
+                                  @RequestParam(required = false) String out_biz_no,
+                                  @RequestParam(required = false) String buyer_id,
+                                  @RequestParam(required = false) String buyer_logon_id,
+                                  @RequestParam(required = false) String seller_id,
+                                  @RequestParam(required = false) String seller_email,
+                                  @RequestParam(required = false) String trade_status,
+                                  @RequestParam(required = false) BigDecimal total_amount,
+                                  @RequestParam(required = false) BigDecimal receipt_amount,
+                                  @RequestParam(required = false) BigDecimal invoice_amount,
+                                  @RequestParam(required = false) BigDecimal buyer_pay_amount,
+                                  @RequestParam(required = false) BigDecimal point_amount,
+                                  @RequestParam(required = false) BigDecimal refund_fee,
+                                  @RequestParam(required = false) String subject,
+                                  @RequestParam(required = false) String body,
+                                  @RequestParam(required = false) Date gmt_create,
+                                  @RequestParam(required = false) Date gmt_payment,
+                                  @RequestParam(required = false) Date gmt_refund,
+                                  @RequestParam(required = false) Date gmt_close,
+                                  @RequestParam(required = false) String fund_bill_list,
+                                  @RequestParam(required = false) String passback_params,
+                                  @RequestParam(required = false) String voucher_detail_list
+    ) throws AlipayApiException {
+        TreeMap<String,String> treeMap = new TreeMap();
+        treeMap.put("notify_time", DateFormatUtils.format( notify_time,"yyyy-MM-dd HH:mm:ss"));
+        treeMap.put("notify_type", notify_type);
+        treeMap.put("notify_id", notify_id);
+        treeMap.put("app_id", app_id);
+        treeMap.put("charset", charset);
+        treeMap.put("version", version);
+        treeMap.put("sign_type", sign_type);
+        treeMap.put("sign", sign);
+        treeMap.put("trade_no", trade_no);
+        treeMap.put("out_trade_no", out_trade_no);
+        treeMap.put("out_biz_no", out_biz_no);
+        treeMap.put("buyer_id", buyer_id);
+        treeMap.put("buyer_logon_id", buyer_logon_id);
+        treeMap.put("seller_id", seller_id);
+        treeMap.put("seller_email", seller_email);
+        treeMap.put("trade_status", trade_status);
+        treeMap.put("total_amount", total_amount.toString());
+        treeMap.put("receipt_amount", receipt_amount.toString());
+        treeMap.put("invoice_amount", invoice_amount.toString());
+        treeMap.put("buyer_pay_amount", buyer_pay_amount.toString());
+        treeMap.put("point_amount", point_amount.toString());
+        treeMap.put("refund_fee", refund_fee.toString());
+        treeMap.put("subject", subject);
+        treeMap.put("body", body);
+        treeMap.put("gmt_create", DateFormatUtils.format(gmt_create,"yyyy-MM-dd HH:mm:ss"));
+        treeMap.put("gmt_payment", DateFormatUtils.format(gmt_payment,"yyyy-MM-dd HH:mm:ss"));
+        treeMap.put("gmt_refund", DateFormatUtils.format(gmt_refund,"yyyy-MM-dd HH:mm:ss"));
+        treeMap.put("gmt_close", DateFormatUtils.format(gmt_close,"yyyy-MM-dd HH:mm:ss"));
+        treeMap.put("fund_bill_list", fund_bill_list);
+        treeMap.put("passback_params", passback_params);
+        treeMap.put("voucher_detail_list", voucher_detail_list);
+        //业务逻辑
+        Iterator iterator = treeMap.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry next = (Map.Entry) iterator.next();
+            if (next.getValue() == null) {
+                iterator.remove();
+            }
+        }
+        treeMap.remove("sign");
+        treeMap.remove("sign_type");
+        boolean signVerified = AlipaySignature.rsaCheckV1(treeMap, "", "utf-8"); //调用SDK验证签名
+        if(signVerified){
+            // TODO 验签成功后
+            //按照支付结果异步通知中的描述，对支付结果中的业务内容进行1\2\3\4二次校验，校验成功后在response中返回success，校验失败返回failure
+        }else{
+            // TODO 验签失败则记录异常日志，并在response中返回failure.
+        }
+
+        return "success";
+
+    }
+
 
 }
