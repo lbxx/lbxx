@@ -1,5 +1,12 @@
 package com.cdhaixun.shop.web;
 
+import com.alipay.api.AlipayApiException;
+import com.alipay.api.AlipayClient;
+import com.alipay.api.DefaultAlipayClient;
+import com.alipay.api.domain.AlipayTradeAppPayModel;
+import com.alipay.api.internal.util.AlipaySignature;
+import com.alipay.api.request.AlipayTradeAppPayRequest;
+import com.alipay.api.response.AlipayTradeAppPayResponse;
 import com.cdhaixun.common.appVo.Appointment;
 import com.cdhaixun.common.appVo.Result;
 import com.cdhaixun.domain.*;
@@ -7,6 +14,7 @@ import com.cdhaixun.shop.service.*;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.ConversionException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,10 +60,12 @@ public class AppointmentAppController {
     private IPotionService potionService;
     @Autowired
     private IUserService userService;
+    @Value("#{configProperties['domain']}")
+    private String domain;
 
     @RequestMapping(value = "addAppointment", method = RequestMethod.POST)
     @ResponseBody
-    public Result addAppointment(@RequestBody Appointment appointment, HttpServletRequest httpServletRequest) throws InvocationTargetException, IllegalAccessException, ParseException {
+    public Result addAppointment(@RequestBody Appointment appointment, HttpServletRequest httpServletRequest) throws InvocationTargetException, IllegalAccessException, ParseException, AlipayApiException {
         Result result = new Result();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         //获取预约起始时间
@@ -68,12 +78,12 @@ public class AppointmentAppController {
         }
         com.cdhaixun.domain.Appointment appointment1Db = new com.cdhaixun.domain.Appointment();
         // StorePotion storePotion=   storePotionService.findOneByStoreIdAndPotionId(appointment.getStoreid(),appointment.getPotionid());
-        Potion potion=null;
-        if(appointment.getPotionid()!=null){
+        Potion potion = null;
+        if (appointment.getPotionid() != null) {
             potion = potionService.findById(appointment.getPotionid());
             appointment1Db.setTotalprice(potion.getPrice().multiply(new BigDecimal(appointment.getPotionamount())));
             appointment1Db.setPotionprice(appointment1Db.getTotalprice());
-        }else{
+        } else {
             appointment1Db.setTotalprice(new BigDecimal(0));
         }
         appointment1Db.setCreatetime(appointment.getCreatetime());
@@ -96,7 +106,7 @@ public class AppointmentAppController {
         for (Business business : appointment.getBusinessList()) {
             TechnicianBusiness technicianBusiness = technicianBusinessService.findByBusinessIdAndTechnicianId(business.getId(), appointment.getTechnicianid());
             appointment1Db.getBusinessList().add(businessService.findById(business.getId()));
-          StoreBusiness storeBusiness= storeBusinessService.findOneByStoreIdAndBusinessId(appointment.getStoreid(),business.getId());
+            StoreBusiness storeBusiness = storeBusinessService.findOneByStoreIdAndBusinessId(appointment.getStoreid(), business.getId());
             for (com.cdhaixun.domain.Baby baby : appointment.getBabyList()) {
                 AppointmentDetail appointmentDetail = new AppointmentDetail();
                 appointmentDetail.setTechnicianid(appointment.getTechnicianid());
@@ -119,23 +129,23 @@ public class AppointmentAppController {
         //打印预约信息
         User user = userService.findById(appointment.getUserid());
         String content;
-        content = "<CB>订单号："+appointment1Db.getId()+"</CB><BR>";
+        content = "<CB>订单号：" + appointment1Db.getId() + "</CB><BR>";
         content += "--------------------------------<BR>";
-        content += "会员名称："+user.getName()+"<BR>";
-        content += "会员电话："+user.getMobile()+"<BR>";
+        content += "会员名称：" + user.getName() + "<BR>";
+        content += "会员电话：" + user.getMobile() + "<BR>";
         content += "--------------------------------<BR>";
-        content += "宝宝名称："+appointment1Db.getBabyList().get(0).getName()+"  宝宝性别："+(!appointment1Db.getBabyList().get(0).getGender()?"男":"女")+"<BR>";
+        content += "宝宝名称：" + appointment1Db.getBabyList().get(0).getName() + "  宝宝性别：" + (!appointment1Db.getBabyList().get(0).getGender() ? "男" : "女") + "<BR>";
         Date birthday = appointment1Db.getBabyList().get(0).getBirthday();
-        long year= (new Date().getTime()-birthday.getTime())/(1000*60*60*24*365);
-        long mi=(new Date().getTime()-birthday.getTime())%(1000*60*60*24*365)/(1000*60*60*24*30);
-        content += "宝宝年龄："+(year==0?"":year+"年")+(mi==0?"":mi+"个月")+"<BR>";
+        long year = (new Date().getTime() - birthday.getTime()) / (1000 * 60 * 60 * 24 * 365);
+        long mi = (new Date().getTime() - birthday.getTime()) % (1000 * 60 * 60 * 24 * 365) / (1000 * 60 * 60 * 24 * 30);
+        content += "宝宝年龄：" + (year == 0 ? "" : year + "年") + (mi == 0 ? "" : mi + "个月") + "<BR>";
         content += "--------------------------------<BR>";
-        content += "预约日期："+new SimpleDateFormat("yyyy年MM月dd日").format(appointment1Db.getCreatetime())+"<BR>";
-        content += "预约时间段："+appointment.getStarttime()+"--"+appointment.getEndtime()+"点<BR>";
-        content += "预约技师："+appointment1Db.getTechnician().getName()+"<BR>";
-        content += "预约药水："+potion.getName()+"<BR>";
-        content += "备注："+appointment.getRemark()+"<BR>";
-        content += "支付金额："+appointment1Db.getTotalprice()+"元<BR>";
+        content += "预约日期：" + new SimpleDateFormat("yyyy年MM月dd日").format(appointment1Db.getCreatetime()) + "<BR>";
+        content += "预约时间段：" + appointment.getStarttime() + "--" + appointment.getEndtime() + "点<BR>";
+        content += "预约技师：" + appointment1Db.getTechnician().getName() + "<BR>";
+        content += "预约药水：" + potion.getName() + "<BR>";
+        content += "备注：" + appointment.getRemark() + "<BR>";
+        content += "支付金额：" + appointment1Db.getTotalprice() + "元<BR>";
         //调用打印接口
         new Thread(new Runnable() {
             @Override
@@ -144,6 +154,22 @@ public class AppointmentAppController {
             }
         }).run();
         appointmentService.save(appointment1Db);
+        AlipayClient alipayClient = new DefaultAlipayClient("https://openapi.alipay.com/gateway.do", "", "", "json", "utf-8", "", "RSA2");
+//实例化具体API对应的request类,类名称和接口名称对应,当前调用接口名称：alipay.trade.app.pay
+        AlipayTradeAppPayRequest request = new AlipayTradeAppPayRequest();
+//SDK已经封装掉了公共参数，这里只需要传入业务参数。以下方法为sdk的model入参方式(model和biz_content同时存在的情况下取biz_content)。
+        AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
+      /*  model.setBody("我是测试数据");*/
+        model.setSubject("预约");
+        model.setOutTradeNo(appointment1Db.getId().toString());
+        model.setTimeoutExpress("30m");
+        model.setTotalAmount(appointment1Db.getTotalprice().toString());
+        model.setProductCode("QUICK_MSECURITY_PAY");
+        request.setBizModel(model);
+        request.setNotifyUrl(domain+"pay/alipay_notify_url");
+        AlipayTradeAppPayResponse response = alipayClient.sdkExecute(request);
+        System.out.println(response.getBody());//就是orderString 可以直接给客户端请求，无需再做处理。
+        appointment1Db.setAlipayTradeAppPayInfo(response.getBody());
         List<com.cdhaixun.domain.Appointment> appointmentList1 = appointmentService.findByStartTimeAndTechnicianId(new Date(), appointment1Db.getEndtime(), appointment.getTechnicianid());
         appointment1Db.setAppointnumber(appointmentList1.size());
         result.setData(appointment1Db);
@@ -155,7 +181,7 @@ public class AppointmentAppController {
     @ResponseBody
     public Result modifyAppointmentState(@RequestBody Appointment appointment) throws InvocationTargetException, IllegalAccessException, ParseException {
         Result result = new Result();
-        com.cdhaixun.domain. Appointment appointment1Db= appointmentService.findById(appointment.getId());
+        com.cdhaixun.domain.Appointment appointment1Db = appointmentService.findById(appointment.getId());
 
         result.setData(appointment1Db);
         result.setResult(true);
@@ -168,9 +194,9 @@ public class AppointmentAppController {
         Result result = new Result();
         List<com.cdhaixun.domain.Appointment> appointmentList = appointmentService.findByUserId(appointment.getUserid());
         for (com.cdhaixun.domain.Appointment appointment1 : appointmentList) {
-            if (appointment1.getEndtime().compareTo(new Date())<0){
+            if (appointment1.getEndtime().compareTo(new Date()) < 0) {
                 appointment1.setState("已结束");
-            }else{
+            } else {
                 appointment1.setState("预约中");
             }
             appointment1.setTechnician(technicianService.findById(appointment.getTechnicianid()));
@@ -203,7 +229,7 @@ public class AppointmentAppController {
     @ResponseBody
     public Result appointmentDetail(@RequestBody Appointment appointment) throws InvocationTargetException, IllegalAccessException, ParseException {
         Result result = new Result();
-        com.cdhaixun.domain. Appointment appointment1Db= appointmentService.findById(appointment.getId());
+        com.cdhaixun.domain.Appointment appointment1Db = appointmentService.findById(appointment.getId());
         List<AppointmentDetail> appointmentDetailList = appointmentDetailService.findByAppointmentId(appointment1Db.getId());
         Map<Integer, Business> map = new HashMap();
         for (AppointmentDetail appointmentDetail : appointmentDetailList) {

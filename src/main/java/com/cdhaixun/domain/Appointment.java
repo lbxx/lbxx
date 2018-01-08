@@ -33,6 +33,15 @@ public class Appointment {
     private BigDecimal totalprice;
     private Date paytime;
     private AppointmentDetail appointmentDetail;
+    private String alipayTradeAppPayInfo ;
+
+    public String getAlipayTradeAppPayInfo() {
+        return alipayTradeAppPayInfo;
+    }
+
+    public void setAlipayTradeAppPayInfo(String alipayTradeAppPayInfo) {
+        this.alipayTradeAppPayInfo = alipayTradeAppPayInfo;
+    }
 
     public AppointmentDetail getAppointmentDetail() {
         return appointmentDetail;
