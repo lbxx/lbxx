@@ -37,6 +37,7 @@ public class MyRealm extends AuthorizingRealm {
     private IOperateService operateService;
 
 
+    @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 
         String currentUsername = (String) super.getAvailablePrincipal(principals);
@@ -49,6 +50,7 @@ public class MyRealm extends AuthorizingRealm {
     }
 
 
+    @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authcToken) throws AuthenticationException {
 
         UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
@@ -67,8 +69,9 @@ public class MyRealm extends AuthorizingRealm {
             List<RoleOperate> roleOperateList=roleOperateService.findByRole(role);
             for (RoleOperate roleOperate:roleOperateList) {
                 Operate operate=operateService.findById(roleOperate.getOperateid());
-                if(operate!=null&&StringUtils.isNotEmpty(operate.getMenucode()))
-                    permissionList.add(operate.getMenucode()+":"+operate.getPermission());
+                if(operate!=null&&StringUtils.isNotEmpty(operate.getMenucode())) {
+                    permissionList.add(operate.getMenucode() + ":" + operate.getPermission());
+                }
             }
             this.setSession(SessionConstant.PERMISSION_LIST, permissionList);
             return authcInfo;

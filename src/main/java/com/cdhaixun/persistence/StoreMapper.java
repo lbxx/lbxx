@@ -7,12 +7,16 @@ import com.cdhaixun.domain.ChainStore;
 import com.cdhaixun.domain.Store;
 
 public interface StoreMapper extends BaseMapper<Store> {
+    @Override
     int deleteByPrimaryKey(Integer id);
 
+    @Override
     int insert(Store record);
 
+    @Override
     Store selectByPrimaryKey(Integer id);
 
+    @Override
     int updateByPrimaryKey(Store record);
     /**
      * @return

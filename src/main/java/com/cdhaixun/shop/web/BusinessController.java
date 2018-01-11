@@ -39,7 +39,7 @@ public class BusinessController extends BaseController{
     ICategoryService categoryService;
     
     @RequestMapping(value="/listIndex")
-    public String Index(){
+    public String index(){
         return PATH+"businessList";
     }
     

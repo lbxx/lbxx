@@ -4,15 +4,12 @@ import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.domain.AlipayTradeAppPayModel;
-import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayTradeAppPayRequest;
 import com.alipay.api.response.AlipayTradeAppPayResponse;
 import com.cdhaixun.common.appVo.Appointment;
 import com.cdhaixun.common.appVo.Result;
 import com.cdhaixun.domain.*;
 import com.cdhaixun.shop.service.*;
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.beanutils.ConversionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -27,6 +24,7 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.*;
 
 /**
  * Created by Administrator on 2017-07-01.
@@ -62,6 +60,10 @@ public class AppointmentAppController {
     private IUserService userService;
     @Value("#{configProperties['domain']}")
     private String domain;
+    /*采用线程池提高性能*/
+    private static final Executor EXECUTOR = new ThreadPoolExecutor(30, 100, 30,
+            TimeUnit.MINUTES, new ArrayBlockingQueue<Runnable>(10)
+    );
 
     @RequestMapping(value = "addAppointment", method = RequestMethod.POST)
     @ResponseBody
@@ -136,8 +138,8 @@ public class AppointmentAppController {
         content += "--------------------------------<BR>";
         content += "宝宝名称：" + appointment1Db.getBabyList().get(0).getName() + "  宝宝性别：" + (!appointment1Db.getBabyList().get(0).getGender() ? "男" : "女") + "<BR>";
         Date birthday = appointment1Db.getBabyList().get(0).getBirthday();
-        long year = (new Date().getTime() - birthday.getTime()) / (1000 * 60 * 60 * 24 * 365);
-        long mi = (new Date().getTime() - birthday.getTime()) % (1000 * 60 * 60 * 24 * 365) / (1000 * 60 * 60 * 24 * 30);
+        long year = (System.currentTimeMillis() - birthday.getTime()) / (1000 * 60 * 60 * 24 * 365);
+        long mi = (System.currentTimeMillis() - birthday.getTime()) % (1000 * 60 * 60 * 24 * 365) / (1000 * 60 * 60 * 24 * 30);
         content += "宝宝年龄：" + (year == 0 ? "" : year + "年") + (mi == 0 ? "" : mi + "个月") + "<BR>";
         content += "--------------------------------<BR>";
         content += "预约日期：" + new SimpleDateFormat("yyyy年MM月dd日").format(appointment1Db.getCreatetime()) + "<BR>";
@@ -147,12 +149,13 @@ public class AppointmentAppController {
         content += "备注：" + appointment.getRemark() + "<BR>";
         content += "支付金额：" + appointment1Db.getTotalprice() + "元<BR>";
         //调用打印接口
-        new Thread(new Runnable() {
+        EXECUTOR.execute(new Runnable() {
             @Override
             public void run() {
                 //查看打印的printUtils  调用printOrder(String content,String sn)
             }
-        }).run();
+        });
+
         appointmentService.save(appointment1Db);
         AlipayClient alipayClient = new DefaultAlipayClient("https://openapi.alipay.com/gateway.do", "", "", "json", "utf-8", "", "RSA2");
 //实例化具体API对应的request类,类名称和接口名称对应,当前调用接口名称：alipay.trade.app.pay
@@ -166,7 +169,7 @@ public class AppointmentAppController {
         model.setTotalAmount(appointment1Db.getTotalprice().toString());
         model.setProductCode("QUICK_MSECURITY_PAY");
         request.setBizModel(model);
-        request.setNotifyUrl(domain+"pay/alipay_notify_url");
+        request.setNotifyUrl(domain + "pay/alipay_notify_url");
         AlipayTradeAppPayResponse response = alipayClient.sdkExecute(request);
         System.out.println(response.getBody());//就是orderString 可以直接给客户端请求，无需再做处理。
         appointment1Db.setAlipayTradeAppPayInfo(response.getBody());
@@ -250,6 +253,7 @@ public class AppointmentAppController {
         result.setResult(true);
         return result;
     }
+
 
 
 }

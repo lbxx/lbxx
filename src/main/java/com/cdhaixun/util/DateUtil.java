@@ -20,7 +20,7 @@ public class DateUtil {
      * 日期ISO格式;yyyy-MM-dd;
      */
     private static final String DATE_SHORT_ISO = "yyyy-MM-dd";
-    
+
     /**
      * 日期格式 yyyy-MM-dd HH:mm:ss
      */
@@ -41,23 +41,24 @@ public class DateUtil {
     private static final String DATE_MINUTES_12 = "yyyy.MM.dd hh-mm-ss";
 
     /**
-	 * 使用预设Format格式化Date成字符串
-	 *日期格式 yyyy-MM-dd HH:mm:ss
-	 * @return String
-	 */
-	public static String format(Date date) {
-		return date == null ? "" : format(date, LONG_DATE_FORMAT_STR);
-	}
-	
-	/**
-	 * 使用参数Format格式化Date成字符串
-	 *
-	 * @return String
-	 */
-	public static String format(Date date, String pattern) {
-		return date == null ? "" : new SimpleDateFormat(pattern).format(date);
-	}
-	
+     * 使用预设Format格式化Date成字符串
+     * 日期格式 yyyy-MM-dd HH:mm:ss
+     *
+     * @return String
+     */
+    public static String format(Date date) {
+        return date == null ? "" : format(date, LONG_DATE_FORMAT_STR);
+    }
+
+    /**
+     * 使用参数Format格式化Date成字符串
+     *
+     * @return String
+     */
+    public static String format(Date date, String pattern) {
+        return date == null ? "" : new SimpleDateFormat(pattern).format(date);
+    }
+
     /**
      * @param dateString -日期字符串 <br>
      *                   Stirng pattern -格式
@@ -122,7 +123,7 @@ public class DateUtil {
     public String dayMove(String dateStr, int len) {
         return dateMove(dateStr, len, Calendar.DATE, DATE_SHORT);
     }
-	
+
     /**
      * @param dateStr -日期字符串 <br>
      *                int len -移动的月数;eg:+1(下个月),-1(上个月)
@@ -236,8 +237,10 @@ public class DateUtil {
         calendar.add(Calendar.DATE, day);
         return calendar.getTime();
     }
+
     /**
      * 将月份增加，负数为减少
+     *
      * @param date
      * @param
      * @return
@@ -248,6 +251,7 @@ public class DateUtil {
         calendar.add(Calendar.MONTH, month);
         return calendar.getTime();
     }
+
     /**
      * 将天数减少
      *
@@ -279,7 +283,7 @@ public class DateUtil {
      * @author HuangCheng
      */
     public static String getTimeMilliseconds() {
-        return String.valueOf(new Date().getTime());
+        return String.valueOf(System.currentTimeMillis());
     }
 
     /**
@@ -334,8 +338,10 @@ public class DateUtil {
             return null;
         }
     }
+
     /**
      * 日期ISO格式;yyyy-MM-dd;
+     *
      * @param date
      * @return
      */
@@ -399,33 +405,39 @@ public class DateUtil {
     public static Date stringToDate(String dateStr) {
         return stringToDate(dateStr, DATE_SHORT);
     }
+
     /**
      * 格式为yyyy-MM-dd
+     *
      * @param dateStr
      * @return
      */
     public static Date stringToISODate(String dateStr) {
         return stringToDate(dateStr, DATE_SHORT_ISO);
     }
+
     /**
      * 格式为yyyy-MM-dd HH:mm:ss
+     *
      * @param dateStr
      * @return
      */
     public static Date stringToMiuDate(String dateStr) {
         return stringToDate(dateStr, LONG_DATE_FORMAT_STR);
     }
+
     /**
      * 日期ISO格式;yyyy-MM-dd
+     *
      * @param date
      * @return
      */
     public static String dateISOToString(Date date) {
-    	   if (date != null) {
-               return dateToString(date, DATE_SHORT_ISO);
-           } else {
-               return null;
-           }
+        if (date != null) {
+            return dateToString(date, DATE_SHORT_ISO);
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -572,11 +584,12 @@ public class DateUtil {
         return weeks[dayinweek];
     }
 
-    public static int  getWeek(Date date){
+    public static int getWeek(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
-        return  cal.get(Calendar.DAY_OF_WEEK) - 1;
+        return cal.get(Calendar.DAY_OF_WEEK) - 1;
     }
+
     /**
      * 判断当前时间是否在营业日期和时间范围内
      *
@@ -734,68 +747,73 @@ public class DateUtil {
         }
         return gc.getTime();
     }
+
     /**
      * 判断当前时间在时间范围的位置
      * -1为之前，未开始;0 为当中，1为已过
+     *
      * @param startDate
      * @param endDate
      * @return
      */
-    public static int beforeInAfter(Date startDate, Date endDate){
-        long nowTime = new Date().getTime();
-        if(nowTime > endDate.getTime()){
+    public static int beforeInAfter(Date startDate, Date endDate) {
+        long nowTime = System.currentTimeMillis();
+        if (nowTime > endDate.getTime()) {
             return 1;
-        }else if(nowTime >= startDate.getTime() &&  nowTime<= endDate.getTime()){
+        } else if (nowTime >= startDate.getTime() && nowTime <= endDate.getTime()) {
             return 0;
-        }else{
+        } else {
             return -1;
         }
     }
+
     /**
      * 检测当前日期是否在传入的日期范围内
      * 在范围内返回true;反之false
+     *
      * @param startDate
      * @param endDate
      * @return
      */
     public static boolean isBetween(Date startDate, Date endDate) {
-        long nowTime = new Date().getTime();
-        System.out.println("nowTime:"+nowTime+"startDate:"+startDate.getTime()+"endDate:"+endDate.getTime());
-        if (nowTime >= startDate.getTime() &&  nowTime<= endDate.getTime()) {
+        long nowTime = System.currentTimeMillis();
+        System.out.println("nowTime:" + nowTime + "startDate:" + startDate.getTime() + "endDate:" + endDate.getTime());
+        if (nowTime >= startDate.getTime() && nowTime <= endDate.getTime()) {
             return true;
         } else {
             return false;
         }
     }
 
-    public static boolean inRange(Date startDate,String startTime,Date endDate,String  endTime){
+    public static boolean inRange(Date startDate, String startTime, Date endDate, String endTime) {
         String[] sa = startTime.split(":");
         String[] ea = endTime.split(":");
-        GregorianCalendar start =  new GregorianCalendar();
+        GregorianCalendar start = new GregorianCalendar();
         GregorianCalendar end = new GregorianCalendar();
         start.setTime(startDate);
         end.setTime(endDate);
-        int startHour = 0 ;
-        int startMin=0;
+        int startHour = 0;
+        int startMin = 0;
         int endHour = 0;
         int endMin = 0;
         if (sa.length > 1 && ea.length > 1) {
-             startHour = Integer.valueOf(sa[0]).intValue();
-             startMin = Integer.valueOf(sa[1]).intValue();
-             endHour = Integer.valueOf(ea[0]).intValue();
-             endMin = Integer.valueOf(ea[1]).intValue();
+            startHour = Integer.valueOf(sa[0]).intValue();
+            startMin = Integer.valueOf(sa[1]).intValue();
+            endHour = Integer.valueOf(ea[0]).intValue();
+            endMin = Integer.valueOf(ea[1]).intValue();
         }
-        start.set(Calendar.HOUR_OF_DAY,startHour);
-        start.set(Calendar.MINUTE,startMin);
-        start.set(Calendar.SECOND,0);
-        start.set(Calendar.MILLISECOND,0);
-        end.set(Calendar.HOUR_OF_DAY,endHour);
-        end.set(Calendar.MINUTE,endMin);
-        end.set(Calendar.SECOND,0);
-        end.set(Calendar.MILLISECOND,0);
+        start.set(Calendar.HOUR_OF_DAY, startHour);
+        start.set(Calendar.MINUTE, startMin);
+        start.set(Calendar.SECOND, 0);
+        start.set(Calendar.MILLISECOND, 0);
+        end.set(Calendar.HOUR_OF_DAY, endHour);
+        end.set(Calendar.MINUTE, endMin);
+        end.set(Calendar.SECOND, 0);
+        end.set(Calendar.MILLISECOND, 0);
         Date now = new Date();
-        return start.getTime().getTime()<=now.getTime() && end.getTime().getTime()>=now.getTime();
+        return start.getTime().getTime() <= now.getTime() && end.getTime().getTime() >= now.getTime();
     }
+
     /**
      * 把当前日期转换为当日的第一秒
      *
@@ -825,6 +843,7 @@ public class DateUtil {
         gc.set(Calendar.SECOND, 59);
         return gc.getTime();
     }
+
     /**
      * 构建日期
      *
@@ -855,7 +874,7 @@ public class DateUtil {
     public static Date buildDate(int year, int month, int day, int hour,
                                  int minute, int second) {
         Calendar c = Calendar.getInstance();
-        c.set(Calendar.YEAR, year );
+        c.set(Calendar.YEAR, year);
         c.set(Calendar.MONTH, month - 1);
         c.set(Calendar.DAY_OF_MONTH, day);
         c.set(Calendar.HOUR_OF_DAY, hour);
@@ -896,6 +915,7 @@ public class DateUtil {
         gc.add(Calendar.DAY_OF_MONTH, 1);
         return gc.getTime();
     }
+
     /**
      * 获取指定月的月首
      *
@@ -908,6 +928,7 @@ public class DateUtil {
         gc.set(Calendar.DAY_OF_MONTH, 1);
         return gc.getTime();
     }
+
     /**
      * 获取指定月的月尾
      *
@@ -942,20 +963,31 @@ public class DateUtil {
         int result = 0;
         switch (month) {
             case 1:
+                break;
             case 3:
+                break;
             case 5:
+                break;
             case 7:
+                break;
             case 8:
+                break;
             case 10:
+                break;
             case 12:
                 return 31;
             case 4:
+                break;
             case 6:
+                break;
             case 9:
+                break;
             case 11:
                 return 30;
             case 2:
                 return isLeapYear(year) ? 29 : 28;
+            default:
+                break;
         }
         return result;
     }
@@ -1057,9 +1089,10 @@ public class DateUtil {
             return 0;
         }
     }
+
     /**
      * 增加或减少小时数
-     * 
+     *
      * @param date
      * @param hour
      * @return
@@ -1070,13 +1103,15 @@ public class DateUtil {
         calendar.add(Calendar.HOUR, hour);
         return calendar.getTime();
     }
+
     public static void main(String[] args) {
         Date nowDate = new Date();
         System.out.println(isOverdueHour(nowDate, 0));
     }
+
     /**
      * 判断时间是否过期 传人的时间 + 小时 > 当前时间 ;返回 true反之false
-     * 
+     *
      * @param
      * @return
      */
@@ -1084,8 +1119,10 @@ public class DateUtil {
         Date nowDate = new Date();
         return getDateAddHour(dbDate, hour).after(nowDate);
     }
+
     /**
      * 是否为同一天
+     *
      * @param date1
      * @param date2
      * @return true是同一天，反正不是
@@ -1100,7 +1137,7 @@ public class DateUtil {
         cal2.setTime(date2);
         return isSameDay(cal1, cal2);
     }
-    
+
     public static boolean isSameDay(Calendar cal1, Calendar cal2) {
         if (cal1 == null || cal2 == null) {
             throw new IllegalArgumentException("The date must not be null");
@@ -1109,18 +1146,18 @@ public class DateUtil {
                 cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
                 cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR));
     }
-    
+
     //用于校验传入的开始和结束时间是否合法
-    public static boolean checkTimeLegal(Date startTime,Date endTime) throws HxException{
+    public static boolean checkTimeLegal(Date startTime, Date endTime) throws HxException {
 //        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 //        try {
 //            Date startTime = sdf.parse(startTimeStr);
 //            Date endTime = sdf.parse(endTimeStr);
-            if(!startTime.before(endTime)){
-                throw new HxException("结束时间不能早于开始时间!");
-            }else if(startTime.before(new Date())){
-                throw new HxException("开始时间不能早于当前时间!");
-            }
+        if (!startTime.before(endTime)) {
+            throw new HxException("结束时间不能早于开始时间!");
+        } else if (startTime.before(new Date())) {
+            throw new HxException("开始时间不能早于当前时间!");
+        }
 //        } catch (Exception e) {
 //            throw new HxException("解析时间出错!");
 //        }

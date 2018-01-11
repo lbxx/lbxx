@@ -3,6 +3,7 @@ package com.cdhaixun.shop.web;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -65,7 +66,7 @@ public class StoreController extends BaseController {
         for(ChainStore chainStore :chainStores){
             List<Store> branchStores = new ArrayList<>();
             for(Store store :stores){
-                if(store.getChainstoreid() != null && chainStore.getId() == store.getChainstoreid()){
+                if(store.getChainstoreid() != null && Objects.equals(chainStore.getId(), store.getChainstoreid())){
                     branchStores.add(store);
                 }
             }

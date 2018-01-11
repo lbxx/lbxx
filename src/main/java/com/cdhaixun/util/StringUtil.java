@@ -89,7 +89,7 @@ public class StringUtil {
     public static Integer getValueInCookieByKey(String cookieValue, Integer key) {
         String[] strs = cookieValue.split("_");
         for (int i = 0; i < strs.length; i++) {
-            if (strs[i] != null && !strs[i].equals("")) {
+            if (strs[i] != null && !"".equals(strs[i])) {
                 String[] res = strs[i].split(":");
                 if (res.length == 2) {
                     int bId = Integer.parseInt(res[0]);

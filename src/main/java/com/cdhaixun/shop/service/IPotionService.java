@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface IPotionService extends BaseService<Potion>{
+    @Override
     Potion findById(Integer potionid);
 
     Pager getPotionList(Pager pager, Map<String, Object> parMap);

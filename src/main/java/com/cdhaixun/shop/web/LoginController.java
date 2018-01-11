@@ -88,7 +88,7 @@ public class LoginController extends BaseController {
     public com.cdhaixun.common.appVo.Result appLogin(@RequestBody Mobile mobile, HttpSession httpSession) throws Exception {
         com.cdhaixun.common.appVo.Result result = new com.cdhaixun.common.appVo.Result();
         Captcha captcha = (Captcha) redisTemplate.opsForHash().entries("captcha").remove(mobile.getMobile());
-        if(captcha!=null&&captcha.getCaptcha().equals(mobile.getCaptcha())&&(new Date().getTime()-captcha.getCreateTime().getTime())<3*60*1000){
+        if(captcha!=null&&captcha.getCaptcha().equals(mobile.getCaptcha())&&(System.currentTimeMillis()-captcha.getCreateTime().getTime())<3*60*1000){
             User user= userService.findByMobile(mobile.getMobile());
             if(user==null){
                 user=new User();

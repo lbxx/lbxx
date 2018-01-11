@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 /**
  * Created by tangxinmao on 2017/6/23.
  */
-@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
+/*@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)*/
 public class PayResult {
     private String acct;
     private String appid;

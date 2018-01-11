@@ -275,10 +275,11 @@ public class PayController extends BaseController {
         params.add(new BasicNameValuePair("returnDatetime", returnDatetime));
         StringBuffer signString = new StringBuffer();
         for (NameValuePair param : params) {
-            if (param.getValue() != null)
+            if (param.getValue() != null) {
                 signString.append("|" + param.getValue());
+            }
         }
-        if (signType.equals("0")) {
+        if ("0".equals(signType)) {
             String fileString = signString.substring(1) + "|" + DigestUtils.md5Hex(merchantId);
             String fileMsg = SecurityUtil.MD5Encode(fileString);
             if (signMsg.equals(fileMsg)) {
@@ -288,7 +289,7 @@ public class PayController extends BaseController {
                 appointmentService.save(appointment);
             }
         }
-        if (signType.equals("1")) {
+        if ("1".equals(signType)) {
             String fileMd5String = SecurityUtil.MD5Encode(signString.substring(1));
             boolean isVerified = SecurityUtil.verifyByRSA("", fileMd5String.getBytes(), Base64.
                     decode(signMsg));
@@ -333,10 +334,10 @@ public class PayController extends BaseController {
         String substring = stringBuilder.substring(1);
         String key = "192006250b4c09247ec02edce69f6a2d";
         String stringSignTemp = substring + "&key=" + key;//注：key为商户平台设置的密钥key
-        Mac sha256_HMAC = Mac.getInstance("HmacSHA256");
-        SecretKeySpec secret_key = new SecretKeySpec(key.getBytes(), "HmacSHA256");
-        sha256_HMAC.init(secret_key);
-        byte[] bytes = sha256_HMAC.doFinal(stringSignTemp.getBytes());
+        Mac mac = Mac.getInstance("HmacSHA256");
+        SecretKeySpec secretKeySpec = new SecretKeySpec(key.getBytes(), "HmacSHA256");
+        mac.init(secretKeySpec);
+        byte[] bytes = mac.doFinal(stringSignTemp.getBytes());
         String sign = Hex.encodeHexString(bytes).toUpperCase();
         unifiedOrder.setSign(sign);
 
@@ -360,7 +361,7 @@ public class PayController extends BaseController {
             Jaxb2Marshaller marshaller1 = new Jaxb2Marshaller();
             marshaller1.setClassesToBeBound(UnifiedOrderResult.class);
             UnifiedOrderResult unifiedOrderResult = (UnifiedOrderResult) marshaller1.unmarshal(new StreamSource(new StringReader(s)));
-            if (unifiedOrderResult.getReturn_code().equals("SUCCESS")) {
+            if ("SUCCESS".equals(unifiedOrderResult.getReturn_code())) {
                 //校验签名
                 String signReturn = unifiedOrderResult.getSign();
                 unifiedOrderResult.setSign(null);
@@ -381,8 +382,9 @@ public class PayController extends BaseController {
                 String substringReturn = stringBuilderReturn.substring(1);
                 String stringSignTempReturn = substringReturn + "&key=" + key;
                 String s1 = DigestUtils.md5Hex(stringSignTempReturn).toUpperCase();
-                if (s1.equals(signReturn))
+                if (s1.equals(signReturn)) {
                     return unifiedOrderResult;
+                }
             } else {
                 return unifiedOrderResult;
             }

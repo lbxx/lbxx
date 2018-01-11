@@ -39,7 +39,7 @@ public class CategoryController extends BaseController{
     IUploadService uploadService;
     
     @RequestMapping(value="/listIndex")
-    public String Index(){
+    public String index(){
         return PATH+"categoryList";
     }
     

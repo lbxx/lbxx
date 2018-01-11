@@ -6,10 +6,11 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.beanutils.BeanUtils;
+
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.converters.BigDecimalConverter;
 import org.apache.commons.beanutils.converters.DateConverter;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
@@ -75,7 +76,7 @@ public class UserAppController extends BaseController {
         com.cdhaixun.domain.User userDb=new  com.cdhaixun.domain.User();
         ConvertUtils.register(new DateConverter(null), java.util.Date.class);
         ConvertUtils.register(new BigDecimalConverter(null), BigDecimal.class);
-        BeanUtils.copyProperties(userDb,user);
+        BeanUtils.copyProperties(user,userDb);
         userService.update(userDb);
         result.setResult(true);
         return result;
@@ -87,7 +88,7 @@ public class UserAppController extends BaseController {
         Result result = new Result();
         com.cdhaixun.domain.User userDb=new  com.cdhaixun.domain.User();
         Captcha captcha = (Captcha) redisTemplate.boundHashOps("captcha").entries().remove(mobile.getMobile());
-        if(captcha!=null&&captcha.getCaptcha().equals(mobile.getCaptcha())&&(new Date().getTime()-captcha.getCreateTime().getTime())<3*60*1000) {
+        if(captcha!=null&&captcha.getCaptcha().equals(mobile.getCaptcha())&&(System.currentTimeMillis()-captcha.getCreateTime().getTime())<3*60*1000) {
             userDb.setMobile(mobile.getMobile());
             userService.update(userDb);
             result.setResult(true);

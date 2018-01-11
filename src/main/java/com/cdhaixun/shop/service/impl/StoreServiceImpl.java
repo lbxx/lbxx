@@ -82,6 +82,7 @@ public class StoreServiceImpl implements IStoreService {
     public List<Store> listAllStores() {
         return storeMapper.listAllStores();         
     }
+    @Override
     public List<ChainStore> listChainStores(){
         return chainStoreMapper.listChainStores();
     }
@@ -104,6 +105,7 @@ public class StoreServiceImpl implements IStoreService {
     public int deleteStoreById(int id) {
         return storeMapper.deleteByPrimaryKey(id);
     }
+    @Override
     public int updateIsDeleteById(int id){
         return storeMapper.updateIsDeleteById(id);
     }

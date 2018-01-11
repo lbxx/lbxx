@@ -33,6 +33,7 @@ public class ImageTag extends SimpleTagSupport   implements ApplicationContextAw
         this.key = key;
     }
 
+    @Override
     public void doTag() throws JspException, IOException {
 
         if (key != null) {
