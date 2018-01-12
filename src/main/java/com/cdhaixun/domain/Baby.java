@@ -1,6 +1,8 @@
 package com.cdhaixun.domain;
 
+import com.cdhaixun.deserializer.DateJsonDeserializer;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.util.Date;
 
@@ -8,8 +10,6 @@ public class Baby {
     private Integer id;
 
     private String name;
-
-    @JsonFormat(pattern="yyyy-MM-dd")
     private Date birthday;
 
     private Boolean gender;
@@ -42,6 +42,7 @@ public class Baby {
         this.birthMonth = birthMonth;
     }
 
+    @JsonDeserialize(using = DateJsonDeserializer.class)
     private Date createtime;
 
     private Integer userid;

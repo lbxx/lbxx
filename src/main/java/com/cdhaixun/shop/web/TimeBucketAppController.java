@@ -47,15 +47,17 @@ public class TimeBucketAppController {
         calendar.setTime(appointment.getCreatetime());
         Technician technician = technicianService.findById(appointment.getTechnicianid());
 //        if (!technician.getWorkday().contains((calendar.get(Calendar.DAY_OF_WEEK) + 1) + "")) {   原始代码
-            if (!technician.getWorkday().contains((calendar.get(Calendar.DAY_OF_WEEK) - 1) + "")) { //此处应为减 1
+        if (!technician.getWorkday().contains(Calendar.DAY_OF_WEEK + "")) {
+            result.setMsg("没在技师工作日");
+            result.setResult(false);//此处应为减 1
             return result;
         }
         List<TimeBucket> timeBucketList = timeBucketService.findAll();
         Iterator<TimeBucket> timeBucketIterator = timeBucketList.iterator();
         while (timeBucketIterator.hasNext()) {
             TimeBucket timeBucket = timeBucketIterator.next();
-            timeBucket.setStarttime(new Date(appointment.getCreatetime().getTime()+timeBucket.getStarttime().getTime()));
-            timeBucket.setEndtime(new Date(appointment.getCreatetime().getTime()+timeBucket.getEndtime().getTime()));
+            timeBucket.setStarttime(new Date(appointment.getCreatetime().getTime() + timeBucket.getStarttime().getTime()));
+            timeBucket.setEndtime(new Date(appointment.getCreatetime().getTime() + timeBucket.getEndtime().getTime()));
             Date createtimeFrom = timeBucket.getStarttime();
             Date createtimeTo = timeBucket.getEndtime();
             //过滤请假时间

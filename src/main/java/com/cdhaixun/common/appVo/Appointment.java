@@ -29,9 +29,10 @@ public class Appointment implements Serializable{
     private Boolean isdelete;
     private Integer badyCount;//宝宝数量
     private Integer technicianid;//技师
-    private String starttime; //预约时间段
-
-    private String endtime;
+    @JsonDeserialize(using = DateJsonDeserializer.class)
+    private Date starttime; //预约时间段
+    @JsonDeserialize(using = DateJsonDeserializer.class)
+    private Date endtime;
 
     List<Baby> babyList;//宝宝
     List<Business> businessList;//所选业务
@@ -103,19 +104,19 @@ public class Appointment implements Serializable{
         this.remark = remark;
     }
 
-    public String getStarttime() {
+    public Date getStarttime() {
         return starttime;
     }
 
-    public void setStarttime(String starttime) {
+    public void setStarttime(Date starttime) {
         this.starttime = starttime;
     }
 
-    public String getEndtime() {
+    public Date getEndtime() {
         return endtime;
     }
 
-    public void setEndtime(String endtime) {
+    public void setEndtime(Date endtime) {
         this.endtime = endtime;
     }
 

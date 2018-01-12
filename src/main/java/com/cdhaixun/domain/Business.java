@@ -1,5 +1,8 @@
 package com.cdhaixun.domain;
 
+import com.cdhaixun.deserializer.DateJsonDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -7,7 +10,7 @@ public class Business {
     private Integer id;
 
     private String name;
-
+    @JsonDeserialize(using = DateJsonDeserializer.class)
     private Date createtime;
 
     private Boolean isdelete;

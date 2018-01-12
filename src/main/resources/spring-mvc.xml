@@ -122,7 +122,7 @@
     <!-- 拦截器方式配置事物 -->
     <tx:advice id="transactionAdvice" transaction-manager="dataSourceTransactionManager">
         <tx:attributes>
-            <tx:method name="*"  rollback-for="java.lang.RuntimeException"/>
+            <tx:method name="*"  rollback-for="java.lang.Exception"/>
         </tx:attributes>
     </tx:advice>
     <!-- Spring aop事务管理 -->

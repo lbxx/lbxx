@@ -10,6 +10,7 @@ import com.cdhaixun.common.appVo.Appointment;
 import com.cdhaixun.common.appVo.Result;
 import com.cdhaixun.domain.*;
 import com.cdhaixun.shop.service.*;
+import com.cdhaixun.util.PrintUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -71,14 +72,14 @@ public class AppointmentAppController {
         Result result = new Result();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         //获取预约起始时间
-        List<com.cdhaixun.domain.Appointment> appointmentList = appointmentService.findByStartTimeAndTechnicianId(simpleDateFormat.parse(appointment.getStarttime()), simpleDateFormat.parse(appointment.getEndtime()), appointment.getTechnicianid());
-        Date starttime = simpleDateFormat.parse(appointment.getStarttime());
+        List<com.cdhaixun.domain.Appointment> appointmentList = appointmentService.findByStartTimeAndTechnicianId(appointment.getStarttime(), appointment.getEndtime(), appointment.getTechnicianid());
+        Date starttime = appointment.getStarttime();
         for (com.cdhaixun.domain.Appointment appointmentTemp : appointmentList) {
             if (appointmentTemp.getEndtime().compareTo(starttime) > 0) {
                 starttime = appointmentTemp.getEndtime();
             }
         }
-        com.cdhaixun.domain.Appointment appointment1Db = new com.cdhaixun.domain.Appointment();
+        final com.cdhaixun.domain.Appointment appointment1Db = new com.cdhaixun.domain.Appointment();
         // StorePotion storePotion=   storePotionService.findOneByStoreIdAndPotionId(appointment.getStoreid(),appointment.getPotionid());
         Potion potion = null;
         if (appointment.getPotionid() != null) {
@@ -91,8 +92,8 @@ public class AppointmentAppController {
         appointment1Db.setCreatetime(appointment.getCreatetime());
         appointment1Db.setTechnicianid(appointment.getTechnicianid());
         appointment1Db.setStoreid(appointment.getStoreid());
-        appointment1Db.setEndtime(simpleDateFormat.parse(appointment.getEndtime()));
-        appointment1Db.setStarttime(simpleDateFormat.parse(appointment.getStarttime()));
+        appointment1Db.setEndtime(appointment.getEndtime());
+        appointment1Db.setStarttime(appointment.getStarttime());
         appointment1Db.setRemark(appointment.getRemark());
         appointment1Db.setUserid(appointment.getUserid());
         appointment1Db.setStarttime(starttime);
@@ -149,15 +150,17 @@ public class AppointmentAppController {
         content += "备注：" + appointment.getRemark() + "<BR>";
         content += "支付金额：" + appointment1Db.getTotalprice() + "元<BR>";
         //调用打印接口
+        final String finalContent = content;
         EXECUTOR.execute(new Runnable() {
             @Override
             public void run() {
                 //查看打印的printUtils  调用printOrder(String content,String sn)
+                   PrintUtil.printOrder(finalContent,appointment1Db.getStore().getPrintersn());
             }
         });
 
-        appointmentService.save(appointment1Db);
-        AlipayClient alipayClient = new DefaultAlipayClient("https://openapi.alipay.com/gateway.do", "", "", "json", "utf-8", "", "RSA2");
+        //appointmentService.save(appointment1Db);
+        AlipayClient alipayClient = new DefaultAlipayClient("https://openapi.alipay.com/gateway.do", "2017122901329322", "MIICdQIBADANBgkqhkiG9w0BAQEFAASCAl8wggJbAgEAAoGBAKwGqvE4cW0om07zPonF9GvbSttK2GGLHoLw9SqVVPgZafDAS3dcidwY6hMaWqJqhs7x5DlusIRFxWbn71A0FJr++u8th6EA+vSwU3EIKlbxgpK6B8M8Q9zPcmjjaJFlUOmiKi4W6zlW5uoH3XaLFXFiuRrnE4lvxQ3Slk5g6NrNAgMBAAECgYBVJevBAHYsWNgfCQmgekpUhLQVvYNDLPBKUeiYTlhDgZjNoPD5wOU/+1kJYZcRI3dcwaB8yQw4PKzMFet/oHe9utYSayiNJwkl7e0z/l2XSOu/+/l87duekU4YDuJ54/YonJlRXb2uFsA1BPPL+nUNMSZNjyNMY0Q7fD8S5cjigQJBAPDTrGkdtEa5ErtaxI6ZFxFGJkvJxLK9Jl2H9RYfDkQGlyJ95vHszETtYqsO6XU5afVTgJh8RqsSa5E55iyvISECQQC23UwmEPt/CxUsdwtyigP7Q9OmGJylOM1W6bkztbOpJ2+vLILQPoAaB6QYVu/HBVRIieAfJ57EB61W5KIPNwgtAkAKHrsGB8uFlU1mNiBAZcqEXVBKqwXrBOvRzl7MOS3eSfCb8HJ+BBdpZhhZW90PogQD3ShwP/iwQ6vlhGtZwVpBAkBMQp/WJDDt+246G+9PNhWQ/OlQFGWHVdf0jgYpdXZWbdbaxAJN3DLKKDOb3u2iHyvWEIHCHGDOubDlUvXuyHGFAkBviYuRetDRoQw+p3OhMdOt04A6YTea0ICf5DAeXYb4Ot+fOofcRRWhZ/VoB7pQeJFmQoahH041KUoMzS95fdOl", "json", "utf-8", "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDDI6d306Q8fIfCOaTXyiUeJHkrIvYISRcc73s3vF1ZT7XN8RNPwJxo8pWaJMmvyTn9N4HQ632qJBVHf8sxHi/fEsraprwCtzvzQETrNRwVxLO5jVmRGi60j8Ue1efIlzPXV9je9mkjzOmdssymZkh2QhUrCmZYI/FCEa3/cNMW0QIDAQAB", "RSA2");
 //实例化具体API对应的request类,类名称和接口名称对应,当前调用接口名称：alipay.trade.app.pay
         AlipayTradeAppPayRequest request = new AlipayTradeAppPayRequest();
 //SDK已经封装掉了公共参数，这里只需要传入业务参数。以下方法为sdk的model入参方式(model和biz_content同时存在的情况下取biz_content)。
@@ -169,7 +172,7 @@ public class AppointmentAppController {
         model.setTotalAmount(appointment1Db.getTotalprice().toString());
         model.setProductCode("QUICK_MSECURITY_PAY");
         request.setBizModel(model);
-        request.setNotifyUrl(domain + "pay/alipay_notify_url");
+        request.setNotifyUrl("http://1548i94i39.iok.la/" + "pay/alipay_notify_url");
         AlipayTradeAppPayResponse response = alipayClient.sdkExecute(request);
         System.out.println(response.getBody());//就是orderString 可以直接给客户端请求，无需再做处理。
         appointment1Db.setAlipayTradeAppPayInfo(response.getBody());

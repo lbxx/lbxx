@@ -521,11 +521,15 @@ public class PayController extends BaseController {
         }
         treeMap.remove("sign");
         treeMap.remove("sign_type");
-        boolean signVerified = AlipaySignature.rsaCheckV1(treeMap, "", "utf-8"); //调用SDK验证签名
+        boolean signVerified = AlipaySignature.rsaCheckV1(treeMap, "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCsBqrxOHFtKJtO8z6JxfRr20rbSthhix6C8PUqlVT4GWnwwEt3XIncGOoTGlqiaobO8eQ5brCERcVm5+9QNBSa/vrvLYehAPr0sFNxCCpW8YKSugfDPEPcz3Jo42iRZVDpoiouFus5VubqB912ixVxYrka5xOJb8UN0pZOYOjazQIDAQAB", "utf-8"); //调用SDK验证签名
         if(signVerified){
+            Appointment appointment = appointmentService.findById(Integer.parseInt(trade_no));
+            appointment.setState(AppointmentState.PAY.toString());
+            appointmentService.save(appointment);
             // TODO 验签成功后
             //按照支付结果异步通知中的描述，对支付结果中的业务内容进行1\2\3\4二次校验，校验成功后在response中返回success，校验失败返回failure
         }else{
+            return "failure";
             // TODO 验签失败则记录异常日志，并在response中返回failure.
         }
 

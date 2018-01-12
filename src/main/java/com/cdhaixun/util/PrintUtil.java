@@ -83,7 +83,7 @@ public class PrintUtil {
 	 * @param sn
 	 * @return
 	 */
-	private static String printOrder(String content,String sn){
+	public static String printOrder(String content, String sn){
 		//标签说明：
 		//单标签:
 		//"<BR>"为换行,"<CUT>"为切刀指令(主动切纸,仅限切刀打印机使用才有效果)
