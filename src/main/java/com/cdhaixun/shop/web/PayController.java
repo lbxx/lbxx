@@ -478,9 +478,10 @@ public class PayController extends BaseController {
                                   @RequestParam(required = false) String fund_bill_list,
                                   @RequestParam(required = false) String passback_params,
                                   @RequestParam(required = false) String voucher_detail_list
+                                , HttpServletRequest httpServletRequest
     ) throws AlipayApiException {
-        TreeMap<String,String> treeMap = new TreeMap();
-        treeMap.put("notify_time", DateFormatUtils.format( notify_time,"yyyy-MM-dd HH:mm:ss"));
+        TreeMap<String, String> treeMap = new TreeMap();
+        treeMap.put("notify_time", DateFormatUtils.format(notify_time, "yyyy-MM-dd HH:mm:ss"));
         treeMap.put("notify_type", notify_type);
         treeMap.put("notify_id", notify_id);
         treeMap.put("app_id", app_id);
@@ -501,13 +502,19 @@ public class PayController extends BaseController {
         treeMap.put("invoice_amount", invoice_amount.toString());
         treeMap.put("buyer_pay_amount", buyer_pay_amount.toString());
         treeMap.put("point_amount", point_amount.toString());
-        treeMap.put("refund_fee", refund_fee.toString());
+        if (refund_fee != null) {
+            treeMap.put("refund_fee", refund_fee.toString());
+        }
         treeMap.put("subject", subject);
         treeMap.put("body", body);
-        treeMap.put("gmt_create", DateFormatUtils.format(gmt_create,"yyyy-MM-dd HH:mm:ss"));
-        treeMap.put("gmt_payment", DateFormatUtils.format(gmt_payment,"yyyy-MM-dd HH:mm:ss"));
-        treeMap.put("gmt_refund", DateFormatUtils.format(gmt_refund,"yyyy-MM-dd HH:mm:ss"));
-        treeMap.put("gmt_close", DateFormatUtils.format(gmt_close,"yyyy-MM-dd HH:mm:ss"));
+        treeMap.put("gmt_create", DateFormatUtils.format(gmt_create, "yyyy-MM-dd HH:mm:ss"));
+        treeMap.put("gmt_payment", DateFormatUtils.format(gmt_payment, "yyyy-MM-dd HH:mm:ss"));
+        if (gmt_refund != null) {
+            treeMap.put("gmt_refund", DateFormatUtils.format(gmt_refund, "yyyy-MM-dd HH:mm:ss"));
+        }
+        if (gmt_close != null) {
+            treeMap.put("gmt_close", DateFormatUtils.format(gmt_close, "yyyy-MM-dd HH:mm:ss"));
+        }
         treeMap.put("fund_bill_list", fund_bill_list);
         treeMap.put("passback_params", passback_params);
         treeMap.put("voucher_detail_list", voucher_detail_list);
@@ -519,21 +526,46 @@ public class PayController extends BaseController {
                 iterator.remove();
             }
         }
-        treeMap.remove("sign");
-        treeMap.remove("sign_type");
-        boolean signVerified = AlipaySignature.rsaCheckV1(treeMap, "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCsBqrxOHFtKJtO8z6JxfRr20rbSthhix6C8PUqlVT4GWnwwEt3XIncGOoTGlqiaobO8eQ5brCERcVm5+9QNBSa/vrvLYehAPr0sFNxCCpW8YKSugfDPEPcz3Jo42iRZVDpoiouFus5VubqB912ixVxYrka5xOJb8UN0pZOYOjazQIDAQAB", "utf-8"); //调用SDK验证签名
-        if(signVerified){
-            Appointment appointment = appointmentService.findById(Integer.parseInt(trade_no));
-            appointment.setState(AppointmentState.PAY.toString());
-            appointmentService.save(appointment);
+        System.out.printf("%s", treeMap);
+        // String signStr = treeMap.remove("sign");
+     String signType = treeMap.get("sign_type");
+      /*  byte[] signs = Base64.decode(treeMap.remove("sign"));
+        treeMap.put("sign",new String(signs,Charset.forName("utf-8")));*/
+        String charSet = treeMap.get("charset");
+        Map<String,String> params = new HashMap<String,String>();
+        Map requestParams = httpServletRequest.getParameterMap();
+        for (Iterator iter = requestParams.keySet().iterator(); iter.hasNext();) {
+            String name = (String) iter.next();
+            String[] values = (String[]) requestParams.get(name);
+            String valueStr = "";
+            for (int i = 0; i < values.length; i++) {
+                valueStr = (i == values.length - 1) ? valueStr + values[i]
+                        : valueStr + values[i] + ",";
+            }
+            //乱码解决，这段代码在出现乱码时使用。
+            //valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
+            params.put(name, valueStr);
+        }
+//切记alipaypublickey是支付宝的公钥，请去open.alipay.com对应应用下查看。
+//boolean AlipaySignature.rsaCheckV1(Map<String, String> params, String publicKey, String charset, String sign_type)
+        //调用SDK验证签名
+        boolean signVerified = AlipaySignature.rsaCheckV1(params, "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDDI6d306Q8fIfCOaTXyiUeJHkrIvYISRcc73s3vF1ZT7XN8RNPwJxo8pWaJMmvyTn9N4HQ632qJBVHf8sxHi/fEsraprwCtzvzQETrNRwVxLO5jVmRGi60j8Ue1efIlzPXV9je9mkjzOmdssymZkh2QhUrCmZYI/FCEa3/cNMW0QIDAQAB", charSet, signType);
+
+        if (signVerified) {
+            if ("TRADE_SUCCESS".equals(treeMap.get("trade_status"))) {
+                Appointment appointment = appointmentService.findById(Integer.parseInt(out_trade_no));
+                appointment.setState(AppointmentState.PAY.toString());
+                appointmentService.save(appointment);
+                return "success";
+            }
             // TODO 验签成功后
             //按照支付结果异步通知中的描述，对支付结果中的业务内容进行1\2\3\4二次校验，校验成功后在response中返回success，校验失败返回failure
-        }else{
-            return "failure";
+        } else {
+            // return "failure";
             // TODO 验签失败则记录异常日志，并在response中返回failure.
         }
 
-        return "success";
+        return "failure";
 
     }
 
