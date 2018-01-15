@@ -62,6 +62,16 @@ public class AppointmentAppController {
     private IUserService userService;
     @Value("#{configProperties['domain']}")
     private String domain;
+    @Value("#{configProperties['appId']}")
+    private String appId;
+    @Value("#{configProperties['privateKey']}")
+    private String privateKey;
+    @Value("#{configProperties['format']}")
+    private String format;
+    @Value("#{configProperties['publicKey']}")
+    private String publicKey;
+    @Value("#{configProperties['signType']}")
+    private String signType;
     /*采用线程池提高性能*/
     private static final Executor EXECUTOR = new ThreadPoolExecutor(30, 100, 30,
             TimeUnit.MINUTES, new ArrayBlockingQueue<Runnable>(10)
@@ -100,6 +110,23 @@ public class AppointmentAppController {
         appointment1Db.setStarttime(starttime);
         appointment1Db.setCreatetime(new Date());
         appointment1Db.setState(AppointmentState.NOPAY.toString());
+        //appointmentService.save(appointment1Db);
+        AlipayClient alipayClient = new DefaultAlipayClient(domain,appId, privateKey, "json","utf-8",publicKey, signType);
+//实例化具体API对应的request类,类名称和接口名称对应,当前调用接口名称：alipay.trade.app.pay
+        AlipayTradeAppPayRequest request = new AlipayTradeAppPayRequest();
+//SDK已经封装掉了公共参数，这里只需要传入业务参数。以下方法为sdk的model入参方式(model和biz_content同时存在的情况下取biz_content)。
+        AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
+      /*  model.setBody("我是测试数据");*/
+        model.setSubject("预约");
+        model.setOutTradeNo(appointment1Db.getId().toString());
+        model.setTimeoutExpress("30m");
+        model.setTotalAmount(appointment1Db.getTotalprice().toString());
+        model.setProductCode("QUICK_MSECURITY_PAY");
+        request.setBizModel(model);
+        request.setNotifyUrl("http://1548i94i39.iok.la/" + "pay/alipay_notify_url");
+        AlipayTradeAppPayResponse response = alipayClient.sdkExecute(request);
+        System.out.println(response.getBody());//就是orderString 可以直接给客户端请求，无需再做处理。
+        appointment1Db.setAlipayTradeAppPayInfo(response.getBody());
         appointmentService.save(appointment1Db);
         appointment1Db.setBusinessList(new ArrayList<Business>());
         appointment1Db.setBabyList(new ArrayList<Baby>());
@@ -161,23 +188,7 @@ public class AppointmentAppController {
             }
         });
 
-        //appointmentService.save(appointment1Db);
-        AlipayClient alipayClient = new DefaultAlipayClient(domain, "2017122901329322", "MIICdQIBADANBgkqhkiG9w0BAQEFAASCAl8wggJbAgEAAoGBAKwGqvE4cW0om07zPonF9GvbSttK2GGLHoLw9SqVVPgZafDAS3dcidwY6hMaWqJqhs7x5DlusIRFxWbn71A0FJr++u8th6EA+vSwU3EIKlbxgpK6B8M8Q9zPcmjjaJFlUOmiKi4W6zlW5uoH3XaLFXFiuRrnE4lvxQ3Slk5g6NrNAgMBAAECgYBVJevBAHYsWNgfCQmgekpUhLQVvYNDLPBKUeiYTlhDgZjNoPD5wOU/+1kJYZcRI3dcwaB8yQw4PKzMFet/oHe9utYSayiNJwkl7e0z/l2XSOu/+/l87duekU4YDuJ54/YonJlRXb2uFsA1BPPL+nUNMSZNjyNMY0Q7fD8S5cjigQJBAPDTrGkdtEa5ErtaxI6ZFxFGJkvJxLK9Jl2H9RYfDkQGlyJ95vHszETtYqsO6XU5afVTgJh8RqsSa5E55iyvISECQQC23UwmEPt/CxUsdwtyigP7Q9OmGJylOM1W6bkztbOpJ2+vLILQPoAaB6QYVu/HBVRIieAfJ57EB61W5KIPNwgtAkAKHrsGB8uFlU1mNiBAZcqEXVBKqwXrBOvRzl7MOS3eSfCb8HJ+BBdpZhhZW90PogQD3ShwP/iwQ6vlhGtZwVpBAkBMQp/WJDDt+246G+9PNhWQ/OlQFGWHVdf0jgYpdXZWbdbaxAJN3DLKKDOb3u2iHyvWEIHCHGDOubDlUvXuyHGFAkBviYuRetDRoQw+p3OhMdOt04A6YTea0ICf5DAeXYb4Ot+fOofcRRWhZ/VoB7pQeJFmQoahH041KUoMzS95fdOl", "json", "utf-8", "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDDI6d306Q8fIfCOaTXyiUeJHkrIvYISRcc73s3vF1ZT7XN8RNPwJxo8pWaJMmvyTn9N4HQ632qJBVHf8sxHi/fEsraprwCtzvzQETrNRwVxLO5jVmRGi60j8Ue1efIlzPXV9je9mkjzOmdssymZkh2QhUrCmZYI/FCEa3/cNMW0QIDAQAB", "RSA");
-//实例化具体API对应的request类,类名称和接口名称对应,当前调用接口名称：alipay.trade.app.pay
-        AlipayTradeAppPayRequest request = new AlipayTradeAppPayRequest();
-//SDK已经封装掉了公共参数，这里只需要传入业务参数。以下方法为sdk的model入参方式(model和biz_content同时存在的情况下取biz_content)。
-        AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
-      /*  model.setBody("我是测试数据");*/
-        model.setSubject("预约");
-        model.setOutTradeNo(appointment1Db.getId().toString());
-        model.setTimeoutExpress("30m");
-        model.setTotalAmount(appointment1Db.getTotalprice().toString());
-        model.setProductCode("QUICK_MSECURITY_PAY");
-        request.setBizModel(model);
-        request.setNotifyUrl("http://1548i94i39.iok.la/" + "pay/alipay_notify_url");
-        AlipayTradeAppPayResponse response = alipayClient.sdkExecute(request);
-        System.out.println(response.getBody());//就是orderString 可以直接给客户端请求，无需再做处理。
-        appointment1Db.setAlipayTradeAppPayInfo(response.getBody());
+       
         List<com.cdhaixun.domain.Appointment> appointmentList1 = appointmentService.findByStartTimeAndTechnicianId(new Date(), appointment1Db.getEndtime(), appointment.getTechnicianid());
         appointment1Db.setAppointnumber(appointmentList1.size());
         result.setData(appointment1Db);

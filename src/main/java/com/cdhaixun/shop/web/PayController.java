@@ -1,10 +1,17 @@
 package com.cdhaixun.shop.web;
 
-
 import com.alipay.api.AlipayApiException;
+import com.alipay.api.AlipayClient;
+import com.alipay.api.DefaultAlipayClient;
+import com.alipay.api.domain.AlipayTradeAppPayModel;
 import com.alipay.api.internal.util.AlipaySignature;
+import com.alipay.api.request.AlipayTradeAppPayRequest;
+import com.alipay.api.request.AlipayTradeCloseRequest;
+import com.alipay.api.response.AlipayTradeAppPayResponse;
+import com.alipay.api.response.AlipayTradeCloseResponse;
 import com.allinpay.ets.client.SecurityUtil;
 import com.allinpay.ets.client.util.Base64;
+import com.cdhaixun.common.appVo.Result;
 import com.cdhaixun.common.emun.AppointmentState;
 import com.cdhaixun.common.web.BaseController;
 import com.cdhaixun.common.wechatPay.*;
@@ -17,6 +24,8 @@ import com.cdhaixun.shop.service.IPayInfoService;
 import com.cdhaixun.shop.service.IStoreService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -75,7 +84,14 @@ public class PayController extends BaseController {
     private String unifiedorder;
     @Value("#{configProperties['orderquery']}")
     private String orderquery;
-
+    @Value("#{configProperties['appId']}")
+    private String appId;
+    @Value("#{configProperties['publicKey']}")
+    private String publicKey;
+    @Value("#{configProperties['privateKey']}")
+    private String privateKey;
+    @Value("#{configProperties['signType']}")
+    private String signType;
 
     @Autowired
     private IStoreService storeService;
@@ -109,7 +125,8 @@ public class PayController extends BaseController {
         String url = URLEncodedUtils.format(params, "utf-8");
         String sign = DigestUtils.md5Hex(url).toUpperCase();
         params.add(new BasicNameValuePair("sign", sign));
-        HttpPost httppost = new HttpPost(scanpay + "scanpay?" + URLEncodedUtils.format(params, Charset.forName("UTF-8")));
+        HttpPost httppost = new HttpPost(
+                scanpay + "scanpay?" + URLEncodedUtils.format(params, Charset.forName("UTF-8")));
         HttpResponse httpResponse = hc.execute(httppost);
         HttpEntity httpEntity = httpResponse.getEntity();
         String json = IOUtils.toString(httpEntity.getContent(), "utf-8");
@@ -126,7 +143,8 @@ public class PayController extends BaseController {
      */
     @RequestMapping(value = "pay", method = RequestMethod.POST)
     @ResponseBody
-    public PayResult pay(@RequestBody com.cdhaixun.common.appVo.Pay pay, HttpServletRequest httpServletRequest) throws IOException {
+    public PayResult pay(@RequestBody com.cdhaixun.common.appVo.Pay pay, HttpServletRequest httpServletRequest)
+            throws IOException {
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         Store store = storeService.findById(pay.getStoreid());
         params.add(new BasicNameValuePair("appid", store.getAppid()));
@@ -151,37 +169,55 @@ public class PayController extends BaseController {
         PayResult payResult = objectMapper.readValue(json, PayResult.class);
         return payResult;
     }
-   /* @RequestMapping(value = "callback", method = RequestMethod.POST)
-    @ResponseBody
-    public PayResult callback(@RequestParam String appid,
-                              @RequestParam String outtrxid,
-                              @RequestParam String trxcode,
-                              @RequestParam String trxid,
-                              @RequestParam String trxamt,
-                              @RequestParam String trxdate,
-                              @RequestParam String paytime,
-                              @RequestParam String chnltrxid,
-                              @RequestParam String trxstatus,
-                              @RequestParam String cusid,
-                              @RequestParam String termno,
-                              @RequestParam String termbatchid,
-                              @RequestParam String termtraceno,
-                              @RequestParam String termauthno,
-                              @RequestParam String termrefnum,
-                              @RequestParam String trxreserved,
-                              @RequestParam String srctrxid,
-                              @RequestParam String cusorderid,
-                              @RequestParam String acct,
-                              @RequestParam String sign)  {
-        PayResult payResult= new PayResult();
-        PayInfo payInfo= payInfoService.findByTrxid(trxid);
-       Appointment appointment= appointmentService.findById(Integer.parseInt(payInfo.getReqsn()));
-         appointment.setPaystate(1);
-         appointmentService.save(appointment);
-        return  payResult;
-    }
-
-    */
+    /*
+     * @RequestMapping(value = "callback", method = RequestMethod.POST)
+     * 
+     * @ResponseBody public PayResult callback(@RequestParam String appid,
+     * 
+     * @RequestParam String outtrxid,
+     * 
+     * @RequestParam String trxcode,
+     * 
+     * @RequestParam String trxid,
+     * 
+     * @RequestParam String trxamt,
+     * 
+     * @RequestParam String trxdate,
+     * 
+     * @RequestParam String paytime,
+     * 
+     * @RequestParam String chnltrxid,
+     * 
+     * @RequestParam String trxstatus,
+     * 
+     * @RequestParam String cusid,
+     * 
+     * @RequestParam String termno,
+     * 
+     * @RequestParam String termbatchid,
+     * 
+     * @RequestParam String termtraceno,
+     * 
+     * @RequestParam String termauthno,
+     * 
+     * @RequestParam String termrefnum,
+     * 
+     * @RequestParam String trxreserved,
+     * 
+     * @RequestParam String srctrxid,
+     * 
+     * @RequestParam String cusorderid,
+     * 
+     * @RequestParam String acct,
+     * 
+     * @RequestParam String sign) { PayResult payResult= new PayResult();
+     * PayInfo payInfo= payInfoService.findByTrxid(trxid); Appointment
+     * appointment=
+     * appointmentService.findById(Integer.parseInt(payInfo.getReqsn()));
+     * appointment.setPaystate(1); appointmentService.save(appointment); return
+     * payResult; }
+     * 
+     */
 
     /**
      * 查询订单支付状态
@@ -190,26 +226,26 @@ public class PayController extends BaseController {
      * @return
      * @throws IOException
      *//*
-    @RequestMapping(value = "verifyPayState", method = RequestMethod.POST)
-    @ResponseBody
-    public PayResult verifyPayState(@RequestBody  com.cdhaixun.common.appVo.Pay pay) throws IOException {
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("appid", pay.getAppid()));
-        params.add(new BasicNameValuePair("cusid", pay.getCusid()));
-        params.add(new BasicNameValuePair("key", pay.getKey()));
-        params.add(new BasicNameValuePair("randomstr", pay.getRandomstr()));
-        params.add(new BasicNameValuePair("reqsn", pay.getReqsn()));
-        String url = URLEncodedUtils.format(params, "utf-8");
-        String sign = DigestUtils.md5Hex(url).toUpperCase();
-        params.add(new BasicNameValuePair("sign", sign));
-        HttpPost httppost = new HttpPost(scanpay+"pay?" +URLEncodedUtils.format(params, Charset.forName("UTF-8")));
-        HttpResponse httpResponse = hc.execute(httppost);
-        HttpEntity httpEntity = httpResponse.getEntity();
-        String json = IOUtils.toString(httpEntity.getContent(),"utf-8");
-        PayResult payResult= objectMapper.readValue(json, PayResult.class);
-        return  payResult;
-    }
-*/
+       * @RequestMapping(value = "verifyPayState", method = RequestMethod.POST)
+       * 
+       * @ResponseBody public PayResult verifyPayState(@RequestBody
+       * com.cdhaixun.common.appVo.Pay pay) throws IOException {
+       * List<NameValuePair> params = new ArrayList<NameValuePair>();
+       * params.add(new BasicNameValuePair("appid", pay.getAppid()));
+       * params.add(new BasicNameValuePair("cusid", pay.getCusid()));
+       * params.add(new BasicNameValuePair("key", pay.getKey())); params.add(new
+       * BasicNameValuePair("randomstr", pay.getRandomstr())); params.add(new
+       * BasicNameValuePair("reqsn", pay.getReqsn())); String url =
+       * URLEncodedUtils.format(params, "utf-8"); String sign =
+       * DigestUtils.md5Hex(url).toUpperCase(); params.add(new
+       * BasicNameValuePair("sign", sign)); HttpPost httppost = new
+       * HttpPost(scanpay+"pay?" +URLEncodedUtils.format(params,
+       * Charset.forName("UTF-8"))); HttpResponse httpResponse =
+       * hc.execute(httppost); HttpEntity httpEntity = httpResponse.getEntity();
+       * String json = IOUtils.toString(httpEntity.getContent(),"utf-8");
+       * PayResult payResult= objectMapper.readValue(json, PayResult.class);
+       * return payResult; }
+       */
 
     /**
      * 通联回调支付回调地址
@@ -235,26 +271,14 @@ public class PayController extends BaseController {
      */
     @RequestMapping(value = "callback", method = RequestMethod.POST)
     @ApiOperation(value = "支付服务器回调地址")
-    public void callback(
-            @RequestParam String merchantId,
-            @RequestParam String version,
-            @RequestParam(required = false) String language,
-            @RequestParam String signType,
-            @RequestParam(required = false) String payType,
-            @RequestParam(required = false) String issuerId,
-            @RequestParam String paymentOrderId,
-            @RequestParam String orderNo,
-            @RequestParam String orderDatetime,
-            @RequestParam String orderAmount,
-            @RequestParam String payDatetime,
-            @RequestParam String payAmount,
-            @RequestParam(required = false) String ext1,
-            @RequestParam(required = false) String ext2,
-            @RequestParam String payResult,
-            @RequestParam(required = false) String errorCode,
-            @RequestParam String returnDatetime,
-            @RequestParam String signMsg
-    ) {
+    public void callback(@RequestParam String merchantId, @RequestParam String version,
+            @RequestParam(required = false) String language, @RequestParam String signType,
+            @RequestParam(required = false) String payType, @RequestParam(required = false) String issuerId,
+            @RequestParam String paymentOrderId, @RequestParam String orderNo, @RequestParam String orderDatetime,
+            @RequestParam String orderAmount, @RequestParam String payDatetime, @RequestParam String payAmount,
+            @RequestParam(required = false) String ext1, @RequestParam(required = false) String ext2,
+            @RequestParam String payResult, @RequestParam(required = false) String errorCode,
+            @RequestParam String returnDatetime, @RequestParam String signMsg) {
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("merchantId", merchantId));
         params.add(new BasicNameValuePair("version", version));
@@ -283,7 +307,7 @@ public class PayController extends BaseController {
             String fileString = signString.substring(1) + "|" + DigestUtils.md5Hex(merchantId);
             String fileMsg = SecurityUtil.MD5Encode(fileString);
             if (signMsg.equals(fileMsg)) {
-                //修改订单状体
+                // 修改订单状体
                 Appointment appointment = appointmentService.findById(Integer.parseInt(orderNo));
                 appointment.setState(AppointmentState.PAY.toString());
                 appointmentService.save(appointment);
@@ -291,10 +315,9 @@ public class PayController extends BaseController {
         }
         if ("1".equals(signType)) {
             String fileMd5String = SecurityUtil.MD5Encode(signString.substring(1));
-            boolean isVerified = SecurityUtil.verifyByRSA("", fileMd5String.getBytes(), Base64.
-                    decode(signMsg));
+            boolean isVerified = SecurityUtil.verifyByRSA("", fileMd5String.getBytes(), Base64.decode(signMsg));
 
-            //修改订单状体
+            // 修改订单状体
             if (isVerified) {
                 Appointment appointment = appointmentService.findById(Integer.parseInt(orderNo));
                 appointment.setState(AppointmentState.PAY.toString());
@@ -312,11 +335,13 @@ public class PayController extends BaseController {
     @RequestMapping(value = "payunifiedorder", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     @ApiOperation(value = "微信支付同一下单")
-    public UnifiedOrderResult payunifiedorder(@RequestBody UnifiedOrder unifiedOrder) throws IOException, IllegalAccessException, NoSuchMethodException, InvocationTargetException, NoSuchAlgorithmException, InvalidKeyException {
+    public UnifiedOrderResult payunifiedorder(@RequestBody UnifiedOrder unifiedOrder)
+            throws IOException, IllegalAccessException, NoSuchMethodException, InvocationTargetException,
+            NoSuchAlgorithmException, InvalidKeyException {
         unifiedOrder.setSign_type("HMAC-SHA256");
-        //生成随机数
+        // 生成随机数
         unifiedOrder.setNonce_str(RandomStringUtils.randomAlphabetic(32));
-        //生成签名
+        // 生成签名
         Map describe = BeanUtils.describe(unifiedOrder);
         describe.remove("class");
         Iterator iterator = describe.entrySet().iterator();
@@ -333,7 +358,7 @@ public class PayController extends BaseController {
         }
         String substring = stringBuilder.substring(1);
         String key = "192006250b4c09247ec02edce69f6a2d";
-        String stringSignTemp = substring + "&key=" + key;//注：key为商户平台设置的密钥key
+        String stringSignTemp = substring + "&key=" + key;// 注：key为商户平台设置的密钥key
         Mac mac = Mac.getInstance("HmacSHA256");
         SecretKeySpec secretKeySpec = new SecretKeySpec(key.getBytes(), "HmacSHA256");
         mac.init(secretKeySpec);
@@ -360,9 +385,10 @@ public class PayController extends BaseController {
             String s = IOUtils.toString(httpEntity.getContent(), "utf-8");
             Jaxb2Marshaller marshaller1 = new Jaxb2Marshaller();
             marshaller1.setClassesToBeBound(UnifiedOrderResult.class);
-            UnifiedOrderResult unifiedOrderResult = (UnifiedOrderResult) marshaller1.unmarshal(new StreamSource(new StringReader(s)));
+            UnifiedOrderResult unifiedOrderResult = (UnifiedOrderResult) marshaller1
+                    .unmarshal(new StreamSource(new StringReader(s)));
             if ("SUCCESS".equals(unifiedOrderResult.getReturn_code())) {
-                //校验签名
+                // 校验签名
                 String signReturn = unifiedOrderResult.getSign();
                 unifiedOrderResult.setSign(null);
                 Map describe1 = BeanUtils.describe(unifiedOrderResult);
@@ -402,7 +428,7 @@ public class PayController extends BaseController {
     @ResponseBody
     public PayReturn wechatNotifyUrl(@RequestBody PayAction payAction) {
         PayReturn payReturn = new PayReturn();
-        //业务逻辑
+        // 业务逻辑
         payReturn.setReturn_code("sdfasdf");
         return payReturn;
 
@@ -447,39 +473,25 @@ public class PayController extends BaseController {
     @RequestMapping(value = "alipay_notify_url", method = RequestMethod.POST)
     @ApiOperation(value = "支付宝支付结果通知")
     @ResponseBody
-    public String alipayNotifyUrl(@RequestParam Date notify_time,
-                                  @RequestParam String notify_type,
-                                  @RequestParam String notify_id,
-                                  @RequestParam String app_id,
-                                  @RequestParam String charset,
-                                  @RequestParam String version,
-                                  @RequestParam String sign_type,
-                                  @RequestParam String sign,
-                                  @RequestParam String trade_no,
-                                  @RequestParam String out_trade_no,
-                                  @RequestParam(required = false) String out_biz_no,
-                                  @RequestParam(required = false) String buyer_id,
-                                  @RequestParam(required = false) String buyer_logon_id,
-                                  @RequestParam(required = false) String seller_id,
-                                  @RequestParam(required = false) String seller_email,
-                                  @RequestParam(required = false) String trade_status,
-                                  @RequestParam(required = false) BigDecimal total_amount,
-                                  @RequestParam(required = false) BigDecimal receipt_amount,
-                                  @RequestParam(required = false) BigDecimal invoice_amount,
-                                  @RequestParam(required = false) BigDecimal buyer_pay_amount,
-                                  @RequestParam(required = false) BigDecimal point_amount,
-                                  @RequestParam(required = false) BigDecimal refund_fee,
-                                  @RequestParam(required = false) String subject,
-                                  @RequestParam(required = false) String body,
-                                  @RequestParam(required = false) Date gmt_create,
-                                  @RequestParam(required = false) Date gmt_payment,
-                                  @RequestParam(required = false) Date gmt_refund,
-                                  @RequestParam(required = false) Date gmt_close,
-                                  @RequestParam(required = false) String fund_bill_list,
-                                  @RequestParam(required = false) String passback_params,
-                                  @RequestParam(required = false) String voucher_detail_list
-                                , HttpServletRequest httpServletRequest
-    ) throws AlipayApiException {
+    public String alipayNotifyUrl(@RequestParam Date notify_time, @RequestParam String notify_type,
+            @RequestParam String notify_id, @RequestParam String app_id, @RequestParam String charset,
+            @RequestParam String version, @RequestParam String sign_type, @RequestParam String sign,
+            @RequestParam String trade_no, @RequestParam String out_trade_no,
+            @RequestParam(required = false) String out_biz_no, @RequestParam(required = false) String buyer_id,
+            @RequestParam(required = false) String buyer_logon_id, @RequestParam(required = false) String seller_id,
+            @RequestParam(required = false) String seller_email, @RequestParam(required = false) String trade_status,
+            @RequestParam(required = false) BigDecimal total_amount,
+            @RequestParam(required = false) BigDecimal receipt_amount,
+            @RequestParam(required = false) BigDecimal invoice_amount,
+            @RequestParam(required = false) BigDecimal buyer_pay_amount,
+            @RequestParam(required = false) BigDecimal point_amount,
+            @RequestParam(required = false) BigDecimal refund_fee, @RequestParam(required = false) String subject,
+            @RequestParam(required = false) String body, @RequestParam(required = false) Date gmt_create,
+            @RequestParam(required = false) Date gmt_payment, @RequestParam(required = false) Date gmt_refund,
+            @RequestParam(required = false) Date gmt_close, @RequestParam(required = false) String fund_bill_list,
+            @RequestParam(required = false) String passback_params,
+            @RequestParam(required = false) String voucher_detail_list, HttpServletRequest httpServletRequest)
+            throws AlipayApiException {
         TreeMap<String, String> treeMap = new TreeMap();
         treeMap.put("notify_time", DateFormatUtils.format(notify_time, "yyyy-MM-dd HH:mm:ss"));
         treeMap.put("notify_type", notify_type);
@@ -518,7 +530,7 @@ public class PayController extends BaseController {
         treeMap.put("fund_bill_list", fund_bill_list);
         treeMap.put("passback_params", passback_params);
         treeMap.put("voucher_detail_list", voucher_detail_list);
-        //业务逻辑
+        // 业务逻辑
         Iterator iterator = treeMap.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry next = (Map.Entry) iterator.next();
@@ -528,28 +540,30 @@ public class PayController extends BaseController {
         }
         System.out.printf("%s", treeMap);
         // String signStr = treeMap.remove("sign");
-     String signType = treeMap.get("sign_type");
-      /*  byte[] signs = Base64.decode(treeMap.remove("sign"));
-        treeMap.put("sign",new String(signs,Charset.forName("utf-8")));*/
+        String signType = treeMap.get("sign_type");
+        /*
+         * byte[] signs = Base64.decode(treeMap.remove("sign"));
+         * treeMap.put("sign",new String(signs,Charset.forName("utf-8")));
+         */
         String charSet = treeMap.get("charset");
-        Map<String,String> params = new HashMap<String,String>();
+        Map<String, String> params = new HashMap<String, String>();
         Map requestParams = httpServletRequest.getParameterMap();
         for (Iterator iter = requestParams.keySet().iterator(); iter.hasNext();) {
             String name = (String) iter.next();
             String[] values = (String[]) requestParams.get(name);
             String valueStr = "";
             for (int i = 0; i < values.length; i++) {
-                valueStr = (i == values.length - 1) ? valueStr + values[i]
-                        : valueStr + values[i] + ",";
+                valueStr = (i == values.length - 1) ? valueStr + values[i] : valueStr + values[i] + ",";
             }
-            //乱码解决，这段代码在出现乱码时使用。
-            //valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
+            // 乱码解决，这段代码在出现乱码时使用。
+            // valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
             params.put(name, valueStr);
         }
-//切记alipaypublickey是支付宝的公钥，请去open.alipay.com对应应用下查看。
-//boolean AlipaySignature.rsaCheckV1(Map<String, String> params, String publicKey, String charset, String sign_type)
-        //调用SDK验证签名
-        boolean signVerified = AlipaySignature.rsaCheckV1(params, "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDDI6d306Q8fIfCOaTXyiUeJHkrIvYISRcc73s3vF1ZT7XN8RNPwJxo8pWaJMmvyTn9N4HQ632qJBVHf8sxHi/fEsraprwCtzvzQETrNRwVxLO5jVmRGi60j8Ue1efIlzPXV9je9mkjzOmdssymZkh2QhUrCmZYI/FCEa3/cNMW0QIDAQAB", charSet, signType);
+        // 切记alipaypublickey是支付宝的公钥，请去open.alipay.com对应应用下查看。
+        // boolean AlipaySignature.rsaCheckV1(Map<String, String> params, String
+        // publicKey, String charset, String sign_type)
+        // 调用SDK验证签名
+        boolean signVerified = AlipaySignature.rsaCheckV1(params, publicKey, charSet, signType);
 
         if (signVerified) {
             if ("TRADE_SUCCESS".equals(treeMap.get("trade_status"))) {
@@ -559,7 +573,7 @@ public class PayController extends BaseController {
                 return "success";
             }
             // TODO 验签成功后
-            //按照支付结果异步通知中的描述，对支付结果中的业务内容进行1\2\3\4二次校验，校验成功后在response中返回success，校验失败返回failure
+            // 按照支付结果异步通知中的描述，对支付结果中的业务内容进行1\2\3\4二次校验，校验成功后在response中返回success，校验失败返回failure
         } else {
             // return "failure";
             // TODO 验签失败则记录异常日志，并在response中返回failure.
@@ -569,5 +583,65 @@ public class PayController extends BaseController {
 
     }
 
+    @RequestMapping(value = "tradeCreate", method = RequestMethod.POST)
+    @ApiOperation(value = "支付宝创建新订单", notes = "支付宝创建新订单", httpMethod = "POST")
+    @ResponseBody
+    public Result tradeCreate(@RequestBody Appointment appointment, HttpServletRequest httpServletRequest)
+            throws AlipayApiException {
+
+        AlipayClient alipayClient = new DefaultAlipayClient(domain, appId, privateKey, "json", "utf-8", publicKey,
+                signType);
+        // 实例化具体API对应的request类,类名称和接口名称对应,当前调用接口名称：alipay.trade.app.pay
+        AlipayTradeAppPayRequest request = new AlipayTradeAppPayRequest();
+        // SDK已经封装掉了公共参数，这里只需要传入业务参数。以下方法为sdk的model入参方式(model和biz_content同时存在的情况下取biz_content)。
+        AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
+        /* model.setBody("我是测试数据"); */
+        model.setSubject("预约");
+        model.setOutTradeNo(appointment.getId().toString());
+        model.setTimeoutExpress("30m");
+        model.setTotalAmount(appointment.getTotalprice().toString());
+        model.setProductCode("QUICK_MSECURITY_PAY");
+        request.setBizModel(model);
+        request.setNotifyUrl("http://1548i94i39.iok.la/" + "pay/alipay_notify_url");
+        AlipayTradeAppPayResponse response = alipayClient.sdkExecute(request);
+        System.out.println(response.getBody());// 就是orderString
+                                               // 可以直接给客户端请求，无需再做处理。
+        appointment.setAlipayTradeAppPayInfo(response.getBody());
+        appointmentService.save(appointment);
+        Result result = new Result();
+        result.setData(appointment);
+        result.setResult(true);
+        return result;
+    }
+    
+    @RequestMapping(value = "tradeClose", method = RequestMethod.POST)
+    @ApiOperation(value = "支付宝关闭交易", notes = "支付宝关闭交易", httpMethod = "POST")
+    @ApiParam(value = "id")
+    @ResponseBody
+    public Result tradeClose(@RequestParam int id,
+            @RequestParam String tradeNo,
+            HttpServletRequest httpServletRequest)
+            throws AlipayApiException {
+        Appointment appointment = new Appointment();
+        appointment.setId(id);
+        Result result = new Result<>();
+        AlipayClient alipayClient = new DefaultAlipayClient("https://openapi.alipay.com/gateway.do",appId,privateKey,"json","utf-8",publicKey,signType);
+        AlipayTradeCloseRequest request = new AlipayTradeCloseRequest();
+        request.setBizContent("{" +
+        "\"trade_no\":"+tradeNo+"\"," +
+        "\"out_trade_no\":\""+id+"\"," +
+        "  }");
+        AlipayTradeCloseResponse response = alipayClient.execute(request);
+        if(response.isSuccess()){
+            appointment.setState(AppointmentState.CANCEL.toString());
+            appointmentService.save(appointment);
+        System.out.println("调用成功");
+        result.setResult(true);
+        } else {
+            result.setResult(false);
+        System.out.println("调用失败");
+        }
+        return result;
+    }
 
 }

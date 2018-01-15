@@ -1,223 +1,301 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.cdhaixun.persistence.AppointmentMapper">
-    <resultMap id="BaseResultMap" type="com.cdhaixun.domain.Appointment">
-        <id column="id" property="id" jdbcType="INTEGER"/>
-        <result column="createtime" property="createtime" jdbcType="TIMESTAMP"/>
-        <result column="userid" property="userid" jdbcType="INTEGER"/>
-        <result column="storeid" property="storeid" jdbcType="INTEGER"/>
-        <result column="state" property="state" jdbcType="CHAR"/>
-        <result column="isdelete" property="isdelete" jdbcType="BIT"/>
-        <result column="remark" property="remark" jdbcType="VARCHAR"/>
-        <result column="starttime" property="starttime" jdbcType="TIMESTAMP"/>
-        <result column="endtime" property="endtime" jdbcType="TIMESTAMP"/>
-        <result column="technicianid" property="technicianid" jdbcType="INTEGER"/>
-        <result column="potionid" property="potionid" jdbcType="INTEGER"/>
-        <result column="paystate" property="paystate" jdbcType="INTEGER"/>
-        <result column="paytime" property="paytime" jdbcType="TIMESTAMP"/>
-        <result column="potionprice" property="paytime" jdbcType="DECIMAL"/>
-        <result column="totalprice" property="totalprice" jdbcType="DECIMAL"/>
+	<resultMap id="BaseResultMap" type="com.cdhaixun.domain.Appointment">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+		<result column="userid" jdbcType="INTEGER" property="userid" />
+		<result column="storeid" jdbcType="INTEGER" property="storeid" />
+		<result column="isdelete" jdbcType="BIT" property="isdelete" />
+		<result column="remark" jdbcType="VARCHAR" property="remark" />
+		<result column="technicianid" jdbcType="INTEGER" property="technicianid" />
+		<result column="endtime" jdbcType="TIMESTAMP" property="endtime" />
+		<result column="starttime" jdbcType="TIMESTAMP" property="starttime" />
+		<result column="state" jdbcType="CHAR" property="state" />
+		<result column="paystate" jdbcType="BIT" property="paystate" />
+		<result column="potionprice" jdbcType="DECIMAL" property="potionprice" />
+		<result column="potionamount" jdbcType="INTEGER" property="potionamount" />
+		<result column="potionid" jdbcType="INTEGER" property="potionid" />
+		<result column="totalprice" jdbcType="DECIMAL" property="totalprice" />
+		<result column="paytime" jdbcType="TIMESTAMP" property="paytime" />
+		<result column="alipaytradeapppayinfo" jdbcType="VARCHAR"
+			property="alipaytradeapppayinfo" />
 
-    </resultMap>
-    <sql id="Base_Column_List">
-    id, createtime, userid, storeid, state, isdelete,remark,technicianid,endtime,starttime,potionid,paystate,paytime,potionprice,totalprice
-  </sql>
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-        select
-        <include refid="Base_Column_List"/>
-        from appointment
-        where id = #{id,jdbcType=INTEGER}
-    </select>
-    <select id="getAppointmentList" resultType="com.cdhaixun.vo.AppointmentVo" parameterType="map">
-        SELECT
-            a.createtime acreatetime,
-            u.`name` uname,
-            s.`name` sname,
-            t.`name` tname,
-            a.endtime aendtime,
-            a.starttime astarttime
-        FROM
-            appointment a
-        INNER JOIN `user` u ON a.userid = u.id
-        INNER JOIN store s ON a.storeid = s.id
-        INNER JOIN technician t ON a.technicianid = t.id
-        WHERE
-            a.isdelete = 0
-        AND u.isdelete = 0
-        AND s.isdelete = 0
-        AND t.isdelete = 0
-        <if test="uname != null and '' != uname">
-          AND u.name LIKE '%${uname}%'
-        </if>
-        <if test="tname != null and '' != tname">
-          AND t.name LIKE '%${tname}%'
-        </if>
-    </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from appointment
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-    <insert id="insert" parameterType="com.cdhaixun.domain.Appointment" useGeneratedKeys="true" keyProperty="id">
-    insert into appointment (id, createtime, userid, 
-      storeid, state,remark,technicianid,starttime,endtime)
-    values (#{id,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}, #{userid,jdbcType=INTEGER}, 
-      #{storeid,jdbcType=INTEGER}, #{state,jdbcType=CHAR},#{remark},#{technicianid},#{starttime},#{endtime})
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, createtime, userid, storeid, isdelete, remark, technicianid, endtime, starttime, 
+    state, paystate, potionprice, potionamount, potionid, totalprice, paytime, alipaytradeapppayinfo
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from appointment
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<select id="getAppointmentList" resultType="com.cdhaixun.vo.AppointmentVo"
+		parameterType="map">
+		SELECT
+		a.createtime acreatetime,
+		u.`name` uname,
+		s.`name` sname,
+		t.`name` tname,
+		a.endtime aendtime,
+		a.starttime astarttime
+		FROM
+		appointment a
+		INNER JOIN `user` u ON a.userid = u.id
+		INNER JOIN store s ON a.storeid = s.id
+		INNER JOIN technician t ON a.technicianid = t.id
+		WHERE
+		a.isdelete = 0
+		AND u.isdelete = 0
+		AND s.isdelete = 0
+		AND t.isdelete = 0
+		<if test="uname != null and '' != uname">
+			AND u.name LIKE '%${uname}%'
+		</if>
+		<if test="tname != null and '' != tname">
+			AND t.name LIKE '%${tname}%'
+		</if>
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from appointment
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.cdhaixun.domain.Appointment"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into appointment (id, createtime, userid,
+		storeid, state,remark,technicianid,starttime,endtime)
+		values (#{id,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP},
+		#{userid,jdbcType=INTEGER},
+		#{storeid,jdbcType=INTEGER},
+		#{state,jdbcType=CHAR},#{remark},#{technicianid},#{starttime},#{endtime})
+	</insert>
+	<insert id="insertSelective" parameterType="com.cdhaixun.domain.Appointment">
+    insert into appointment
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="createtime != null">
+        createtime,
+      </if>
+      <if test="userid != null">
+        userid,
+      </if>
+      <if test="storeid != null">
+        storeid,
+      </if>
+      <if test="isdelete != null">
+        isdelete,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="technicianid != null">
+        technicianid,
+      </if>
+      <if test="endtime != null">
+        endtime,
+      </if>
+      <if test="starttime != null">
+        starttime,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="paystate != null">
+        paystate,
+      </if>
+      <if test="potionprice != null">
+        potionprice,
+      </if>
+      <if test="potionamount != null">
+        potionamount,
+      </if>
+      <if test="potionid != null">
+        potionid,
+      </if>
+      <if test="totalprice != null">
+        totalprice,
+      </if>
+      <if test="paytime != null">
+        paytime,
+      </if>
+      <if test="alipaytradeapppayinfo != null">
+        alipaytradeapppayinfo,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="storeid != null">
+        #{storeid,jdbcType=INTEGER},
+      </if>
+      <if test="isdelete != null">
+        #{isdelete,jdbcType=BIT},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="technicianid != null">
+        #{technicianid,jdbcType=INTEGER},
+      </if>
+      <if test="endtime != null">
+        #{endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="starttime != null">
+        #{starttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=CHAR},
+      </if>
+      <if test="paystate != null">
+        #{paystate,jdbcType=BIT},
+      </if>
+      <if test="potionprice != null">
+        #{potionprice,jdbcType=DECIMAL},
+      </if>
+      <if test="potionamount != null">
+        #{potionamount,jdbcType=INTEGER},
+      </if>
+      <if test="potionid != null">
+        #{potionid,jdbcType=INTEGER},
+      </if>
+      <if test="totalprice != null">
+        #{totalprice,jdbcType=DECIMAL},
+      </if>
+      <if test="paytime != null">
+        #{paytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="alipaytradeapppayinfo != null">
+        #{alipaytradeapppayinfo,jdbcType=VARCHAR},
+      </if>
+    </trim>
   </insert>
-    <insert id="insertSelective" parameterType="com.cdhaixun.domain.Appointment">
-        insert into appointment
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                id,
-            </if>
-            <if test="createtime != null">
-                createtime,
-            </if>
-            <if test="starttime != null">
-                starttime,
-            </if>
-            <if test="endtime != null">
-                endtime,
-            </if>
-            <if test="technicianid != null">
-                technicianid,
-            </if>
-
-            <if test="userid != null">
-                userid,
-            </if>
-            <if test="remark != null">
-                remark ,
-            </if>
-            <if test="storeid != null">
-                storeid,
-            </if>
-            <if test="state != null">
-                state,
-            </if>
-            <if test="isdelete != null">
-                isdelete,
-            </if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                #{id,jdbcType=INTEGER},
-            </if>
-            <if test="createtime != null">
-                #{createtime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="starttime != null">
-                #{starttime} ,
-            </if>
-            <if test="endtime != null">
-                #{endtime},
-            </if>
-            <if test="technicianid != null">
-                #{technicianid},
-            </if>
-            <if test="userid != null">
-                #{userid,jdbcType=INTEGER},
-            </if>
-            <if test="storeid != null">
-                #{storeid,jdbcType=INTEGER},
-            </if>
-            <if test="state != null">
-                #{state,jdbcType=CHAR},
-            </if>
-            <if test="remark != null">
-                #{remark},
-            </if>
-            <if test="isdelete != null">
-                #{isdelete,jdbcType=BIT},
-            </if>
-        </trim>
-    </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.cdhaixun.domain.Appointment">
-        update appointment
-        <set>
-            <if test="createtime != null">
-                createtime = #{createtime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="starttime != null">
-                starttime = #{starttime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="endtime != null">
-                endtime = #{endtime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="userid != null">
-                userid = #{userid,jdbcType=INTEGER},
-            </if>
-            <if test="storeid != null">
-                storeid = #{storeid,jdbcType=INTEGER},
-            </if>
-            <if test="technicianid != null">
-                technicianid=#{technicianid},
-            </if>
-            <if test="state != null">
-                state = #{state,jdbcType=CHAR},
-            </if>
-            <if test="isdelete != null">
-                isdelete = #{isdelete,jdbcType=BIT},
-            </if>
-            <if test="remark != null">
-                remark = #{remark},
-            </if>
-        </set>
-        where id = #{id,jdbcType=INTEGER}
-    </update>
-    <update id="updateByPrimaryKey" parameterType="com.cdhaixun.domain.Appointment">
+	<update id="updateByPrimaryKeySelective" parameterType="com.cdhaixun.domain.Appointment">
+    update appointment
+    <set>
+      <if test="createtime != null">
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userid != null">
+        userid = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="storeid != null">
+        storeid = #{storeid,jdbcType=INTEGER},
+      </if>
+      <if test="isdelete != null">
+        isdelete = #{isdelete,jdbcType=BIT},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="technicianid != null">
+        technicianid = #{technicianid,jdbcType=INTEGER},
+      </if>
+      <if test="endtime != null">
+        endtime = #{endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="starttime != null">
+        starttime = #{starttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=CHAR},
+      </if>
+      <if test="paystate != null">
+        paystate = #{paystate,jdbcType=BIT},
+      </if>
+      <if test="potionprice != null">
+        potionprice = #{potionprice,jdbcType=DECIMAL},
+      </if>
+      <if test="potionamount != null">
+        potionamount = #{potionamount,jdbcType=INTEGER},
+      </if>
+      <if test="potionid != null">
+        potionid = #{potionid,jdbcType=INTEGER},
+      </if>
+      <if test="totalprice != null">
+        totalprice = #{totalprice,jdbcType=DECIMAL},
+      </if>
+      <if test="paytime != null">
+        paytime = #{paytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="alipaytradeapppayinfo != null">
+        alipaytradeapppayinfo = #{alipaytradeapppayinfo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+	<update id="updateByPrimaryKey" parameterType="com.cdhaixun.domain.Appointment">
     update appointment
     set createtime = #{createtime,jdbcType=TIMESTAMP},
       userid = #{userid,jdbcType=INTEGER},
-          endtime = #{endtime},
-              starttime = #{starttime},
       storeid = #{storeid,jdbcType=INTEGER},
-           technicianid=#{technicianid},
-      state = #{state,jdbcType=CHAR},
       isdelete = #{isdelete,jdbcType=BIT},
-      remark = #{remark}
+      remark = #{remark,jdbcType=VARCHAR},
+      technicianid = #{technicianid,jdbcType=INTEGER},
+      endtime = #{endtime,jdbcType=TIMESTAMP},
+      starttime = #{starttime,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=CHAR},
+      paystate = #{paystate,jdbcType=BIT},
+      potionprice = #{potionprice,jdbcType=DECIMAL},
+      potionamount = #{potionamount,jdbcType=INTEGER},
+      potionid = #{potionid,jdbcType=INTEGER},
+      totalprice = #{totalprice,jdbcType=DECIMAL},
+      paytime = #{paytime,jdbcType=TIMESTAMP},
+      alipaytradeapppayinfo = #{alipaytradeapppayinfo,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-    <select id="selectByAppointment" resultMap="BaseResultMap" parameterType="com.cdhaixun.domain.Appointment">
-        select
-        <include refid="Base_Column_List"/>
-        from appointment
-        <where>
-            <if test="createtime != null">
-                and createtime = #{createtime,jdbcType=TIMESTAMP}
-            </if>
-            <if test="starttime != null">
-                and starttime = #{starttime,jdbcType=TIMESTAMP}
-            </if>
-            <if test="starttimeFrom != null">
-                and starttime &gt;= #{starttimeFrom,jdbcType=TIMESTAMP}
-            </if>
-            <if test="starttimeTo != null">
-                and starttime &lt;#{starttimeTo,jdbcType=TIMESTAMP}
-            </if>
-            <if test="userid != null">
-                and userid = #{userid,jdbcType=INTEGER}
-            </if>
-            <if test="storeid != null">
-                and storeid = #{storeid,jdbcType=INTEGER}
-            </if>
-            <if test="technicianid != null">
-                and technicianid=#{technicianid}
-            </if>
-            <if test="state != null">
-                and state = #{state,jdbcType=CHAR}
-            </if>
-            <!-- <if test="isdelete != null">
-                and isdelete = #{isdelete,jdbcType=BIT}
-            </if> -->
-            <!-- <if test="isdelete != null"> -->
-                and isdelete = 0
-            <!-- </if> -->
-            <if test="remark != null">
-                and remark = #{remark}
-            </if>
-            <if test="orderBy != null" >
-                order by  ${orderBy}
-            </if>
-        </where>
-    </select>
+	<select id="selectByAppointment" resultMap="BaseResultMap"
+		parameterType="com.cdhaixun.domain.Appointment">
+		select
+		<include refid="Base_Column_List" />
+		from appointment
+		<where>
+			<if test="createtime != null">
+				and createtime = #{createtime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="starttime != null">
+				and starttime = #{starttime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="starttimeFrom != null">
+				and starttime &gt;= #{starttimeFrom,jdbcType=TIMESTAMP}
+			</if>
+			<if test="starttimeTo != null">
+				and starttime &lt;#{starttimeTo,jdbcType=TIMESTAMP}
+			</if>
+			<if test="userid != null">
+				and userid = #{userid,jdbcType=INTEGER}
+			</if>
+			<if test="storeid != null">
+				and storeid = #{storeid,jdbcType=INTEGER}
+			</if>
+			<if test="technicianid != null">
+				and technicianid=#{technicianid}
+			</if>
+			<if test="state != null">
+				and state = #{state,jdbcType=CHAR}
+			</if>
+			<!-- <if test="isdelete != null"> and isdelete = #{isdelete,jdbcType=BIT} 
+				</if> -->
+			<!-- <if test="isdelete != null"> -->
+			and isdelete = 0
+			<!-- </if> -->
+			<if test="remark != null">
+				and remark = #{remark}
+			</if>
+			<if test="orderBy != null">
+				order by ${orderBy}
+			</if>
+		</where>
+	</select>
 </mapper>
