@@ -188,7 +188,7 @@ public class AppointmentAppController {
             }
         });
 
-       
+
         List<com.cdhaixun.domain.Appointment> appointmentList1 = appointmentService.findByStartTimeAndTechnicianId(new Date(), appointment1Db.getEndtime(), appointment.getTechnicianid());
         appointment1Db.setAppointnumber(appointmentList1.size());
         result.setData(appointment1Db);
