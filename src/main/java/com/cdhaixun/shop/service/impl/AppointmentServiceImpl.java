@@ -7,7 +7,6 @@ import com.cdhaixun.vo.AppointmentVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import static org.hamcrest.CoreMatchers.nullValue;
 
 import java.util.Date;
 import java.util.List;
