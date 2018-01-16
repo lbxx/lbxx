@@ -1,30 +1,19 @@
 package com.cdhaixun.shop.web;
 
-import java.io.IOException;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.lang.reflect.InvocationTargetException;
-import java.math.BigDecimal;
-import java.nio.charset.Charset;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.UUID;
-
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
-import javax.servlet.http.HttpServletRequest;
-import javax.xml.bind.Marshaller;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
-
+import com.alipay.api.AlipayApiException;
+import com.alipay.api.internal.util.AlipaySignature;
+import com.cdhaixun.common.emun.AppointmentState;
+import com.cdhaixun.common.web.BaseController;
+import com.cdhaixun.common.wechatPay.*;
+import com.cdhaixun.common.yyyVo.Pay;
+import com.cdhaixun.common.yyyVo.PayResult;
+import com.cdhaixun.domain.Appointment;
+import com.cdhaixun.domain.Store;
+import com.cdhaixun.shop.service.IAppointmentService;
+import com.cdhaixun.shop.service.IPayInfoService;
+import com.cdhaixun.shop.service.IStoreService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -44,32 +33,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
-import com.alipay.api.AlipayApiException;
-import com.alipay.api.internal.util.AlipaySignature;
-import com.cdhaixun.common.emun.AppointmentState;
-import com.cdhaixun.common.web.BaseController;
-import com.cdhaixun.common.wechatPay.OrderQuery;
-import com.cdhaixun.common.wechatPay.PayAction;
-import com.cdhaixun.common.wechatPay.PayReturn;
-import com.cdhaixun.common.wechatPay.QueryReturn;
-import com.cdhaixun.common.wechatPay.UnifiedOrder;
-import com.cdhaixun.common.wechatPay.UnifiedOrderResult;
-import com.cdhaixun.common.yyyVo.Pay;
-import com.cdhaixun.common.yyyVo.PayResult;
-import com.cdhaixun.domain.Appointment;
-import com.cdhaixun.domain.Store;
-import com.cdhaixun.shop.service.IAppointmentService;
-import com.cdhaixun.shop.service.IPayInfoService;
-import com.cdhaixun.shop.service.IStoreService;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import io.swagger.annotations.ApiOperation;
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+import javax.servlet.http.HttpServletRequest;
+import javax.xml.bind.Marshaller;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
+import java.nio.charset.Charset;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.util.*;
 
 /**
  * Created by tangxinmao on 2017/6/23.
@@ -93,7 +73,7 @@ public class PayController extends BaseController {
     private String orderquery;
     @Value("#{configProperties['appId']}")
     private String appId;
-    @Value("#{configProperties['publicKey']}")
+    @Value("#{configProperties['alipayPulicKey']}")
     private String publicKey;
     @Value("#{configProperties['privateKey']}")
     private String privateKey;
@@ -572,7 +552,7 @@ public class PayController extends BaseController {
         // boolean AlipaySignature.rsaCheckV1(Map<String, String> params, String
         // publicKey, String charset, String sign_type)
         // 调用SDK验证签名
-        boolean signVerified = AlipaySignature.rsaCheckV1(params, publicKey, charSet, signType);
+        boolean signVerified = AlipaySignature.rsaCheckV1(params, publicKey, charSet);
 
         if (signVerified) {
             if ("TRADE_SUCCESS".equals(treeMap.get("trade_status"))) {

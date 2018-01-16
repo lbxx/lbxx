@@ -81,7 +81,7 @@ public class AppointmentAppController {
     private String privateKey;
     @Value("#{configProperties['format']}")
     private String format;
-    @Value("#{configProperties['publicKey']}")
+    @Value("#{configProperties['alipayPulicKey']}")
     private String publicKey;
     @Value("#{configProperties['signType']}")
     private String signType;
