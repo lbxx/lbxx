@@ -7,6 +7,8 @@ import com.cdhaixun.vo.AppointmentVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import static org.hamcrest.CoreMatchers.nullValue;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -37,9 +39,15 @@ public class AppointmentServiceImpl implements IAppointmentService {
     }
 
     @Override
-    public List<Appointment> findByUserId(Integer userid) {
+    public List<Appointment> findByUserId(Integer userId,String state) {
         Appointment appointment=new Appointment();
-        appointment.setUserid(userid);
+        appointment.setUserid(userId);
+        if ("All".equals(state)) { //查询全部
+            appointment.setState(null);
+        }
+        if ("APPOINTMEBTING".equals(state)) {
+            appointment.setState("PAY");
+        }
         appointment.setOrderBy("createtime desc");
         return appointmentMapper.selectByAppointment(appointment);
     }
@@ -54,13 +62,4 @@ public class AppointmentServiceImpl implements IAppointmentService {
         return appointmentMapper.selectByPrimaryKey(id);
     }
 
-    @Override
-    public List<Appointment> findByUserId(Integer userid, String state) {
-        Appointment appointment=new Appointment();
-        appointment.setUserid(userid);
-        if (state != null && !"0".equals(state)) {
-            appointment.setState(state);
-        }
-        return appointmentMapper.selectByAppointment(appointment);
-    }
 }

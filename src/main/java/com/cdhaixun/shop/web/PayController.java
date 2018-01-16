@@ -581,64 +581,6 @@ public class PayController extends BaseController {
 
     }
 
-    @RequestMapping(value = "tradeCreate", method = RequestMethod.POST)
-    @ApiOperation(value = "支付宝创建新订单", notes = "支付宝创建新订单", httpMethod = "POST")
-    @ResponseBody
-    public Result tradeCreate(@RequestBody Appointment appointment, HttpServletRequest httpServletRequest)
-            throws AlipayApiException {
-
-        AlipayClient alipayClient = new DefaultAlipayClient(alipayDomain, appId, privateKey, "json", "utf-8", publicKey,
-                signType);
-        // 实例化具体API对应的request类,类名称和接口名称对应,当前调用接口名称：alipay.trade.app.pay
-        AlipayTradeAppPayRequest request = new AlipayTradeAppPayRequest();
-        // SDK已经封装掉了公共参数，这里只需要传入业务参数。以下方法为sdk的model入参方式(model和biz_content同时存在的情况下取biz_content)。
-        AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
-        /* model.setBody("我是测试数据"); */
-        model.setSubject("预约");
-        model.setOutTradeNo(appointment.getOutTradeNo().toString());
-        model.setTimeoutExpress("30m");
-        model.setTotalAmount(appointment.getTotalprice().toString());
-        model.setProductCode("QUICK_MSECURITY_PAY");
-        request.setBizModel(model);
-        request.setNotifyUrl(domain + "pay/alipay_notify_url");
-        AlipayTradeAppPayResponse response = alipayClient.sdkExecute(request);
-        System.out.println(response.getBody());// 就是orderString
-                                               // 可以直接给客户端请求，无需再做处理。
-        appointment.setAlipayTradeAppPayInfo(response.getBody());
-        appointmentService.save(appointment);
-        Result result = new Result();
-        result.setData(appointment);
-        result.setResult(true);
-        return result;
-    }
     
-    @RequestMapping(value = "tradeClose", method = RequestMethod.POST)
-    @ApiOperation(value = "支付宝关闭交易", notes = "支付宝关闭交易", httpMethod = "POST")
-    @ApiParam(value = "id")
-    @ResponseBody
-    public Result tradeClose(@ApiParam(name="id",value="预约id",required=true) @RequestParam int id,
-            @ApiParam(name="outTradeNo",value="商户唯一订单号,即预约订单号",required=true) @RequestParam String outTradeNo,
-            HttpServletRequest httpServletRequest)
-            throws AlipayApiException {
-        Appointment appointment = new Appointment();
-        appointment.setId(id);
-        Result result = new Result<>();
-        AlipayClient alipayClient = new DefaultAlipayClient(alipayDomain,appId,privateKey,"json","utf-8",publicKey,signType);
-        AlipayTradeCloseRequest request = new AlipayTradeCloseRequest();
-        request.setBizContent("{" +
-        "\"out_trade_no\":\""+outTradeNo+"\"," +
-        "  }");
-        AlipayTradeCloseResponse response = alipayClient.execute(request);
-        if(response.isSuccess()){
-            appointment.setState(AppointmentState.CANCEL.toString());
-            appointmentService.save(appointment);
-        System.out.println("调用成功");
-        result.setResult(true);
-        } else {
-            result.setResult(false);
-        System.out.println("调用失败");
-        }
-        return result;
-    }
 
 }
