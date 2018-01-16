@@ -599,7 +599,7 @@ public class PayController extends BaseController {
         AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
         /* model.setBody("我是测试数据"); */
         model.setSubject("预约");
-        model.setOutTradeNo(appointment.getId().toString());
+        model.setOutTradeNo(appointment.getOutTradeNo().toString());
         model.setTimeoutExpress("30m");
         model.setTotalAmount(appointment.getTotalprice().toString());
         model.setProductCode("QUICK_MSECURITY_PAY");
@@ -620,8 +620,8 @@ public class PayController extends BaseController {
     @ApiOperation(value = "支付宝关闭交易", notes = "支付宝关闭交易", httpMethod = "POST")
     @ApiParam(value = "id")
     @ResponseBody
-    public Result tradeClose(@RequestParam int id,
-            @RequestParam String tradeNo,
+    public Result tradeClose(@ApiParam(name="id",value="预约id",required=true) @RequestParam int id,
+            @ApiParam(name="outTradeNo",value="商户唯一订单号,即预约订单号",required=true) @RequestParam String outTradeNo,
             HttpServletRequest httpServletRequest)
             throws AlipayApiException {
         Appointment appointment = new Appointment();
@@ -630,8 +630,7 @@ public class PayController extends BaseController {
         AlipayClient alipayClient = new DefaultAlipayClient(alipayDomain,appId,privateKey,"json","utf-8",publicKey,signType);
         AlipayTradeCloseRequest request = new AlipayTradeCloseRequest();
         request.setBizContent("{" +
-        "\"trade_no\":"+tradeNo+"\"," +
-        "\"out_trade_no\":\""+id+"\"," +
+        "\"out_trade_no\":\""+outTradeNo+"\"," +
         "  }");
         AlipayTradeCloseResponse response = alipayClient.execute(request);
         if(response.isSuccess()){

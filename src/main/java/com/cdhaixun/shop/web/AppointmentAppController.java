@@ -112,6 +112,7 @@ public class AppointmentAppController {
         appointment1Db.setStarttime(starttime);
         appointment1Db.setCreatetime(new Date());
         appointment1Db.setState(AppointmentState.NOPAY.toString());
+        appointment1Db.setOutTradeNo(String.valueOf(System.currentTimeMillis()));
         //appointmentService.save(appointment1Db);
         AlipayClient alipayClient = new DefaultAlipayClient(alipayDomain,appId, privateKey, "json","utf-8",publicKey, signType);
 //实例化具体API对应的request类,类名称和接口名称对应,当前调用接口名称：alipay.trade.app.pay
@@ -120,7 +121,7 @@ public class AppointmentAppController {
         AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
       /*  model.setBody("我是测试数据");*/
         model.setSubject("预约");
-        model.setOutTradeNo(appointment.getId().toString());
+        model.setOutTradeNo(appointment1Db.getOutTradeNo());
         model.setTimeoutExpress("30m");
         model.setTotalAmount(appointment1Db.getTotalprice().toString());
         model.setProductCode("QUICK_MSECURITY_PAY");

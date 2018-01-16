@@ -34,6 +34,7 @@ public class Appointment {
     private Date paytime;
     private AppointmentDetail appointmentDetail;
     private String alipayTradeAppPayInfo ;
+    private String outTradeNo ;
 
     public String getAlipayTradeAppPayInfo() {
         return alipayTradeAppPayInfo;
@@ -262,6 +263,14 @@ public class Appointment {
 
     public void setIsdelete(Boolean isdelete) {
         this.isdelete = isdelete;
+    }
+
+    public String getOutTradeNo() {
+        return outTradeNo;
+    }
+
+    public void setOutTradeNo(String outTradeNo) {
+        this.outTradeNo = outTradeNo;
     }
 
 

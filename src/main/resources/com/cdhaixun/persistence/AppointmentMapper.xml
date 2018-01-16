@@ -20,11 +20,13 @@
 		<result column="paytime" jdbcType="TIMESTAMP" property="paytime" />
 		<result column="alipaytradeapppayinfo" jdbcType="VARCHAR"
 			property="alipaytradeapppayinfo" />
+		<result column="outtradeno" jdbcType="VARCHAR"
+			property="outTradeNo" />
 
 	</resultMap>
 	<sql id="Base_Column_List">
 		id, createtime, userid, storeid, isdelete, remark, technicianid, endtime, starttime, 
-    state, paystate, potionprice, potionamount, potionid, totalprice, paytime, alipaytradeapppayinfo
+    state, paystate, potionprice, potionamount, potionid, totalprice, paytime, alipaytradeapppayinfo,outtradeno
 	</sql>
 	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
 		parameterType="java.lang.Integer">
@@ -126,6 +128,9 @@
       <if test="alipaytradeapppayinfo != null">
         alipaytradeapppayinfo,
       </if>
+      <if test="outTradeNo != null">
+        outtradeno,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -178,6 +183,9 @@
       </if>
       <if test="alipaytradeapppayinfo != null">
         #{alipaytradeapppayinfo,jdbcType=VARCHAR},
+      </if>
+      <if test="outTradeNo != null">
+        #{outTradeNo,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -232,6 +240,9 @@
       <if test="alipaytradeapppayinfo != null">
         alipaytradeapppayinfo = #{alipaytradeapppayinfo,jdbcType=VARCHAR},
       </if>
+      <if test="outTradeNo != null">
+        outtradeno = #{outTradeNo,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -253,6 +264,7 @@
       totalprice = #{totalprice,jdbcType=DECIMAL},
       paytime = #{paytime,jdbcType=TIMESTAMP},
       alipaytradeapppayinfo = #{alipaytradeapppayinfo,jdbcType=VARCHAR}
+      outtradeno = #{outTradeNo,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 	<select id="selectByAppointment" resultMap="BaseResultMap"
