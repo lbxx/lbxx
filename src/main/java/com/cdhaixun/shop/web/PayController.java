@@ -92,6 +92,8 @@ public class PayController extends BaseController {
     private String privateKey;
     @Value("#{configProperties['signType']}")
     private String signType;
+    @Value("#{configProperties['alipayDomain']}")
+    private String alipayDomain;
 
     @Autowired
     private IStoreService storeService;
@@ -589,7 +591,7 @@ public class PayController extends BaseController {
     public Result tradeCreate(@RequestBody Appointment appointment, HttpServletRequest httpServletRequest)
             throws AlipayApiException {
 
-        AlipayClient alipayClient = new DefaultAlipayClient(domain, appId, privateKey, "json", "utf-8", publicKey,
+        AlipayClient alipayClient = new DefaultAlipayClient(alipayDomain, appId, privateKey, "json", "utf-8", publicKey,
                 signType);
         // 实例化具体API对应的request类,类名称和接口名称对应,当前调用接口名称：alipay.trade.app.pay
         AlipayTradeAppPayRequest request = new AlipayTradeAppPayRequest();
@@ -602,7 +604,7 @@ public class PayController extends BaseController {
         model.setTotalAmount(appointment.getTotalprice().toString());
         model.setProductCode("QUICK_MSECURITY_PAY");
         request.setBizModel(model);
-        request.setNotifyUrl("http://1548i94i39.iok.la/" + "pay/alipay_notify_url");
+        request.setNotifyUrl(domain + "pay/alipay_notify_url");
         AlipayTradeAppPayResponse response = alipayClient.sdkExecute(request);
         System.out.println(response.getBody());// 就是orderString
                                                // 可以直接给客户端请求，无需再做处理。
@@ -625,7 +627,7 @@ public class PayController extends BaseController {
         Appointment appointment = new Appointment();
         appointment.setId(id);
         Result result = new Result<>();
-        AlipayClient alipayClient = new DefaultAlipayClient("https://openapi.alipay.com/gateway.do",appId,privateKey,"json","utf-8",publicKey,signType);
+        AlipayClient alipayClient = new DefaultAlipayClient(alipayDomain,appId,privateKey,"json","utf-8",publicKey,signType);
         AlipayTradeCloseRequest request = new AlipayTradeCloseRequest();
         request.setBizContent("{" +
         "\"trade_no\":"+tradeNo+"\"," +

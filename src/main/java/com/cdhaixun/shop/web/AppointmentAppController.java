@@ -72,6 +72,8 @@ public class AppointmentAppController {
     private String publicKey;
     @Value("#{configProperties['signType']}")
     private String signType;
+    @Value("#{configProperties['alipayDomain']}")
+    private String alipayDomain;
     /*采用线程池提高性能*/
     private static final Executor EXECUTOR = new ThreadPoolExecutor(30, 100, 30,
             TimeUnit.MINUTES, new ArrayBlockingQueue<Runnable>(10)
@@ -111,7 +113,7 @@ public class AppointmentAppController {
         appointment1Db.setCreatetime(new Date());
         appointment1Db.setState(AppointmentState.NOPAY.toString());
         //appointmentService.save(appointment1Db);
-        AlipayClient alipayClient = new DefaultAlipayClient(domain,appId, privateKey, "json","utf-8",publicKey, signType);
+        AlipayClient alipayClient = new DefaultAlipayClient(alipayDomain,appId, privateKey, "json","utf-8",publicKey, signType);
 //实例化具体API对应的request类,类名称和接口名称对应,当前调用接口名称：alipay.trade.app.pay
         AlipayTradeAppPayRequest request = new AlipayTradeAppPayRequest();
 //SDK已经封装掉了公共参数，这里只需要传入业务参数。以下方法为sdk的model入参方式(model和biz_content同时存在的情况下取biz_content)。
@@ -123,7 +125,7 @@ public class AppointmentAppController {
         model.setTotalAmount(appointment1Db.getTotalprice().toString());
         model.setProductCode("QUICK_MSECURITY_PAY");
         request.setBizModel(model);
-        request.setNotifyUrl("http://1548i94i39.iok.la/" + "pay/alipay_notify_url");
+        request.setNotifyUrl(domain + "pay/alipay_notify_url");
         AlipayTradeAppPayResponse response = alipayClient.sdkExecute(request);
         System.out.println(response.getBody());//就是orderString 可以直接给客户端请求，无需再做处理。
         appointment1Db.setAlipayTradeAppPayInfo(response.getBody());
