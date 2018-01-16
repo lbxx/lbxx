@@ -9,8 +9,6 @@ import com.alipay.api.request.AlipayTradeAppPayRequest;
 import com.alipay.api.request.AlipayTradeCloseRequest;
 import com.alipay.api.response.AlipayTradeAppPayResponse;
 import com.alipay.api.response.AlipayTradeCloseResponse;
-import com.allinpay.ets.client.SecurityUtil;
-import com.allinpay.ets.client.util.Base64;
 import com.cdhaixun.common.appVo.Result;
 import com.cdhaixun.common.emun.AppointmentState;
 import com.cdhaixun.common.web.BaseController;
@@ -25,14 +23,12 @@ import com.cdhaixun.shop.service.IStoreService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -271,7 +267,7 @@ public class PayController extends BaseController {
      * @param returnDatetime
      * @param signMsg
      */
-    @RequestMapping(value = "callback", method = RequestMethod.POST)
+   /* @RequestMapping(value = "callback", method = RequestMethod.POST)
     @ApiOperation(value = "支付服务器回调地址")
     public void callback(@RequestParam String merchantId, @RequestParam String version,
             @RequestParam(required = false) String language, @RequestParam String signType,
@@ -326,7 +322,7 @@ public class PayController extends BaseController {
                 appointmentService.save(appointment);
             }
         }
-    }
+    }*/
 
     /**
      * 微信支付同一下单
