@@ -123,7 +123,8 @@ public class AppointmentAppController {
         model.setSubject("预约");
         model.setOutTradeNo(appointment1Db.getOutTradeNo());
         model.setTimeoutExpress("30m");
-        model.setTotalAmount(appointment1Db.getTotalprice().toString());
+//        model.setTotalAmount(appointment1Db.getTotalprice().toString());
+        model.setTotalAmount("0.01");
         model.setProductCode("QUICK_MSECURITY_PAY");
         request.setBizModel(model);
         request.setNotifyUrl(domain + "pay/alipay_notify_url");
