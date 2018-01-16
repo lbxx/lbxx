@@ -1,8 +1,9 @@
 package com.cdhaixun.common.controllerAdvice;
 
 import com.cdhaixun.common.appVo.Result;
-import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -12,7 +13,7 @@ import java.io.StringWriter;
 
 @RestControllerAdvice
 public class ControllerAdvice {
-    private static Log logger = LogFactory.getLog(ControllerAdvice.class);
+    static Logger logger = LogManager.getLogger(LogManager.ROOT_LOGGER_NAME);
 
     @ExceptionHandler(value = RuntimeException.class)
     @ResponseBody
