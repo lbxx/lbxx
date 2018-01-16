@@ -26,4 +26,6 @@ public interface IAppointmentService {
     List<AppointmentVo> getAppointmentList(Map<String, Object> parMap);
 
     Appointment findById(Integer id);
+
+    Appointment findByOutTradeNo(String outTradeNo);
 }

@@ -1,28 +1,30 @@
 package com.cdhaixun.shop.web;
 
-import com.alipay.api.AlipayApiException;
-import com.alipay.api.AlipayClient;
-import com.alipay.api.DefaultAlipayClient;
-import com.alipay.api.domain.AlipayTradeAppPayModel;
-import com.alipay.api.internal.util.AlipaySignature;
-import com.alipay.api.request.AlipayTradeAppPayRequest;
-import com.alipay.api.request.AlipayTradeCloseRequest;
-import com.alipay.api.response.AlipayTradeAppPayResponse;
-import com.alipay.api.response.AlipayTradeCloseResponse;
-import com.cdhaixun.common.appVo.Result;
-import com.cdhaixun.common.emun.AppointmentState;
-import com.cdhaixun.common.web.BaseController;
-import com.cdhaixun.common.wechatPay.*;
-import com.cdhaixun.common.yyyVo.Pay;
-import com.cdhaixun.common.yyyVo.PayResult;
-import com.cdhaixun.domain.Appointment;
-import com.cdhaixun.domain.Store;
-import com.cdhaixun.shop.service.IAppointmentService;
-import com.cdhaixun.shop.service.IPayInfoService;
-import com.cdhaixun.shop.service.IStoreService;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
+import java.nio.charset.Charset;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.UUID;
+
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+import javax.servlet.http.HttpServletRequest;
+import javax.xml.bind.Marshaller;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -42,23 +44,32 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
-import javax.servlet.http.HttpServletRequest;
-import javax.xml.bind.Marshaller;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
-import java.io.IOException;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.lang.reflect.InvocationTargetException;
-import java.math.BigDecimal;
-import java.nio.charset.Charset;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.util.*;
+import com.alipay.api.AlipayApiException;
+import com.alipay.api.internal.util.AlipaySignature;
+import com.cdhaixun.common.emun.AppointmentState;
+import com.cdhaixun.common.web.BaseController;
+import com.cdhaixun.common.wechatPay.OrderQuery;
+import com.cdhaixun.common.wechatPay.PayAction;
+import com.cdhaixun.common.wechatPay.PayReturn;
+import com.cdhaixun.common.wechatPay.QueryReturn;
+import com.cdhaixun.common.wechatPay.UnifiedOrder;
+import com.cdhaixun.common.wechatPay.UnifiedOrderResult;
+import com.cdhaixun.common.yyyVo.Pay;
+import com.cdhaixun.common.yyyVo.PayResult;
+import com.cdhaixun.domain.Appointment;
+import com.cdhaixun.domain.Store;
+import com.cdhaixun.shop.service.IAppointmentService;
+import com.cdhaixun.shop.service.IPayInfoService;
+import com.cdhaixun.shop.service.IStoreService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.swagger.annotations.ApiOperation;
 
 /**
  * Created by tangxinmao on 2017/6/23.
@@ -565,7 +576,8 @@ public class PayController extends BaseController {
 
         if (signVerified) {
             if ("TRADE_SUCCESS".equals(treeMap.get("trade_status"))) {
-                Appointment appointment = appointmentService.findById(Integer.parseInt(out_trade_no));
+//                Appointment appointment = appointmentService.findById(Integer.parseInt(out_trade_no));
+                Appointment appointment = appointmentService.findByOutTradeNo(out_trade_no);
                 appointment.setState(AppointmentState.PAY.toString());
                 appointmentService.save(appointment);
                 return "success";

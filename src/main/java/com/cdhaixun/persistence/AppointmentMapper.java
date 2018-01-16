@@ -22,4 +22,6 @@ public interface AppointmentMapper {
     List<Appointment> selectByAppointment(Appointment appointment);
 
     List<AppointmentVo> getAppointmentList(Map<String, Object> parMap);
+
+    Appointment findByOutTradeNo(String outTradeNo);
 }

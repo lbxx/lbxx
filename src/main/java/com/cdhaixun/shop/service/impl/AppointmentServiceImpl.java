@@ -41,11 +41,12 @@ public class AppointmentServiceImpl implements IAppointmentService {
     public List<Appointment> findByUserId(Integer userId,String state) {
         Appointment appointment=new Appointment();
         appointment.setUserid(userId);
-        if ("All".equals(state)) { //查询全部
+        if ("ALL".equals(state)) { //查询全部
             appointment.setState(null);
-        }
-        if ("APPOINTMEBTING".equals(state)) {
+        }else if ("APPOINTMEBTING".equals(state)) {
             appointment.setState("PAY");
+        }else{
+            appointment.setState(state);
         }
         appointment.setOrderBy("createtime desc");
         return appointmentMapper.selectByAppointment(appointment);
@@ -59,6 +60,11 @@ public class AppointmentServiceImpl implements IAppointmentService {
     @Override
     public Appointment findById(Integer id) {
         return appointmentMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public Appointment findByOutTradeNo(String outTradeNo) {
+        return appointmentMapper.findByOutTradeNo(outTradeNo);
     }
 
 }
