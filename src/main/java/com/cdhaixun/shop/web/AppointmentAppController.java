@@ -120,7 +120,7 @@ public class AppointmentAppController {
         AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
       /*  model.setBody("我是测试数据");*/
         model.setSubject("预约");
-        model.setOutTradeNo(appointment1Db.getId().toString());
+        model.setOutTradeNo(appointment.getId().toString());
         model.setTimeoutExpress("30m");
         model.setTotalAmount(appointment1Db.getTotalprice().toString());
         model.setProductCode("QUICK_MSECURITY_PAY");
