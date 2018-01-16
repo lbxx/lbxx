@@ -19,7 +19,7 @@
 		<result column="totalprice" jdbcType="DECIMAL" property="totalprice" />
 		<result column="paytime" jdbcType="TIMESTAMP" property="paytime" />
 		<result column="alipaytradeapppayinfo" jdbcType="VARCHAR"
-			property="alipaytradeapppayinfo" />
+			property="alipayTradeAppPayInfo" />
 		<result column="outtradeno" jdbcType="VARCHAR"
 			property="outTradeNo" />
 
@@ -125,7 +125,7 @@
       <if test="paytime != null">
         paytime,
       </if>
-      <if test="alipaytradeapppayinfo != null">
+      <if test="alipayTradeAppPayInfo != null">
         alipaytradeapppayinfo,
       </if>
       <if test="outTradeNo != null">
@@ -181,8 +181,8 @@
       <if test="paytime != null">
         #{paytime,jdbcType=TIMESTAMP},
       </if>
-      <if test="alipaytradeapppayinfo != null">
-        #{alipaytradeapppayinfo,jdbcType=VARCHAR},
+      <if test="alipayTradeAppPayInfo != null">
+        #{alipayTradeAppPayInfo,jdbcType=VARCHAR},
       </if>
       <if test="outTradeNo != null">
         #{outTradeNo,jdbcType=VARCHAR},
@@ -237,8 +237,8 @@
       <if test="paytime != null">
         paytime = #{paytime,jdbcType=TIMESTAMP},
       </if>
-      <if test="alipaytradeapppayinfo != null">
-        alipaytradeapppayinfo = #{alipaytradeapppayinfo,jdbcType=VARCHAR},
+      <if test="alipayTradeAppPayInfo != null">
+        alipaytradeapppayinfo = #{alipayTradeAppPayInfo,jdbcType=VARCHAR},
       </if>
       <if test="outTradeNo != null">
         outtradeno = #{outTradeNo,jdbcType=VARCHAR},
@@ -263,7 +263,7 @@
       potionid = #{potionid,jdbcType=INTEGER},
       totalprice = #{totalprice,jdbcType=DECIMAL},
       paytime = #{paytime,jdbcType=TIMESTAMP},
-      alipaytradeapppayinfo = #{alipaytradeapppayinfo,jdbcType=VARCHAR}
+      alipaytradeapppayinfo = #{alipayTradeAppPayInfo,jdbcType=VARCHAR}
       outtradeno = #{outTradeNo,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>

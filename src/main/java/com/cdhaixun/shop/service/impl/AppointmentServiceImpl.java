@@ -21,7 +21,7 @@ public class AppointmentServiceImpl implements IAppointmentService {
     @Override
     public void save(Appointment appointment) {
         if(appointment.getId()==null){
-            appointmentMapper.insert(appointment);
+            appointmentMapper.insertSelective(appointment);
         }else {
             appointmentMapper.updateByPrimaryKeySelective(appointment);
         }
