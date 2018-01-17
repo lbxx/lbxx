@@ -74,7 +74,7 @@
 		#{storeid,jdbcType=INTEGER},
 		#{state,jdbcType=CHAR},#{remark},#{technicianid},#{starttime},#{endtime})
 	</insert>
-	<insert id="insertSelective" parameterType="com.cdhaixun.domain.Appointment">
+	<insert id="insertSelective" parameterType="com.cdhaixun.domain.Appointment" useGeneratedKeys="true" keyProperty="id">
     insert into appointment
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
