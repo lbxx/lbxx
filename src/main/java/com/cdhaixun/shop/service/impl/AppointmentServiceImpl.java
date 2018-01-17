@@ -43,8 +43,6 @@ public class AppointmentServiceImpl implements IAppointmentService {
         appointment.setUserid(userId);
         if ("ALL".equals(state)) { //查询全部
             appointment.setState(null);
-        }else if ("APPOINTMEBTING".equals(state)) {
-            appointment.setState("PAY");
         }else{
             appointment.setState(state);
         }

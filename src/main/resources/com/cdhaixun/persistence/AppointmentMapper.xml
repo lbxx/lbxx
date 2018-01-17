@@ -303,8 +303,27 @@
                 and remark = #{remark}
             </if>
 			<if test="state != null">
-				and state = #{state,jdbcType=CHAR}
-				having endtime > now()  
+			 <choose>
+			     <when test="state == 'APPOINTMEBTING'">
+				    and state = 'PAY'
+				    and endtime > now()  
+			     </when>
+			     <when test="state == 'FINISHED'">
+				    and state = 'PAY'
+				    and endtime &lt;= now()  
+			     </when>
+			     <when test="state == 'NOPAY'">
+				    and state = 'NOPAY'
+				    and endtime > now()  
+			     </when>
+			     <when test="state == 'FAILURE'">
+				    and state = 'NOPAY'
+				    and endtime &lt;= now()  
+			     </when>
+			     <otherwise>
+			        and state = 'CANCEL'
+			     </otherwise>
+			 </choose>
 			</if>
 			<if test="orderBy != null">
 				order by ${orderBy}

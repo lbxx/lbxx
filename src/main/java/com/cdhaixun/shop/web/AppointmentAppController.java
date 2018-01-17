@@ -232,11 +232,11 @@ public class AppointmentAppController {
         Result result = new Result();
         List<com.cdhaixun.domain.Appointment> appointmentList = appointmentService.findByUserId(appointment.getUserid(),appointment.getState());
         for (com.cdhaixun.domain.Appointment appointment1 : appointmentList) {
-            if (appointment1.getEndtime().compareTo(new Date()) < 0) {
-                appointment1.setState("已结束");
-            } else {
-                appointment1.setState("预约中");
-            }
+//            if (appointment1.getEndtime().compareTo(new Date()) < 0) {
+//                appointment1.setState("已结束");
+//            } else {
+//                appointment1.setState("预约中");
+//            }
             appointment1.setTechnician(technicianService.findById(appointment.getTechnicianid()));
             appointment1.setStore(storeService.findById(appointment.getStoreid()));
 
@@ -328,6 +328,11 @@ public class AppointmentAppController {
             throws AlipayApiException {
         Result result = new Result<>();
         com.cdhaixun.domain.Appointment appointment = appointmentService.findById(id);
+        if("PAY".equals(appointment.getState())){ //状态为支付成功,则不能取消
+            result.setResult(false);
+            result.setMsg("支付完成的订单暂不提供取消");
+            return result;
+        }
         //调用支付宝交易关闭接口
         AlipayClient alipayClient = new DefaultAlipayClient(alipayDomain,appId,privateKey,"json","utf-8",publicKey,signType);
         AlipayTradeCloseRequest request = new AlipayTradeCloseRequest();
