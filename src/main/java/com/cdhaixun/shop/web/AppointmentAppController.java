@@ -87,20 +87,20 @@ public class AppointmentAppController {
     private String signType;
     @Value("#{configProperties['alipayDomain']}")
     private String alipayDomain;
-    /*采用线程池提高性能*/
-    private static final Executor EXECUTOR = new ThreadPoolExecutor(30, 100, 30,
-            TimeUnit.MINUTES, new ArrayBlockingQueue<Runnable>(10)
-    );
+    /* 采用线程池提高性能 */
+    private static final Executor EXECUTOR = new ThreadPoolExecutor(30, 100, 30, TimeUnit.MINUTES,
+            new ArrayBlockingQueue<Runnable>(10));
 
     @RequestMapping(value = "addAppointment", method = RequestMethod.POST)
     @ResponseBody
-    public Result addAppointment(@RequestBody Appointment appointment, HttpServletRequest httpServletRequest) throws InvocationTargetException, IllegalAccessException, ParseException, AlipayApiException {
+    public Result addAppointment(@RequestBody Appointment appointment, HttpServletRequest httpServletRequest)
+            throws InvocationTargetException, IllegalAccessException, ParseException, AlipayApiException {
         Result result = new Result();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        //获取预约起始时间
-        List<com.cdhaixun.domain.Appointment> appointmentList = appointmentService.findByStartTimeAndTechnicianId(appointment.getStarttime(), 
-                appointment.getEndtime(), appointment.getTechnicianid());
-        
+        // 获取预约起始时间
+        List<com.cdhaixun.domain.Appointment> appointmentList = appointmentService.findByStartTimeAndTechnicianId(
+                appointment.getStarttime(), appointment.getEndtime(), appointment.getTechnicianid());
+
         Date starttime = appointment.getStarttime();
         for (com.cdhaixun.domain.Appointment appointmentTemp : appointmentList) {
             if (appointmentTemp.getEndtime().compareTo(starttime) > 0) {
@@ -108,7 +108,8 @@ public class AppointmentAppController {
             }
         }
         final com.cdhaixun.domain.Appointment appointment1Db = new com.cdhaixun.domain.Appointment();
-        // StorePotion storePotion=   storePotionService.findOneByStoreIdAndPotionId(appointment.getStoreid(),appointment.getPotionid());
+        // StorePotion storePotion=
+        // storePotionService.findOneByStoreIdAndPotionId(appointment.getStoreid(),appointment.getPotionid());
         Potion potion = null;
         if (appointment.getPotionid() != null) {
             potion = potionService.findById(appointment.getPotionid());
@@ -128,23 +129,25 @@ public class AppointmentAppController {
         appointment1Db.setCreatetime(new Date());
         appointment1Db.setState(AppointmentState.NOPAY.toString());
         appointment1Db.setOutTradeNo(String.valueOf(System.currentTimeMillis()));
-        //appointmentService.save(appointment1Db);
-        AlipayClient alipayClient = new DefaultAlipayClient(alipayDomain,appId, privateKey, "json","utf-8",publicKey, signType);
-//实例化具体API对应的request类,类名称和接口名称对应,当前调用接口名称：alipay.trade.app.pay
+        // appointmentService.save(appointment1Db);
+        AlipayClient alipayClient = new DefaultAlipayClient(alipayDomain, appId, privateKey, "json", "utf-8", publicKey,
+                signType);
+        // 实例化具体API对应的request类,类名称和接口名称对应,当前调用接口名称：alipay.trade.app.pay
         AlipayTradeAppPayRequest request = new AlipayTradeAppPayRequest();
-//SDK已经封装掉了公共参数，这里只需要传入业务参数。以下方法为sdk的model入参方式(model和biz_content同时存在的情况下取biz_content)。
+        // SDK已经封装掉了公共参数，这里只需要传入业务参数。以下方法为sdk的model入参方式(model和biz_content同时存在的情况下取biz_content)。
         AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
-      /*  model.setBody("我是测试数据");*/
+        /* model.setBody("我是测试数据"); */
         model.setSubject("预约");
         model.setOutTradeNo(appointment1Db.getOutTradeNo());
         model.setTimeoutExpress("30m");
-//        model.setTotalAmount(appointment1Db.getTotalprice().toString());
+        // model.setTotalAmount(appointment1Db.getTotalprice().toString());
         model.setTotalAmount("0.01");
         model.setProductCode("QUICK_MSECURITY_PAY");
         request.setBizModel(model);
         request.setNotifyUrl(domain + "pay/alipay_notify_url");
         AlipayTradeAppPayResponse response = alipayClient.sdkExecute(request);
-        System.out.println(response.getBody());//就是orderString 可以直接给客户端请求，无需再做处理。
+        System.out.println(response.getBody());// 就是orderString
+                                               // 可以直接给客户端请求，无需再做处理。
         appointment1Db.setAlipayTradeAppPayInfo(response.getBody());
         appointmentService.save(appointment1Db);
         appointment1Db.setBusinessList(new ArrayList<Business>());
@@ -155,9 +158,11 @@ public class AppointmentAppController {
             appointment1Db.getBabyList().add(babyService.findById(baby.getId()));
         }
         for (Business business : appointment.getBusinessList()) {
-            TechnicianBusiness technicianBusiness = technicianBusinessService.findByBusinessIdAndTechnicianId(business.getId(), appointment.getTechnicianid());
+            TechnicianBusiness technicianBusiness = technicianBusinessService
+                    .findByBusinessIdAndTechnicianId(business.getId(), appointment.getTechnicianid());
             appointment1Db.getBusinessList().add(businessService.findById(business.getId()));
-            StoreBusiness storeBusiness = storeBusinessService.findOneByStoreIdAndBusinessId(appointment.getStoreid(), business.getId());
+            StoreBusiness storeBusiness = storeBusinessService.findOneByStoreIdAndBusinessId(appointment.getStoreid(),
+                    business.getId());
             for (com.cdhaixun.domain.Baby baby : appointment.getBabyList()) {
                 AppointmentDetail appointmentDetail = new AppointmentDetail();
                 appointmentDetail.setTechnicianid(appointment.getTechnicianid());
@@ -177,7 +182,7 @@ public class AppointmentAppController {
                 appointmentDetailService.save(appointmentDetail);
             }
         }
-        //打印预约信息
+        // 打印预约信息
         User user = userService.findById(appointment.getUserid());
         String content;
         content = "<CB>订单号：" + appointment1Db.getId() + "</CB><BR>";
@@ -185,10 +190,12 @@ public class AppointmentAppController {
         content += "会员名称：" + user.getName() + "<BR>";
         content += "会员电话：" + user.getMobile() + "<BR>";
         content += "--------------------------------<BR>";
-        content += "宝宝名称：" + appointment1Db.getBabyList().get(0).getName() + "  宝宝性别：" + (!appointment1Db.getBabyList().get(0).getGender() ? "男" : "女") + "<BR>";
+        content += "宝宝名称：" + appointment1Db.getBabyList().get(0).getName() + "  宝宝性别："
+                + (!appointment1Db.getBabyList().get(0).getGender() ? "男" : "女") + "<BR>";
         Date birthday = appointment1Db.getBabyList().get(0).getBirthday();
         long year = (System.currentTimeMillis() - birthday.getTime()) / (1000 * 60 * 60 * 24 * 365);
-        long mi = (System.currentTimeMillis() - birthday.getTime()) % (1000 * 60 * 60 * 24 * 365) / (1000 * 60 * 60 * 24 * 30);
+        long mi = (System.currentTimeMillis() - birthday.getTime()) % (1000 * 60 * 60 * 24 * 365)
+                / (1000 * 60 * 60 * 24 * 30);
         content += "宝宝年龄：" + (year == 0 ? "" : year + "年") + (mi == 0 ? "" : mi + "个月") + "<BR>";
         content += "--------------------------------<BR>";
         content += "预约日期：" + new SimpleDateFormat("yyyy年MM月dd日").format(appointment1Db.getCreatetime()) + "<BR>";
@@ -197,18 +204,18 @@ public class AppointmentAppController {
         content += "预约药水：" + potion.getName() + "<BR>";
         content += "备注：" + appointment.getRemark() + "<BR>";
         content += "支付金额：" + appointment1Db.getTotalprice() + "元<BR>";
-        //调用打印接口
+        // 调用打印接口
         final String finalContent = content;
         EXECUTOR.execute(new Runnable() {
             @Override
             public void run() {
-                //查看打印的printUtils  调用printOrder(String content,String sn)
-                   PrintUtil.printOrder(finalContent,appointment1Db.getStore().getPrintersn());
+                // 查看打印的printUtils 调用printOrder(String content,String sn)
+                PrintUtil.printOrder(finalContent, appointment1Db.getStore().getPrintersn());
             }
         });
 
-
-        List<com.cdhaixun.domain.Appointment> appointmentList1 = appointmentService.findByStartTimeAndTechnicianId(new Date(), appointment1Db.getEndtime(), appointment.getTechnicianid());
+        List<com.cdhaixun.domain.Appointment> appointmentList1 = appointmentService
+                .findByStartTimeAndTechnicianId(new Date(), appointment1Db.getEndtime(), appointment.getTechnicianid());
         appointment1Db.setAppointnumber(appointmentList1.size());
         result.setData(appointment1Db);
         result.setResult(true);
@@ -217,7 +224,8 @@ public class AppointmentAppController {
 
     @RequestMapping(value = "modifyAppointmentState", method = RequestMethod.POST)
     @ResponseBody
-    public Result modifyAppointmentState(@RequestBody Appointment appointment) throws InvocationTargetException, IllegalAccessException, ParseException {
+    public Result modifyAppointmentState(@RequestBody Appointment appointment)
+            throws InvocationTargetException, IllegalAccessException, ParseException {
         Result result = new Result();
         com.cdhaixun.domain.Appointment appointment1Db = appointmentService.findById(appointment.getId());
 
@@ -230,17 +238,25 @@ public class AppointmentAppController {
     @ResponseBody
     public Result listByUserId(@RequestBody Appointment appointment) {
         Result result = new Result();
-        List<com.cdhaixun.domain.Appointment> appointmentList = appointmentService.findByUserId(appointment.getUserid(),appointment.getState());
+        List<com.cdhaixun.domain.Appointment> appointmentList = appointmentService.findByUserId(appointment.getUserid(),
+                appointment.getState());
         for (com.cdhaixun.domain.Appointment appointment1 : appointmentList) {
-//            if (appointment1.getEndtime().compareTo(new Date()) < 0) {
-//                appointment1.setState("已结束");
-//            } else {
-//                appointment1.setState("预约中");
-//            }
+            if ("PAY".equals(appointment1.getState()) && appointment1.getEndtime().compareTo(new Date()) > 0) {
+                appointment1.setState("已支付");
+            } else if ("PAY".equals(appointment1.getState()) && appointment1.getEndtime().compareTo(new Date()) <= 0) {
+                appointment1.setState("已完成");
+            } else if ("NOPAY".equals(appointment1.getState()) && appointment1.getEndtime().compareTo(new Date()) > 0) {
+                appointment1.setState("待支付");
+            } else if ("NOPAY".equals(appointment1.getState()) && appointment1.getEndtime().compareTo(new Date()) <= 0) {
+                appointment1.setState("失效");
+            } else {
+                appointment1.setState("取消");
+            }
             appointment1.setTechnician(technicianService.findById(appointment.getTechnicianid()));
             appointment1.setStore(storeService.findById(appointment.getStoreid()));
 
-            List<AppointmentDetail> appointmentDetailList = appointmentDetailService.findByAppointmentId(appointment1.getId());
+            List<AppointmentDetail> appointmentDetailList = appointmentDetailService
+                    .findByAppointmentId(appointment1.getId());
             Map<Integer, Business> map = new HashMap();
             for (AppointmentDetail appointmentDetail : appointmentDetailList) {
                 Business business = businessService.findById(appointmentDetail.getBussinessid());
@@ -265,10 +281,12 @@ public class AppointmentAppController {
 
     @RequestMapping(value = "appointmentDetail", method = RequestMethod.POST)
     @ResponseBody
-    public Result appointmentDetail(@RequestBody Appointment appointment) throws InvocationTargetException, IllegalAccessException, ParseException {
+    public Result appointmentDetail(@RequestBody Appointment appointment)
+            throws InvocationTargetException, IllegalAccessException, ParseException {
         Result result = new Result();
         com.cdhaixun.domain.Appointment appointment1Db = appointmentService.findById(appointment.getId());
-        List<AppointmentDetail> appointmentDetailList = appointmentDetailService.findByAppointmentId(appointment1Db.getId());
+        List<AppointmentDetail> appointmentDetailList = appointmentDetailService
+                .findByAppointmentId(appointment1Db.getId());
         Map<Integer, Business> map = new HashMap();
         for (AppointmentDetail appointmentDetail : appointmentDetailList) {
             Business business = businessService.findById(appointmentDetail.getBussinessid());
@@ -288,11 +306,12 @@ public class AppointmentAppController {
         result.setResult(true);
         return result;
     }
+
     @RequestMapping(value = "tradeCreate", method = RequestMethod.POST)
     @ApiOperation(value = "支付宝创建新订单", notes = "支付宝创建新订单", httpMethod = "POST")
     @ResponseBody
-    public Result tradeCreate(@RequestBody com.cdhaixun.domain.Appointment appointment, HttpServletRequest httpServletRequest)
-            throws AlipayApiException {
+    public Result tradeCreate(@RequestBody com.cdhaixun.domain.Appointment appointment,
+            HttpServletRequest httpServletRequest) throws AlipayApiException {
 
         AlipayClient alipayClient = new DefaultAlipayClient(alipayDomain, appId, privateKey, "json", "utf-8", publicKey,
                 signType);
@@ -318,32 +337,30 @@ public class AppointmentAppController {
         result.setResult(true);
         return result;
     }
-    
+
     @RequestMapping(value = "cancelAppointment", method = RequestMethod.POST)
     @ApiOperation(value = "取消预约", notes = "取消预约", httpMethod = "POST")
     @ApiParam(value = "id")
     @ResponseBody
-    public Result tradeClose(@ApiParam(name="id",value="预约id",required=true) @RequestParam int id,
-            HttpServletRequest httpServletRequest)
-            throws AlipayApiException {
+    public Result tradeClose(@ApiParam(name = "id", value = "预约id", required = true) @RequestParam int id,
+            HttpServletRequest httpServletRequest) throws AlipayApiException {
         Result result = new Result<>();
         com.cdhaixun.domain.Appointment appointment = appointmentService.findById(id);
-        if("PAY".equals(appointment.getState())){ //状态为支付成功,则不能取消
+        if ("PAY".equals(appointment.getState())) { // 状态为支付成功,则不能取消
             result.setResult(false);
             result.setMsg("支付完成的订单暂不提供取消");
             return result;
         }
-        //调用支付宝交易关闭接口
-        AlipayClient alipayClient = new DefaultAlipayClient(alipayDomain,appId,privateKey,"json","utf-8",publicKey,signType);
+        // 调用支付宝交易关闭接口
+        AlipayClient alipayClient = new DefaultAlipayClient(alipayDomain, appId, privateKey, "json", "utf-8", publicKey,
+                signType);
         AlipayTradeCloseRequest request = new AlipayTradeCloseRequest();
-        request.setBizContent("{" +
-        "\"out_trade_no\":\""+appointment.getOutTradeNo()+"\"" +
-        "  }");
+        request.setBizContent("{" + "\"out_trade_no\":\"" + appointment.getOutTradeNo() + "\"" + "  }");
         AlipayTradeCloseResponse response = alipayClient.execute(request);
-        if(response.isSuccess()){
-        System.out.println("调用成功");
+        if (response.isSuccess()) {
+            System.out.println("调用成功");
         } else {
-        System.out.println("调用失败");
+            System.out.println("调用失败");
         }
         try {
             appointment.setState(AppointmentState.CANCEL.toString());
@@ -358,6 +375,5 @@ public class AppointmentAppController {
             return result;
         }
     }
-
 
 }
