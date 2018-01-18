@@ -247,7 +247,8 @@ public class AppointmentAppController {
                 appointment1.setState("已完成");
             } else if ("NOPAY".equals(appointment1.getState()) && appointment1.getEndtime().compareTo(new Date()) > 0) {
                 appointment1.setState("待支付");
-            } else if ("NOPAY".equals(appointment1.getState()) && appointment1.getEndtime().compareTo(new Date()) <= 0) {
+            } else if ("NOPAY".equals(appointment1.getState())
+                    && appointment1.getEndtime().compareTo(new Date()) <= 0) {
                 appointment1.setState("失效");
             } else {
                 appointment1.setState("取消");
@@ -285,26 +286,46 @@ public class AppointmentAppController {
             throws InvocationTargetException, IllegalAccessException, ParseException {
         Result result = new Result();
         com.cdhaixun.domain.Appointment appointment1Db = appointmentService.findById(appointment.getId());
-        List<AppointmentDetail> appointmentDetailList = appointmentDetailService
-                .findByAppointmentId(appointment1Db.getId());
-        Map<Integer, Business> map = new HashMap();
-        for (AppointmentDetail appointmentDetail : appointmentDetailList) {
-            Business business = businessService.findById(appointmentDetail.getBussinessid());
-            if (map.keySet().contains(business.getId())) {
-                map.get(business.getId()).setNumber(map.get(business.getId()).getNumber() + 1);
+        if (appointment1Db != null) {
+            if ("PAY".equals(appointment1Db.getState()) && appointment1Db.getEndtime().compareTo(new Date()) > 0) {
+                appointment1Db.setState("已支付");
+            } else if ("PAY".equals(appointment1Db.getState())
+                    && appointment1Db.getEndtime().compareTo(new Date()) <= 0) {
+                appointment1Db.setState("已完成");
+            } else if ("NOPAY".equals(appointment1Db.getState())
+                    && appointment1Db.getEndtime().compareTo(new Date()) > 0) {
+                appointment1Db.setState("待支付");
+            } else if ("NOPAY".equals(appointment1Db.getState())
+                    && appointment1Db.getEndtime().compareTo(new Date()) <= 0) {
+                appointment1Db.setState("失效");
             } else {
-                business.setNumber(1);
-                map.put(business.getId(), business);
+                appointment1Db.setState("取消");
             }
-            appointmentDetail.setBusiness(business);
-            appointmentDetail.setBaby(babyService.findById(appointmentDetail.getBabyid()));
+            List<AppointmentDetail> appointmentDetailList = appointmentDetailService
+                    .findByAppointmentId(appointment1Db.getId());
+            Map<Integer, Business> map = new HashMap();
+            for (AppointmentDetail appointmentDetail : appointmentDetailList) {
+                Business business = businessService.findById(appointmentDetail.getBussinessid());
+                if (map.keySet().contains(business.getId())) {
+                    map.get(business.getId()).setNumber(map.get(business.getId()).getNumber() + 1);
+                } else {
+                    business.setNumber(1);
+                    map.put(business.getId(), business);
+                }
+                appointmentDetail.setBusiness(business);
+                appointmentDetail.setBaby(babyService.findById(appointmentDetail.getBabyid()));
+            }
+            appointment1Db.setAppointmentDetail(appointmentDetailList.get(0));
+            appointment1Db.setStore(storeService.findById(appointment1Db.getStoreid()));
+            appointment1Db.setTechnician(technicianService.findById(appointment1Db.getTechnicianid()));
+            result.setData(appointment1Db);
+            result.setResult(true);
+            return result;
+        } else {
+            result.setResult(false);
+            result.setMsg("没有找到相应的详情记录");
+            return result;
         }
-        appointment1Db.setAppointmentDetail(appointmentDetailList.get(0));
-        appointment1Db.setStore(storeService.findById(appointment1Db.getStoreid()));
-        appointment1Db.setTechnician(technicianService.findById(appointment1Db.getTechnicianid()));
-        result.setData(appointment1Db);
-        result.setResult(true);
-        return result;
     }
 
     @RequestMapping(value = "tradeCreate", method = RequestMethod.POST)
