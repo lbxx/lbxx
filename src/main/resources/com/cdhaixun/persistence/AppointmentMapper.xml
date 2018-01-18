@@ -343,4 +343,8 @@
     AND ((state = 'PAY' AND NOW() &lt;= endtime)) 
     AND technicianid = #{technicianid} AND endtime &lt; #{starttime}
   </select>
+  <select id="findByIdAndUserId" resultMap="BaseResultMap" parameterType="map">
+    select * from appointment
+    where id=#{id} and userid=#{userid}
+  </select>
 </mapper>

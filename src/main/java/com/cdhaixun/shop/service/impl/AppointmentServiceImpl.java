@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -63,6 +64,14 @@ public class AppointmentServiceImpl implements IAppointmentService {
     @Override
     public Appointment findByOutTradeNo(String outTradeNo) {
         return appointmentMapper.findByOutTradeNo(outTradeNo);
+    }
+
+    @Override
+    public Appointment findIdAndUserId(Integer id, Integer userid) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("id", id);
+        params.put("userid", userid);
+        return appointmentMapper.findByIdAndUserId(params);
     }
 
 }

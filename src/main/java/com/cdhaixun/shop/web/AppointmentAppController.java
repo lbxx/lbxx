@@ -365,13 +365,17 @@ public class AppointmentAppController {
 
     @RequestMapping(value = "cancelAppointment", method = RequestMethod.POST)
     @ApiOperation(value = "取消预约", notes = "取消预约", httpMethod = "POST")
-    @ApiParam(value = "id")
     @ResponseBody
-    public Result tradeClose(@ApiParam(name = "id", value = "预约id", required = true) @RequestParam int id,
+    public Result tradeClose(@RequestBody com.cdhaixun.domain.Appointment appointment,
             HttpServletRequest httpServletRequest) throws AlipayApiException {
         Result result = new Result<>();
-        com.cdhaixun.domain.Appointment appointment = appointmentService.findById(id);
-        if ("PAY".equals(appointment.getState())) { // 状态为支付成功,则不能取消
+        com.cdhaixun.domain.Appointment appointmentRes = appointmentService.findIdAndUserId(appointment.getId(),appointment.getUserid());
+        if(appointmentRes == null){
+            result.setResult(false);
+            result.setMsg("记录不存在");
+            return result;
+        }
+        if ("PAY".equals(appointmentRes.getState())) { // 状态为支付成功,则不能取消
             result.setResult(false);
             result.setMsg("支付完成的订单暂不提供取消");
             return result;
@@ -380,7 +384,7 @@ public class AppointmentAppController {
         AlipayClient alipayClient = new DefaultAlipayClient(alipayDomain, appId, privateKey, "json", "utf-8", publicKey,
                 signType);
         AlipayTradeCloseRequest request = new AlipayTradeCloseRequest();
-        request.setBizContent("{" + "\"out_trade_no\":\"" + appointment.getOutTradeNo() + "\"" + "  }");
+        request.setBizContent("{" + "\"out_trade_no\":\"" + appointmentRes.getOutTradeNo() + "\"" + "  }");
         AlipayTradeCloseResponse response = alipayClient.execute(request);
         if (response.isSuccess()) {
             System.out.println("调用成功");
@@ -388,8 +392,8 @@ public class AppointmentAppController {
             System.out.println("调用失败");
         }
         try {
-            appointment.setState(AppointmentState.CANCEL.toString());
-            appointmentService.save(appointment);
+            appointmentRes.setState(AppointmentState.CANCEL.toString());
+            appointmentService.save(appointmentRes);
             result.setResult(true);
             result.setMsg("预约取消成功");
             return result;

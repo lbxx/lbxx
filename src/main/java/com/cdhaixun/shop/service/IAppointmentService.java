@@ -28,4 +28,6 @@ public interface IAppointmentService {
     Appointment findById(Integer id);
 
     Appointment findByOutTradeNo(String outTradeNo);
+
+    com.cdhaixun.domain.Appointment findIdAndUserId(Integer id, Integer userid);
 }
