@@ -337,4 +337,10 @@
         where isdelete = 0
         and outtradeno = #{outTradeNo,jdbcType=VARCHAR}
 	</select>
+	<select id="countQueueLength" parameterType="map" resultType="java.lang.Integer">
+    SELECT COUNT(*) FROM appointment 
+    WHERE isdelete = 0 
+    AND ((state = 'PAY' AND NOW() &lt;= endtime)) 
+    AND technicianid = #{technicianid} AND endtime &lt; #{starttime}
+  </select>
 </mapper>

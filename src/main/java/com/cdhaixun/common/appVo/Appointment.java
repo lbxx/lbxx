@@ -196,4 +196,5 @@ public class Appointment implements Serializable{
     public void setIsdelete(Boolean isdelete) {
         this.isdelete = isdelete;
     }
+
 }

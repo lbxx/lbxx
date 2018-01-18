@@ -34,6 +34,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+
+import java.beans.IntrospectionException;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -283,7 +285,7 @@ public class AppointmentAppController {
     @RequestMapping(value = "appointmentDetail", method = RequestMethod.POST)
     @ResponseBody
     public Result appointmentDetail(@RequestBody Appointment appointment)
-            throws InvocationTargetException, IllegalAccessException, ParseException {
+            throws InvocationTargetException, IllegalAccessException, ParseException, IntrospectionException {
         Result result = new Result();
         com.cdhaixun.domain.Appointment appointment1Db = appointmentService.findById(appointment.getId());
         if (appointment1Db != null) {
@@ -315,6 +317,8 @@ public class AppointmentAppController {
                 appointmentDetail.setBusiness(business);
                 appointmentDetail.setBaby(babyService.findById(appointmentDetail.getBabyid()));
             }
+            Integer queueLength = appointmentDetailService.countQueueLength(appointment1Db);
+            appointment1Db.setQueuelength(queueLength);;
             appointment1Db.setAppointmentDetail(appointmentDetailList.get(0));
             appointment1Db.setStore(storeService.findById(appointment1Db.getStoreid()));
             appointment1Db.setTechnician(technicianService.findById(appointment1Db.getTechnicianid()));

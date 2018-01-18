@@ -22,4 +22,5 @@ public interface AppointmentDetailMapper {
     List<AppointmentDetail> selectByAppointmentDetail(AppointmentDetail appointmentDetail);
 
     List<AppointmentDetailVo> getAppointmentDetailList(Map<String, Object> parMap);
+
 }

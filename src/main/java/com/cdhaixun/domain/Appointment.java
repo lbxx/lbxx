@@ -35,6 +35,7 @@ public class Appointment {
     private AppointmentDetail appointmentDetail;
     private String alipayTradeAppPayInfo ;
     private String outTradeNo ;
+    private Integer queuelength; //排队人数
 
     public String getAlipayTradeAppPayInfo() {
         return alipayTradeAppPayInfo;
@@ -271,6 +272,14 @@ public class Appointment {
 
     public void setOutTradeNo(String outTradeNo) {
         this.outTradeNo = outTradeNo;
+    }
+
+    public Integer getQueuelength() {
+        return queuelength;
+    }
+
+    public void setQueuelength(Integer queuelength) {
+        this.queuelength = queuelength;
     }
 
 

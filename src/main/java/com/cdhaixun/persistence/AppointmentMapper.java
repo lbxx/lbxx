@@ -24,4 +24,6 @@ public interface AppointmentMapper {
     List<AppointmentVo> getAppointmentList(Map<String, Object> parMap);
 
     Appointment findByOutTradeNo(String outTradeNo);
+    
+    Integer countQueueLength(Map<String, Object> parMap);
 }

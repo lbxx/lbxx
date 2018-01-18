@@ -177,4 +177,5 @@ public class AppointmentDetail {
     public void setIsdelete(Boolean isdelete) {
         this.isdelete = isdelete;
     }
+
 }
