@@ -9,7 +9,7 @@ public class Baby {
 
     private String name;
 
-    @JsonFormat(pattern="yyyy.MM.dd")
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date birthday;
     private Integer birthDate;
     private Integer birthMonth;
