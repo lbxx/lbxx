@@ -19,6 +19,7 @@
 </style>
 <!-- <script type="text/javascript" src="http://api.map.baidu.com/api?v=1.4"></script> -->
 <script src="http://api.map.baidu.com/api?v=2.0&ak=EZPCgQ6zGu6hZSmXlRrUMTpr"></script>
+<script src="${ctx}/resources/DatePicker/WdatePicker.js"></script>
 </head>
 <body>
 
@@ -82,7 +83,7 @@
 							<!--左上  -->
 							<div id="addStore_up_left"
 								style="width: 50%;height:100%; float: left;">
-								<div style="margin: 20px 0px;">
+								<div style="margin: 15px 0px 15px 5px;">
 									<label 
 										style="float: left; line-height: 2em; width: 15%;">店铺名称</label>
 									<select class="form-control" id="chainstoreselect" name="chainstoreid"
@@ -90,30 +91,34 @@
 										<!-- <option value=""></option> -->
 									</select> <input type="text" id="storename" name="name" placeholder="连锁下属门店名称 "
 										class="required" style="height: 32px; width: 56%;">
-									<div style="color: #AEAEAE;">单店连锁店名称请填写单店名称</div>
+									<div style="color: #AEAEAE;margin-left: 80px;">单店连锁店名称请填写单店名称</div>
 								</div>
-								<div style="margin-bottom: 20px;">
+								<div style="margin: 0px 0px 15px 5px;">
 									 <label 
 										style="float: left; line-height: 2em; width: 15%;">店铺座机</label>
 									<input type="text" id="telephone" name="telephone" maxlength="12" placeholder="座机号码"
 										class="required" style="width: 80%;">
 									<div style="color: #AEAEAE;">座机号码格式: '区号'-'座机号'</div>
 								</div>
-								<div style="margin-bottom: 20px;">
+								<div style="margin: 0px 0px 15px 5px;">
 									<label 
 										style="float: left; line-height: 2em; width: 15%;">手机</label>
 									<input type="text" id="cellphone" name="cellphone" placeholder="请填写负责人手机号码"
 										class="" maxlength="11" style="width: 80%;">
 								</div>
-								<div style="margin-bottom: 15px;">
+								<div style="margin: 0px 0px 15px 5px;">
                                     <label style="float: left; line-height: 2em; width: 15%;">所在城市</label>
                                     <input type="text" id="city" name="city" placeholder="请填写店铺所在城市"  style="width: 80%;">
                                 </div>
-								<div style="margin-bottom: 1px;">
+								<div style="margin: 0px 0px 15px 5px;">
                                     <label style="float: left; line-height: 2em; width: 15%;">打印机编号</label>
                                     <input type="text" id="printersn" name="printersn" placeholder="请填写打印机编号(SN)"  style="width: 80%;">
                                 </div>
-
+								<div style="margin: 0px 0px 15px 5px;">
+                                    <label style="float: left; line-height: 3em; width: 17%;margin-bottom: 15px">可预约时间段</label>
+                                    <input type="text" id="openinghours" name="openinghours" placeholder="请选择可预约开始时间"  onfocus="WdatePicker({dateFmt:'HH:mm'})" class="Wdate" style="width: 32%;">
+                                    <input type="text" id="closinghours" name="closinghours" placeholder="请选择可预约结束时间"  onfocus="WdatePicker({dateFmt:'HH:mm'})" class="Wdate" style="width: 32%;">
+                                </div>
 							</div>
 							<!--右上  -->
 							<div id="addStore_up_right"
@@ -304,6 +309,8 @@
 	                        $("#description").val(store.description);
 	                        $("#city").val(store.city);
 	                        $("#printersn").val(store.printersn);
+	                        $("#openinghours").val(store.openinghours);
+	                        $("#closinghours").val(store.closinghours);
 	                        if(store.pic){
 		                        $("#storeimg").attr("src","${ctx}/upload"+store.pic);
 	                        }
@@ -585,45 +592,48 @@
 
 			//search.search(document.getElementById("cityName").value);
 			/*==================百度地图  */
-			//上班时间选择
-			$('#timepickerOn').timepicker({
-				minuteStep : 1,
-				secondStep : 1,
-				showSeconds : true,
-				showMeridian : false,
-				disableFocus : true,
-				icons : {
-					up : 'fa fa-chevron-up',
-					down : 'fa fa-chevron-down'
-				}
-			}).on('focus', function() {
-				$('#timepickerOn').timepicker('showWidget');
-			}).next().on(ace.click_event, function() {
-				$(this).prev().focus();
-			});
+			
+			 //上班时间选择
+	        $('#timepickerOn').timepicker({
+	            minuteStep : 1,
+	            secondStep : 1,
+	            showSeconds : true,
+	            showMeridian : false,
+	            disableFocus : true,
+	            icons : {
+	                up : 'fa fa-chevron-up',
+	                down : 'fa fa-chevron-down'
+	            }
+	        }).on('focus', function() {
+	            $('#timepickerOn').timepicker('showWidget');
+	        }).next().on(ace.click_event, function() {
+	            $(this).prev().focus();
+	        });
 
-			//下班时间选择
-			$('#timepickerOff').timepicker({
-				minuteStep : 1,
-				secondStep : 1,
-				showSeconds : true,
-				showMeridian : false,
-				disableFocus : true,
-				icons : {
-					up : 'fa fa-chevron-up',
-					down : 'fa fa-chevron-down'
-				}
-			}).on('focus', function() {
-				$('#timepickerOff').timepicker('showWidget');
-			}).next().on(ace.click_event, function() {
-				$(this).prev().focus();
-			});
+	        //下班时间选择
+	        $('#timepickerOff').timepicker({
+	            minuteStep : 1,
+	            secondStep : 1,
+	            showSeconds : true,
+	            showMeridian : false,
+	            disableFocus : true,
+	            icons : {
+	                up : 'fa fa-chevron-up',
+	                down : 'fa fa-chevron-down'
+	            }
+	        }).on('focus', function() {
+	            $('#timepickerOff').timepicker('showWidget');
+	        }).next().on(ace.click_event, function() {
+	            $(this).prev().focus();
+	        });
 
 		});
 		
 	    $("#cancelBtn").click(function(){
 	    	location.href="${ctx}/store/listIndex";
 	    });
+	    
+	 
 		
 		//页面图上上传预览//
 		//图片上传预览    IE是用了滤镜。

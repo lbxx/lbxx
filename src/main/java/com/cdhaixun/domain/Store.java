@@ -13,9 +13,9 @@ public class Store {
 
     private String cellphone;
 
-    private Date openinghours;
+    private String openinghours;
 
-    private Date closinghours;
+    private String closinghours;
     
     private String printersn; //打印机编号(SN)
 
@@ -106,19 +106,19 @@ public class Store {
         this.cellphone = cellphone == null ? null : cellphone.trim();
     }
 
-    public Date getOpeninghours() {
+    public String getOpeninghours() {
         return openinghours;
     }
 
-    public void setOpeninghours(Date openinghours) {
+    public void setOpeninghours(String openinghours) {
         this.openinghours = openinghours;
     }
 
-    public Date getClosinghours() {
+    public String getClosinghours() {
         return closinghours;
     }
 
-    public void setClosinghours(Date closinghours) {
+    public void setClosinghours(String closinghours) {
         this.closinghours = closinghours;
     }
         
