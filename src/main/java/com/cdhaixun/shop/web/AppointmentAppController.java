@@ -106,7 +106,8 @@ public class AppointmentAppController {
         Date endtime = appointment.getEndtime();
         for (com.cdhaixun.domain.Appointment appointmentTemp : appointmentList) {
             if (appointmentTemp.getEndtime().compareTo(starttime) > 0&&appointmentTemp.getStarttime().compareTo(starttime) < 0||
-                    appointmentTemp.getEndtime().compareTo(endtime) > 0&&appointmentTemp.getStarttime().compareTo(endtime) < 0) {
+                    appointmentTemp.getEndtime().compareTo(endtime) > 0&&appointmentTemp.getStarttime().compareTo(endtime) < 0||
+                    appointmentTemp.getStarttime().equals(starttime)&&appointmentTemp.getEndtime().equals(endtime)) {
                 result.setMsg("该时间已经被预约了！");
                 result.setResult(false);
              return result;
