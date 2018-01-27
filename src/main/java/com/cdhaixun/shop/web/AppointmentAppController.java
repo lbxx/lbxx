@@ -104,9 +104,13 @@ public class AppointmentAppController {
                 appointment.getStarttime(), appointment.getEndtime(), appointment.getTechnicianid());
 
         Date starttime = appointment.getStarttime();
+        Date endtime = appointment.getEndtime();
         for (com.cdhaixun.domain.Appointment appointmentTemp : appointmentList) {
-            if (appointmentTemp.getEndtime().compareTo(starttime) > 0) {
-                starttime = appointmentTemp.getEndtime();
+            if (appointmentTemp.getEndtime().compareTo(starttime) > 0&&appointmentTemp.getStarttime().compareTo(starttime) < 0||
+                    appointmentTemp.getEndtime().compareTo(endtime) > 0&&appointmentTemp.getStarttime().compareTo(endtime) < 0) {
+                result.setMsg("该时间已经被预约了！");
+                result.setResult(false);
+             return result;
             }
         }
         final com.cdhaixun.domain.Appointment appointment1Db = new com.cdhaixun.domain.Appointment();
@@ -232,6 +236,16 @@ public class AppointmentAppController {
         com.cdhaixun.domain.Appointment appointment1Db = appointmentService.findById(appointment.getId());
 
         result.setData(appointment1Db);
+        result.setResult(true);
+        return result;
+    }
+    @RequestMapping(value = "queryAppointments", method = RequestMethod.POST)
+    @ResponseBody
+    public Result queryAppointments(@RequestBody Appointment appointment) {
+        Result result = new Result();
+        List<com.cdhaixun.domain.Appointment> appointmentList = appointmentService.findByStartTimeAndTechnicianId(
+                appointment.getStarttime(), appointment.getEndtime(), appointment.getTechnicianid());
+        result.setData(appointmentList);
         result.setResult(true);
         return result;
     }
