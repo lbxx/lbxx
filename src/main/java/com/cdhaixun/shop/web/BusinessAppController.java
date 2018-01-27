@@ -53,7 +53,7 @@ public class BusinessAppController {
     @ResponseBody
     public Result getTechnicianBusines(@RequestBody TechnicianBusiness technicianBusiness, HttpServletRequest httpServletRequest) throws InvocationTargetException, IllegalAccessException {
         Result result = new Result();
-        TechnicianBusiness byBusinessIdAndTechnicianId = technicianBusinessService.findByBusinessIdAndTechnicianId(technicianBusiness.getBusinessid(), technicianBusiness.getBusinessid());
+        TechnicianBusiness byBusinessIdAndTechnicianId = technicianBusinessService.findByBusinessIdAndTechnicianId(technicianBusiness.getBusinessid(), technicianBusiness.getTechnicianid());
         result.setData(byBusinessIdAndTechnicianId);
         result.setResult(true);
         return result;
