@@ -98,7 +98,6 @@ public class AppointmentAppController {
     public Result addAppointment(@RequestBody Appointment appointment, HttpServletRequest httpServletRequest)
             throws InvocationTargetException, IllegalAccessException, ParseException, AlipayApiException {
         Result result = new Result();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         // 获取预约起始时间
         List<com.cdhaixun.domain.Appointment> appointmentList = appointmentService.findByStartTimeAndTechnicianId(
                 appointment.getStarttime(), appointment.getEndtime(), appointment.getTechnicianid());

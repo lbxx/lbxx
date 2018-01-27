@@ -5,8 +5,10 @@ import com.cdhaixun.common.appVo.Result;
 import com.cdhaixun.common.appVo.Store;
 import com.cdhaixun.domain.Business;
 import com.cdhaixun.domain.StoreBusiness;
+import com.cdhaixun.domain.TechnicianBusiness;
 import com.cdhaixun.shop.service.IBusinessService;
 import com.cdhaixun.shop.service.IStoreBusinessService;
+import com.cdhaixun.shop.service.ITechnicianBusinessService;
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,6 +32,8 @@ public class BusinessAppController {
     private IStoreBusinessService storeBusinessService;
     @Autowired
     private IBusinessService businessService;
+    @Autowired
+    private ITechnicianBusinessService technicianBusinessService;
 
     @RequestMapping(value = "listByStoreId", method = RequestMethod.POST)
     @ResponseBody
@@ -45,4 +49,14 @@ public class BusinessAppController {
         result.setResult(true);
         return result;
     }
+    @RequestMapping(value = "getTechnicianBusines", method = RequestMethod.POST)
+    @ResponseBody
+    public Result getTechnicianBusines(@RequestBody TechnicianBusiness technicianBusiness, HttpServletRequest httpServletRequest) throws InvocationTargetException, IllegalAccessException {
+        Result result = new Result();
+        TechnicianBusiness byBusinessIdAndTechnicianId = technicianBusinessService.findByBusinessIdAndTechnicianId(technicianBusiness.getBusinessid(), technicianBusiness.getBusinessid());
+        result.setData(byBusinessIdAndTechnicianId);
+        result.setResult(true);
+        return result;
+    }
+
 }
