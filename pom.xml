@@ -295,11 +295,6 @@
             <artifactId>sdk-java</artifactId>
             <version>20171201160035</version>
         </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-logging</artifactId>
-            <version>1.1.1</version>
-        </dependency>
     </dependencies>
     <build>
         <finalName>shop</finalName>
