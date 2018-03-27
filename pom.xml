@@ -238,17 +238,8 @@
             <artifactId>commons-lang3</artifactId>
             <version>3.4</version>
         </dependency>
-        <!--sms-->
-        <dependency>
-            <groupId>crssj</groupId>
-            <artifactId>crssj</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <!--sign签名校验-->
-        <dependency>
-            <groupId>com.allinpay</groupId>
-            <artifactId>allinpay-security</artifactId>
-        </dependency>
+
+
         <!--redis-->
         <dependency>
             <groupId>org.springframework.data</groupId>
@@ -307,6 +298,12 @@
             <groupId>com.alipay</groupId>
             <artifactId>sdk-java</artifactId>
             <version>20171201160035</version>
+        </dependency>
+        <!--sms-->
+        <dependency>
+            <groupId>crssj</groupId>
+            <artifactId>crssj</artifactId>
+            <version>1.0</version>
         </dependency>
     </dependencies>
     <build>
