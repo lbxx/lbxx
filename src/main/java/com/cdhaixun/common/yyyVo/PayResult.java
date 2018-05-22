@@ -20,7 +20,16 @@ public class PayResult {
     private String retcode;
     private String retmsg;
     private  String errmsg;
+    private String randomstr;
     private  String payinfo;//支付成功
+
+    public String getRandomstr() {
+        return randomstr;
+    }
+
+    public void setRandomstr(String randomstr) {
+        this.randomstr = randomstr;
+    }
 
     public String getPayinfo() {
         return payinfo;
