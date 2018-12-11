@@ -573,6 +573,14 @@ public class PayController extends BaseController {
 
     }
 
-    
+    public static void main(String[] args) throws IOException {
+        HttpPost httppost = new HttpPost(
+            "scanpay?" );
+        httppost.setEntity(new StringEntity("{\"id\":\"1\"}"));
+        HttpResponse httpResponse = hc.execute(httppost);
+        HttpEntity httpEntity = httpResponse.getEntity();
+        String json = IOUtils.toString(httpEntity.getContent(), "utf-8");
+        PayResult payResult = new ObjectMapper().readValue(json, PayResult.class);
+    }
 
 }
